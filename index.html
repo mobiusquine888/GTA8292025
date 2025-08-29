@@ -968,12 +968,82 @@
             </div>
         </div>
         
-        <div id="theories" class="tab-content">
-            <h2 style="color: var(--primary-color);">🧠 Community Theories</h2>
-            <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                Theories section coming soon...
+     <div id="theories" class="tab-content">
+            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🧠 Community Theories</h2>
+            
+            <!-- Theory Stats -->
+            <div class="stats-grid" style="margin-bottom: 2rem;">
+                <div class="stat-card">
+                    <span class="stat-number" id="theoryCount">Loading...</span>
+                    <div>Total Theories</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="topTheoryVotes">Loading...</span>
+                    <div>Top Theory Votes</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="activeContributors">45</span>
+                    <div>Contributors</div>
+                </div>
+                <div class="stat-card premium">
+                    <span class="stat-number" id="theoryBadges">12</span>
+                    <div>Badges Earned</div>
+                </div>
             </div>
-        </div>
+
+            <!-- Category Filter -->
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center;">
+                <button onclick="filterTheories('all')" id="category-all" style="background: var(--primary-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">All</button>
+                <button onclick="filterTheories('gameplay')" id="category-gameplay" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Gameplay</button>
+                <button onclick="filterTheories('map')" id="category-map" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Map</button>
+                <button onclick="filterTheories('characters')" id="category-characters" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Characters</button>
+                <button onclick="filterTheories('easter-eggs')" id="category-easter-eggs" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Easter Eggs</button>
+                <button onclick="filterTheories('story')" id="category-story" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Story</button>
+            </div>
+
+            <!-- Theory Submission -->
+            <div style="background: var(--card-bg); border-radius: 15px; padding: 2rem; margin-bottom: 2rem;">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem; text-align: center;">💡 Share Your Theory</h3>
+                <div style="display: grid; gap: 1rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <input type="text" id="newTheoryUsername" placeholder="Your username" style="background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.75rem; border-radius: 8px; outline: none;">
+                        <select id="newTheoryCategory" style="background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.75rem; border-radius: 8px; outline: none;">
+                            <option value="gameplay">Gameplay</option>
+                            <option value="map">Map</option>
+                            <option value="characters">Characters</option>
+                            <option value="easter-eggs">Easter Eggs</option>
+                            <option value="story">Story</option>
+                        </select>
+                    </div>
+                    <textarea id="newTheoryText" placeholder="Share your theory about GTA 6..." style="background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.75rem; border-radius: 8px; outline: none; height: 120px; resize: vertical;"></textarea>
+                    <input type="url" id="newTheoryImage" placeholder="Image URL (optional)" style="background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.75rem; border-radius: 8px; outline: none;">
+                    <button onclick="submitNewTheory()" style="background: var(--gradient-primary); border: none; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600;">Submit Theory</button>
+                </div>
+            </div>
+
+            <!-- Theories Grid -->
+            <div id="mainTheoriesGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                <!-- Theories loaded by JavaScript -->
+            </div>
+
+            <!-- Top Contributors Leaderboard -->
+            <div style="background: var(--card-bg); border-radius: 15px; padding: 2rem; margin-bottom: 2rem;">
+                <h3 style="color: var(--gold-color); margin-bottom: 1rem; text-align: center;">🏆 Top Theory Contributors</h3>
+                <div id="contributorsLeaderboard" style="display: grid; gap: 0.5rem;">
+                    <!-- Leaderboard loaded by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Newsletter Signup -->
+            <div style="background: linear-gradient(135deg, var(--accent-color), var(--gold-color)); border-radius: 15px; padding: 2rem; text-align: center;">
+                <h3 style="margin-bottom: 1rem;">📬 Theory Digest Newsletter</h3>
+                <p style="margin-bottom: 1rem; opacity: 0.9;">Get weekly roundups of the best community theories!</p>
+                <div style="display: flex; gap: 0.5rem; max-width: 400px; margin: 0 auto; flex-wrap: wrap;">
+                    <input type="email" id="theoryEmail" placeholder="Enter your email" style="flex: 1; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 0.75rem; border-radius: 8px; outline: none; min-width: 200px;" onkeypress="if(event.key==='Enter') subscribeTheoryDigest()">
+                    <button onclick="subscribeTheoryDigest()" style="background: white; color: var(--accent-color); border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600; white-space: nowrap;">Subscribe</button>
+                </div>
+            </div>
+        </div>   
         
         <div id="rdr2" class="tab-content">
             <h2 style="color: var(--primary-color);">🤠 Red Dead Redemption 2 & GTA Connection</h2>
@@ -1909,4 +1979,5 @@
 </body>
 
 </html>
+
 
