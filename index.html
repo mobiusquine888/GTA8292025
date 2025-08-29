@@ -1054,11 +1054,74 @@
             </div>
         </div>
         
-        <div id="shop" class="tab-content">
-            <h2 style="color: var(--primary-color);">🛒 GTAFastLane Shop</h2>
-            <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                Shop coming soon...
+       <div id="shop" class="tab-content">
+            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🛒 GTAFastLane Shop</h2>
+            
+            <!-- Shop Stats -->
+            <div class="stats-grid" style="margin-bottom: 2rem;">
+                <div class="stat-card">
+                    <span class="stat-number" id="shopItemCount">24</span>
+                    <div>Items Available</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="cartItems">0</span>
+                    <div>Cart Items</div>
+                </div>
+                <div class="stat-card premium">
+                    <span class="stat-number" id="cartTotal">$0.00</span>
+                    <div>Cart Total</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">FREE</span>
+                    <div>Shipping Over $50</div>
+                </div>
             </div>
+
+            <!-- Category Filter -->
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center;">
+                <button onclick="filterShopProducts('all')" id="shop-all" style="background: var(--primary-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">All Products</button>
+                <button onclick="filterShopProducts('merch')" id="shop-merch" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">GTAFastLane Merch</button>
+                <button onclick="filterShopProducts('gear')" id="shop-gear" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Gaming Gear</button>
+                <button onclick="filterShopProducts('digital')" id="shop-digital" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Digital Items</button>
+            </div>
+
+            <!-- Shopping Cart Summary -->
+            <div id="cartSummary" style="background: var(--card-bg); border: 2px solid var(--primary-color); border-radius: 15px; padding: 1.5rem; margin-bottom: 2rem; display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="color: var(--primary-color); margin: 0;">🛍️ Shopping Cart</h3>
+                    <button onclick="toggleCart()" style="background: none; border: none; color: var(--text-color); font-size: 1.5rem; cursor: pointer;">×</button>
+                </div>
+                <div id="cartItemsList" style="margin-bottom: 1rem;">
+                    <!-- Cart items loaded by JavaScript -->
+                </div>
+                <div style="border-top: 1px solid var(--border-color); padding-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 1.2rem; font-weight: bold;">Total: <span id="cartTotalDisplay">$0.00</span></div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button onclick="clearCart()" style="background: var(--danger-color); border: none; color: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem;">Clear Cart</button>
+                        <button onclick="mockCheckout()" style="background: var(--gradient-primary); border: none; color: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600;">Checkout</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div id="shopProductsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                <!-- Products loaded by JavaScript -->
+            </div>
+
+            <!-- Newsletter Signup -->
+            <div style="background: linear-gradient(135deg, var(--gold-color), var(--premium-color)); border-radius: 15px; padding: 2rem; text-align: center;">
+                <h3 style="margin-bottom: 1rem; color: black;">📦 Official Merch Updates</h3>
+                <p style="margin-bottom: 1rem; opacity: 0.8; color: black;">Be first to know about new GTAFastLane merchandise drops!</p>
+                <div style="display: flex; gap: 0.5rem; max-width: 400px; margin: 0 auto; flex-wrap: wrap;">
+                    <input type="email" id="merchEmail" placeholder="Enter your email" style="flex: 1; background: rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.2); color: black; padding: 0.75rem; border-radius: 8px; outline: none; min-width: 200px;" onkeypress="if(event.key==='Enter') subscribeMerchUpdates()">
+                    <button onclick="subscribeMerchUpdates()" style="background: black; color: var(--gold-color); border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600; white-space: nowrap;">Subscribe</button>
+                </div>
+            </div>
+
+            <!-- Floating Cart Button -->
+            <button id="floatingCartBtn" onclick="toggleCart()" style="position: fixed; bottom: 120px; right: 80px; background: var(--gradient-primary); color: white; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 1.5rem; cursor: pointer; box-shadow: var(--shadow); z-index: 999; display: none;">
+                🛒<span id="cartBadge" style="position: absolute; top: -5px; right: -5px; background: var(--danger-color); color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center;">0</span>
+            </button>
         </div>
         
         <div id="premium" class="tab-content">
@@ -1979,5 +2042,6 @@
 </body>
 
 </html>
+
 
 
