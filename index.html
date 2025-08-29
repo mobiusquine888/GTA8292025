@@ -873,10 +873,85 @@
         </div>
 
         <!-- Additional tabs with minimal content for now -->
-        <div id="rumors" class="tab-content">
-            <h2 style="color: var(--primary-color);">🔥 GTA 6 Rumors & Leaks</h2>
-            <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                Rumors section coming soon...
+        <div class="stats-grid" style="margin-bottom: 2rem;">
+                <div class="stat-card">
+                    <span class="stat-number" id="rumorCount">6</span>
+                    <div>Active Rumors</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="hotRumors">3</span>
+                    <div>Hot Today</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="rumorVoters">2,847</span>
+                    <div>Voters Online</div>
+                </div>
+                <div class="stat-card premium">
+                    <span class="stat-number">LIVE</span>
+                    <div>Status</div>
+                </div>
+            </div>
+
+            <!-- Next Rumor Drop Countdown -->
+            <div style="background: linear-gradient(135deg, var(--accent-color), var(--secondary-color)); border-radius: 15px; padding: 2rem; margin-bottom: 2rem; text-align: center; color: white;">
+                <h3 style="font-size: 1.2rem; margin-bottom: 1rem;">⏰ Next Rumor Drop In:</h3>
+                <div style="display: flex; justify-content: center; gap: 1rem;">
+                    <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 1rem; min-width: 60px;">
+                        <div style="font-size: 1.5rem; font-weight: bold;" id="rumorHours">5</div>
+                        <div style="font-size: 0.8rem;">Hours</div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 1rem; min-width: 60px;">
+                        <div style="font-size: 1.5rem; font-weight: bold;" id="rumorMinutes">23</div>
+                        <div style="font-size: 0.8rem;">Minutes</div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 1rem; min-width: 60px;">
+                        <div style="font-size: 1.5rem; font-weight: bold;" id="rumorSeconds">45</div>
+                        <div style="font-size: 0.8rem;">Seconds</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center;">
+                <button onclick="filterRumors('all')" id="filter-all" style="background: var(--primary-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">All</button>
+                <button onclick="filterRumors('hot')" id="filter-hot" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Hot 🔥</button>
+                <button onclick="filterRumors('credible')" id="filter-credible" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Credible ✅</button>
+                <button onclick="filterRumors('recent')" id="filter-recent" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Recent ⚡</button>
+                <button onclick="filterRumors('controversial')" id="filter-controversial" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Controversial 🤔</button>
+            </div>
+
+            <!-- Rumors Grid -->
+            <div id="rumorsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                <!-- Rumors loaded by JavaScript -->
+            </div>
+
+            <!-- Theory Submission -->
+            <div style="background: var(--card-bg); border-radius: 15px; padding: 2rem; margin-bottom: 2rem;">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem; text-align: center;">🧠 Submit Your Theory</h3>
+                <div style="display: grid; gap: 1rem;">
+                    <input type="text" id="theoryUsername" placeholder="Your username" style="background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.75rem; border-radius: 8px; outline: none;">
+                    <textarea id="theoryText" placeholder="Share your GTA 6 theory..." style="background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.75rem; border-radius: 8px; outline: none; height: 100px; resize: vertical;"></textarea>
+                    <input type="url" id="theoryImage" placeholder="Image URL (optional)" style="background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.75rem; border-radius: 8px; outline: none;">
+                    <button onclick="submitTheory()" style="background: var(--gradient-primary); border: none; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600;">Submit Theory</button>
+                </div>
+            </div>
+
+            <!-- Fan Theories -->
+            <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem; text-align: center;">🎭 Community Theories</h3>
+                <div id="theoriesGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+                    <!-- Theories loaded by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Email Subscription -->
+            <div style="background: linear-gradient(135deg, var(--accent-color), var(--secondary-color)); border-radius: 15px; padding: 2rem; text-align: center;">
+                <h3 style="margin-bottom: 1rem;">📧 Get Instant Rumor Alerts</h3>
+                <p style="margin-bottom: 1rem; opacity: 0.9;">Be the first to know about new GTA 6 leaks and rumors!</p>
+                <div style="display: flex; gap: 0.5rem; max-width: 400px; margin: 0 auto; flex-wrap: wrap;">
+                    <input type="email" id="rumorEmail" placeholder="Enter your email" style="flex: 1; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 0.75rem; border-radius: 8px; outline: none; min-width: 200px;" onkeypress="if(event.key==='Enter') subscribeRumorAlerts()">
+                    <button onclick="subscribeRumorAlerts()" style="background: white; color: var(--accent-color); border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600; white-space: nowrap;">Subscribe</button>
+                </div>
             </div>
         </div>
         
@@ -1828,4 +1903,5 @@
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
+
 </html>
