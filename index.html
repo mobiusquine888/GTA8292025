@@ -2158,7 +2158,113 @@
     
 </body>
 
+<!-- GTA 6 Themed Beta Banner -->
+<div id="beta-banner" role="region" aria-label="Beta notice"
+     style="
+      position: fixed; top: 0; left: 0; right: 0; z-index: 10000;
+      display: none; /* will fade in by JS */
+      background: #000; color: #f0f0f0;
+      border-bottom: 2px solid #ff0055;
+      font-family: 'Trebuchet MS', Impact, system-ui, sans-serif;
+      letter-spacing: 0.5px;
+      text-shadow: 0 0 4px rgba(255,0,85,0.6);
+      transform: translateY(-100%);
+      opacity: 0;
+      transition: transform 0.6s ease, opacity 0.6s ease;
+     ">
+  <div style="
+      max-width: 1100px; margin: 0 auto; padding: .8rem 1rem;
+      display: flex; align-items: center; gap: .75rem; justify-content: space-between;
+     ">
+    <div style="display:flex; align-items:center; gap:.6rem; font-size: 1rem;">
+      <span aria-hidden="true" style="font-size: 1.2rem; color:#ff0055;">⚠️</span>
+      <strong style="color:#ffcc00;">Beta version – we’re testing!</strong>
+      <span>Feedback appreciated.</span>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:.5rem;">
+      <!-- Feedback Button -->
+      <button id="feedbackBtnGlow"
+              onclick="document.getElementById('feedbackBtn')?.click()">
+        Give Feedback
+      </button>
+
+      <!-- Close Button -->
+      <button id="beta-banner-close" aria-label="Dismiss beta banner">✕</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const KEY = 'betaBannerDismissed';
+    const banner = document.getElementById('beta-banner');
+    const closeBtn = document.getElementById('beta-banner-close');
+
+    // Show banner with animation only if not dismissed
+    if (!localStorage.getItem(KEY)) {
+      banner.style.display = 'block';
+      setTimeout(() => {
+        banner.style.transform = 'translateY(0)';
+        banner.style.opacity = '1';
+      }, 50);
+    }
+
+    // Dismiss handler
+    closeBtn?.addEventListener('click', () => {
+      banner.style.transform = 'translateY(-100%)';
+      banner.style.opacity = '0';
+      setTimeout(() => {
+        banner.style.display = 'none';
+        localStorage.setItem(KEY, '1');
+      }, 600);
+    });
+  })();
+</script>
+
+<style>
+  /* Push content down so banner doesn't overlap */
+  body { padding-top: 65px; }
+
+  /* Feedback Button GTA Glow */
+  #feedbackBtnGlow {
+    border: none;
+    background: #ff0055;
+    color: white;
+    padding: .45rem .9rem;
+    border-radius: .4rem;
+    cursor: pointer;
+    font-weight: bold;
+    text-shadow: 0 0 3px rgba(0,0,0,0.6);
+    box-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055;
+    animation: neonPulse 1.8s infinite alternate;
+  }
+
+  @keyframes neonPulse {
+    from {
+      box-shadow: 0 0 6px #ff0055, 0 0 12px #ff0055, 0 0 20px #ff0055;
+      transform: scale(1);
+    }
+    to {
+      box-shadow: 0 0 12px #ff0055, 0 0 24px #ff0055, 0 0 36px #ff0055;
+      transform: scale(1.05);
+    }
+  }
+
+  /* Close Button Rockstar Style */
+  #beta-banner-close {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1;
+    color: #ffcc00;
+    text-shadow: 0 0 6px rgba(255, 204, 0, 0.6);
+  }
+</style>
+  
 </html>
+
 
 
 
