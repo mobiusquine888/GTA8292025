@@ -8,6 +8,34 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
     
     <style>
+        /* Beta Banner Styles */
+        #feedbackBtnGlow {
+            border: none;
+            background: #ff0055;
+            color: white;
+            padding: .45rem .9rem;
+            border-radius: .4rem;
+            cursor: pointer;
+            font-weight: bold;
+            text-shadow: 0 0 4px rgba(0,0,0,0.7);
+            box-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055;
+            animation: neonPulse 1.8s infinite alternate;
+        }
+        
+        @keyframes neonPulse {
+            from { box-shadow: 0 0 6px #ff0055, 0 0 12px #ff0055, 0 0 20px #ff0055; transform: scale(1);}
+            to { box-shadow: 0 0 12px #ff0055, 0 0 24px #ff0055, 0 0 36px #ff0055; transform: scale(1.05);}
+        }
+        
+        #beta-banner-close {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 1.2rem;
+            line-height: 1;
+            color: #ffcc00;
+            text-shadow: 0 0 6px rgba(255, 204, 0, 0.8);
+        }
         :root {
             --primary-color: #00ffa2;
             --secondary-color: #ff007c;
@@ -39,6 +67,7 @@
             background-size: cover;
             color: var(--text-color);
             min-height: 100vh;
+            padding-top: 100px; /* Adjusted for banner space */
         }
 
         /* Night Mode Theme */
@@ -480,6 +509,44 @@
     </style>
 </head>
 <body>
+    <!-- GTA 6 Always-On-Top Beta Banner -->
+    <div id="beta-banner" role="region" aria-label="Beta notice"
+         style="
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 99999; /* very high to stay above all content */
+          display: none; /* will fade in by JS */
+          background: rgba(20, 20, 20, 0.97); /* semi-transparent dark for visibility */
+          color: #f0f0f0;
+          border-bottom: 2px solid #ff0055;
+          font-family: 'Trebuchet MS', Impact, system-ui, sans-serif;
+          letter-spacing: 0.5px;
+          text-shadow: 0 0 4px rgba(255,0,85,0.8);
+          transform: translateY(-100%);
+          opacity: 0;
+          transition: transform 0.6s ease, opacity 0.6s ease;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+         ">
+      <div style="
+          max-width: 1100px; margin: 0 auto; padding: 1rem 1rem;
+          display: flex; align-items: center; gap:.75rem; justify-content: space-between;
+         ">
+        <div style="display:flex; align-items:center; gap:.6rem; font-size: 1rem;">
+          <span aria-hidden="true" style="font-size: 1.2rem; color:#ff0055;">⚠️</span>
+          <strong style="color:#ffcc00;">Beta version – we're testing!</strong>
+          <span>Feedback appreciated.</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:.5rem;">
+          <button id="feedbackBtnGlow"
+                  onclick="document.getElementById('feedbackBtn')?.click()">
+            Give Feedback
+          </button>
+          <button id="beta-banner-close" aria-label="Dismiss beta banner">✕</button>
+        </div>
+      </div>
+    </div>
     <header class="header">
         <div class="user-status-container">
             <div class="user-status">
@@ -1112,7 +1179,7 @@
             <!-- Shopping Cart Summary -->
             <div id="cartSummary" style="background: var(--card-bg); border: 2px solid var(--primary-color); border-radius: 15px; padding: 1.5rem; margin-bottom: 2rem; display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h3 style="color: var(--primary-color); margin: 0;">🛍️ Shopping Cart</h3>
+                    <h3 style="color: var(--primary-color); margin: 0;">🛒 Shopping Cart</h3>
                     <button onclick="toggleCart()" style="background: none; border: none; color: var(--text-color); font-size: 1.5rem; cursor: pointer;">×</button>
                 </div>
                 <div id="cartItemsList" style="margin-bottom: 1rem;">
@@ -2064,10 +2131,36 @@
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
 
+    <!-- Beta Banner JavaScript -->
+    <script>
+      (function () {
+        const KEY = 'betaBannerDismissed';
+        const banner = document.getElementById('beta-banner');
+        const closeBtn = document.getElementById('beta-banner-close');
+        
+        if (!localStorage.getItem(KEY)) {
+          banner.style.display = 'block';
+          setTimeout(() => {
+            banner.style.transform = 'translateY(0)';
+            banner.style.opacity = '1';
+          }, 300);
+        }
+        
+        closeBtn?.addEventListener('click', () => {
+          banner.style.transform = 'translateY(-100%)';
+          banner.style.opacity = '0';
+          setTimeout(() => {
+            banner.style.display = 'none';
+            localStorage.setItem(KEY, '1');
+          }, 600);
+        });
+      })();
+    </script>
+
 <!-- Floating Feedback Button -->
 <button id="feedbackBtn" style="
   position: fixed;
-  bottom: 20px;
+  bottom: 120px;
   right: 20px;
   background-color: #ff9800;
   color: white;
@@ -2159,7 +2252,3 @@
 </body>
 
 </html>
-
-
-
-
