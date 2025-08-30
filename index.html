@@ -2263,28 +2263,33 @@
   }
 </style>
 
-
- <!-- Disclaimer Banner -->
+<!-- Disclaimer Banner -->
 <div id="disclaimer-banner"
      style="
       position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
-      background: #111; color: #bbb;
+      background: rgba(30, 30, 30, 0.95);
+      color: #f0f0f0;
       border-top: 2px solid #ff0055;
-      font-size: 0.85rem;
+      font-size: 1.1rem; /* increased font size */
       text-align: center;
-      padding: 0.5rem 1rem;
-      font-family: system-ui, sans-serif;
-      box-shadow: 0 -2px 8px rgba(0,0,0,0.6);
+      padding: 1rem 1rem; /* bigger padding */
+      font-family: 'Trebuchet MS', Impact, system-ui, sans-serif;
+      box-shadow: 0 -2px 10px rgba(255,0,85,0.4);
+      letter-spacing: 0.5px;
+      text-shadow: 0 0 3px rgba(255,0,85,0.5);
      ">
   ⚠️ <strong>Disclaimer:</strong> All user counts, stats, and numbers shown are <u>mock data for testing purposes only</u>.
 </div>
 
 <style>
   /* Push page content up so it doesn't get covered */
-  body { padding-bottom: 40px; }
-</style>   
+  body { padding-bottom: 70px; } /* increased for larger banner */
+</style>
+
+
   
 </html>
+
 
 
 
