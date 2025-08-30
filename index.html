@@ -1670,92 +1670,36 @@
                         <div style="width: 40px; height: 60px; background: var(--card-bg); border: 1px solid var(--border
         </div>
 
-<!-- GTA 6 Tab HTML - Replace your existing GTA tab with this -->
-<div id="gta" class="tab-content active">
-    <h2 style="margin-bottom: 20px;">🏎️ GTA 6 News & Videos</h2>
-    <div class="stats-grid" id="gta-stats">
-        <div class="stat-card">
-            <div class="stat-number" id="gta-video-count">-</div>
-            <div>Videos Found</div>
+        <!-- YouTube Tab -->
+        <div id="youtube" class="tab-content">
+            <h2 style="color: var(--primary-color);">📺 GTA 6 Videos & Analysis</h2>
+            
+            <div class="stats-grid" style="margin-bottom: 2rem;">
+                <div class="stat-card">
+                    <span class="stat-number">342</span>
+                    <div>Videos Today</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">2.1M</span>
+                    <div>Total Views</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">856</span>
+                    <div>Creators</div>
+                </div>
+                <div class="stat-card premium">
+                    <span class="stat-number">LIVE</span>
+                    <div>Streaming</div>
+                </div>
+            </div>
+            
+            <div id="youtubeGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
+                    Loading GTA 6 videos from YouTube API...
+                </div>
+            </div>
         </div>
-        <div class="stat-card">
-            <div class="stat-number" id="gta-total-views">-</div>
-            <div>Total Views</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number" id="gta-channels">-</div>
-            <div>Channels</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number" id="gta-trending">-</div>
-            <div>Trending Now</div>
-        </div>
-    </div>
-    <div id="gta-content">
-        <div class="loading">
-            🔄 Loading GTA 6 content...
-        </div>
-    </div>
-</div>
 
-<script>
-// Add this JavaScript function to your existing script section
-async function loadGTAContent() {
-    const contentContainer = document.getElementById('gta-content');
-    
-    // Skip if already loaded
-    if (contentContainer.querySelector('.videos-grid')) {
-        return;
-    }
-
-    try {
-        const searchQuery = 'GTA 6 Grand Theft Auto 6 news trailer gameplay';
-        const videos = await fetchYouTubeVideos(searchQuery);
-        displayVideos(videos, 'gta');
-        updateGTAStats(videos);
-    } catch (error) {
-        console.error('Error loading GTA content:', error);
-        contentContainer.innerHTML = '<div class="error-message">Failed to load GTA 6 content. Please check your internet connection.</div>';
-    }
-}
-
-// Add this to your existing fetchYouTubeVideos function or replace it
-async function fetchYouTubeVideos(searchQuery, maxResults = 12) {
-    const API_KEY = 'AIzaSyB1Hx3EJD1N_jyJ01E131pUA3RqZvLNOZU'; // Your key
-    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(searchQuery)}&type=video&maxResults=${maxResults}&key=${API_KEY}&order=relevance&publishedAfter=2020-01-01T00:00:00Z`;
-    
-    try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`API error: ${response.status}`);
-        
-        const data = await response.json();
-        if (data.error) throw new Error(data.error.message);
-
-        // Get video details
-        const videoIds = data.items.map(item => item.id.videoId).join(',');
-        const detailsUrl = `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoIds}&key=${API_KEY}`;
-        const detailsResponse = await fetch(detailsUrl);
-        const detailsData = await detailsResponse.json();
-        
-        return data.items.map(item => {
-            const details = detailsData.items.find(detail => detail.id === item.id.videoId);
-            return { ...item, statistics: details?.statistics || {} };
-        });
-    } catch (error) {
-        console.error('YouTube API Error:', error);
-        return getFallbackGTAVideos();
-    }
-}
-
-<div id="gta" class="tab-content">
-    <h2 style="color: var(--primary-color);">🏎️ GTA 6 - Vice City Dreams</h2>
-    <div id="gtaGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 2rem;">
-        <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-            Loading GTA 6 videos...
-        </div>
-    </div>
-</div>
-    
         <!-- Chat Tab -->
         <div id="chat" class="tab-content">
             <h2 style="color: var(--primary-color);">💬 Live Community Chat</h2>
@@ -3128,5 +3072,3 @@ async function fetchYouTubeVideos(searchQuery, maxResults = 12) {
 </body>
 
 </html>
-
-
