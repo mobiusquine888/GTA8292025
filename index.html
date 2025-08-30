@@ -2063,9 +2063,103 @@
         // Initialize the app when page loads
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
+
+<!-- Floating Feedback Button -->
+<button id="feedbackBtn" style="
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 1000;
+">Feedback</button>
+
+<!-- Feedback Modal -->
+<div id="feedbackModal" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+">
+  <div style="
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 700px;
+    position: relative;
+  ">
+    <!-- Close Button -->
+    <span id="closeModal" style="
+      position: absolute;
+      top: 10px; right: 15px;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: bold;
+    ">&times;</span>
+
+    <!-- Google Form Embed -->
+    <iframe id="feedbackForm" src="https://docs.google.com/forms/d/e/1FAIpQLScc_a4ao1LnrS1W3qRWgHem-1p9eCcsNlI_5uTOk_FadloJPg/viewform?embedded=true" width="100%" height="520" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+
+    <!-- Custom Thank You Message -->
+    <div id="thankYouMessage" style="display:none; text-align:center; padding: 40px;">
+      <h2>Thank you for your feedback!</h2>
+      <p>We really appreciate you taking the time to help us improve.</p>
+    </div>
+
+    <!-- Manual Submit & Close Button -->
+    <button id="manualSubmit" style="
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    ">Submit and Close</button>
+
+  </div>
+</div>
+
+<script>
+  const btn = document.getElementById('feedbackBtn');
+  const modal = document.getElementById('feedbackModal');
+  const close = document.getElementById('closeModal');
+  const form = document.getElementById('feedbackForm');
+  const thankYou = document.getElementById('thankYouMessage');
+  const manualSubmit = document.getElementById('manualSubmit');
+
+  // Open modal
+  btn.onclick = () => {
+    form.style.display = 'block';
+    thankYou.style.display = 'none';
+    manualSubmit.style.display = 'inline-block';
+    modal.style.display = 'flex';
+  };
+
+  // Close modal
+  close.onclick = () => modal.style.display = 'none';
+  window.onclick = (e) => { if(e.target === modal) modal.style.display = 'none'; };
+
+  // Manual submit: hide form, show thank-you
+  manualSubmit.onclick = () => {
+    form.style.display = 'none';
+    manualSubmit.style.display = 'none';
+    thankYou.style.display = 'block';
+  };
+</script>
+    
 </body>
 
 </html>
+
 
 
 
