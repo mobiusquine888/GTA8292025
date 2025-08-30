@@ -8,7 +8,23 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
     
     <style>
-        /* Beta Banner Styles */
+        /* GTA 6 Beta Banner Styles */
+        #beta-banner-close {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 1.2rem;
+            line-height: 1;
+            color: #ffcc00;
+            text-shadow: 0 0 6px rgba(255, 204, 0, 0.8);
+            padding: 4px 8px;
+        }
+        
+        #beta-banner-close:hover {
+            color: #ffffff;
+        }
+        
+        /* Feedback Button Glow */
         #feedbackBtnGlow {
             border: none;
             background: #ff0055;
@@ -23,19 +39,16 @@
         }
         
         @keyframes neonPulse {
-            from { box-shadow: 0 0 6px #ff0055, 0 0 12px #ff0055, 0 0 20px #ff0055; transform: scale(1);}
-            to { box-shadow: 0 0 12px #ff0055, 0 0 24px #ff0055, 0 0 36px #ff0055; transform: scale(1.05);}
+            from { 
+                box-shadow: 0 0 6px #ff0055, 0 0 12px #ff0055, 0 0 20px #ff0055; 
+                transform: scale(1);
+            }
+            to { 
+                box-shadow: 0 0 12px #ff0055, 0 0 24px #ff0055, 0 0 36px #ff0055; 
+                transform: scale(1.05);
+            }
         }
-        
-        #beta-banner-close {
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font-size: 1.2rem;
-            line-height: 1;
-            color: #ffcc00;
-            text-shadow: 0 0 6px rgba(255, 204, 0, 0.8);
-        }
+
         :root {
             --primary-color: #00ffa2;
             --secondary-color: #ff007c;
@@ -62,12 +75,10 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(180deg, rgba(10,10,10,0.95) 0%, rgba(20,20,20,0.95) 100%), 
-                        url('https://images.pexels.com/photos/2047905/pexels-photo-2047905.jpeg?auto=compress&cs=tinysrgb&w=1920') no-repeat center center fixed;
-            background-size: cover;
+            background: #0a0a0a;
             color: var(--text-color);
             min-height: 100vh;
-            padding-top: 0; /* Removed extra padding */
+            padding-bottom: 70px; /* increased for larger banner */
         }
 
         /* Night Mode Theme */
@@ -295,27 +306,6 @@
             box-shadow: 0 -4px 25px rgba(0,0,0,0.3);
         }
 
-        /* Beta banner positioned above navigation */
-        #beta-banner {
-            position: fixed;
-            bottom: 70px; /* Just above the nav bar */
-            left: 0;
-            right: 0;
-            z-index: 1001; /* Above nav bar */
-            display: none;
-            background: rgba(20, 20, 20, 0.97);
-            color: #f0f0f0;
-            border-top: 2px solid #ff0055;
-            border-bottom: 2px solid #ff0055;
-            font-family: 'Trebuchet MS', Impact, system-ui, sans-serif;
-            letter-spacing: 0.5px;
-            text-shadow: 0 0 4px rgba(255,0,85,0.8);
-            transform: translateY(100%);
-            opacity: 0;
-            transition: transform 0.6s ease, opacity 0.6s ease;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.6);
-        }
-
         .tabs {
             display: flex;
             justify-content: space-around;
@@ -372,7 +362,7 @@
         }
 
         .content-area {
-            padding: 1rem 1rem 100px 1rem;
+            padding: 1rem 1rem 170px 1rem;
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -531,7 +521,25 @@
 </head>
 <body>
     <!-- GTA 6 Always-On-Top Beta Banner -->
-    <div id="beta-banner" role="region" aria-label="Beta notice">
+    <div id="beta-banner" role="region" aria-label="Beta notice"
+         style="
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 99999; /* very high to stay above all content */
+          display: none; /* will fade in by JS */
+          background: rgba(20, 20, 20, 0.97); /* semi-transparent dark for visibility */
+          color: #f0f0f0;
+          border-bottom: 2px solid #ff0055;
+          font-family: 'Trebuchet MS', Impact, system-ui, sans-serif;
+          letter-spacing: 0.5px;
+          text-shadow: 0 0 4px rgba(255,0,85,0.8);
+          transform: translateY(-100%);
+          opacity: 0;
+          transition: transform 0.6s ease, opacity 0.6s ease;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+         ">
       <div style="
           max-width: 1100px; margin: 0 auto; padding: 1rem 1rem;
           display: flex; align-items: center; gap:.75rem; justify-content: space-between;
@@ -543,13 +551,14 @@
         </div>
         <div style="display:flex; align-items:center; gap:.5rem;">
           <button id="feedbackBtnGlow"
-                  onclick="document.getElementById('feedbackBtn')?.click()">
+                  onclick="document.getElementById('feedbackBtn').click()">
             Give Feedback
           </button>
           <button id="beta-banner-close" aria-label="Dismiss beta banner">✕</button>
         </div>
       </div>
     </div>
+
     <header class="header">
         <div class="user-status-container">
             <div class="user-status">
@@ -2132,54 +2141,36 @@
 
         // Initialize the app when page loads
         document.addEventListener('DOMContentLoaded', initApp);
-    </script>
 
-    <!-- Beta Banner JavaScript -->
-    <script>
-      (function () {
-        const KEY = 'betaBannerDismissed';
-        const banner = document.getElementById('beta-banner');
-        const closeBtn = document.getElementById('beta-banner-close');
-        
-        // Always show banner initially for testing
-        try {
+        // GTA 6 Beta Banner Script
+        (function () {
+          const KEY = 'betaBannerDismissed';
+          const banner = document.getElementById('beta-banner');
+          const closeBtn = document.getElementById('beta-banner-close');
+          
           if (!localStorage.getItem(KEY)) {
             banner.style.display = 'block';
             setTimeout(() => {
               banner.style.transform = 'translateY(0)';
               banner.style.opacity = '1';
-            }, 100);
+            }, 50);
           }
-        } catch (e) {
-          // Fallback if localStorage fails
-          banner.style.display = 'block';
-          setTimeout(() => {
-            banner.style.transform = 'translateY(0)';
-            banner.style.opacity = '1';
-          }, 100);
-        }
-        
-        if (closeBtn) {
-          closeBtn.addEventListener('click', () => {
+          
+          closeBtn?.addEventListener('click', () => {
             banner.style.transform = 'translateY(-100%)';
             banner.style.opacity = '0';
             setTimeout(() => {
               banner.style.display = 'none';
-              try {
-                localStorage.setItem(KEY, '1');
-              } catch (e) {
-                console.log('localStorage not available');
-              }
+              localStorage.setItem(KEY, '1');
             }, 600);
           });
-        }
-      })();
+        })();
     </script>
 
 <!-- Floating Feedback Button -->
 <button id="feedbackBtn" style="
   position: fixed;
-  bottom: 120px;
+  bottom: 20px;
   right: 20px;
   background-color: #ff9800;
   color: white;
@@ -2268,6 +2259,24 @@
   };
 </script>
     
+<!-- Disclaimer Banner -->
+<div id="disclaimer-banner"
+     style="
+      position: fixed; bottom: 100px; left: 0; right: 0; z-index: 9999;
+      background: rgba(30, 30, 30, 0.95);
+      color: #f0f0f0;
+      border-top: 2px solid #ff0055;
+      font-size: 1.1rem; /* increased font size */
+      text-align: center;
+      padding: 1rem 1rem; /* bigger padding */
+      font-family: 'Trebuchet MS', Impact, system-ui, sans-serif;
+      box-shadow: 0 -2px 10px rgba(255,0,85,0.4);
+      letter-spacing: 0.5px;
+      text-shadow: 0 0 3px rgba(255,0,85,0.5);
+     ">
+  ⚠️ <strong>Disclaimer:</strong> All user counts, stats, and numbers shown are <u>mock data for testing purposes only</u>.
+</div>
+
 </body>
 
 </html>
