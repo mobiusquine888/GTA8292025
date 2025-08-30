@@ -1670,35 +1670,318 @@
                         <div style="width: 40px; height: 60px; background: var(--card-bg); border: 1px solid var(--border
         </div>
 
-        <!-- YouTube Tab -->
-        <div id="youtube" class="tab-content">
-            <h2 style="color: var(--primary-color);">📺 GTA 6 Videos & Analysis</h2>
-            
-            <div class="stats-grid" style="margin-bottom: 2rem;">
-                <div class="stat-card">
-                    <span class="stat-number">342</span>
-                    <div>Videos Today</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">2.1M</span>
-                    <div>Total Views</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">856</span>
-                    <div>Creators</div>
-                </div>
-                <div class="stat-card premium">
-                    <span class="stat-number">LIVE</span>
-                    <div>Streaming</div>
-                </div>
-            </div>
-            
-            <div id="youtubeGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
-                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                    Loading GTA 6 videos from YouTube API...
-                </div>
-            </div>
+       <!-- YouTube Tab -->
+<div id="youtube" class="tab-content">
+    <h2 style="color: var(--primary-color);">📺 GTA 6 Videos & Analysis</h2>
+    
+    <div class="stats-grid" style="margin-bottom: 2rem;">
+        <div class="stat-card">
+            <span class="stat-number" id="videosToday">342</span>
+            <div>Videos Today</div>
         </div>
+        <div class="stat-card">
+            <span class="stat-number" id="totalViews">2.1M</span>
+            <div>Total Views</div>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number" id="creators">856</span>
+            <div>Creators</div>
+        </div>
+        <div class="stat-card premium">
+            <span class="stat-number">LIVE</span>
+            <div>Streaming</div>
+        </div>
+    </div>
+    
+    <div id="youtubeGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+        <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
+            Loading GTA 6 videos from YouTube API...
+        </div>
+    </div>
+</div>
+
+<style>
+/* YouTube Video Card Styles */
+.video-card {
+    background: var(--card-background, #21262d);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-color, #30363d);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.video-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary-color);
+    box-shadow: 0 8px 25px rgba(0, 255, 65, 0.1);
+}
+
+.video-thumbnail {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+}
+
+.video-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.video-card:hover .video-thumbnail img {
+    transform: scale(1.05);
+}
+
+.video-duration {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.video-info {
+    padding: 1rem;
+}
+
+.video-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-color, #e6edf3);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.video-channel {
+    color: var(--primary-color);
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+
+.video-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #8b949e;
+    font-size: 0.75rem;
+}
+
+.video-views {
+    font-weight: 500;
+}
+
+.video-date {
+    opacity: 0.7;
+}
+
+.youtube-error {
+    text-align: center;
+    padding: 3rem;
+    color: #f85149;
+    font-size: 1.1rem;
+}
+
+.youtube-refresh-btn {
+    background: var(--primary-color);
+    color: var(--background-color, #0d1117);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 1rem;
+    transition: opacity 0.2s ease;
+}
+
+.youtube-refresh-btn:hover {
+    opacity: 0.9;
+}
+</style>
+
+<script>
+// YouTube Tab JavaScript
+(function() {
+    // Replace with your actual serverless function URL
+    const SERVERLESS_FUNCTION_URL = '/api/gta-videos'; // Update this path
+    
+    let youtubeTabInitialized = false;
+
+    // Initialize when YouTube tab is clicked or page loads
+    function initYouTubeTab() {
+        if (youtubeTabInitialized) return;
+        youtubeTabInitialized = true;
+        loadYouTubeVideos();
+        
+        // Auto-refresh every 5 minutes
+        setInterval(loadYouTubeVideos, 5 * 60 * 1000);
+    }
+
+    async function loadYouTubeVideos() {
+        const grid = document.getElementById('youtubeGrid');
+        if (!grid) return;
+        
+        try {
+            const response = await fetch(SERVERLESS_FUNCTION_URL);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const videos = await response.json();
+            
+            if (videos.error) {
+                throw new Error(videos.error);
+            }
+
+            if (!videos || videos.length === 0) {
+                grid.innerHTML = `
+                    <div class="youtube-error">
+                        No videos found. 
+                        <button class="youtube-refresh-btn" onclick="ytRetry()">Try Again</button>
+                    </div>
+                `;
+                return;
+            }
+
+            // Update stats
+            updateYouTubeStats(videos);
+
+            // Create video cards
+            grid.innerHTML = videos.map(video => createVideoCard(video)).join('');
+
+        } catch (error) {
+            console.error('Error loading YouTube videos:', error);
+            grid.innerHTML = `
+                <div class="youtube-error">
+                    Failed to load videos: ${error.message}
+                    <br>
+                    <button class="youtube-refresh-btn" onclick="ytRetry()">Retry</button>
+                </div>
+            `;
+        }
+    }
+
+    function createVideoCard(video) {
+        const snippet = video.snippet;
+        const videoId = video.id.videoId;
+        const thumbnailUrl = snippet.thumbnails.medium?.url || snippet.thumbnails.default?.url;
+        const publishedDate = new Date(snippet.publishedAt);
+        const timeAgo = getTimeAgo(publishedDate);
+        
+        return `
+            <div class="video-card" onclick="openYouTubeVideo('${videoId}')">
+                <div class="video-thumbnail">
+                    <img src="${thumbnailUrl}" alt="${escapeHtml(snippet.title)}">
+                    <div class="video-duration">HD</div>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">${escapeHtml(snippet.title)}</div>
+                    <div class="video-channel">${escapeHtml(snippet.channelTitle)}</div>
+                    <div class="video-meta">
+                        <span class="video-views">YouTube Video</span>
+                        <span class="video-date">${timeAgo}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function updateYouTubeStats(videos) {
+        // Calculate some basic stats from the videos
+        const uniqueChannels = [...new Set(videos.map(v => v.snippet.channelId))];
+        const today = new Date();
+        const todayVideos = videos.filter(v => {
+            const videoDate = new Date(v.snippet.publishedAt);
+            return videoDate.toDateString() === today.toDateString();
+        });
+
+        const videesTodayEl = document.getElementById('videosToday');
+        const totalViewsEl = document.getElementById('totalViews');
+        const creatorsEl = document.getElementById('creators');
+
+        if (videesTodayEl) videesTodayEl.textContent = todayVideos.length || 'New';
+        if (totalViewsEl) totalViewsEl.textContent = formatNumber(videos.length * 45000); // Estimated
+        if (creatorsEl) creatorsEl.textContent = uniqueChannels.length;
+    }
+
+    // Global functions (attached to window for onclick handlers)
+    window.openYouTubeVideo = function(videoId) {
+        const url = `https://www.youtube.com/watch?v=${videoId}`;
+        window.open(url, '_blank');
+    }
+
+    window.ytRetry = function() {
+        loadYouTubeVideos();
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function getTimeAgo(date) {
+        const now = new Date();
+        const diffInSeconds = Math.floor((now - date) / 1000);
+        
+        if (diffInSeconds < 60) return 'Just now';
+        if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+        if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+        if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
+        if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 604800)}w ago`;
+        return `${Math.floor(diffInSeconds / 2592000)}mo ago`;
+    }
+
+    function formatNumber(num) {
+        if (num >= 1000000) {
+            return (num / 1000000).toFixed(1) + 'M';
+        } else if (num >= 1000) {
+            return (num / 1000).toFixed(1) + 'K';
+        }
+        return num.toString();
+    }
+
+    // Initialize when page loads or when YouTube tab is shown
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if YouTube tab is initially visible
+            const youtubeTab = document.getElementById('youtube');
+            if (youtubeTab && youtubeTab.style.display !== 'none') {
+                initYouTubeTab();
+            }
+        });
+    } else {
+        // DOM already loaded
+        const youtubeTab = document.getElementById('youtube');
+        if (youtubeTab && youtubeTab.style.display !== 'none') {
+            initYouTubeTab();
+        }
+    }
+
+    // Listen for tab switches (if you have a tab switching system)
+    document.addEventListener('click', function(e) {
+        // Adjust this selector based on your tab button structure
+        if (e.target.matches('[data-tab="youtube"]') || 
+            e.target.textContent?.includes('YouTube') || 
+            e.target.textContent?.includes('Videos')) {
+            setTimeout(initYouTubeTab, 100); // Small delay to ensure tab is visible
+        }
+    });
+
+})();
+</script>
 
         <!-- Chat Tab -->
         <div id="chat" class="tab-content">
@@ -3072,3 +3355,4 @@
 </body>
 
 </html>
+
