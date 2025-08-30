@@ -2178,7 +2178,7 @@
      ">
     <div style="display:flex; align-items:center; gap:.6rem; font-size: 1rem;">
       <span aria-hidden="true" style="font-size: 1.2rem; color:#ff0055;">⚠️</span>
-      <strong style="color:#ffcc00;">All Beta version – we’re testing!</strong>
+      <strong style="color:#ffcc00;">Beta version – we’re testing!</strong>
       <span>Feedback appreciated.</span>
     </div>
 
@@ -2262,8 +2262,29 @@
     text-shadow: 0 0 6px rgba(255, 204, 0, 0.6);
   }
 </style>
+
+ <!-- Disclaimer Banner -->
+<div id="disclaimer-banner"
+     style="
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+      background: #111; color: #bbb;
+      border-top: 2px solid #ff0055;
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 0.5rem 1rem;
+      font-family: system-ui, sans-serif;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.6);
+     ">
+  ⚠️ <strong>Disclaimer:</strong> All user counts, stats, and numbers shown are <u>mock data for testing purposes only</u>.
+</div>
+
+<style>
+  /* Push page content up so it doesn't get covered */
+  body { padding-bottom: 40px; }
+</style>   
   
 </html>
+
 
 
 
