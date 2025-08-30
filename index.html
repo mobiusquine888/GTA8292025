@@ -2138,22 +2138,38 @@
         const banner = document.getElementById('beta-banner');
         const closeBtn = document.getElementById('beta-banner-close');
         
-        if (!localStorage.getItem(KEY)) {
+        // Always show banner initially for testing
+        try {
+          if (!localStorage.getItem(KEY)) {
+            banner.style.display = 'block';
+            setTimeout(() => {
+              banner.style.transform = 'translateY(0)';
+              banner.style.opacity = '1';
+            }, 100);
+          }
+        } catch (e) {
+          // Fallback if localStorage fails
           banner.style.display = 'block';
           setTimeout(() => {
             banner.style.transform = 'translateY(0)';
             banner.style.opacity = '1';
-          }, 300);
+          }, 100);
         }
         
-        closeBtn?.addEventListener('click', () => {
-          banner.style.transform = 'translateY(-100%)';
-          banner.style.opacity = '0';
-          setTimeout(() => {
-            banner.style.display = 'none';
-            localStorage.setItem(KEY, '1');
-          }, 600);
-        });
+        if (closeBtn) {
+          closeBtn.addEventListener('click', () => {
+            banner.style.transform = 'translateY(-100%)';
+            banner.style.opacity = '0';
+            setTimeout(() => {
+              banner.style.display = 'none';
+              try {
+                localStorage.setItem(KEY, '1');
+              } catch (e) {
+                console.log('localStorage not available');
+              }
+            }, 600);
+          });
+        }
       })();
     </script>
 
