@@ -480,6 +480,32 @@
     </style>
 </head>
 <body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTAFastLane - Ultimate GTA 6 Countdown Hub</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+    
+    <style>
+        :root {
+            --primary-color: #00ffa2;
+            --secondary-color: #ff007c;
+            --accent-color: #8a2be2;
+            --gold-color: #ffd700;
+            --premium-color: #ff6b35;
+            --success-color: #2ed573;
+            --warning-color: #ffa502;
+            --danger-color: #ff4757;
+            --text-color: #f5f5f5;
+            --bg-color: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --border-color: #2a2a2a;
+            --shadow: 0 4px 25px rgba(0,0,0,0.8);
+            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            --gradient-premium: linear-gradient(135deg,
     <header class="header">
         <div class="user-status-container">
             <div class="user-status">
@@ -2158,106 +2184,8 @@
     
 </body>
 
-<!-- GTA 6 Always-On-Top Beta Banner -->
-<div id="beta-banner" role="region" aria-label="Beta notice"
-     style="
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 99999; /* very high to stay above all content */
-      display: none; /* will fade in by JS */
-      background: rgba(20, 20, 20, 0.97); /* semi-transparent dark for visibility */
-      color: #f0f0f0;
-      border-bottom: 2px solid #ff0055;
-      font-family: 'Trebuchet MS', Impact, system-ui, sans-serif;
-      letter-spacing: 0.5px;
-      text-shadow: 0 0 4px rgba(255,0,85,0.8);
-      transform: translateY(-100%);
-      opacity: 0;
-      transition: transform 0.6s ease, opacity 0.6s ease;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-     ">
-  <div style="
-      max-width: 1100px; margin: 0 auto; padding: 1rem 1rem;
-      display: flex; align-items: center; gap:.75rem; justify-content: space-between;
-     ">
-    <div style="display:flex; align-items:center; gap:.6rem; font-size: 1rem;">
-      <span aria-hidden="true" style="font-size: 1.2rem; color:#ff0055;">⚠️</span>
-      <strong style="color:#ffcc00;">Beta version – we’re testing!</strong>
-      <span>Feedback appreciated.</span>
-    </div>
-
-    <div style="display:flex; align-items:center; gap:.5rem;">
-      <button id="feedbackBtnGlow"
-              onclick="document.getElementById('feedbackBtn')?.click()">
-        Give Feedback
-      </button>
-
-      <button id="beta-banner-close" aria-label="Dismiss beta banner">✕</button>
-    </div>
-  </div>
-</div>
-
-<script>
-  (function () {
-    const KEY = 'betaBannerDismissed';
-    const banner = document.getElementById('beta-banner');
-    const closeBtn = document.getElementById('beta-banner-close');
-
-    if (!localStorage.getItem(KEY)) {
-      banner.style.display = 'block';
-      setTimeout(() => {
-        banner.style.transform = 'translateY(0)';
-        banner.style.opacity = '1';
-      }, 50);
-    }
-
-    closeBtn?.addEventListener('click', () => {
-      banner.style.transform = 'translateY(-100%)';
-      banner.style.opacity = '0';
-      setTimeout(() => {
-        banner.style.display = 'none';
-        localStorage.setItem(KEY, '1');
-      }, 600);
-    });
-  })();
-</script>
-
-<style>
-  body { padding-top: 80px; } /* push content down to avoid overlap */
-
-  /* Feedback Button Glow */
-  #feedbackBtnGlow {
-    border: none;
-    background: #ff0055;
-    color: white;
-    padding: .45rem .9rem;
-    border-radius: .4rem;
-    cursor: pointer;
-    font-weight: bold;
-    text-shadow: 0 0 4px rgba(0,0,0,0.7);
-    box-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055;
-    animation: neonPulse 1.8s infinite alternate;
-  }
-
-  @keyframes neonPulse {
-    from { box-shadow: 0 0 6px #ff0055, 0 0 12px #ff0055, 0 0 20px #ff0055; transform: scale(1);}
-    to { box-shadow: 0 0 12px #ff0055, 0 0 24px #ff0055, 0 0 36px #ff0055; transform: scale(1.05);}
-  }
-
-  #beta-banner-close {
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: 1.2rem;
-    line-height: 1;
-    color: #ffcc00;
-    text-shadow: 0 0 6px rgba(255, 204, 0, 0.8);
-  }
-</style>
-    
 </html>
+
 
 
 
