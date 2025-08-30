@@ -1747,111 +1747,15 @@ async function fetchYouTubeVideos(searchQuery, maxResults = 12) {
     }
 }
 
-// Add this to display videos for GTA tab
-function displayVideos(videos, tabName) {
-    const container = document.getElementById(`${tabName}-content`);
+<div id="gta" class="tab-content">
+    <h2 style="color: var(--primary-color);">🏎️ GTA 6 - Vice City Dreams</h2>
+    <div id="gtaGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 2rem;">
+        <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
+            Loading GTA 6 videos...
+        </div>
+    </div>
+</div>
     
-    if (!videos || videos.length === 0) {
-        container.innerHTML = '<div class="error-message">No videos found.</div>';
-        return;
-    }
-
-    const videosGrid = document.createElement('div');
-    videosGrid.className = 'videos-grid';
-
-    videos.forEach(video => {
-        const title = video.snippet?.title || 'Unknown Title';
-        const channel = video.snippet?.channelTitle || 'Unknown Channel';
-        const thumbnail = video.snippet?.thumbnails?.medium?.url || 'https://via.placeholder.com/320x180';
-        const videoId = video.id?.videoId || video.id || '';
-        const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
-        const views = formatViews(video.statistics?.viewCount || '0');
-        const publishedAt = formatDate(video.snippet?.publishedAt);
-
-        const videoCard = document.createElement('div');
-        videoCard.className = 'video-card';
-        videoCard.onclick = () => window.open(videoUrl, '_blank');
-        
-        videoCard.innerHTML = `
-            <img src="${thumbnail}" alt="${title}" class="video-thumbnail">
-            <div class="video-info">
-                <div class="video-title">${title}</div>
-                <div class="video-channel">${channel}</div>
-                <div class="video-stats">
-                    <span>${views} views</span>
-                    <span>${publishedAt}</span>
-                </div>
-            </div>
-        `;
-        
-        videosGrid.appendChild(videoCard);
-    });
-
-    container.innerHTML = '';
-    container.appendChild(videosGrid);
-}
-
-// Update GTA statistics
-function updateGTAStats(videos) {
-    if (!videos || videos.length === 0) return;
-
-    const totalViews = videos.reduce((sum, video) => {
-        return sum + parseInt(video.statistics?.viewCount || '0');
-    }, 0);
-
-    const uniqueChannels = new Set(videos.map(video => 
-        video.snippet?.channelTitle || 'Unknown'
-    )).size;
-
-    document.getElementById('gta-video-count').textContent = videos.length;
-    document.getElementById('gta-total-views').textContent = formatViews(totalViews);
-    document.getElementById('gta-channels').textContent = uniqueChannels;
-    document.getElementById('gta-trending').textContent = Math.floor(Math.random() * 50) + 10;
-}
-
-// Utility functions
-function formatViews(count) {
-    const num = parseInt(count) || 0;
-    if (num >= 1000000) return Math.floor(num / 1000000) + 'M';
-    if (num >= 1000) return Math.floor(num / 1000) + 'K';
-    return num.toString();
-}
-
-function formatDate(dateString) {
-    try {
-        const date = new Date(dateString);
-        const now = new Date();
-        const diffDays = Math.ceil((now - date) / (1000 * 60 * 60 * 24));
-        if (diffDays === 1) return '1 day ago';
-        if (diffDays < 30) return `${diffDays} days ago`;
-        return `${Math.floor(diffDays / 30)} months ago`;
-    } catch {
-        return 'Unknown date';
-    }
-}
-
-function getFallbackGTAVideos() {
-    return [
-        {
-            snippet: {
-                title: 'GTA 6 Official Trailer Analysis',
-                channelTitle: 'Rockstar Games Fan',
-                thumbnails: { medium: { url: 'https://via.placeholder.com/320x180?text=GTA+6+Trailer' } },
-                publishedAt: '2024-08-20T00:00:00Z'
-            },
-            id: { videoId: 'QdBZY2fkU-0' },
-            statistics: { viewCount: '2500000' }
-        }
-    ];
-}
-
-// Call this when GTA tab is clicked
-function showGTATab() {
-    // Your existing tab switching code here
-    loadGTAContent();
-}
-</script>
-
         <!-- Chat Tab -->
         <div id="chat" class="tab-content">
             <h2 style="color: var(--primary-color);">💬 Live Community Chat</h2>
@@ -3224,4 +3128,5 @@ function showGTATab() {
 </body>
 
 </html>
+
 
