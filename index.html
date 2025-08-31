@@ -895,7 +895,77 @@
             <!-- Games Grid -->
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
                 
-                <!-- Memory Match Game -->
+<!-- Drug Dealer Math -->
+<div style="background: var(--card-bg); border-radius: 12px; padding: 1rem;">
+  <h4 style="margin-bottom: 0.5rem;">Street Math Challenge</h4>
+  <div style="font-size: 0.8rem; margin-bottom: 0.5rem;">
+    Score: <strong id="mathScore">0</strong> | Level: <strong id="mathLevel">1</strong>
+  </div>
+  <div id="mathQuestion" style="font-size: 1.1rem; text-align: center; margin: 1rem 0; font-weight: bold;">
+    Loading question...
+  </div>
+  <input
+    type="number"
+    id="mathAnswer"
+    placeholder="Enter answer..."
+    style="width: 100%; padding: 0.5rem; margin: 0.5rem 0; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-color); color: var(--text-color); text-align: center;"
+  >
+  <button
+    style="background: var(--success-color); border: none; color: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; width: 100%; font-size: 0.8rem;"
+    onclick="checkMathAnswer()"
+  >
+    Submit Answer
+  </button>
+</div>
+
+<script>
+  let score = 0;
+  let level = 1;
+  let currentAnswer = 0;
+
+  function generateQuestion() {
+    // Increase difficulty with level
+    const maxQty = 2 + level; 
+    const values = [25, 50, 75, 100]; 
+
+    const num1 = Math.floor(Math.random() * maxQty) + 1;
+    const num2 = Math.floor(Math.random() * maxQty) + 1;
+
+    const val1 = values[Math.floor(Math.random() * values.length)];
+    const val2 = values[Math.floor(Math.random() * values.length)];
+
+    const question = `${num1} x $${val1} + ${num2} x $${val2} = ?`;
+    currentAnswer = (num1 * val1) + (num2 * val2);
+
+    document.getElementById("mathQuestion").textContent = question;
+    document.getElementById("mathAnswer").value = "";
+  }
+
+  function checkMathAnswer() {
+    const userAnswer = parseInt(document.getElementById("mathAnswer").value, 10);
+
+    if (userAnswer === currentAnswer) {
+      score += 10;
+      if (score % 50 === 0) {
+        level++;
+      }
+      alert("✅ Correct! Keep hustling.");
+    } else {
+      score = Math.max(0, score - 5);
+      alert(`❌ Wrong! The correct answer was ${currentAnswer}.`);
+    }
+
+    document.getElementById("mathScore").textContent = score;
+    document.getElementById("mathLevel").textContent = level;
+
+    generateQuestion();
+  }
+
+  // Start game
+  generateQuestion();
+</script>
+                
+                            <!-- Memory Match Game -->
                 <div style="background: var(--card-bg); border-radius: 12px; padding: 1rem;">
                     <h4 style="margin-bottom: 0.5rem;">Vice City Memory</h4>
                     <div style="display: flex; justify-content: space-between; margin: 0.5rem 0; font-size: 0.8rem;">
@@ -2865,3 +2935,4 @@
 
 </body>
 </html>
+
