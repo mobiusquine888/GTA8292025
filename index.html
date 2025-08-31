@@ -1138,6 +1138,414 @@ function endGame(won) {
 // Initialize display
 updateDisplay();
 </script>
+
+                <!-- Car Chase Simulator -->
+<div style="background: var(--card-bg); border-radius: 12px; padding: 1rem;">
+    <h4 style="margin-bottom: 0.5rem;">Highway Chase</h4>
+    <div style="display: flex; justify-content: space-between; margin: 0.5rem 0; font-size: 0.8rem;">
+        <span>Speed: <strong id="chaseSpeed">0</strong> mph</span>
+        <span>Distance: <strong id="chaseDistance">0</strong>m</span>
+        <span>Heat: <strong id="chaseHeat">0</strong></span>
+    </div>
+    <div id="chaseTrack" style="height: 150px; background: linear-gradient(180deg, #2a4d3a 0%, #1e3a1e 50%, #333 100%); border-radius: 8px; position: relative; overflow: hidden; border: 2px solid #555;">
+        <div id="playerCar" style="position: absolute; bottom: 10px; left: 50%; width: 30px; height: 20px; background: var(--primary-color); border-radius: 4px; transform: translateX(-50%); box-shadow: 0 2px 4px rgba(0,0,0,0.5);"></div>
+        <div id="roadLines" style="position: absolute; width: 100%; height: 100%; pointer-events: none;"></div>
+    </div>
+    <div id="gameStatus" style="text-align: center; padding: 0.5rem; background: rgba(255,107,107,0.2); border-radius: 8px; margin: 0.5rem 0; display: none;">
+        <strong style="color: var(--primary-color);">Game Over!</strong>
+        <p id="gameResult" style="margin: 0.3rem 0; font-size: 0.8rem;"></p>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.25rem; margin: 0.5rem 0;">
+        <button id="leftBtn" style="background: var(--accent-color); border: none; color: white; padding: 0.5rem; border-radius: 8px; cursor: pointer; font-size: 0.7rem;" onclick="turnLeft()">◀ Left</button>
+        <button id="gasBtn" style="background: var(--success-color); border: none; color: white; padding: 0.5rem; border-radius: 8px; cursor: pointer; font-size: 0.7rem;" onclick="accelerate()">▲ Gas</button>
+        <button id="rightBtn" style="background: var(--accent-color); border: none; color: white; padding: 0.5rem; border-radius: 8px; cursor: pointer; font-size: 0.7rem;" onclick="turnRight()">Right ▶</button>
+    </div>
+    <button class="floating-btn" style="position: static; font-size: 0.8rem; padding: 0.5rem 1rem; width: 100%;" id="startChaseBtn" onclick="startChase()">Start Chase</button>
+</div>
+
+<style>
+.police-car {
+    position: absolute;
+    width: 25px;
+    height: 18px;
+    background: #0066cc;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    transition: all 0.1s ease;
+}
+
+.police-car::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 50%;
+    width: 10px;
+    height: 3px;
+    background: #ff0000;
+    border-radius: 2px;
+    transform: translateX(-50%);
+    animation: policeLights 0.5s infinite alternate;
+}
+
+@keyframes policeLights {
+    0% { background: #ff0000; }
+    100% { background: #0000ff; }
+}
+
+.obstacle {
+    position: absolute;
+    width: 20px;
+    height: 15px;
+    background: #666;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.road-line {
+    position: absolute;
+    width: 3px;
+    height: 20px;
+    background: #fff;
+    opacity: 0.7;
+    animation: roadScroll 0.5s linear infinite;
+}
+
+@keyframes roadScroll {
+    0% { transform: translateY(-20px); }
+    100% { transform: translateY(170px); }
+}
+
+.explosion {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle, #ff6600 0%, #ff0000 50%, transparent 100%);
+    border-radius: 50%;
+    animation: explode 0.5s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes explode {
+    0% { transform: scale(0.1); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+}
+</style>
+
+<script>
+let chaseState = {
+    speed: 0,
+    distance: 0,
+    heat: 0,
+    isPlaying: false,
+    playerPosition: 50, // percentage from left
+    gameLoop: null,
+    policeCars: [],
+    obstacles: [],
+    roadLines: [],
+    gameTime: 0
+};
+
+function updateDisplay() {
+    document.getElementById('chaseSpeed').textContent = Math.floor(chaseState.speed);
+    document.getElementById('chaseDistance').textContent = Math.floor(chaseState.distance);
+    document.getElementById('chaseHeat').textContent = chaseState.heat;
+    
+    // Update player car position
+    const playerCar = document.getElementById('playerCar');
+    playerCar.style.left = chaseState.playerPosition + '%';
+}
+
+function resetChase() {
+    if (chaseState.gameLoop) {
+        clearInterval(chaseState.gameLoop);
+    }
+    
+    // Clear all game elements
+    const track = document.getElementById('chaseTrack');
+    const existingElements = track.querySelectorAll('.police-car, .obstacle, .explosion');
+    existingElements.forEach(el => el.remove());
+    
+    document.getElementById('roadLines').innerHTML = '';
+    
+    // Reset state
+    chaseState = {
+        speed: 0,
+        distance: 0,
+        heat: 0,
+        isPlaying: false,
+        playerPosition: 50,
+        gameLoop: null,
+        policeCars: [],
+        obstacles: [],
+        roadLines: [],
+        gameTime: 0
+    };
+    
+    updateDisplay();
+    document.getElementById('gameStatus').style.display = 'none';
+    
+    const startBtn = document.getElementById('startChaseBtn');
+    startBtn.disabled = false;
+    startBtn.textContent = 'Start Chase';
+    
+    // Enable controls
+    ['leftBtn', 'gasBtn', 'rightBtn'].forEach(id => {
+        document.getElementById(id).disabled = false;
+    });
+}
+
+function createRoadLines() {
+    const roadLines = document.getElementById('roadLines');
+    
+    // Create animated road lines
+    for (let i = 0; i < 6; i++) {
+        const line = document.createElement('div');
+        line.className = 'road-line';
+        line.style.left = '48%';
+        line.style.top = (i * 30 - 20) + 'px';
+        line.style.animationDelay = (i * 0.1) + 's';
+        roadLines.appendChild(line);
+    }
+}
+
+function spawnPoliceCar() {
+    if (!chaseState.isPlaying || chaseState.policeCars.length >= 3) return;
+    
+    const track = document.getElementById('chaseTrack');
+    const policeCar = document.createElement('div');
+    policeCar.className = 'police-car';
+    
+    const side = Math.random() < 0.5 ? 'left' : 'right';
+    const startX = side === 'left' ? 20 + Math.random() * 30 : 50 + Math.random() * 30;
+    
+    policeCar.style.left = startX + '%';
+    policeCar.style.top = '-25px';
+    
+    track.appendChild(policeCar);
+    chaseState.policeCars.push({
+        element: policeCar,
+        x: startX,
+        y: -25,
+        speed: 2 + Math.random() * 2
+    });
+}
+
+function spawnObstacle() {
+    if (!chaseState.isPlaying || Math.random() < 0.7) return;
+    
+    const track = document.getElementById('chaseTrack');
+    const obstacle = document.createElement('div');
+    obstacle.className = 'obstacle';
+    
+    const x = 20 + Math.random() * 60;
+    obstacle.style.left = x + '%';
+    obstacle.style.top = '-20px';
+    
+    track.appendChild(obstacle);
+    chaseState.obstacles.push({
+        element: obstacle,
+        x: x,
+        y: -20
+    });
+}
+
+function checkCollisions() {
+    const playerRect = {
+        x: chaseState.playerPosition,
+        y: 85,
+        width: 8,
+        height: 5
+    };
+    
+    // Check police car collisions
+    chaseState.policeCars.forEach((police, index) => {
+        const policeRect = {
+            x: police.x,
+            y: police.y / 150 * 100,
+            width: 6,
+            height: 4
+        };
+        
+        if (Math.abs(playerRect.x - policeRect.x) < 8 && 
+            Math.abs(playerRect.y - policeRect.y) < 8) {
+            createExplosion(chaseState.playerPosition, 80);
+            endChase(false, 'Caught by police!');
+        }
+    });
+    
+    // Check obstacle collisions
+    chaseState.obstacles.forEach((obstacle, index) => {
+        const obstacleRect = {
+            x: obstacle.x,
+            y: obstacle.y / 150 * 100,
+            width: 5,
+            height: 4
+        };
+        
+        if (Math.abs(playerRect.x - obstacleRect.x) < 7 && 
+            Math.abs(playerRect.y - obstacleRect.y) < 8) {
+            createExplosion(chaseState.playerPosition, 80);
+            endChase(false, 'Crashed into obstacle!');
+        }
+    });
+}
+
+function createExplosion(x, y) {
+    const track = document.getElementById('chaseTrack');
+    const explosion = document.createElement('div');
+    explosion.className = 'explosion';
+    explosion.style.left = x + '%';
+    explosion.style.bottom = y + 'px';
+    
+    track.appendChild(explosion);
+    
+    setTimeout(() => {
+        if (explosion.parentNode) {
+            explosion.remove();
+        }
+    }, 500);
+}
+
+function gameUpdate() {
+    if (!chaseState.isPlaying) return;
+    
+    chaseState.gameTime++;
+    chaseState.distance += chaseState.speed / 10;
+    
+    // Update police cars
+    chaseState.policeCars.forEach((police, index) => {
+        police.y += police.speed + chaseState.speed / 20;
+        police.element.style.top = police.y + 'px';
+        
+        if (police.y > 170) {
+            police.element.remove();
+            chaseState.policeCars.splice(index, 1);
+        }
+    });
+    
+    // Update obstacles
+    chaseState.obstacles.forEach((obstacle, index) => {
+        obstacle.y += 3 + chaseState.speed / 15;
+        obstacle.element.style.top = obstacle.y + 'px';
+        
+        if (obstacle.y > 170) {
+            obstacle.element.remove();
+            chaseState.obstacles.splice(index, 1);
+        }
+    });
+    
+    // Spawn new elements
+    if (chaseState.gameTime % 100 === 0) spawnPoliceCar();
+    if (chaseState.gameTime % 80 === 0) spawnObstacle();
+    
+    // Increase heat over time
+    if (chaseState.gameTime % 200 === 0 && chaseState.heat < 5) {
+        chaseState.heat++;
+    }
+    
+    // Gradually reduce speed (friction)
+    if (chaseState.speed > 0) {
+        chaseState.speed = Math.max(0, chaseState.speed - 0.5);
+    }
+    
+    checkCollisions();
+    updateDisplay();
+    
+    // Win condition
+    if (chaseState.distance >= 1000) {
+        endChase(true, 'Escaped! You drove 1000m!');
+    }
+}
+
+function startChase() {
+    resetChase();
+    
+    chaseState.isPlaying = true;
+    chaseState.speed = 10;
+    
+    const startBtn = document.getElementById('startChaseBtn');
+    startBtn.disabled = true;
+    startBtn.textContent = 'Chase In Progress...';
+    
+    createRoadLines();
+    
+    chaseState.gameLoop = setInterval(gameUpdate, 50);
+    
+    // Spawn initial police car
+    setTimeout(spawnPoliceCar, 1000);
+}
+
+function endChase(won, message) {
+    chaseState.isPlaying = false;
+    
+    if (chaseState.gameLoop) {
+        clearInterval(chaseState.gameLoop);
+    }
+    
+    const gameStatus = document.getElementById('gameStatus');
+    const gameResult = document.getElementById('gameResult');
+    
+    if (won) {
+        gameResult.innerHTML = `🏆 ${message}<br>Distance: ${Math.floor(chaseState.distance)}m - You're free!`;
+        gameStatus.style.background = 'rgba(76, 175, 80, 0.2)';
+    } else {
+        gameResult.innerHTML = `💥 ${message}<br>Distance: ${Math.floor(chaseState.distance)}m - Better luck next time!`;
+        gameStatus.style.background = 'rgba(255, 107, 107, 0.2)';
+    }
+    
+    gameStatus.style.display = 'block';
+    
+    const startBtn = document.getElementById('startChaseBtn');
+    startBtn.disabled = false;
+    startBtn.textContent = 'Play Again';
+}
+
+function turnLeft() {
+    if (!chaseState.isPlaying) return;
+    chaseState.playerPosition = Math.max(15, chaseState.playerPosition - 8);
+    updateDisplay();
+}
+
+function turnRight() {
+    if (!chaseState.isPlaying) return;
+    chaseState.playerPosition = Math.min(85, chaseState.playerPosition + 8);
+    updateDisplay();
+}
+
+function accelerate() {
+    if (!chaseState.isPlaying) return;
+    chaseState.speed = Math.min(80, chaseState.speed + 5);
+    updateDisplay();
+}
+
+// Initialize display
+updateDisplay();
+
+// Keyboard controls
+document.addEventListener('keydown', function(e) {
+    if (!chaseState.isPlaying) return;
+    
+    switch(e.key) {
+        case 'ArrowLeft':
+        case 'a':
+        case 'A':
+            turnLeft();
+            break;
+        case 'ArrowRight':
+        case 'd':
+        case 'D':
+            turnRight();
+            break;
+        case 'ArrowUp':
+        case 'w':
+        case 'W':
+        case ' ':
+            accelerate();
+            e.preventDefault();
+            break;
+    }
+});
+</script>
                 
                 <!-- Memory Match Game -->
                 <div style="background: var(--card-bg); border-radius: 12px; padding: 1rem;">
@@ -3012,3 +3420,4 @@ updateDisplay();
 
 </body>
 </html>
+
