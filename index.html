@@ -1139,7 +1139,7 @@ function endGame(won) {
 updateDisplay();
 </script>
 
-                <!-- Car Chase Simulator -->
+               <!-- Car Chase Simulator -->
 <div style="background: var(--card-bg); border-radius: 12px; padding: 1rem;">
     <h4 style="margin-bottom: 0.5rem;">Highway Chase</h4>
     <div style="display: flex; justify-content: space-between; margin: 0.5rem 0; font-size: 0.8rem;">
@@ -1443,9 +1443,9 @@ function gameUpdate() {
         chaseState.heat++;
     }
     
-    // Gradually reduce speed (friction)
+    // Gradually reduce speed (friction) - much less aggressive
     if (chaseState.speed > 0) {
-        chaseState.speed = Math.max(0, chaseState.speed - 0.5);
+        chaseState.speed = Math.max(0, chaseState.speed - 0.1);
     }
     
     checkCollisions();
@@ -1461,7 +1461,7 @@ function startChase() {
     resetChase();
     
     chaseState.isPlaying = true;
-    chaseState.speed = 10;
+    chaseState.speed = 20;
     
     const startBtn = document.getElementById('startChaseBtn');
     startBtn.disabled = true;
@@ -1514,7 +1514,7 @@ function turnRight() {
 
 function accelerate() {
     if (!chaseState.isPlaying) return;
-    chaseState.speed = Math.min(80, chaseState.speed + 5);
+    chaseState.speed = Math.min(100, chaseState.speed + 8);
     updateDisplay();
 }
 
@@ -3420,4 +3420,5 @@ document.addEventListener('keydown', function(e) {
 
 </body>
 </html>
+
 
