@@ -895,16 +895,14 @@
             <!-- Games Grid -->
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
                 
- <!-- Draw Poker Showdown with Chip Animations -->
+ <!-- Polished Draw Poker Game -->
 <div id="drawPokerGame" style="background: var(--card-bg); border-radius: 12px; padding: 1rem; position: relative;">
   <h4 style="margin-bottom: 0.5rem;">Saloon Draw Poker</h4>
   <div style="font-size: 0.8rem; margin-bottom: 0.5rem;">
     Chips: <strong id="pokerChips">$100</strong> | Hands Won: <strong id="handsWon">0</strong> | Draws Left: <strong id="drawsLeft">1</strong>
   </div>
   <div id="chipPopContainer" style="position: absolute; top: 50px; left: 50%; transform: translateX(-50%); pointer-events:none;"></div>
-  <div id="pokerHand" style="display: flex; justify-content: center; gap: 8px; margin: 0.5rem 0;">
-    <!-- Cards generated here -->
-  </div>
+  <div id="pokerHand" style="display: flex; justify-content: center; gap: 8px; margin: 0.5rem 0;"></div>
   <div style="text-align: center; font-size: 0.8rem; margin: 0.5rem 0;">
     Hand: <strong id="handType">-</strong>
   </div>
@@ -920,6 +918,8 @@
 </div>
 
 <style>
+  .card-container { position: relative; display: flex; flex-direction: column; align-items: center; }
+  .held-label { position: absolute; top: -16px; font-size: 0.7rem; color: green; font-weight: bold; }
   .card {
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -939,16 +939,23 @@
   .red { color: red; }
   .flip { animation: flip 0.5s; }
   @keyframes flip { 0% { transform: rotateY(0deg); } 50% { transform: rotateY(180deg); } 100% { transform: rotateY(0deg); } }
-  .chip-pop {
-    position: absolute;
-    font-weight: bold;
-    font-size: 1.2rem;
-    animation: pop 1s forwards;
+  .new-card { animation: newCardPop 0.5s; }
+  @keyframes newCardPop {
+    0% { transform: scale(1); background-color: yellow; }
+    50% { transform: scale(1.2); background-color: orange; }
+    100% { transform: scale(1); background-color: white; }
   }
+  .chip-pop { position: absolute; font-weight: bold; font-size: 1.2rem; animation: pop 1s forwards; }
   @keyframes pop {
     0% { transform: translateY(0); opacity: 1; }
     50% { transform: translateY(-50px); opacity: 1; }
     100% { transform: translateY(-100px); opacity: 0; }
+  }
+  .coin { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: gold; opacity: 0.9; animation: coinBurst 0.8s forwards; }
+  @keyframes coinBurst {
+    0% { transform: translate(0,0) scale(1); opacity: 1; }
+    50% { transform: translate(calc(var(--x) * 1px), calc(var(--y) * 1px)) scale(1.5); opacity: 1; }
+    100% { transform: translate(calc(var(--x) * 2px), calc(var(--y) * 2px)) scale(0); opacity: 0; }
   }
 </style>
 
@@ -962,18 +969,9 @@ let drawsLeft = 1;
 const suits = ["♠","♥","♦","♣"];
 const values = ["2","3","4","5","6","7","8","9","10","J","Q","K","A"];
 const valueRank = {"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9,"10":10,"J":11,"Q":12,"K":13,"A":14};
-
 const payouts = {
-  "Royal Flush 👑": 200,
-  "Straight Flush": 100,
-  "Four of a Kind": 75,
-  "Full House": 50,
-  "Flush": 40,
-  "Straight": 30,
-  "Three of a Kind": 20,
-  "Two Pair": 15,
-  "One Pair": 10,
-  "High Card": -10
+  "Royal Flush 👑": 200, "Straight Flush": 100, "Four of a Kind": 75, "Full House": 50,
+  "Flush": 40, "Straight": 30, "Three of a Kind": 20, "Two Pair": 15, "One Pair": 10, "High Card": -10
 };
 
 function dealHand() {
@@ -994,15 +992,18 @@ function renderHand(){
   const handDiv = document.getElementById("pokerHand");
   handDiv.innerHTML = "";
   currentHand.forEach((card,i)=>{
+    const container = document.createElement("div"); container.className = "card-container";
+    if(held[i]){
+      const label = document.createElement("div"); label.className = "held-label"; label.textContent = "HELD";
+      container.appendChild(label);
+    }
     const cardDiv = document.createElement("div");
     cardDiv.textContent = card;
     cardDiv.className = "card " + ((card.includes("♥")||card.includes("♦"))?"red":"");
     if(held[i]) cardDiv.classList.add("held");
-    cardDiv.onclick = ()=>{
-      held[i] = !held[i];
-      renderHand();
-    };
-    handDiv.appendChild(cardDiv);
+    cardDiv.onclick = ()=>{ held[i]=!held[i]; renderHand(); };
+    container.appendChild(cardDiv);
+    handDiv.appendChild(container);
   });
   document.getElementById("handType").textContent = evaluateHand(currentHand);
 }
@@ -1010,67 +1011,88 @@ function renderHand(){
 function drawCards(){
   if(chips <=0){showGameOver(); return;}
   if(drawsLeft <=0){alert("No draws left!"); return;}
-  // redraw cards that are not held with flip animation
-  currentHand = currentHand.map((card,i)=>{
-    if(held[i]) return card;
-    let newCard;
-    do {
-      const suit = suits[Math.floor(Math.random()*suits.length)];
-      const value = values[Math.floor(Math.random()*values.length)];
-      newCard = value+suit;
-    } while(currentHand.includes(newCard));
-    return newCard;
-  });
+
+  const previousHand = [...currentHand];
+
+  for(let i=0;i<currentHand.length;i++){
+    if(!held[i]){
+      let newCard;
+      do {
+        const suit = suits[Math.floor(Math.random()*suits.length)];
+        const value = values[Math.floor(Math.random()*values.length)];
+        newCard = value+suit;
+      } while(currentHand.includes(newCard));
+      currentHand[i] = newCard;
+    }
+  }
+
   drawsLeft = 0;
   updateDraws();
-  renderHandWithAnimation();
+  renderHandWithAnimation(previousHand);
+
   const handType = evaluateHand(currentHand);
   const payout = payouts[handType] ?? -10;
   setTimeout(()=>{
     animateChips(payout);
-    if(payout>0){ chips += payout; handsWon++; }
-    else { chips = Math.max(0,chips+payout); }
+    if(payout>0) chips+=payout, handsWon++;
+    else chips = Math.max(0,chips+payout);
     updateStats();
-    if(chips <=0){showGameOver();}
-    else {dealHand();}
-  }, 500);
+    if(chips<=0) showGameOver();
+    else dealHand();
+  },500);
 }
 
-function renderHandWithAnimation(){
+function renderHandWithAnimation(previousHand){
   const handDiv = document.getElementById("pokerHand");
   handDiv.innerHTML = "";
   currentHand.forEach((card,i)=>{
+    const container = document.createElement("div"); container.className = "card-container";
+    if(held[i]){
+      const label = document.createElement("div"); label.className = "held-label"; label.textContent = "HELD";
+      container.appendChild(label);
+    }
     const cardDiv = document.createElement("div");
     cardDiv.textContent = card;
     cardDiv.className = "card " + ((card.includes("♥")||card.includes("♦"))?"red":"");
     if(held[i]) cardDiv.classList.add("held");
     cardDiv.classList.add("flip");
-    cardDiv.onclick = ()=>{
-      held[i] = !held[i];
-      renderHand();
-    };
-    handDiv.appendChild(cardDiv);
+    if(previousHand[i] !== card && !held[i]){ cardDiv.classList.add("new-card"); setTimeout(()=>{ cardDiv.classList.remove("new-card"); },500); }
+    cardDiv.onclick = ()=>{ held[i]=!held[i]; renderHand(); };
+    container.appendChild(cardDiv);
+    handDiv.appendChild(container);
   });
+  document.getElementById("handType").textContent = evaluateHand(currentHand);
 }
 
 function animateChips(amount){
-  const pop = document.createElement("div");
-  pop.className = "chip-pop";
+  const pop = document.createElement("div"); pop.className = "chip-pop";
   pop.textContent = (amount>0 ? `+ $${amount}` : `- $${Math.abs(amount)}`);
   pop.style.color = amount>0 ? "green" : "red";
   document.getElementById("chipPopContainer").appendChild(pop);
   setTimeout(()=>{ pop.remove(); },1000);
+  if(amount>0){ coinBurstAnimation(amount); }
+}
+
+function coinBurstAnimation(amount){
+  const container = document.getElementById("chipPopContainer");
+  for(let i=0;i<15;i++){
+    const coin = document.createElement("div"); coin.className="coin";
+    const x = Math.random()*60-30; const y=Math.random()*60-30;
+    coin.style.setProperty('--x',x); coin.style.setProperty('--y',y);
+    coin.style.left="50%"; coin.style.top="0px";
+    container.appendChild(coin);
+    setTimeout(()=>coin.remove(),800);
+  }
 }
 
 function evaluateHand(hand){
-  const valuesOnly = hand.map(c => c.replace(/[♠♥♦♣]/,""));
-  const suitsOnly = hand.map(c => c.slice(-1));
+  const valuesOnly = hand.map(c=>c.replace(/[♠♥♦♣]/,""));
+  const suitsOnly = hand.map(c=>c.slice(-1));
   const ranks = valuesOnly.map(v=>valueRank[v]).sort((a,b)=>a-b);
   const counts = {};
   valuesOnly.forEach(v=>counts[v]=(counts[v]||0)+1);
   const isFlush = suitsOnly.every(s=>s===suitsOnly[0]);
-  let isStraight = false;
-  if(ranks.every((v,i,arr)=>i===0||v===arr[i-1]+1)) isStraight=true;
+  let isStraight = ranks.every((v,i,arr)=>i===0||v===arr[i-1]+1);
   if(JSON.stringify(ranks)===JSON.stringify([2,3,4,5,14])) isStraight=true;
   const royal=[10,11,12,13,14];
   if(isFlush && JSON.stringify(ranks)===JSON.stringify(royal)) return "Royal Flush 👑";
@@ -1085,36 +1107,13 @@ function evaluateHand(hand){
   return "High Card";
 }
 
-function foldHand(){
-  chips = Math.max(0,chips-10);
-  animateChips(-10);
-  updateStats();
-  if(chips <=0) showGameOver();
-  else{alert("You folded! Lost $10."); dealHand();}
-}
+function foldHand(){ chips=Math.max(0,chips-10); animateChips(-10); updateStats();
+  if(chips<=0) showGameOver(); else {alert("You folded! Lost $10."); dealHand();} }
 
-function updateStats(){
-  document.getElementById("pokerChips").textContent="$"+chips;
-  document.getElementById("handsWon").textContent=handsWon;
-}
-
-function updateDraws(){
-  document.getElementById("drawsLeft").textContent=drawsLeft;
-}
-
-function showGameOver(){
-  document.getElementById("pokerActions").style.display="none";
-  document.getElementById("gameOverScreen").style.display="block";
-}
-
-function restartGame(){
-  chips=100; handsWon=0;
-  updateStats();
-  drawsLeft=1; updateDraws();
-  document.getElementById("gameOverScreen").style.display="none";
-  document.getElementById("pokerActions").style.display="grid";
-  dealHand();
-}
+function updateStats(){ document.getElementById("pokerChips").textContent="$"+chips; document.getElementById("handsWon").textContent=handsWon; }
+function updateDraws(){ document.getElementById("drawsLeft").textContent=drawsLeft; }
+function showGameOver(){ document.getElementById("pokerActions").style.display="none"; document.getElementById("gameOverScreen").style.display="block"; }
+function restartGame(){ chips=100; handsWon=0; updateStats(); drawsLeft=1; updateDraws(); document.getElementById("gameOverScreen").style.display="none"; document.getElementById("pokerActions").style.display="grid"; dealHand(); }
 
 dealHand();
 </script>
@@ -3089,6 +3088,7 @@ dealHand();
 
 </body>
 </html>
+
 
 
 
