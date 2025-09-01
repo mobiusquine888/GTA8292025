@@ -813,118 +813,61 @@
         </div>
 
         <!-- News Tab -->
-<div id="news" class="tab-content">
-    <h2 style="color: var(--primary-color);">Latest GTA 6 News</h2>
-    <div class="stats-grid">
-        <div class="stat-card">
-            <span class="stat-number" id="newsCount">Loading...</span>
-            <div>Stories Today</div>
-        </div>
-        <div class="stat-card">
-            <span class="stat-number" id="newsWeekly">Loading...</span>
-            <div>This Week</div>
-        </div>
-        <div class="stat-card">
-            <span class="stat-number" id="newsSources">Loading...</span>
-            <div>News Sources</div>
-        </div>
-        <div class="stat-card premium">
-            <span class="stat-number">LIVE</span>
-            <div>Status</div>
-        </div>
-    </div>
-    
-    <div id="newsContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
-        <!-- GTA 6 Specific News Articles -->
-        <article style="background: var(--card-bg); border-radius: 12px; padding: 0; border-left: 4px solid var(--primary-color); cursor: pointer; transition: all 0.3s ease; border: 1px solid var(--border-color); overflow: hidden;" onclick="window.open('#', '_blank')" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-            <div style="position: relative; height: 200px; background: linear-gradient(135deg, var(--primary-color), rgba(255,255,255,0.1)); display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                <div style="color: white; font-size: 3rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">🚀</div>
-                <div style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600;">IGN</div>
-                <div style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem;">2h ago</div>
-                <div style="position: absolute; bottom: 12px; left: 12px; background: var(--success-color); color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; display: flex; align-items: center; gap: 4px;">
-                    <span style="width: 6px; height: 6px; background: white; border-radius: 50%; animation: pulse 2s infinite;"></span>LIVE
+        <div id="news" class="tab-content">
+            <h2 style="color: var(--primary-color);">Latest GTA 6 News</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number" id="newsCount">Loading...</span>
+                    <div>Stories Today</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="newsWeekly">Loading...</span>
+                    <div>This Week</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="newsSources">Loading...</span>
+                    <div>News Sources</div>
+                </div>
+                <div class="stat-card premium">
+                    <span class="stat-number">LIVE</span>
+                    <div>Status</div>
                 </div>
             </div>
-            <div style="padding: 1.5rem;">
-                <h3 style="color: var(--text-color); margin-bottom: 0.5rem; line-height: 1.3; font-size: 1.1rem;">GTA 6 Development Update: Rockstar Confirms 2025 Release Window</h3>
-                <p style="color: var(--text-color); opacity: 0.8; line-height: 1.5; margin-bottom: 1rem; font-size: 0.9rem;">Rockstar Games provides official update on Grand Theft Auto VI development progress, maintaining Spring 2025 release target for PlayStation 5 and Xbox Series X/S.</p>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <div style="width: 8px; height: 8px; background: var(--primary-color); border-radius: 50%;"></div>
-                        <span style="color: var(--primary-color); font-size: 0.8rem; font-weight: 600;">Breaking News</span>
-                    </div>
-                    <span style="color: var(--primary-color); font-size: 0.8rem;">Click to read →</span>
+            
+            <div id="newsContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
+                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
+                    Loading latest GTA 6 news...
                 </div>
             </div>
-        </article>
+        </div>
 
-        <article style="background: var(--card-bg); border-radius: 12px; padding: 0; border-left: 4px solid var(--warning-color); cursor: pointer; transition: all 0.3s ease; border: 1px solid var(--border-color); overflow: hidden;" onclick="window.open('#', '_blank')" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-            <div style="position: relative; height: 200px; background: linear-gradient(135deg, var(--warning-color), rgba(255,255,255,0.1)); display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                <div style="color: white; font-size: 3rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">🏖️</div>
-                <div style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600;">GameSpot</div>
-                <div style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem;">5h ago</div>
-                <div style="position: absolute; bottom: 12px; left: 12px; background: var(--success-color); color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; display: flex; align-items: center; gap: 4px;">
-                    <span style="width: 6px; height: 6px; background: white; border-radius: 50%; animation: pulse 2s infinite;"></span>LIVE
+        <!-- YouTube Tab -->
+        <div id="youtube" class="tab-content">
+            <h2 style="color: var(--primary-color);">🎮 GTA 6 - Vice City Dreams</h2>
+            <div class="stats-grid" style="margin-bottom: 2rem;">
+                <div class="stat-card">
+                    <span class="stat-number" id="ytVideoCount">Loading...</span>
+                    <div>Videos Found</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="ytTotalViews">Loading...</span>
+                    <div>Total Views</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="ytChannelCount">Loading...</span>
+                    <div>Channels</div>
+                </div>
+                <div class="stat-card premium">
+                    <span class="stat-number">LIVE</span>
+                    <div>Streaming</div>
                 </div>
             </div>
-            <div style="padding: 1.5rem;">
-                <h3 style="color: var(--text-color); margin-bottom: 0.5rem; line-height: 1.3; font-size: 1.1rem;">GTA 6 Vice City Setting: New Screenshots Reveal Stunning Details</h3>
-                <p style="color: var(--text-color); opacity: 0.8; line-height: 1.5; margin-bottom: 1rem; font-size: 0.9rem;">Recently leaked development screenshots showcase the incredible attention to detail in GTA 6's Vice City recreation, featuring modern Miami-inspired architecture.</p>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <div style="width: 8px; height: 8px; background: var(--warning-color); border-radius: 50%;"></div>
-                        <span style="color: var(--primary-color); font-size: 0.8rem; font-weight: 600;">Breaking News</span>
-                    </div>
-                    <span style="color: var(--primary-color); font-size: 0.8rem;">Click to read →</span>
+            <div id="youtubeGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 2rem;">
+                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
+                    Loading GTA 6 videos...
                 </div>
             </div>
-        </article>
-
-        <article style="background: var(--card-bg); border-radius: 12px; padding: 0; border-left: 4px solid var(--secondary-color); cursor: pointer; transition: all 0.3s ease; border: 1px solid var(--border-color); overflow: hidden;" onclick="window.open('#', '_blank')" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-            <div style="position: relative; height: 200px; background: linear-gradient(135deg, var(--secondary-color), rgba(255,255,255,0.1)); display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                <div style="color: white; font-size: 3rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">👤</div>
-                <div style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600;">Polygon</div>
-                <div style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem;">1d ago</div>
-                <div style="position: absolute; bottom: 12px; left: 12px; background: var(--success-color); color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; display: flex; align-items: center; gap: 4px;">
-                    <span style="width: 6px; height: 6px; background: white; border-radius: 50%; animation: pulse 2s infinite;"></span>LIVE
-                </div>
-            </div>
-            <div style="padding: 1.5rem;">
-                <h3 style="color: var(--text-color); margin-bottom: 0.5rem; line-height: 1.3; font-size: 1.1rem;">GTA 6 Dual Protagonists: Lucia and Jason Character Breakdown</h3>
-                <p style="color: var(--text-color); opacity: 0.8; line-height: 1.5; margin-bottom: 1rem; font-size: 0.9rem;">Deep dive analysis of Grand Theft Auto VI's confirmed protagonists Lucia and Jason, exploring their backgrounds and relationship dynamics revealed in official trailers.</p>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <div style="width: 8px; height: 8px; background: var(--secondary-color); border-radius: 50%;"></div>
-                        <span style="color: var(--primary-color); font-size: 0.8rem; font-weight: 600;">Breaking News</span>
-                    </div>
-                    <span style="color: var(--primary-color); font-size: 0.8rem;">Click to read →</span>
-                </div>
-            </div>
-        </article>
-
-        <article style="background: var(--card-bg); border-radius: 12px; padding: 0; border-left: 4px solid var(--accent-color); cursor: pointer; transition: all 0.3s ease; border: 1px solid var(--border-color); overflow: hidden;" onclick="window.open('#', '_blank')" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-            <div style="position: relative; height: 200px; background: linear-gradient(135deg, var(--accent-color), rgba(255,255,255,0.1)); display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                <div style="color: white; font-size: 3rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">🗺️</div>
-                <div style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600;">Kotaku</div>
-                <div style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem;">2d ago</div>
-                <div style="position: absolute; bottom: 12px; left: 12px; background: var(--success-color); color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; display: flex; align-items: center; gap: 4px;">
-                    <span style="width: 6px; height: 6px; background: white; border-radius: 50%; animation: pulse 2s infinite;"></span>LIVE
-                </div>
-            </div>
-            <div style="padding: 1.5rem;">
-                <h3 style="color: var(--text-color); margin-bottom: 0.5rem; line-height: 1.3; font-size: 1.1rem;">GTA 6 Map Size Confirmed: Largest Rockstar World Ever Created</h3>
-                <p style="color: var(--text-color); opacity: 0.8; line-height: 1.5; margin-bottom: 1rem; font-size: 0.9rem;">Industry insiders confirm GTA 6 will feature the most expansive open world in Rockstar's history, spanning multiple cities and diverse environments across Vice City.</p>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <div style="width: 8px; height: 8px; background: var(--accent-color); border-radius: 50%;"></div>
-                        <span style="color: var(--primary-color); font-size: 0.8rem; font-weight: 600;">Breaking News</span>
-                    </div>
-                    <span style="color: var(--primary-color); font-size: 0.8rem;">Click to read →</span>
-                </div>
-            </div>
-        </article>
-    </div>
-</div>
+        </div>
 
         <!-- Challenges Tab -->
         <div id="challenges" class="tab-content">
@@ -952,230 +895,7 @@
             <!-- Games Grid -->
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
                 
- <!-- Polished Draw Poker Game -->
-<div id="drawPokerGame" style="background: var(--card-bg); border-radius: 12px; padding: 1rem; position: relative;">
-  <h4 style="margin-bottom: 0.5rem;">Saloon Draw Poker</h4>
-  <div style="font-size: 0.8rem; margin-bottom: 0.5rem;">
-    Chips: <strong id="pokerChips">$100</strong> | Hands Won: <strong id="handsWon">0</strong> | Draws Left: <strong id="drawsLeft">1</strong>
-  </div>
-  <div id="chipPopContainer" style="position: absolute; top: 50px; left: 50%; transform: translateX(-50%); pointer-events:none;"></div>
-  <div id="pokerHand" style="display: flex; justify-content: center; gap: 8px; margin: 0.5rem 0;"></div>
-  <div style="text-align: center; font-size: 0.8rem; margin: 0.5rem 0;">
-    Hand: <strong id="handType">-</strong>
-  </div>
-  <div id="pokerActions" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.25rem; margin-bottom: 0.5rem;">
-    <button style="background: var(--danger-color); border: none; color: white; padding: 0.5rem; border-radius: 8px; cursor: pointer; font-size: 0.7rem;" onclick="foldHand()">Fold</button>
-    <button style="background: var(--success-color); border: none; color: white; padding: 0.5rem; border-radius: 8px; cursor: pointer; font-size: 0.7rem;" id="drawButton" onclick="drawCards()">Draw</button>
-  </div>
-  <div id="gameOverScreen" style="display:none; text-align:center; margin-top:1rem;">
-    <h3 style="color: var(--danger-color);">💀 Game Over!</h3>
-    <p>You’re out of chips.</p>
-    <button style="background: var(--success-color); border: none; color: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem;" onclick="restartGame()">Restart</button>
-  </div>
-</div>
-
-<style>
-  .card-container { position: relative; display: flex; flex-direction: column; align-items: center; }
-  .held-label { position: absolute; top: -16px; font-size: 0.7rem; color: green; font-weight: bold; }
-  .card {
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 8px;
-    font-size: 1rem;
-    width: 50px;
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: white;
-    color: black;
-    cursor: pointer;
-    transition: transform 0.3s, background 0.3s;
-  }
-  .held { background: lightgreen; transform: scale(1.1); }
-  .red { color: red; }
-  .flip { animation: flip 0.5s; }
-  @keyframes flip { 0% { transform: rotateY(0deg); } 50% { transform: rotateY(180deg); } 100% { transform: rotateY(0deg); } }
-  .new-card { animation: newCardPop 0.5s; }
-  @keyframes newCardPop {
-    0% { transform: scale(1); background-color: yellow; }
-    50% { transform: scale(1.2); background-color: orange; }
-    100% { transform: scale(1); background-color: white; }
-  }
-  .chip-pop { position: absolute; font-weight: bold; font-size: 1.2rem; animation: pop 1s forwards; }
-  @keyframes pop {
-    0% { transform: translateY(0); opacity: 1; }
-    50% { transform: translateY(-50px); opacity: 1; }
-    100% { transform: translateY(-100px); opacity: 0; }
-  }
-  .coin { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: gold; opacity: 0.9; animation: coinBurst 0.8s forwards; }
-  @keyframes coinBurst {
-    0% { transform: translate(0,0) scale(1); opacity: 1; }
-    50% { transform: translate(calc(var(--x) * 1px), calc(var(--y) * 1px)) scale(1.5); opacity: 1; }
-    100% { transform: translate(calc(var(--x) * 2px), calc(var(--y) * 2px)) scale(0); opacity: 0; }
-  }
-</style>
-
-<script>
-let chips = 100;
-let handsWon = 0;
-let currentHand = [];
-let held = [false,false,false,false,false];
-let drawsLeft = 1;
-
-const suits = ["♠","♥","♦","♣"];
-const values = ["2","3","4","5","6","7","8","9","10","J","Q","K","A"];
-const valueRank = {"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9,"10":10,"J":11,"Q":12,"K":13,"A":14};
-const payouts = {
-  "Royal Flush 👑": 200, "Straight Flush": 100, "Four of a Kind": 75, "Full House": 50,
-  "Flush": 40, "Straight": 30, "Three of a Kind": 20, "Two Pair": 15, "One Pair": 10, "High Card": -10
-};
-
-function dealHand() {
-  held = [false,false,false,false,false];
-  currentHand = [];
-  drawsLeft = 1;
-  updateDraws();
-  while(currentHand.length < 5){
-    const suit = suits[Math.floor(Math.random()*suits.length)];
-    const value = values[Math.floor(Math.random()*values.length)];
-    const card = value+suit;
-    if(!currentHand.includes(card)) currentHand.push(card);
-  }
-  renderHand();
-}
-
-function renderHand(){
-  const handDiv = document.getElementById("pokerHand");
-  handDiv.innerHTML = "";
-  currentHand.forEach((card,i)=>{
-    const container = document.createElement("div"); container.className = "card-container";
-    if(held[i]){
-      const label = document.createElement("div"); label.className = "held-label"; label.textContent = "HELD";
-      container.appendChild(label);
-    }
-    const cardDiv = document.createElement("div");
-    cardDiv.textContent = card;
-    cardDiv.className = "card " + ((card.includes("♥")||card.includes("♦"))?"red":"");
-    if(held[i]) cardDiv.classList.add("held");
-    cardDiv.onclick = ()=>{ held[i]=!held[i]; renderHand(); };
-    container.appendChild(cardDiv);
-    handDiv.appendChild(container);
-  });
-  document.getElementById("handType").textContent = evaluateHand(currentHand);
-}
-
-function drawCards(){
-  if(chips <=0){showGameOver(); return;}
-  if(drawsLeft <=0){alert("No draws left!"); return;}
-
-  const previousHand = [...currentHand];
-
-  for(let i=0;i<currentHand.length;i++){
-    if(!held[i]){
-      let newCard;
-      do {
-        const suit = suits[Math.floor(Math.random()*suits.length)];
-        const value = values[Math.floor(Math.random()*values.length)];
-        newCard = value+suit;
-      } while(currentHand.includes(newCard));
-      currentHand[i] = newCard;
-    }
-  }
-
-  drawsLeft = 0;
-  updateDraws();
-  renderHandWithAnimation(previousHand);
-
-  const handType = evaluateHand(currentHand);
-  const payout = payouts[handType] ?? -10;
-  setTimeout(()=>{
-    animateChips(payout);
-    if(payout>0) chips+=payout, handsWon++;
-    else chips = Math.max(0,chips+payout);
-    updateStats();
-    if(chips<=0) showGameOver();
-    else dealHand();
-  },500);
-}
-
-function renderHandWithAnimation(previousHand){
-  const handDiv = document.getElementById("pokerHand");
-  handDiv.innerHTML = "";
-  currentHand.forEach((card,i)=>{
-    const container = document.createElement("div"); container.className = "card-container";
-    if(held[i]){
-      const label = document.createElement("div"); label.className = "held-label"; label.textContent = "HELD";
-      container.appendChild(label);
-    }
-    const cardDiv = document.createElement("div");
-    cardDiv.textContent = card;
-    cardDiv.className = "card " + ((card.includes("♥")||card.includes("♦"))?"red":"");
-    if(held[i]) cardDiv.classList.add("held");
-    cardDiv.classList.add("flip");
-    if(previousHand[i] !== card && !held[i]){ cardDiv.classList.add("new-card"); setTimeout(()=>{ cardDiv.classList.remove("new-card"); },500); }
-    cardDiv.onclick = ()=>{ held[i]=!held[i]; renderHand(); };
-    container.appendChild(cardDiv);
-    handDiv.appendChild(container);
-  });
-  document.getElementById("handType").textContent = evaluateHand(currentHand);
-}
-
-function animateChips(amount){
-  const pop = document.createElement("div"); pop.className = "chip-pop";
-  pop.textContent = (amount>0 ? `+ $${amount}` : `- $${Math.abs(amount)}`);
-  pop.style.color = amount>0 ? "green" : "red";
-  document.getElementById("chipPopContainer").appendChild(pop);
-  setTimeout(()=>{ pop.remove(); },1000);
-  if(amount>0){ coinBurstAnimation(amount); }
-}
-
-function coinBurstAnimation(amount){
-  const container = document.getElementById("chipPopContainer");
-  for(let i=0;i<15;i++){
-    const coin = document.createElement("div"); coin.className="coin";
-    const x = Math.random()*60-30; const y=Math.random()*60-30;
-    coin.style.setProperty('--x',x); coin.style.setProperty('--y',y);
-    coin.style.left="50%"; coin.style.top="0px";
-    container.appendChild(coin);
-    setTimeout(()=>coin.remove(),800);
-  }
-}
-
-function evaluateHand(hand){
-  const valuesOnly = hand.map(c=>c.replace(/[♠♥♦♣]/,""));
-  const suitsOnly = hand.map(c=>c.slice(-1));
-  const ranks = valuesOnly.map(v=>valueRank[v]).sort((a,b)=>a-b);
-  const counts = {};
-  valuesOnly.forEach(v=>counts[v]=(counts[v]||0)+1);
-  const isFlush = suitsOnly.every(s=>s===suitsOnly[0]);
-  let isStraight = ranks.every((v,i,arr)=>i===0||v===arr[i-1]+1);
-  if(JSON.stringify(ranks)===JSON.stringify([2,3,4,5,14])) isStraight=true;
-  const royal=[10,11,12,13,14];
-  if(isFlush && JSON.stringify(ranks)===JSON.stringify(royal)) return "Royal Flush 👑";
-  if(isStraight && isFlush) return "Straight Flush";
-  if(Object.values(counts).includes(4)) return "Four of a Kind";
-  if(Object.values(counts).includes(3) && Object.values(counts).includes(2)) return "Full House";
-  if(isFlush) return "Flush";
-  if(isStraight) return "Straight";
-  if(Object.values(counts).includes(3)) return "Three of a Kind";
-  if(Object.values(counts).filter(c=>c===2).length===2) return "Two Pair";
-  if(Object.values(counts).includes(2)) return "One Pair";
-  return "High Card";
-}
-
-function foldHand(){ chips=Math.max(0,chips-10); animateChips(-10); updateStats();
-  if(chips<=0) showGameOver(); else {alert("You folded! Lost $10."); dealHand();} }
-
-function updateStats(){ document.getElementById("pokerChips").textContent="$"+chips; document.getElementById("handsWon").textContent=handsWon; }
-function updateDraws(){ document.getElementById("drawsLeft").textContent=drawsLeft; }
-function showGameOver(){ document.getElementById("pokerActions").style.display="none"; document.getElementById("gameOverScreen").style.display="block"; }
-function restartGame(){ chips=100; handsWon=0; updateStats(); drawsLeft=1; updateDraws(); document.getElementById("gameOverScreen").style.display="none"; document.getElementById("pokerActions").style.display="grid"; dealHand(); }
-
-dealHand();
-</script>
-               
-                            <!-- Memory Match Game -->
+                <!-- Memory Match Game -->
                 <div style="background: var(--card-bg); border-radius: 12px; padding: 1rem;">
                     <h4 style="margin-bottom: 0.5rem;">Vice City Memory</h4>
                     <div style="display: flex; justify-content: space-between; margin: 0.5rem 0; font-size: 0.8rem;">
@@ -3145,8 +2865,3 @@ dealHand();
 
 </body>
 </html>
-
-
-
-
-
