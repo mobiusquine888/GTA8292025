@@ -1029,7 +1029,9 @@
                 } else if (tabName === 'youtube') {
                     fetchYouTubeVideos('GTA 6 Grand Theft Auto VI', 'youtubeGrid', 'yt');
                 } else if (tabName === 'news') {
-                    fetchGTA6News();
+                    setTimeout(() => {
+                        fetchGTA6News();
+                    }, 100);
                 } else if (tabName === 'trevor') {
                     fetchYouTubeVideos('Trevor Phillips GTA 5 chaos funny moments', 'trevorGrid', 'trevor');
                 } else if (tabName === 'rdr2') {
