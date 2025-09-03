@@ -579,7 +579,7 @@
          ">
         <div style="display:flex; align-items:center; gap:.6rem; font-size: 1rem;">
           <span aria-hidden="true" style="font-size: 1.2rem; color:#ff0055;">⚠️</span>
-          <strong style="color:#ffcc00;">Beta version – we're testing!</strong>
+          <strong style="color:#ffcc00;">Beta version — we're testing!</strong>
           <span>Feedback appreciated.</span>
         </div>
         <div style="display:flex; align-items:center; gap:.5rem;">
@@ -781,6 +781,36 @@
         </div>
 
         <!-- News Tab -->
+        <div id="news" class="tab-content">
+            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">📰 Latest GTA 6 News</h2>
+            
+            <!-- News Stats -->
+            <div class="stats-grid" style="margin-bottom: 2rem;">
+                <div class="stat-card">
+                    <span class="stat-number" id="newsCount">Loading...</span>
+                    <div>Recent Articles</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="newsWeekly">Loading...</span>
+                    <div>Weekly Stories</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="newsSources">Loading...</span>
+                    <div>News Sources</div>
+                </div>
+                <div class="stat-card premium">
+                    <span class="stat-number">BREAKING</span>
+                    <div>Live Updates</div>
+                </div>
+            </div>
+
+            <!-- News Content Area -->
+            <div id="newsContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
+                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
+                    Loading latest GTA 6 news and updates...
+                </div>
+            </div>
+        </div>
        
         <!-- YouTube Tab -->
         <div id="youtube" class="tab-content">
@@ -968,7 +998,26 @@
                     <div>Active Rumors</div>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-number
+                    <span class="stat-number" id="newsCount">Loading...</span>
+                    <div>Recent News</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="newsWeekly">Loading...</span>
+                    <div>Weekly Articles</div>
+                </div>
+                <div class="stat-card premium">
+                    <span class="stat-number" id="newsSources">Loading...</span>
+                    <div>Sources</div>
+                </div>
+            </div>
+
+            <!-- News Content Area -->
+            <div id="newsContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
+                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
+                    Loading latest GTA 6 news and rumors...
+                </div>
+            </div>
+        </div>
         
         <!-- Theories Tab - Enhanced with Real API Content & Community Features -->
         <div id="theories" class="tab-content">
@@ -2428,8 +2477,3 @@
 
 </body>
 </html>
-
-
-
-
-
