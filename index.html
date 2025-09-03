@@ -1451,37 +1451,7 @@
             }
         }
 
-        // WORKING News API Integration
-        async function fetchGTA6News() {
-            try {
-                const newsContainer = safeGetElement('newsContainer');
-                if (!newsContainer) return;
-
-                // Show loading state
-                newsContainer.innerHTML = `
-                    <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                        <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid var(--primary-color); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                        <div style="margin-top: 1rem;">Loading latest GTA 6 news...</div>
-                    </div>
-                `;
-
-                const apiUrl = `https://newsapi.org/v2/everything?q=GTA%206%20OR%20"Grand%20Theft%20Auto%206"&apiKey=${API_CONFIG.news}&sortBy=publishedAt&pageSize=15&language=en`;
-                
-                console.log('Fetching GTA 6 news...');
-                const response = await fetch(apiUrl);
-                
-                if (!response.ok) {
-                    throw new Error(`News API Error: ${response.status} ${response.statusText}`);
-                }
-                
-                const data = await response.json();
-                console.log('News API Response:', data);
-                
-                if (data.articles && data.articles.length > 0) {
-                    updateNewsContent(data.articles);
-                    updateNewsStats(data.articles);
-                    showNotification(`📰 Loaded ${data.articles.length} real news articles!`);
-                    awardRewards(15, 4, 'Loaded latest news');
+awardRewards(15, 4, 'Loaded latest news');
                 } else {
                     throw new Error('No articles found in API response');
                 }
