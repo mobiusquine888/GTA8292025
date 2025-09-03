@@ -1567,6 +1567,9 @@
                 safeUpdateText('newsCount', newsCount);
                 safeUpdateText('newsWeekly', weeklyEstimate);
                 safeUpdateText('newsSources', sources);
+                
+                // Also update rumors tab stats if they exist
+                safeUpdateText('rumorsCount', newsCount);
             } catch (error) {
                 console.warn('News stats update error:', error);
             }
