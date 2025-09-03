@@ -769,6 +769,379 @@
         </div>
 
         <!-- News Tab -->
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTA 6 News Grid</title>
+    <style>
+        :root {
+            --primary-color: #f0b90b;
+            --card-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --border-color: #333;
+            --hover-color: #2a2a2a;
+        }
+
+        .news-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .news-header {
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .news-card {
+            background: linear-gradient(145deg, #2a2a2a, #1f1f1f);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(240, 185, 11, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        .news-thumbnail {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(135deg, var(--primary-color), #ff6b35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .news-content {
+            padding: 1rem;
+        }
+
+        .news-title {
+            color: var(--text-color);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-source {
+            color: var(--primary-color);
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .news-link {
+            color: inherit;
+            text-decoration: none;
+            display: block;
+        }
+
+        .view-all {
+            text-align: center;
+            padding: 1rem;
+            color: var(--text-color);
+            font-style: italic;
+            border-top: 1px solid var(--border-color);
+            margin-top: 1rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .news-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+            
+            .news-container {
+                padding: 1rem;
+            }
+            
+            .news-header {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body style="background: #0f0f0f; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+
+<div class="news-container">
+    <h2 class="news-header">Latest GTA 6 News</h2>
+    
+    <div class="news-grid">
+        <a href="https://www.rockstargames.com/newswire/article/258aa538o412ok/grand-theft-auto-vi-is-now-coming-may-26-2026" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">🌟</div>
+                <div class="news-content">
+                    <div class="news-source">Rockstar Games</div>
+                    <div class="news-title">Official GTA VI Release Date Announcement</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://indiatimes.com/trending/gta-6-fans-buzz-as-rockstar-games-new-job-listing-for-motion-graphics-and-trailer-creation-sparks-speculation-of-trailer-3-668681.html" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">📰</div>
+                <div class="news-content">
+                    <div class="news-source">India Times</div>
+                    <div class="news-title">Trailer 3 Speculation from Job Listings</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.rockstargames.com/newswire/article/3928aaa9471o3a/grand-theft-auto-vi-watch-trailer-2-now" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">🎭</div>
+                <div class="news-content">
+                    <div class="news-source">Rockstar Games</div>
+                    <div class="news-title">Watch Trailer 2 Now</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.rockstargames.com/newswire/article/8978kok9385a82/grand-theft-auto-vi-watch-trailer-1-now" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">🎬</div>
+                <div class="news-content">
+                    <div class="news-source">Rockstar Games</div>
+                    <div class="news-title">Watch Trailer 1 Now</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.reddit.com/r/GTA6/new/" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">💬</div>
+                <div class="news-content">
+                    <div class="news-source">Reddit</div>
+                    <div class="news-title">r/GTA6 - Latest Community Posts</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.ign.com/games/grand-theft-auto-vi" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">🎯</div>
+                <div class="news-content">
+                    <div class="news-source">IGN</div>
+                    <div class="news-title">Complete GTA VI Coverage</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.gamespot.com/games/grand-theft-auto-vi/" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">🕹️</div>
+                <div class="news-content">
+                    <div class="news-source">GameSpot</div>
+                    <div class="news-title">News & Updates</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.gamesradar.com/gta-6-guide/" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">📖</div>
+                <div class="news-content">
+                    <div class="news-source">GamesRadar</div>
+                    <div class="news-title">Complete GTA 6 Guide</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.polygon.com/grand-theft-auto-6" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">📰</div>
+                <div class="news-content">
+                    <div class="news-source">Polygon</div>
+                    <div class="news-title">Latest Coverage & Analysis</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.eurogamer.net/gta-6" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">🌍</div>
+                <div class="news-content">
+                    <div class="news-source">Eurogamer</div>
+                    <div class="news-title">European Gaming Coverage</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://rockstarintel.com/category/grand-theft-auto-vi/" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">🕵️</div>
+                <div class="news-content">
+                    <div class="news-source">Rockstar Intel</div>
+                    <div class="news-title">Inside Information & Leaks</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://gtaforums.com/forum/406-gta-vi/" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">🏛️</div>
+                <div class="news-content">
+                    <div class="news-source">GTA Forums</div>
+                    <div class="news-title">Official Community Discussion</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.pcgamer.com/grand-theft-auto-vi/" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">💻</div>
+                <div class="news-content">
+                    <div class="news-source">PC Gamer</div>
+                    <div class="news-title">PC Gaming Coverage</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.forbes.com/tags/gta-6/" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">💼</div>
+                <div class="news-content">
+                    <div class="news-source">Forbes</div>
+                    <div class="news-title">Business & Industry Analysis</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://news.google.com/search?q=GTA%206&hl=en-US&ceid=US:en" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">🌐</div>
+                <div class="news-content">
+                    <div class="news-source">Google News</div>
+                    <div class="news-title">Live News Results</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://x.com/RockstarGames" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">⭐</div>
+                <div class="news-content">
+                    <div class="news-source">X (Twitter)</div>
+                    <div class="news-title">Rockstar Games Official</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.youtube.com/@RockstarGames/videos" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">📺</div>
+                <div class="news-content">
+                    <div class="news-source">YouTube</div>
+                    <div class="news-title">Rockstar Official Channel</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.reddit.com/r/GTA6/comments/1mhegrv/the_leaker_who_say_that_gta_6_could_slip_to/" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">🕵️</div>
+                <div class="news-content">
+                    <div class="news-source">Reddit</div>
+                    <div class="news-title">Leaker Discussion: 2027 Slip?</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.vg247.com/tags/gta-6" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">🎪</div>
+                <div class="news-content">
+                    <div class="news-source">VG247</div>
+                    <div class="news-title">Gaming Culture & News</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.techradar.com/gaming/gta-6" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">📡</div>
+                <div class="news-content">
+                    <div class="news-source">TechRadar</div>
+                    <div class="news-title">Tech Reviews & Analysis</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.metacritic.com/game/grand-theft-auto-vi/" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">🏆</div>
+                <div class="news-content">
+                    <div class="news-source">Metacritic</div>
+                    <div class="news-title">Reviews & Scores</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://screenrant.com/tag/grand-theft-auto-vi/" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">🎬</div>
+                <div class="news-content">
+                    <div class="news-source">Screen Rant</div>
+                    <div class="news-title">Entertainment Coverage</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://wccftech.com/tag/gta-6/" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">⚡</div>
+                <div class="news-content">
+                    <div class="news-source">Wccftech</div>
+                    <div class="news-title">Technical Analysis</div>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.destructoid.com/?s=gta%206" target="_blank" class="news-link">
+            <div class="news-card">
+                <div class="news-thumbnail">💥</div>
+                <div class="news-content">
+                    <div class="news-source">Destructoid</div>
+                    <div class="news-title">Gaming News & Reviews</div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="view-all">
+        24 curated GTA 6 news sources - Click any card to visit the source
+    </div>
+</div>
+
+</body>
+</html>
         
         <!-- YouTube Tab -->
         <div id="youtube" class="tab-content">
@@ -2162,4 +2535,5 @@
 
 </body>
 </html>
+
 
