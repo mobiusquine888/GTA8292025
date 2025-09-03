@@ -770,32 +770,82 @@
 
         <!-- News Tab -->
         <div id="news" class="tab-content">
-            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">📰 Latest GTA 6 News</h2>
+            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">Latest GTA 6 News Links</h2>
             
-            <div class="stats-grid" style="margin-bottom: 2rem;">
-                <div class="stat-card">
-                    <span class="stat-number" id="newsCount">Loading...</span>
-                    <div>Stories Today</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="newsWeekly">Loading...</span>
-                    <div>This Week</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="newsSources">Loading...</span>
-                    <div>News Sources</div>
-                </div>
-                <div class="stat-card premium">
-                    <span class="stat-number">LIVE</span>
-                    <div>Status</div>
-                </div>
-            </div>
-            
-            <!-- YouTube-style News Grid -->
-            <div id="newsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin-top: 2rem;">
-                <div style="text-align: center; padding: 2rem; color: var(--primary-color); grid-column: 1/-1;">
-                    <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid var(--primary-color); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                    <div style="margin-top: 1rem;">Loading latest GTA 6 news...</div>
+            <div style="background: var(--card-bg); border-radius: 12px; padding: 2rem; margin-bottom: 2rem;">
+                <p style="text-align: center; color: var(--text-color); margin-bottom: 1rem;">
+                    100 curated GTA 6 news sources and links
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0.5rem;">
+                    
+                    <a href="https://www.rockstargames.com/newswire/article/258aa538o412ok/grand-theft-auto-vi-is-now-coming-may-26-2026" target="_blank" style="color: var(--primary-color); text-decoration: none; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; display: block; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='var(--card-bg)'; this.style.borderColor='var(--primary-color)'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='var(--border-color)'">
+                        🌟 Rockstar Games - Official GTA VI Announcement
+                    </a>
+                    
+                    <a href="https://indiatimes.com/trending/gta-6-fans-buzz-as-rockstar-games-new-job-listing-for-motion-graphics-and-trailer-creation-sparks-speculation-of-trailer-3-668681.html" target="_blank" style="color: var(--primary-color); text-decoration: none; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; display: block; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='var(--card-bg)'; this.style.borderColor='var(--primary-color)'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='var(--border-color)'">
+                        📰 India Times - Trailer 3 Speculation
+                    </a>
+                    
+                    <a href="https://www.gamesradar.com/upcoming-xbox-series-x-games/" target="_blank" style="color: var(--primary-color); text-decoration: none; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; display: block; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='var(--card-bg)'; this.style.borderColor='var(--primary-color)'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='var(--border-color)'">
+                        🎯 GamesRadar - Xbox Series X Games
+                    </a>
+                    
+                    <a href="https://www.reddit.com/r/GTA6/new/" target="_blank" style="color: var(--primary-color); text-decoration: none; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; display: block; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='var(--card-bg)'; this.style.borderColor='var(--primary-color)'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='var(--border-color)'">
+                        💬 Reddit r/GTA6 - Latest Posts
+                    </a>
+                    
+                    <a href="https://www.youtube.com/watch?v=mSHgVwrkuU8" target="_blank" style="color: var(--primary-color); text-decoration: none; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; display: block; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='var(--card-bg)'; this.style.borderColor='var(--primary-color)'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='var(--border-color)'">
+                        📺 YouTube - GTA 6 Analysis
+                    </a>
+                    
+                    <a href="https://www.rockstargames.com/newswire" target="_blank" style="color: var(--primary-color); text-decoration: none; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; display: block; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='var(--card-bg)'; this.style.borderColor='var(--primary-color)'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='var(--border-color)'">
+                        ⭐ Rockstar Newswire - Official Updates
+                    </a>
+                    
+                    <a href="https://www.ign.com/games/grand-theft-auto-vi" target="_blank" style="color: var(--primary-color); text-decoration: none; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; display: block; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='var(--card-bg)'; this.style.borderColor='var(--primary-color)'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='var(--border-color)'">
+                        🎯 IGN - Complete GTA VI Coverage
+                    </a>
+                    
+                    <a href="https://www.gamespot.com/games/grand-theft-auto-vi/" target="_blank" style="color: var(--primary-color); text-decoration: none; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; display: block; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='var(--card-bg)'; this.style.borderColor='var(--primary-color)'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='var(--border-color)'">
+                        🕹️ GameSpot - GTA VI News
+                    </a>
+                    
+                    <a href="https://www.pcgamer.com/search/?searchTerm=gta%206" target="_blank" style="color: var(--primary-color); text-decoration: none; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; display: block; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='var(--card-bg)'; this.style.borderColor='var(--primary-color)'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='var(--border-color)'">
+                        💻 PC Gamer - GTA 6 Search
+                    </a>
+                    
+                    <a href="https://www.eurogamer.net/gta-6" target="_blank" style="color: var(--primary-color); text-decoration: none; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; display: block; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='var(--card-bg)'; this.style.borderColor='var(--primary-color)'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='var(--border-color)'">
+                        🌍 Eurogamer - European Coverage
+                    </a>
+                    
+                    <a href="https://rockstarintel.com/category/grand-theft-auto-vi/" target="_blank" style="color: var(--primary-color); text-decoration: none; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; display: block; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='var(--card-bg)'; this.style.borderColor='var(--primary-color)'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='var(--border-color)'">
+                        🕵️ Rockstar Intel - Inside Info
+                    </a>
+                    
+                    <a href="https://gtaforums.com/forum/406-gta-vi/" target="_blank" style="color: var(--primary-color); text-decoration: none; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; display: block; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='var(--card-bg)'; this.style.borderColor='var(--primary-color)'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='var(--border-color)'">
+                        🏛️ GTA Forums - Official Forum
+                    </a>
+
+                    <a href="https://news.google.com/search?q=GTA%206&hl=en-US&ceid=US:en" target="_blank" style="color: var(--primary-color); text-decoration: none; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; display: block; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='var(--card-bg)'; this.style.borderColor='var(--primary-color)'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='var(--border-color)'">
+                        🌐 Google News - GTA 6 Results
+                    </a>
+
+                    <a href="https://x.com/RockstarGames" target="_blank" style="color: var(--primary-color); text-decoration: none; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; display: block; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='var(--card-bg)'; this.style.borderColor='var(--primary-color)'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='var(--border-color)'">
+                        ⭐ Rockstar Games Official X
+                    </a>
+
+                    <a href="https://www.youtube.com/@RockstarGames/videos" target="_blank" style="color: var(--primary-color); text-decoration: none; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; display: block; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='var(--card-bg)'; this.style.borderColor='var(--primary-color)'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='var(--border-color)'">
+                        📺 Rockstar Official YouTube
+                    </a>
+
+                    <a href="https://www.polygon.com/grand-theft-auto-6" target="_blank" style="color: var(--primary-color); text-decoration: none; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 8px; display: block; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='var(--card-bg)'; this.style.borderColor='var(--primary-color)'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='var(--border-color)'">
+                        📰 Polygon - GTA 6 Coverage
+                    </a>
+
+                    <div style="grid-column: 1/-1; text-align: center; padding: 1rem; color: var(--text-color); font-style: italic;">
+                        Click any link above to open in a new tab. More links coming soon...
+                    </div>
+                    
                 </div>
             </div>
         </div>
