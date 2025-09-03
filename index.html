@@ -659,13 +659,6 @@
     <p style="text-align: center; margin-top: 0.5rem; color: var(--text-color); font-size: 0.9rem; font-weight: 600;">Watch GTA 6 Official Trailer - Jason & Lucia</p>
 </div>
 
-<script>
-  document.getElementById("trailerPreview").addEventListener("click", function() {
-    document.getElementById("trailerPreview").style.display = "none";
-    document.getElementById("trailerPlayer").style.display = "block";
-  });
-</script>
-
         
         <div class="countdown-container">
             <div class="countdown-item" onclick="awardRewards(5, 2, 'Countdown clicked!')">
@@ -743,375 +736,55 @@
     <main class="content-area">
         <!-- Home Tab -->
         <div id="home" class="tab-content active">
-            <div class="viral-challenge">
-                <h2>🚀 VIRAL CHALLENGE ACTIVE!</h2>
-                <p><strong>Share GTAFastLane and earn 500 coins + exclusive NFT!</strong></p>
-                <button class="floating-btn" style="position: static; margin: 1rem auto; display: flex;" onclick="shareForReward()">
-                    🎁 Share & Earn Rewards
-                </button>
-            </div>
-
-            <div class="referral-system">
-                <h3>💰 Refer Friends & Earn</h3>
-                <p>Each friend earns you <strong>100 coins + 50 XP</strong></p>
-                <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 1.2rem; font-weight: bold; margin: 1rem 0; letter-spacing: 2px; cursor: pointer;" onclick="copyReferralCode()">
-                    GTAFL-<span id="userReferralCode">A7B9X2</span>
-                </div>
-                <small>Click to copy your referral code</small>
-            </div>
-
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-number">52,847</span>
-                    <div>Total Members</div>
-                </div>
-                <div class="stat-card premium">
-                    <span class="stat-number">8,234</span>
-                    <div>Premium Members</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">1,247</span>
-                    <div>Shares Today</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">15,678</span>
-                    <div>NFTs Minted</div>
-                </div>
-            </div>
+            <!-- Tab content cleared - ready for rebuild -->
         </div>
 
         <!-- News Tab -->
         <div id="news" class="tab-content">
-            <h2 style="color: var(--primary-color);">Latest GTA 6 News</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-number" id="newsCount">Loading...</span>
-                    <div>Stories Today</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="newsWeekly">Loading...</span>
-                    <div>This Week</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="newsSources">Loading...</span>
-                    <div>News Sources</div>
-                </div>
-                <div class="stat-card premium">
-                    <span class="stat-number">LIVE</span>
-                    <div>Status</div>
-                </div>
-            </div>
-            
-            <div id="newsContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
-                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                    Loading latest GTA 6 news...
-                </div>
-            </div>
+            <!-- Tab content cleared - ready for rebuild -->
         </div>
 
         <!-- YouTube Tab -->
         <div id="youtube" class="tab-content">
-            <h2 style="color: var(--primary-color);">🎮 GTA 6 - Vice City Dreams</h2>
-            <div class="stats-grid" style="margin-bottom: 2rem;">
-                <div class="stat-card">
-                    <span class="stat-number" id="ytVideoCount">Loading...</span>
-                    <div>Videos Found</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="ytTotalViews">Loading...</span>
-                    <div>Total Views</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="ytChannelCount">Loading...</span>
-                    <div>Channels</div>
-                </div>
-                <div class="stat-card premium">
-                    <span class="stat-number">LIVE</span>
-                    <div>Streaming</div>
-                </div>
-            </div>
-            <div id="youtubeGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 2rem;">
-                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                    Loading GTA 6 videos...
-                </div>
-            </div>
+            <!-- Tab content cleared - ready for rebuild -->
         </div>
 
         <!-- Challenges Tab -->
         <div id="challenges" class="tab-content">
-            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🎯 GTA Challenges & Mini-Games</h2>
-            
-            <div class="stats-grid" style="margin-bottom: 1rem;">
-                <div class="stat-card" style="padding: 1rem 0.5rem;">
-                    <span class="stat-number" id="challengesCompleted" style="font-size: 1.5rem;">0</span>
-                    <div style="font-size: 0.8rem;">Challenges Won</div>
-                </div>
-                <div class="stat-card" style="padding: 1rem 0.5rem;">
-                    <span class="stat-number" id="currentStreak" style="font-size: 1.5rem;">0</span>
-                    <div style="font-size: 0.8rem;">Win Streak</div>
-                </div>
-                <div class="stat-card" style="padding: 1rem 0.5rem;">
-                    <span class="stat-number" id="totalScore" style="font-size: 1.5rem;">0</span>
-                    <div style="font-size: 0.8rem;">Total Score</div>
-                </div>
-                <div class="stat-card premium" style="padding: 1rem 0.5rem;">
-                    <span class="stat-number" style="font-size: 1.5rem;">#247</span>
-                    <div style="font-size: 0.8rem;">Global Rank</div>
-                </div>
-            </div>
-
-            <!-- Games Grid -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
-                
-                <!-- Memory Match Game -->
-                <div style="background: var(--card-bg); border-radius: 12px; padding: 1rem;">
-                    <h4 style="margin-bottom: 0.5rem;">Vice City Memory</h4>
-                    <div style="display: flex; justify-content: space-between; margin: 0.5rem 0; font-size: 0.8rem;">
-                        <span>Score: <strong id="memoryScore">0</strong></span>
-                        <span>Moves: <strong id="memoryMoves">0</strong></span>
-                        <span>Time: <strong id="memoryTimer">0:00</strong></span>
-                    </div>
-                    <div id="memoryGame" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.25rem; margin: 0.5rem 0;">
-                        <!-- Memory cards generated by JS -->
-                    </div>
-                    <button class="floating-btn" style="position: static; font-size: 0.8rem; padding: 0.5rem 1rem; width: 100%;" onclick="startMemoryGame()">New Game</button>
-                </div>
-
-                <!-- GTA Trivia -->
-                <div style="background: var(--card-bg); border-radius: 12px; padding: 1rem;">
-                    <h4 style="margin-bottom: 0.5rem;">GTA Trivia</h4>
-                    <p id="triviaQuestion" style="font-size: 0.9rem; margin-bottom: 0.5rem;">Which city is GTA Vice City based on?</p>
-                    <div id="triviaOptions" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin: 0.5rem 0;">
-                        <!-- Trivia options generated by JS -->
-                    </div>
-                    <div style="text-align: center; font-size: 0.8rem;">
-                        Score: <strong id="triviaScore">0</strong> | Question <strong id="triviaCount">1</strong>/10
-                    </div>
-                </div>
-
-                <!-- Rumor Rating -->
-                <div style="background: var(--card-bg); border-radius: 12px; padding: 1rem;">
-                    <h4 style="margin-bottom: 0.5rem;">Rumor Rating</h4>
-                    <p style="font-size: 0.9rem; font-style: italic; margin-bottom: 0.5rem;">"GTA 6 will feature revolutionary physics engine..."</p>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.25rem; margin: 0.5rem 0;">
-                        <button style="background: var(--danger-color); border: none; color: white; padding: 0.5rem; border-radius: 8px; cursor: pointer; font-size: 0.7rem;" onclick="rateRumor('fake')">Fake</button>
-                        <button style="background: var(--warning-color); border: none; color: white; padding: 0.5rem; border-radius: 8px; cursor: pointer; font-size: 0.7rem;" onclick="rateRumor('unlikely')">Unlikely</button>
-                        <button style="background: var(--accent-color); border: none; color: white; padding: 0.5rem; border-radius: 8px; cursor: pointer; font-size: 0.7rem;" onclick="rateRumor('possible')">Possible</button>
-                        <button style="background: var(--success-color); border: none; color: white; padding: 0.5rem; border-radius: 8px; cursor: pointer; font-size: 0.7rem;" onclick="rateRumor('credible')">Credible</button>
-                    </div>
-                    <div style="font-size: 0.8rem; text-align: center;">Streak: <strong id="rumorStreak2">0</strong> | Best: <strong id="bestStreak2">0</strong></div>
-                </div>
-            </div>
+            <!-- Tab content cleared - ready for rebuild -->
         </div>
 
         <!-- Trevor Tab -->
         <div id="trevor" class="tab-content">
-            <h2 style="color: var(--danger-color);">😈 Trevor Mode - Chaos Central</h2>
-            <div class="stats-grid" style="margin-bottom: 2rem;">
-                <div class="stat-card">
-                    <span class="stat-number" id="trevorVideoCount">Loading...</span>
-                    <div>Chaos Videos</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="trevorViews">Loading...</span>
-                    <div>Total Views</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="trevorChannels">Loading...</span>
-                    <div>Channels</div>
-                </div>
-                <div class="stat-card premium">
-                    <span class="stat-number">CHAOS</span>
-                    <div>Mode Active</div>
-                </div>
-            </div>
-            <div id="trevorGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 2rem;">
-                <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
-                    Loading Trevor chaos videos...
-                </div>
-            </div>
+            <!-- Tab content cleared - ready for rebuild -->
         </div>
 
         <!-- RDR2 Tab -->
         <div id="rdr2" class="tab-content">
-            <h2 style="color: var(--primary-color);">🤠 Red Dead Redemption 2 & GTA Connection</h2>
-            <div class="stats-grid" style="margin-bottom: 2rem;">
-                <div class="stat-card">
-                    <span class="stat-number" id="rdr2VideoCount">Loading...</span>
-                    <div>RDR2 Videos</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="rdr2Views">Loading...</span>
-                    <div>Total Views</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="rdr2Channels">Loading...</span>
-                    <div>Channels</div>
-                </div>
-                <div class="stat-card premium">
-                    <span class="stat-number">WILD</span>
-                    <div>West Mode</div>
-                </div>
-            </div>
-            <div id="rdr2Grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 2rem;">
-                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                    Loading RDR2 videos...
-                </div>
-            </div>
+            <!-- Tab content cleared - ready for rebuild -->
         </div>
 
         <!-- Chat Tab -->
         <div id="chat" class="tab-content">
-            <h2 style="color: var(--primary-color);">💬 Live Community Chat</h2>
-            <div style="background: var(--card-bg); border-radius: 12px; margin: 1rem 0; overflow: hidden;">
-                <div style="background: var(--gradient-primary); padding: 1rem; color: white;">
-                    <strong>Live Chat</strong> - <span>847 online</span>
-                </div>
-                <div style="height: 300px; overflow-y: auto; padding: 1rem;" id="chatMessages">
-                    <div style="padding: 0.5rem; margin: 0.5rem 0; background: rgba(255,255,255,0.05); border-radius: 8px;">
-                        <div style="color: var(--primary-color); font-weight: 600; font-size: 0.8rem;">GTAFan2024</div>
-                        <div>Anyone else think the new trailer hints are getting more obvious?</div>
-                    </div>
-                    <div style="padding: 0.5rem; margin: 0.5rem 0; background: rgba(255,255,255,0.05); border-radius: 8px;">
-                        <div style="color: var(--gold-color); font-weight: 600; font-size: 0.8rem;">ViceCityKing</div>
-                        <div>The countdown is killing me! Can't wait any longer! 🔥</div>
-                    </div>
-                </div>
-                <div style="display: flex; padding: 1rem; gap: 0.5rem;">
-                    <input type="text" id="chatInput" placeholder="Type your message..." style="flex: 1; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 20px; background: var(--bg-color); color: var(--text-color); outline: none;">
-                    <button onclick="sendChatMessage()" style="background: var(--gradient-primary); border: none; color: white; padding: 0.75rem 1rem; border-radius: 20px; cursor: pointer;">Send</button>
-                </div>
-            </div>
+            <!-- Tab content cleared - ready for rebuild -->
         </div>
 
-        <!-- Rumors Tab - Enhanced with Real API Content -->
+        <!-- Rumors Tab -->
         <div id="rumors" class="tab-content">
-            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🔥 GTA 6 Rumors & Leaks</h2>
-            
-            <!-- Rumors Stats -->        
-            <div class="stats-grid" style="margin-bottom: 2rem;">
-                <div class="stat-card">
-                    <span class="stat-number" id="rumorsCount">Loading...</span>
-                    <div>Active Rumors</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number
+            <!-- Tab content cleared - ready for rebuild -->
+        </div>
         
-        <!-- Theories Tab - Enhanced with Real API Content & Community Features -->
+        <!-- Theories Tab -->
         <div id="theories" class="tab-content">
-            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🧠 Community Theories</h2>
-            
-            <!-- Theory Stats -->
-            <div class="stats-grid" style="margin-bottom: 2rem;">
-                <div class="stat-card">
-                    <span class="stat-number" id="theoryCount">Loading...</span>
-                    <div>Total Theories</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="topTheoryVotes">Loading...</span>
-                    <div>Top Theory Votes</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="activeContributors">45</span>
-                    <div>Contributors</div>
-                </div>
-                <div class="stat-card premium">
-                    <span class="stat-number" id="theoryBadges">12</span>
-                    <div>Badges Earned</div>
-                </div>
-            </div>
-
-            <!-- Category Filter -->
-            <div style="display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center;">
-                <button onclick="filterTheories('all')" id="category-all" style="background: var(--primary-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">All</button>
-                <button onclick="filterTheories('gameplay')" id="category-gameplay" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Gameplay</button>
-                <button onclick="filterTheories('map')" id="category-map" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Map</button>
-                <button onclick="filterTheories('characters')" id="category-characters" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Characters</button>
-                <button onclick="filterTheories('easter-eggs')" id="category-easter-eggs" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Easter Eggs</button>
-                <button onclick="filterTheories('story')" id="category-story" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Story</button>
-            </div>
-
-            <!-- Theory Submission -->
-            <div style="background: var(--card-bg); border-radius: 15px; padding: 2rem; margin-bottom: 2rem;">
-                <h3 style="color: var(--primary-color); margin-bottom: 1rem; text-align: center;">💡 Share Your Theory</h3>
-                <div style="display: grid; gap: 1rem;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <input type="text" id="newTheoryUsername" placeholder="Your username" style="background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.75rem; border-radius: 8px; outline: none;">
-                        <select id="newTheoryCategory" style="background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.75rem; border-radius: 8px; outline: none;">
-                            <option value="gameplay">Gameplay</option>
-                            <option value="map">Map</option>
-                            <option value="characters">Characters</option>
-                            <option value="easter-eggs">Easter Eggs</option>
-                            <option value="story">Story</option>
-                        </select>
-                    </div>
-                    <textarea id="newTheoryText" placeholder="Share your theory about GTA 6..." style="background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.75rem; border-radius: 8px; outline: none; height: 120px; resize: vertical;"></textarea>
-                    <input type="url" id="newTheoryImage" placeholder="Image URL (optional)" style="background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.75rem; border-radius: 8px; outline: none;">
-                    <button onclick="submitNewTheory()" style="background: var(--gradient-primary); border: none; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600;">Submit Theory</button>
-                </div>
-            </div>
-
-            <!-- Theories Content Area -->
-            <div id="theoriesContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
-                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                    Loading community theories and analysis...
-                </div>
-            </div>
-
-            <!-- Top Contributors Leaderboard -->
-            <div style="background: var(--card-bg); border-radius: 15px; padding: 2rem; margin-bottom: 2rem;">
-                <h3 style="color: var(--gold-color); margin-bottom: 1rem; text-align: center;">🏆 Top Theory Contributors</h3>
-                <div id="contributorsLeaderboard" style="display: grid; gap: 0.5rem;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="color: var(--gold-color); font-weight: bold;">#1</span>
-                            <span style="color: var(--primary-color);">GTATheoryMaster</span>
-                            <span style="background: var(--gold-color); color: black; padding: 0.2rem 0.4rem; border-radius: 8px; font-size: 0.7rem;">LEGEND</span>
-                        </div>
-                        <span style="color: var(--text-color); font-weight: 600;">1,247 votes</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="color: var(--secondary-color); font-weight: bold;">#2</span>
-                            <span style="color: var(--primary-color);">ViceCity2026</span>
-                            <span style="background: var(--secondary-color); color: white; padding: 0.2rem 0.4rem; border-radius: 8px; font-size: 0.7rem;">EXPERT</span>
-                        </div>
-                        <span style="color: var(--text-color); font-weight: 600;">892 votes</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="color: var(--accent-color); font-weight: bold;">#3</span>
-                            <span style="color: var(--primary-color);">ArchitecturalGamer</span>
-                            <span style="background: var(--accent-color); color: white; padding: 0.2rem 0.4rem; border-radius: 8px; font-size: 0.7rem;">ANALYST</span>
-                        </div>
-                        <span style="color: var(--text-color); font-weight: 600;">445 votes</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Newsletter Signup -->
-            <div style="background: linear-gradient(135deg, var(--accent-color), var(--gold-color)); border-radius: 15px; padding: 2rem; text-align: center;">
-                <h3 style="margin-bottom: 1rem;">📬 Theory Digest Newsletter</h3>
-                <p style="margin-bottom: 1rem; opacity: 0.9;">Get weekly roundups of the best community theories!</p>
-                <div style="display: flex; gap: 0.5rem; max-width: 400px; margin: 0 auto; flex-wrap: wrap;">
-                    <input type="email" id="theoryEmail" placeholder="Enter your email" style="flex: 1; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 0.75rem; border-radius: 8px; outline: none; min-width: 200px;" onkeypress="if(event.key==='Enter') subscribeTheoryDigest()">
-                    <button onclick="subscribeTheoryDigest()" style="background: white; color: var(--accent-color); border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600; white-space: nowrap;">Subscribe</button>
-                </div>
-            </div>
+            <!-- Tab content cleared - ready for rebuild -->
         </div>   
         
         <div id="shop" class="tab-content">
-            <h2 style="color: var(--primary-color);">🛒 GTAFastLane Shop</h2>
-            <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                Shop coming soon...
-            </div>
+            <!-- Tab content cleared - ready for rebuild -->
         </div>
         
         <div id="premium" class="tab-content">
-            <h2 style="color: var(--gold-color);">👑 Premium Features</h2>
-            <div style="text-align: center; padding: 2rem; color: var(--gold-color);">
-                Premium features coming soon...
-            </div>
+            <!-- Tab content cleared - ready for rebuild -->
         </div>
     </main>
 
@@ -1123,6 +796,11 @@
     </div>
 
     <script>
+        document.getElementById("trailerPreview").addEventListener("click", function() {
+            document.getElementById("trailerPreview").style.display = "none";
+            document.getElementById("trailerPlayer").style.display = "block";
+        });
+
         // API Configuration
         const API_CONFIG = {
             news: '22ae24fcb78544a1977241e1319d4a0b',
@@ -1868,6 +1546,7 @@
                 console.warn('Theory subscription error:', error);
             }
         }
+
         function formatNumber(num) {
             if (num >= 1000000) {
                 return (num / 1000000).toFixed(1) + 'M';
