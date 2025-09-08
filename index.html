@@ -579,7 +579,7 @@
          ">
         <div style="display:flex; align-items:center; gap:.6rem; font-size: 1rem;">
           <span aria-hidden="true" style="font-size: 1.2rem; color:#ff0055;">⚠️</span>
-          <strong style="color:#ffcc00;">Beta version — we're testing!</strong>
+          <strong style="color:#ffcc00;">Beta version – we're testing!</strong>
           <span>Feedback appreciated.</span>
         </div>
         <div style="display:flex; align-items:center; gap:.5rem;">
@@ -743,101 +743,158 @@
     <main class="content-area">
         <!-- Home Tab -->
         <div id="home" class="tab-content active">
-            <div class="viral-challenge">
-                <h2>🚀 VIRAL CHALLENGE ACTIVE!</h2>
-                <p><strong>Share GTAFastLane and earn 500 coins + exclusive NFT!</strong></p>
-                <button class="floating-btn" style="position: static; margin: 1rem auto; display: flex;" onclick="shareForReward()">
-                    🎁 Share & Earn Rewards
-                </button>
-            </div>
-
-            <div class="referral-system">
-                <h3>💰 Refer Friends & Earn</h3>
-                <p>Each friend earns you <strong>100 coins + 50 XP</strong></p>
-                <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 1.2rem; font-weight: bold; margin: 1rem 0; letter-spacing: 2px; cursor: pointer;" onclick="copyReferralCode()">
-                    GTAFL-<span id="userReferralCode">A7B9X2</span>
-                </div>
-                <small>Click to copy your referral code</small>
-            </div>
-
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-number">52,847</span>
-                    <div>Total Members</div>
-                </div>
-                <div class="stat-card premium">
-                    <span class="stat-number">8,234</span>
-                    <div>Premium Members</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">1,247</span>
-                    <div>Shares Today</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">15,678</span>
-                    <div>NFTs Minted</div>
-                </div>
-            </div>
+            <!-- Home content will be loaded here -->
         </div>
 
         <!-- News Tab -->
         <div id="news" class="tab-content">
-            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">📰 Latest GTA 6 News</h2>
-            
-            <!-- News Stats -->
-            <div class="stats-grid" style="margin-bottom: 2rem;">
-                <div class="stat-card">
-                    <span class="stat-number" id="newsCount">Loading...</span>
-                    <div>Recent Articles</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="newsWeekly">Loading...</span>
-                    <div>Weekly Stories</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="newsSources">Loading...</span>
-                    <div>News Sources</div>
-                </div>
-                <div class="stat-card premium">
-                    <span class="stat-number">BREAKING</span>
-                    <div>Live Updates</div>
-                </div>
-            </div>
+           <h2 style="color: var(--primary-color); margin-bottom: 1rem;">📰 Latest GTA 6 News</h2>
 
-            <!-- News Content Area -->
-            <div id="newsContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
-                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                    Loading latest GTA 6 news and updates...
-                </div>
+<!-- News Stats -->
+<div class="stats-grid" style="margin-bottom: 2rem;">
+    <div class="stat-card">
+        <span class="stat-number" id="newsCount">Loading...</span>
+        <div>Recent Articles</div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number" id="newsWeekly">Loading...</span>
+        <div>Weekly Stories</div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number" id="newsSources">Loading...</span>
+        <div>News Sources</div>
+    </div>
+    <div class="stat-card premium">
+        <span class="stat-number">BREAKING</span>
+        <div>Live Updates</div>
+    </div>
+</div>
+
+<!-- News Content Area -->
+<div id="newsContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
+    <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
+        Loading latest GTA 6 news and updates...
+    </div>
+</div>
+
+<script>
+// News API function using Netlify serverless function
+async function fetchGTA6News() {
+    try {
+        const newsContainer = document.getElementById('newsContainer');
+        if (!newsContainer) return;
+
+        // Show loading state
+        newsContainer.innerHTML = `
+            <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
+                <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid var(--primary-color); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                <div style="margin-top: 1rem;">Loading latest GTA 6 news...</div>
             </div>
+        `;
+
+        // Use your Netlify serverless function
+        const response = await fetch('/.netlify/functions/news?query=GTA 6&pageSize=100');
+        
+        if (!response.ok) {
+            throw new Error(`Netlify Function Error: ${response.status} ${response.statusText}`);
+        }
+        
+        const articles = await response.json();
+        console.log('News Function Response:', articles);
+        
+        if (articles && articles.length > 0) {
+            displayNewsArticles(articles, newsContainer);
+            updateNewsStats(articles);
+            showNotification(`📰 Loaded ${articles.length} real news articles!`);
+            awardRewards(15, 4, 'Loaded latest news');
+        } else {
+            throw new Error('No articles found in response');
+        }
+        
+    } catch (error) {
+        console.error('News fetch error:', error);
+        const newsContainer = document.getElementById('newsContainer');
+        if (newsContainer) {
+            newsContainer.innerHTML = `
+                <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
+                    <h3>📰 News API Error</h3>
+                    <p style="margin: 1rem 0; font-size: 0.9rem;">
+                        ${error.message.includes('404') ? 'Netlify function not found. Make sure news.js is in netlify/functions/ folder.' : 
+                          error.message.includes('500') ? 'Server error. Check your NEWS_API_KEY environment variable in Netlify.' :
+                          'Unable to load news. Check console for details.'}
+                    </p>
+                    <button onclick="fetchGTA6News()" 
+                            style="background: var(--primary-color); border: none; color: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">
+                        🔄 Retry
+                    </button>
+                </div>
+            `;
+        }
+    }
+}
+
+// Display news articles
+function displayNewsArticles(articles, container) {
+    if (!container) return;
+    
+    container.innerHTML = articles.map(article => {
+        const colors = ['var(--primary-color)', 'var(--warning-color)', 'var(--secondary-color)', 'var(--accent-color)'];
+        const borderColor = colors[Math.floor(Math.random() * colors.length)];
+        const publishedDate = new Date(article.publishedAt);
+        const timeAgo = getTimeAgo(publishedDate);
+        const sourceName = article.source?.name || 'Unknown Source';
+        
+        return `
+            <article style="background: var(--card-bg); border-radius: 12px; padding: 1.5rem; border-left: 4px solid ${borderColor}; cursor: pointer; transition: all 0.3s ease; border: 1px solid var(--border-color);" 
+                     onclick="window.open('${article.url}', '_blank')"
+                     onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.3)'"
+                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                    <h3 style="color: var(--text-color); margin: 0; line-height: 1.3; font-size: 1.1rem; flex: 1;">${article.title}</h3>
+                    ${article.urlToImage ? `<img src="${article.urlToImage}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 8px; margin-left: 1rem;" onerror="this.style.display='none'">` : ''}
+                </div>
+                <p style="color: rgba(255,255,255,0.8); line-height: 1.5; margin-bottom: 1rem; font-size: 0.9rem;">${article.description || 'No description available'}</p>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                        <span style="color: var(--primary-color); font-size: 0.8rem; font-weight: 600;">${sourceName}</span>
+                        <span style="color: rgba(255,255,255,0.6); font-size: 0.7rem;">${timeAgo}</span>
+                    </div>
+                    <span style="color: var(--primary-color); font-size: 0.8rem;">Read more →</span>
+                </div>
+            </article>
+        `;
+    }).join('');
+}
+
+// Update news statistics
+function updateNewsStats(articles) {
+    try {
+        const newsCount = articles.length;
+        const sources = new Set(articles.map(article => article.source?.name).filter(Boolean)).size;
+        const weeklyEstimate = Math.floor(newsCount * 1.2);
+        
+        const newsCountEl = document.getElementById('newsCount');
+        const newsWeeklyEl = document.getElementById('newsWeekly');
+        const newsSourcesEl = document.getElementById('newsSources');
+        
+        if (newsCountEl) newsCountEl.textContent = newsCount;
+        if (newsWeeklyEl) newsWeeklyEl.textContent = weeklyEstimate;
+        if (newsSourcesEl) newsSourcesEl.textContent = sources;
+    } catch (error) {
+        console.warn('News stats update error:', error);
+    }
+}
+
+// Auto-load news when this tab becomes active
+if (document.querySelector('#news.active')) {
+    fetchGTA6News();
+}
+</script>
         </div>
        
         <!-- YouTube Tab -->
         <div id="youtube" class="tab-content">
-            <h2 style="color: var(--primary-color);">🎮 GTA 6 - Vice City Dreams</h2>
-            <div class="stats-grid" style="margin-bottom: 2rem;">
-                <div class="stat-card">
-                    <span class="stat-number" id="ytVideoCount">Loading...</span>
-                    <div>Videos Found</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="ytTotalViews">Loading...</span>
-                    <div>Total Views</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="ytChannelCount">Loading...</span>
-                    <div>Channels</div>
-                </div>
-                <div class="stat-card premium">
-                    <span class="stat-number">LIVE</span>
-                    <div>Streaming</div>
-                </div>
-            </div>
-            <div id="youtubeGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 2rem;">
-                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                    Loading GTA 6 videos...
-                </div>
-            </div>
+            <!-- YouTube content will be loaded here -->
         </div>
 
         <!-- Challenges Tab -->
@@ -909,231 +966,35 @@
 
         <!-- Trevor Tab -->
         <div id="trevor" class="tab-content">
-            <h2 style="color: var(--danger-color);">😈 Trevor Mode - Chaos Central</h2>
-            <div class="stats-grid" style="margin-bottom: 2rem;">
-                <div class="stat-card">
-                    <span class="stat-number" id="trevorVideoCount">Loading...</span>
-                    <div>Chaos Videos</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="trevorViews">Loading...</span>
-                    <div>Total Views</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="trevorChannels">Loading...</span>
-                    <div>Channels</div>
-                </div>
-                <div class="stat-card premium">
-                    <span class="stat-number">CHAOS</span>
-                    <div>Mode Active</div>
-                </div>
-            </div>
-            <div id="trevorGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 2rem;">
-                <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
-                    Loading Trevor chaos videos...
-                </div>
-            </div>
+            <!-- Trevor content will be loaded here -->
         </div>
 
         <!-- RDR2 Tab -->
         <div id="rdr2" class="tab-content">
-            <h2 style="color: var(--primary-color);">🤠 Red Dead Redemption 2 & GTA Connection</h2>
-            <div class="stats-grid" style="margin-bottom: 2rem;">
-                <div class="stat-card">
-                    <span class="stat-number" id="rdr2VideoCount">Loading...</span>
-                    <div>RDR2 Videos</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="rdr2Views">Loading...</span>
-                    <div>Total Views</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="rdr2Channels">Loading...</span>
-                    <div>Channels</div>
-                </div>
-                <div class="stat-card premium">
-                    <span class="stat-number">WILD</span>
-                    <div>West Mode</div>
-                </div>
-            </div>
-            <div id="rdr2Grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 2rem;">
-                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                    Loading RDR2 videos...
-                </div>
-            </div>
+            <!-- RDR2 content will be loaded here -->
         </div>
 
         <!-- Rumors Tab -->
         <div id="rumors" class="tab-content">
-            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🔥 GTA 6 Rumors & Leaks</h2>
-            
-            <!-- Rumors Stats -->        
-            <div class="stats-grid" style="margin-bottom: 2rem;">
-                <div class="stat-card">
-                    <span class="stat-number" id="rumorsCount">Loading...</span>
-                    <div>Active Rumors</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="rumorSources">Loading...</span>
-                    <div>Sources</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="rumorCredibility">Loading...</span>
-                    <div>Avg Credibility</div>
-                </div>
-                <div class="stat-card premium">
-                    <span class="stat-number">HOT</span>
-                    <div>Trending</div>
-                </div>
-            </div>
-
-            <!-- Rumors Content Area -->
-            <div id="rumorsContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
-                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                    Loading latest rumors and leaks...
-                </div>
-            </div>
+            <!-- Rumors content will be loaded here -->
         </div>
 
         <!-- Chat Tab -->
         <div id="chat" class="tab-content">
-            <h2 style="color: var(--primary-color);">💬 Live Community Chat</h2>
-            <div style="background: var(--card-bg); border-radius: 12px; margin: 1rem 0; overflow: hidden;">
-                <div style="background: var(--gradient-primary); padding: 1rem; color: white;">
-                    <strong>Live Chat</strong> - <span>847 online</span>
-                </div>
-                <div style="height: 300px; overflow-y: auto; padding: 1rem;" id="chatMessages">
-                    <div style="padding: 0.5rem; margin: 0.5rem 0; background: rgba(255,255,255,0.05); border-radius: 8px;">
-                        <div style="color: var(--primary-color); font-weight: 600; font-size: 0.8rem;">GTAFan2024</div>
-                        <div>Anyone else think the new trailer hints are getting more obvious?</div>
-                    </div>
-                    <div style="padding: 0.5rem; margin: 0.5rem 0; background: rgba(255,255,255,0.05); border-radius: 8px;">
-                        <div style="color: var(--gold-color); font-weight: 600; font-size: 0.8rem;">ViceCityKing</div>
-                        <div>The countdown is killing me! Can't wait any longer! 🔥</div>
-                    </div>
-                </div>
-                <div style="display: flex; padding: 1rem; gap: 0.5rem;">
-                    <input type="text" id="chatInput" placeholder="Type your message..." style="flex: 1; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 20px; background: var(--bg-color); color: var(--text-color); outline: none;">
-                    <button onclick="sendChatMessage()" style="background: var(--gradient-primary); border: none; color: white; padding: 0.75rem 1rem; border-radius: 20px; cursor: pointer;">Send</button>
-                </div>
-            </div>
+            <!-- Chat content will be loaded here -->
         </div>
         
-        <!-- Theories Tab - Enhanced with Real API Content & Community Features -->
+        <!-- Theories Tab -->
         <div id="theories" class="tab-content">
-            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🧠 Community Theories</h2>
-            
-            <!-- Theory Stats -->
-            <div class="stats-grid" style="margin-bottom: 2rem;">
-                <div class="stat-card">
-                    <span class="stat-number" id="theoryCount">Loading...</span>
-                    <div>Total Theories</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="topTheoryVotes">Loading...</span>
-                    <div>Top Theory Votes</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="activeContributors">45</span>
-                    <div>Contributors</div>
-                </div>
-                <div class="stat-card premium">
-                    <span class="stat-number" id="theoryBadges">12</span>
-                    <div>Badges Earned</div>
-                </div>
-            </div>
-
-            <!-- Category Filter -->
-            <div style="display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center;">
-                <button onclick="filterTheories('all')" id="category-all" style="background: var(--primary-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">All</button>
-                <button onclick="filterTheories('gameplay')" id="category-gameplay" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Gameplay</button>
-                <button onclick="filterTheories('map')" id="category-map" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Map</button>
-                <button onclick="filterTheories('characters')" id="category-characters" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Characters</button>
-                <button onclick="filterTheories('easter-eggs')" id="category-easter-eggs" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Easter Eggs</button>
-                <button onclick="filterTheories('story')" id="category-story" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Story</button>
-            </div>
-
-            <!-- Theory Submission -->
-            <div style="background: var(--card-bg); border-radius: 15px; padding: 2rem; margin-bottom: 2rem;">
-                <h3 style="color: var(--primary-color); margin-bottom: 1rem; text-align: center;">💡 Share Your Theory</h3>
-                <div style="display: grid; gap: 1rem;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <input type="text" id="newTheoryUsername" placeholder="Your username" style="background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.75rem; border-radius: 8px; outline: none;">
-                        <select id="newTheoryCategory" style="background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.75rem; border-radius: 8px; outline: none;">
-                            <option value="gameplay">Gameplay</option>
-                            <option value="map">Map</option>
-                            <option value="characters">Characters</option>
-                            <option value="easter-eggs">Easter Eggs</option>
-                            <option value="story">Story</option>
-                        </select>
-                    </div>
-                    <textarea id="newTheoryText" placeholder="Share your theory about GTA 6..." style="background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.75rem; border-radius: 8px; outline: none; height: 120px; resize: vertical;"></textarea>
-                    <input type="url" id="newTheoryImage" placeholder="Image URL (optional)" style="background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.75rem; border-radius: 8px; outline: none;">
-                    <button onclick="submitNewTheory()" style="background: var(--gradient-primary); border: none; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600;">Submit Theory</button>
-                </div>
-            </div>
-
-            <!-- Theories Content Area -->
-            <div id="theoriesContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
-                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                    Loading community theories and analysis...
-                </div>
-            </div>
-
-            <!-- Top Contributors Leaderboard -->
-            <div style="background: var(--card-bg); border-radius: 15px; padding: 2rem; margin-bottom: 2rem;">
-                <h3 style="color: var(--gold-color); margin-bottom: 1rem; text-align: center;">🏆 Top Theory Contributors</h3>
-                <div id="contributorsLeaderboard" style="display: grid; gap: 0.5rem;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="color: var(--gold-color); font-weight: bold;">#1</span>
-                            <span style="color: var(--primary-color);">GTATheoryMaster</span>
-                            <span style="background: var(--gold-color); color: black; padding: 0.2rem 0.4rem; border-radius: 8px; font-size: 0.7rem;">LEGEND</span>
-                        </div>
-                        <span style="color: var(--text-color); font-weight: 600;">1,247 votes</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="color: var(--secondary-color); font-weight: bold;">#2</span>
-                            <span style="color: var(--primary-color);">ViceCity2026</span>
-                            <span style="background: var(--secondary-color); color: white; padding: 0.2rem 0.4rem; border-radius: 8px; font-size: 0.7rem;">EXPERT</span>
-                        </div>
-                        <span style="color: var(--text-color); font-weight: 600;">892 votes</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="color: var(--accent-color); font-weight: bold;">#3</span>
-                            <span style="color: var(--primary-color);">ArchitecturalGamer</span>
-                            <span style="background: var(--accent-color); color: white; padding: 0.2rem 0.4rem; border-radius: 8px; font-size: 0.7rem;">ANALYST</span>
-                        </div>
-                        <span style="color: var(--text-color); font-weight: 600;">445 votes</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Newsletter Signup -->
-            <div style="background: linear-gradient(135deg, var(--accent-color), var(--gold-color)); border-radius: 15px; padding: 2rem; text-align: center;">
-                <h3 style="margin-bottom: 1rem;">📬 Theory Digest Newsletter</h3>
-                <p style="margin-bottom: 1rem; opacity: 0.9;">Get weekly roundups of the best community theories!</p>
-                <div style="display: flex; gap: 0.5rem; max-width: 400px; margin: 0 auto; flex-wrap: wrap;">
-                    <input type="email" id="theoryEmail" placeholder="Enter your email" style="flex: 1; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 0.75rem; border-radius: 8px; outline: none; min-width: 200px;" onkeypress="if(event.key==='Enter') subscribeTheoryDigest()">
-                    <button onclick="subscribeTheoryDigest()" style="background: white; color: var(--accent-color); border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600; white-space: nowrap;">Subscribe</button>
-                </div>
-            </div>
+            <!-- Theories content will be loaded here -->
         </div>   
         
         <div id="shop" class="tab-content">
-            <h2 style="color: var(--primary-color);">🛒 GTAFastLane Shop</h2>
-            <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                Shop coming soon...
-            </div>
+            <!-- Shop content will be loaded here -->
         </div>
         
         <div id="premium" class="tab-content">
-            <h2 style="color: var(--gold-color);">👑 Premium Features</h2>
-            <div style="text-align: center; padding: 2rem; color: var(--gold-color);">
-                Premium features coming soon...
-            </div>
+            <!-- Premium content will be loaded here -->
         </div>
     </main>
 
