@@ -747,143 +747,28 @@
         </div>
 
         <!-- News Tab -->
-     <h2 style="color: var(--primary-color);">🎮 GTA 6 - Vice City Dreams</h2>
+<h2 style="color: var(--primary-color); margin-bottom: 1rem;">📰 Latest GTA 6 News</h2>
 
 <div class="stats-grid" style="margin-bottom: 2rem;">
     <div class="stat-card">
-        <span class="stat-number" id="ytVideoCount">Loading...</span>
-        <div>Videos Found</div>
+        <span class="stat-number" id="newsCount">Loading...</span>
+        <div>Recent Articles</div>
     </div>
     <div class="stat-card">
-        <span class="stat-number" id="ytTotalViews">Loading...</span>
-        <div>Total Views</div>
+        <span class="stat-number" id="newsWeekly">Loading...</span>
+        <div>Weekly Stories</div>
     </div>
     <div class="stat-card">
-        <span class="stat-number" id="ytChannelCount">Loading...</span>
-        <div>Channels</div>
+        <span class="stat-number" id="newsSources">Loading...</span>
+        <div>News Sources</div>
     </div>
     <div class="stat-card premium">
         <span class="stat-number">LIVE</span>
-        <div>Streaming</div>
+        <div>Updates</div>
     </div>
 </div>
 
-<div style="display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center;">
-    <button onclick="searchGTAVideos('GTA 6 Grand Theft Auto VI')" style="background: var(--primary-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">GTA 6</button>
-    <button onclick="searchGTAVideos('GTA 6 trailer analysis')" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Analysis</button>
-    <button onclick="searchGTAVideos('GTA 6 leaks rumors')" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Leaks</button>
-    <button onclick="searchGTAVideos('GTA 6 Vice City')" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Vice City</button>
-</div>
-
-<div id="youtubeGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 2rem;">
-    <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-        Loading GTA 6 videos...
-    </div>
-</div>
-
-<script>
-async function searchGTAVideos(query) {
-    try {
-        const container = document.getElementById('youtubeGrid');
-        if (!container) return;
-
-        container.innerHTML = `
-            <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid var(--primary-color); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                <div style="margin-top: 1rem;">Loading ${query} videos...</div>
-            </div>
-        `;
-
-        const apiKey = 'AIzaSyB1Hx3EJD1N_jyJ01E131pUA3RqZvLNOZU';
-        const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&q=${encodeURIComponent(query)}&part=snippet&type=video&maxResults=24&order=relevance&safeSearch=none&regionCode=US`;
-        
-        const response = await fetch(apiUrl);
-        
-        if (!response.ok) {
-            throw new Error(`YouTube API Error: ${response.status} ${response.statusText}`);
-        }
-        
-        const data = await response.json();
-        
-        if (data.items && data.items.length > 0) {
-            displayGTAVideos(data.items, container);
-            updateGTAVideoStats(data.items);
-            showNotification(`✅ Loaded ${data.items.length} videos!`);
-            awardRewards(20, 5, `Loaded ${query} videos`);
-        } else {
-            throw new Error('No videos found');
-        }
-        
-    } catch (error) {
-        console.error('YouTube fetch error:', error);
-        const container = document.getElementById('youtubeGrid');
-        if (container) {
-            container.innerHTML = `
-                <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
-                    <h3>YouTube API Error</h3>
-                    <p>${error.message}</p>
-                    <button onclick="searchGTAVideos('${query}')" style="background: var(--primary-color); border: none; color: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">Retry</button>
-                </div>
-            `;
-        }
-    }
-}
-
-function displayGTAVideos(videos, container) {
-    if (!container) return;
-    
-    container.innerHTML = videos.map(video => {
-        const videoId = video.id.videoId;
-        const thumbnail = video.snippet.thumbnails.medium?.url || video.snippet.thumbnails.default?.url;
-        const title = video.snippet.title;
-        const channelTitle = video.snippet.channelTitle;
-        const publishedAt = new Date(video.snippet.publishedAt);
-        const timeAgo = getTimeAgo(publishedAt);
-        
-        return `
-            <div style="background: var(--card-bg); border-radius: 12px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; border: 1px solid var(--border-color);" 
-                 onclick="window.open('https://youtube.com/watch?v=${videoId}', '_blank')"
-                 onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 25px rgba(0,255,162,0.2)'"
-                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                <div style="position: relative; aspect-ratio: 16/9; background: url('${thumbnail}') center/cover; background-color: var(--card-bg);">
-                    <div style="position: absolute; background: rgba(255,0,0,0.9); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: all 0.3s ease;">▶</div>
-                    <div style="position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.8); color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;">HD</div>
-                </div>
-                <div style="padding: 1rem;">
-                    <h4 style="margin-bottom: 0.5rem; color: var(--text-color); font-size: 0.9rem; line-height: 1.3; height: 2.6em; overflow: hidden;">${title}</h4>
-                    <div style="color: var(--primary-color); font-size: 0.8rem; margin-bottom: 0.25rem;">${channelTitle}</div>
-                    <div style="color: rgba(255,255,255,0.6); font-size: 0.7rem;">${timeAgo}</div>
-                </div>
-            </div>
-        `;
-    }).join('');
-}
-
-function updateGTAVideoStats(videos) {
-    try {
-        const videoCount = videos.length;
-        const channelCount = new Set(videos.map(v => v.snippet.channelTitle)).size;
-        const totalViews = Math.floor(Math.random() * 10000000) + 1000000;
-        
-        const ytVideoCountEl = document.getElementById('ytVideoCount');
-        const ytTotalViewsEl = document.getElementById('ytTotalViews');
-        const ytChannelCountEl = document.getElementById('ytChannelCount');
-        
-        if (ytVideoCountEl) ytVideoCountEl.textContent = videoCount;
-        if (ytTotalViewsEl) ytTotalViewsEl.textContent = formatNumber(totalViews);
-        if (ytChannelCountEl) ytChannelCountEl.textContent = channelCount;
-    } catch (error) {
-        console.warn('Video stats update error:', error);
-    }
-}
-
-// Auto-load when tab becomes active
-setTimeout(() => {
-    if (document.querySelector('#youtube.active')) {
-        searchGTAVideos('GTA 6 Grand Theft Auto VI');
-    }
-}, 100);
-</script>
+<div style="display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; justify-content
         <!-- YouTube Tab -->
         <div id="youtube" class="tab-content">
             <!-- YouTube content will be loaded here -->
@@ -2124,6 +2009,7 @@ setTimeout(() => {
 
 </body>
 </html>
+
 
 
 
