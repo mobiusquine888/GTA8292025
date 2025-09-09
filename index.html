@@ -621,7 +621,7 @@
        <div class="trailer-link" style="max-width: 600px; margin: 1rem auto; position: relative;">
     <!-- Preview Card -->
     <div id="trailerPreview" style="position: relative; aspect-ratio: 16/9; overflow: hidden; border-radius: 12px; cursor: pointer; transition: transform 0.3s ease;">
-        <div style="position: absolute; inset: 0; background: linear-gradient(45deg, #FF6B6B 0%, #4ECDC4 25%, #45B7D1 50%, #96CEB4 75%, #FFEAA7 100%); display: flex; align-items: center; justify-content: center;">
+        <div style="position: absolute; inset: 0; background: url('https://i.imgur.com/6XMiwo2.jpg') center/cover; display: flex; align-items: center; justify-content: center;">
             <div style="text-align: center; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); z-index: 2;">
                 <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(1.2rem, 3vw, 2.5rem); font-weight: 900; margin-bottom: 0.5rem; letter-spacing: 2px;">GRAND THEFT AUTO</div>
                 <div style="font-size: clamp(2rem, 5vw, 4rem); font-weight: 900; margin-bottom: 0.5rem; text-shadow: 3px 3px 6px rgba(0,0,0,0.9);">VI</div>
@@ -638,7 +638,7 @@
 
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,0,0,0.9); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; transition: all 0.3s ease; z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.3);" class="play-button">▶</div>
         <div style="position: absolute; bottom: 12px; left: 12px; background: rgba(0,0,0,0.8); color: white; padding: 6px 10px; border-radius: 4px; font-size: 12px; font-weight: 600;">Official Trailer</div>
-        <div style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">1:30</div>
+        <div style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">2:47</div>
         <div style="position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s ease; background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);" class="overlay"></div>
     </div>
 
@@ -747,7 +747,7 @@
         </div>
 
         <!-- News Tab -->
-        <h2 style="color: var(--primary-color); margin-bottom: 1rem;">📰 Latest GTA 6 News</h2>
+       <h2 style="color: var(--primary-color); margin-bottom: 1rem;">📰 Latest GTA 6 News</h2>
 
 <div class="stats-grid" style="margin-bottom: 2rem;">
     <div class="stat-card">
@@ -769,6 +769,11 @@
 </div>
 
 <div style="display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; justify-content
+        <!-- YouTube Tab -->
+        <div id="youtube" class="tab-content">
+            <!-- YouTube content will be loaded here -->
+        </div>
+
         <!-- Challenges Tab -->
         <div id="challenges" class="tab-content">
             <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🎯 GTA Challenges & Mini-Games</h2>
@@ -847,31 +852,9 @@
         </div>
 
         <!-- Rumors Tab -->
-       <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🔥 GTA 6 Rumors & Leaks</h2>
-
-<!-- Rumors Stats -->        
-<div class="stats-grid" style="margin-bottom: 2rem;">
-    <div class="stat-card">
-        <span class="stat-number" id="rumorsCount">Loading...</span>
-        <div>Active Rumors</div>
-    </div>
-    <div class="stat-card">
-        <span class="stat-number" id="rumorSources">Loading...</span>
-        <div>Sources</div>
-    </div>
-    <div class="stat-card">
-        <span class="stat-number" id="rumorCredibility">Loading...</span>
-        <div>Avg Credibility</div>
-    </div>
-    <div class="stat-card premium">
-        <span class="stat-number">HOT</span>
-        <div>Trending</div>
-    </div>
-</div>
-
-<!-- Credibility Filter -->
-<div style="display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center;">
-    <button onclick="filterRumors('all'
+        <div id="rumors" class="tab-content">
+            <!-- Rumors content will be loaded here -->
+        </div>
 
         <!-- Chat Tab -->
         <div id="chat" class="tab-content">
@@ -2004,10 +1987,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
