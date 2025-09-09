@@ -771,6 +771,37 @@
 </div>
 
 <!-- News Content Area -->
+ <h2 style="color: var(--primary-color); margin-bottom: 1rem;">📰 Latest GTA 6 News</h2>
+
+<!-- News Stats -->
+<div class="stats-grid" style="margin-bottom: 2rem;">
+    <div class="stat-card">
+        <span class="stat-number" id="newsCount">Loading...</span>
+        <div>Recent Articles</div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number" id="newsWeekly">Loading...</span>
+        <div>Weekly Stories</div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number" id="newsSources">Loading...</span>
+        <div>News Sources</div>
+    </div>
+    <div class="stat-card premium">
+        <span class="stat-number">BREAKING</span>
+        <div>Live Updates</div>
+    </div>
+</div>
+
+<!-- Source Filter -->
+<div style="display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center;">
+    <button onclick="filterNews('all')" id="filter-all" style="background: var(--primary-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">All Sources</button>
+    <button onclick="filterNews('news')" id="filter-news" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">News Sites</button>
+    <button onclick="filterNews('reddit')" id="filter-reddit" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">Reddit</button>
+    <button onclick="filterNews('youtube')" id="filter-youtube" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">YouTube</button>
+</div>
+
+<!-- News Content Area -->
 <div id="newsContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
     <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
         Loading latest GTA 6 news and updates...
@@ -778,7 +809,10 @@
 </div>
 
 <script>
-// News API function using Netlify serverless function
+let allNewsArticles = [];
+let currentFilter = 'all';
+
+// Fetch news from multiple sources
 async function fetchGTA6News() {
     try {
         const newsContainer = document.getElementById('newsContainer');
@@ -788,27 +822,74 @@ async function fetchGTA6News() {
         newsContainer.innerHTML = `
             <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
                 <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid var(--primary-color); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                <div style="margin-top: 1rem;">Loading latest GTA 6 news...</div>
+                <div style="margin-top: 1rem;">Loading latest GTA 6 news from all sources...</div>
             </div>
         `;
 
-        // Use your Netlify serverless function
-        const response = await fetch('/.netlify/functions/news?query=GTA 6&pageSize=100');
-        
-        if (!response.ok) {
-            throw new Error(`Netlify Function Error: ${response.status} ${response.statusText}`);
+        // Fetch from multiple sources
+        const [newsArticles, redditPosts, youtubeVideos] = await Promise.allSettled([
+            fetchNewsArticles(),
+            fetchRedditPosts(), 
+            fetchYouTubeArticles()
+        ]);
+
+        let combinedArticles = [];
+
+        // Process news articles
+        if (newsArticles.status === 'fulfilled' && newsArticles.value) {
+            combinedArticles = combinedArticles.concat(
+                newsArticles.value.map(article => ({
+                    ...article,
+                    sourceType: 'news',
+                    sourceIcon: '📰'
+                }))
+            );
         }
-        
-        const articles = await response.json();
-        console.log('News Function Response:', articles);
-        
-        if (articles && articles.length > 0) {
-            displayNewsArticles(articles, newsContainer);
-            updateNewsStats(articles);
-            showNotification(`📰 Loaded ${articles.length} real news articles!`);
+
+        // Process Reddit posts
+        if (redditPosts.status === 'fulfilled' && redditPosts.value) {
+            combinedArticles = combinedArticles.concat(
+                redditPosts.value.map(post => ({
+                    title: post.title,
+                    description: post.selftext ? post.selftext.substring(0, 200) + '...' : 'Reddit discussion post',
+                    url: `https://reddit.com${post.permalink}`,
+                    urlToImage: post.thumbnail && post.thumbnail !== 'self' ? post.thumbnail : null,
+                    publishedAt: new Date(post.created_utc * 1000).toISOString(),
+                    source: { name: `r/${post.subreddit}` },
+                    sourceType: 'reddit',
+                    sourceIcon: '🔴'
+                }))
+            );
+        }
+
+        // Process YouTube videos
+        if (youtubeVideos.status === 'fulfilled' && youtubeVideos.value) {
+            combinedArticles = combinedArticles.concat(
+                youtubeVideos.value.map(video => ({
+                    title: video.snippet.title,
+                    description: video.snippet.description.substring(0, 200) + '...',
+                    url: `https://youtube.com/watch?v=${video.id.videoId}`,
+                    urlToImage: video.snippet.thumbnails.medium?.url,
+                    publishedAt: video.snippet.publishedAt,
+                    source: { name: video.snippet.channelTitle },
+                    sourceType: 'youtube',
+                    sourceIcon: '📺'
+                }))
+            );
+        }
+
+        // Sort by date and limit to 100
+        allNewsArticles = combinedArticles
+            .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
+            .slice(0, 100);
+
+        if (allNewsArticles.length > 0) {
+            displayFilteredNews();
+            updateNewsStats(allNewsArticles);
+            showNotification(`📰 Loaded ${allNewsArticles.length} articles from all sources!`);
             awardRewards(15, 4, 'Loaded latest news');
         } else {
-            throw new Error('No articles found in response');
+            throw new Error('No articles found from any source');
         }
         
     } catch (error) {
@@ -817,11 +898,9 @@ async function fetchGTA6News() {
         if (newsContainer) {
             newsContainer.innerHTML = `
                 <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
-                    <h3>📰 News API Error</h3>
+                    <h3>📰 News Loading Error</h3>
                     <p style="margin: 1rem 0; font-size: 0.9rem;">
-                        ${error.message.includes('404') ? 'Netlify function not found. Make sure news.js is in netlify/functions/ folder.' : 
-                          error.message.includes('500') ? 'Server error. Check your NEWS_API_KEY environment variable in Netlify.' :
-                          'Unable to load news. Check console for details.'}
+                        Unable to load news from all sources. Some sources may be unavailable.
                     </p>
                     <button onclick="fetchGTA6News()" 
                             style="background: var(--primary-color); border: none; color: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">
@@ -833,11 +912,85 @@ async function fetchGTA6News() {
     }
 }
 
-// Display news articles
-function displayNewsArticles(articles, container) {
-    if (!container) return;
+// Fetch from News API
+async function fetchNewsArticles() {
+    try {
+        const response = await fetch('/.netlify/functions/news');
+        if (!response.ok) throw new Error('News API failed');
+        return await response.json();
+    } catch (error) {
+        console.warn('News API failed:', error);
+        return [];
+    }
+}
+
+// Fetch Reddit posts
+async function fetchRedditPosts() {
+    try {
+        const response = await fetch('https://www.reddit.com/r/GTA6+GrandTheftAutoVI+gaming/search.json?q=GTA%206&sort=new&limit=25&t=week');
+        if (!response.ok) throw new Error('Reddit API failed');
+        const data = await response.json();
+        return data.data.children.map(child => child.data);
+    } catch (error) {
+        console.warn('Reddit API failed:', error);
+        return [];
+    }
+}
+
+// Fetch YouTube videos
+async function fetchYouTubeArticles() {
+    try {
+        const apiKey = 'AIzaSyB1Hx3EJD1N_jyJ01E131pUA3RqZvLNOZU';
+        const response = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&q=GTA%206%20news&part=snippet&type=video&maxResults=25&order=date`);
+        if (!response.ok) throw new Error('YouTube API failed');
+        const data = await response.json();
+        return data.items;
+    } catch (error) {
+        console.warn('YouTube API failed:', error);
+        return [];
+    }
+}
+
+// Filter news by source type
+function filterNews(sourceType) {
+    currentFilter = sourceType;
     
-    container.innerHTML = articles.map(article => {
+    // Update filter buttons
+    document.querySelectorAll('[id^="filter-"]').forEach(btn => {
+        btn.style.background = 'var(--card-bg)';
+        btn.style.color = 'var(--text-color)';
+    });
+    
+    const activeBtn = document.getElementById(`filter-${sourceType}`);
+    if (activeBtn) {
+        activeBtn.style.background = 'var(--primary-color)';
+        activeBtn.style.color = 'black';
+    }
+    
+    displayFilteredNews();
+    showNotification(`Filtered to ${sourceType === 'all' ? 'all sources' : sourceType}`);
+}
+
+// Display filtered news
+function displayFilteredNews() {
+    const newsContainer = document.getElementById('newsContainer');
+    if (!newsContainer) return;
+    
+    let filteredArticles = allNewsArticles;
+    if (currentFilter !== 'all') {
+        filteredArticles = allNewsArticles.filter(article => article.sourceType === currentFilter);
+    }
+    
+    if (filteredArticles.length === 0) {
+        newsContainer.innerHTML = `
+            <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
+                No articles found for this filter. Try a different source.
+            </div>
+        `;
+        return;
+    }
+    
+    newsContainer.innerHTML = filteredArticles.map(article => {
         const colors = ['var(--primary-color)', 'var(--warning-color)', 'var(--secondary-color)', 'var(--accent-color)'];
         const borderColor = colors[Math.floor(Math.random() * colors.length)];
         const publishedDate = new Date(article.publishedAt);
@@ -856,7 +1009,7 @@ function displayNewsArticles(articles, container) {
                 <p style="color: rgba(255,255,255,0.8); line-height: 1.5; margin-bottom: 1rem; font-size: 0.9rem;">${article.description || 'No description available'}</p>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div style="display: flex; flex-direction: column; gap: 0.25rem;">
-                        <span style="color: var(--primary-color); font-size: 0.8rem; font-weight: 600;">${sourceName}</span>
+                        <span style="color: var(--primary-color); font-size: 0.8rem; font-weight: 600;">${article.sourceIcon} ${sourceName}</span>
                         <span style="color: rgba(255,255,255,0.6); font-size: 0.7rem;">${timeAgo}</span>
                     </div>
                     <span style="color: var(--primary-color); font-size: 0.8rem;">Read more →</span>
@@ -886,12 +1039,13 @@ function updateNewsStats(articles) {
 }
 
 // Auto-load news when this tab becomes active
-if (document.querySelector('#news.active')) {
-    fetchGTA6News();
-}
-</script>
-        </div>
-       
+setTimeout(() => {
+    if (document.querySelector('#news.active')) {
+        fetchGTA6News();
+    }
+}, 100);
+</script>  
+            
         <!-- YouTube Tab -->
         <div id="youtube" class="tab-content">
             <!-- YouTube content will be loaded here -->
@@ -2110,3 +2264,4 @@ if (document.querySelector('#news.active')) {
 
 </body>
 </html>
+
