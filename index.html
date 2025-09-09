@@ -967,9 +967,31 @@ setTimeout(() => {
         </div>
 
         <!-- Rumors Tab -->
-        <div id="rumors" class="tab-content">
-            <!-- Rumors content will be loaded here -->
-        </div>
+       <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🔥 GTA 6 Rumors & Leaks</h2>
+
+<!-- Rumors Stats -->        
+<div class="stats-grid" style="margin-bottom: 2rem;">
+    <div class="stat-card">
+        <span class="stat-number" id="rumorsCount">Loading...</span>
+        <div>Active Rumors</div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number" id="rumorSources">Loading...</span>
+        <div>Sources</div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number" id="rumorCredibility">Loading...</span>
+        <div>Avg Credibility</div>
+    </div>
+    <div class="stat-card premium">
+        <span class="stat-number">HOT</span>
+        <div>Trending</div>
+    </div>
+</div>
+
+<!-- Credibility Filter -->
+<div style="display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center;">
+    <button onclick="filterRumors('all'
 
         <!-- Chat Tab -->
         <div id="chat" class="tab-content">
@@ -2102,6 +2124,7 @@ setTimeout(() => {
 
 </body>
 </html>
+
 
 
 
