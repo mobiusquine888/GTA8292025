@@ -133,12 +133,12 @@ const ImpactConnect = () => {
 
   const Header = () => (
     <div className="relative overflow-hidden">
+      {/* Animated background */}
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-cyan-400 to-blue-400 bg-opacity-20 rounded-full blur-xl animate-bounce"></div>
-          <div className="absolute top-40 right-16 w-24 h-24 bg-gradient-to-r from-pink-400 to-purple-400 bg-opacity-20 rounded-full blur-xl animate-bounce"></div>
-          <div className="absolute top-60 left-1/3 w-20 h-20 bg-gradient-to-r from-green-400 to-emerald-400 bg-opacity-20 rounded-full blur-xl animate-bounce"></div>
-        </div>
+        {/* Floating orbs */}
+        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-cyan-400 to-blue-400 bg-opacity-20 rounded-full blur-xl animate-bounce"></div>
+        <div className="absolute top-40 right-16 w-24 h-24 bg-gradient-to-r from-pink-400 to-purple-400 bg-opacity-20 rounded-full blur-xl animate-bounce"></div>
+        <div className="absolute top-60 left-1/3 w-20 h-20 bg-gradient-to-r from-green-400 to-emerald-400 bg-opacity-20 rounded-full blur-xl animate-bounce"></div>
       </div>
 
       <div className="relative z-10 p-6 pb-8">
@@ -224,14 +224,17 @@ const ImpactConnect = () => {
         onMouseEnter={() => setHoverCard(item.id)}
         onMouseLeave={() => setHoverCard(null)}
       >
+        {/* Glassmorphism overlay effect */}
         <div className="absolute inset-0 bg-gradient-to-br from-white from-opacity-20 to-transparent pointer-events-none"></div>
         
         <div className="relative">
           <div className="relative overflow-hidden">
             <img src={item.image} alt={item.title} className="w-full h-56 object-cover" />
             
+            {/* Overlay gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-black from-opacity-60 via-transparent to-transparent"></div>
             
+            {/* Top badges */}
             <div className="absolute top-4 left-4 flex gap-2">
               <span className={`px-3 py-1 rounded-full text-xs font-black backdrop-blur-md border border-white border-opacity-30 ${
                 item.urgency === 'critical' ? 'bg-red-500 bg-opacity-90 text-white' :
@@ -251,6 +254,7 @@ const ImpactConnect = () => {
               )}
             </div>
 
+            {/* Top right badges */}
             <div className="absolute top-4 right-4 flex flex-col gap-2">
               {item.verified && (
                 <div className="bg-blue-500 bg-opacity-90 backdrop-blur-md border border-white border-opacity-30 text-white p-2 rounded-full">
@@ -269,6 +273,7 @@ const ImpactConnect = () => {
               )}
             </div>
 
+            {/* Bottom overlay info */}
             <div className="absolute bottom-4 left-4 right-4">
               <div className="flex items-center gap-2 mb-2">
                 <MapPin size={14} className="text-white text-opacity-80" />
@@ -301,6 +306,7 @@ const ImpactConnect = () => {
             
             <p className="text-gray-700 mb-4 leading-relaxed">{item.description}</p>
             
+            {/* Special features */}
             <div className="flex gap-2 mb-4">
               {item.vrExperience && (
                 <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-bold">
@@ -320,6 +326,7 @@ const ImpactConnect = () => {
                 <span className="text-gray-600 font-semibold">${item.goal.toLocaleString()} goal</span>
               </div>
               
+              {/* Animated progress bar */}
               <div className="relative w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                 <div 
                   className="h-3 rounded-full transition-all duration-1000 ease-out bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
@@ -424,6 +431,7 @@ const ImpactConnect = () => {
       <Header />
       
       <div className="px-6 -mt-8">
+        {/* Main Profile Card */}
         <div className="bg-white bg-opacity-90 backdrop-blur-xl rounded-3xl shadow-2xl p-8 mb-6 border border-white border-opacity-20">
           <div className="text-center mb-8">
             <div className="relative inline-block">
@@ -448,6 +456,7 @@ const ImpactConnect = () => {
             </div>
           </div>
           
+          {/* Impact Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <div className="bg-gradient-to-br from-purple-500 to-indigo-600 p-4 rounded-2xl text-white text-center">
               <DollarSign className="mx-auto mb-2" size={24} />
@@ -472,6 +481,7 @@ const ImpactConnect = () => {
           </div>
         </div>
 
+        {/* Achievement Showcase */}
         <div className="bg-white bg-opacity-90 backdrop-blur-xl rounded-3xl shadow-2xl p-6 mb-6 border border-white border-opacity-20">
           <h3 className="text-xl font-black text-gray-900 mb-6 flex items-center gap-2">
             <Award className="text-yellow-500" />
@@ -499,6 +509,7 @@ const ImpactConnect = () => {
           </button>
         </div>
 
+        {/* Crypto & NFT Section */}
         <div className="bg-white bg-opacity-90 backdrop-blur-xl rounded-3xl shadow-2xl p-6 border border-white border-opacity-20">
           <h3 className="text-xl font-black text-gray-900 mb-6 flex items-center gap-2">
             <CircuitBoard className="text-cyan-500" />
