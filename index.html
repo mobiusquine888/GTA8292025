@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VibeViz - Audio Visualizer Pro</title>
+    <title>VibeViz - Audio Visualizer</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -26,7 +26,7 @@
             top: 0;
             width: 100%;
             background: rgba(0, 0, 0, 0.9);
-            padding: 10px 20px;
+            padding: 15px 20px;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
@@ -42,11 +42,6 @@
             -webkit-text-fill-color: transparent;
         }
         
-        .nav-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        
         /* Control Panel */
         .controls {
             position: fixed;
@@ -58,31 +53,9 @@
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             width: 280px;
-            max-height: calc(100vh - 200px);
+            max-height: calc(100vh - 120px);
             overflow-y: auto;
-        }
-        
-        /* Monetization Panel */
-        .monetization-panel {
-            position: fixed;
-            right: 20px;
-            top: 80px;
-            background: rgba(0, 0, 0, 0.9);
-            padding: 20px;
-            border-radius: 15px;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 320px;
-        }
-        
-        .premium-badge {
-            background: linear-gradient(45deg, #ffd700, #ffed4e);
-            color: #000;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            margin-left: 10px;
+            z-index: 900;
         }
         
         .control-group {
@@ -123,22 +96,15 @@
             transform: translateY(-2px);
         }
         
-        .premium-btn {
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            border: none;
-            font-size: 14px;
-            padding: 12px;
+        .record-btn {
+            background: linear-gradient(45deg, #ef4444, #f97316);
+            font-size: 16px;
+            padding: 15px;
         }
         
         .social-btn {
             background: linear-gradient(45deg, #8b5cf6, #06b6d4);
             margin: 5px 0;
-        }
-        
-        .record-btn {
-            background: linear-gradient(45deg, #ef4444, #f97316);
-            font-size: 16px;
-            padding: 15px;
         }
         
         .hidden { display: none; }
@@ -147,56 +113,6 @@
             color: #4ecdc4;
             font-weight: bold;
             float: right;
-        }
-        
-        .pricing-card {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 10px 0;
-            text-align: center;
-        }
-        
-        .price {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ffd700;
-        }
-        
-        .feature-list {
-            text-align: left;
-            margin: 10px 0;
-        }
-        
-        .feature-list li {
-            margin: 5px 0;
-            font-size: 12px;
-        }
-        
-        .watermark {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 14px;
-            opacity: 0.8;
-        }
-        
-        .locked {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .upgrade-tooltip {
-            background: #ff6b6b;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 5px;
-            font-size: 11px;
-            margin-top: 5px;
         }
         
         .stats {
@@ -212,29 +128,6 @@
             margin: 5px 0;
             font-size: 12px;
         }
-        
-        /* Modal Styles */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal-content {
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-        }
     </style>
 </head>
 <body>
@@ -243,15 +136,11 @@
     <!-- Navigation -->
     <div class="navbar">
         <div class="logo">🎵 VibeViz</div>
-        <div class="nav-buttons">
-            <button onclick="showPricing()">💎 Upgrade to Pro</button>
-            <button onclick="showHelp()">❓ Help</button>
-        </div>
     </div>
     
     <!-- Main Controls -->
     <div class="controls">
-        <h3>🎛️ Controls</h3>
+        <h3>🎛️ Audio Visualizer</h3>
         
         <div class="control-group">
             <button id="startBtn" class="record-btn">🎵 Start Visualizer</button>
@@ -264,13 +153,10 @@
                 <select id="visualStyle">
                     <option value="particles">Particle Storm</option>
                     <option value="waves">Wave Ripples</option>
-                    <option value="bars" class="premium-option">3D Bars ⭐</option>
-                    <option value="tunnel" class="premium-option">Tunnel Vision ⭐</option>
-                    <option value="galaxy" class="premium-option">Galaxy ⭐</option>
+                    <option value="bars">3D Frequency Bars</option>
+                    <option value="tunnel">Tunnel Vision</option>
+                    <option value="galaxy">Galaxy Effect</option>
                 </select>
-                <div id="premiumStyleWarning" class="upgrade-tooltip hidden">
-                    Upgrade to Pro for premium visual styles!
-                </div>
             </div>
             
             <div class="control-group">
@@ -281,19 +167,28 @@
             <div class="control-group">
                 <label>Color Theme:</label>
                 <select id="colorMode">
-                    <option value="rainbow">Rainbow</option>
+                    <option value="rainbow">Rainbow Spectrum</option>
                     <option value="fire">Fire & Ice</option>
-                    <option value="neon" class="premium-option">Neon Nights ⭐</option>
-                    <option value="galaxy" class="premium-option">Space Galaxy ⭐</option>
-                    <option value="custom" class="premium-option">Custom Colors ⭐</option>
+                    <option value="ocean">Ocean Waves</option>
+                    <option value="neon">Neon Nights</option>
+                    <option value="galaxy">Space Galaxy</option>
                 </select>
             </div>
             
             <div class="control-group">
-                <label>Quality: <span class="value-display" id="qualityValue">Medium</span></label>
-                <input type="range" id="quality" min="1" max="3" value="2">
-                <small>High quality requires Pro subscription</small>
+                <label>Particle Count: <span class="value-display" id="particleCountValue">300</span></label>
+                <input type="range" id="particleCount" min="50" max="1000" value="300">
             </div>
+            
+            <div class="control-group">
+                <label>Speed: <span class="value-display" id="speedValue">50</span></label>
+                <input type="range" id="speed" min="10" max="100" value="50">
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <h4>📹 Capture</h4>
+            <button id="screenshotBtn" class="social-btn">📸 Take Screenshot</button>
         </div>
         
         <div class="stats">
@@ -303,125 +198,14 @@
                 <span id="runtime">0:00</span>
             </div>
             <div class="stat-item">
-                <span>Recordings:</span>
-                <span id="recordCount">0</span>
+                <span>Screenshots:</span>
+                <span id="screenshotCount">0</span>
             </div>
-            <div class="stat-item">
-                <span>Shares:</span>
-                <span id="shareCount">0</span>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Monetization Panel -->
-    <div class="monetization-panel">
-        <h3>💰 Monetization Hub</h3>
-        
-        <!-- Recording & Export -->
-        <div class="control-group">
-            <h4>📹 Create Content</h4>
-            <button id="recordBtn" class="record-btn">⏺️ Start Recording</button>
-            <button id="screenshotBtn" class="social-btn">📸 Screenshot</button>
-            <div class="upgrade-tooltip">
-                Free: 10 second clips | Pro: Unlimited recording + 4K export
-            </div>
-        </div>
-        
-        <!-- Social Sharing -->
-        <div class="control-group">
-            <h4>📱 Share & Earn</h4>
-            <button class="social-btn" onclick="shareToTikTok()">🎵 Share to TikTok</button>
-            <button class="social-btn" onclick="shareToInstagram()">📸 Share to Instagram</button>
-            <button class="social-btn" onclick="shareToYouTube()">📺 YouTube Shorts</button>
-            <button class="social-btn" onclick="copyLink()">🔗 Copy Shareable Link</button>
-        </div>
-        
-        <!-- Monetization Options -->
-        <div class="control-group">
-            <h4>💎 Premium Features</h4>
-            <div class="pricing-card">
-                <div class="price">$4.99/mo</div>
-                <ul class="feature-list">
-                    <li>✅ Unlimited recording time</li>
-                    <li>✅ 4K video export</li>
-                    <li>✅ Premium visual styles</li>
-                    <li>✅ Custom branding removal</li>
-                    <li>✅ Advanced audio analysis</li>
-                    <li>✅ Batch export tools</li>
-                </ul>
-                <button class="premium-btn" onclick="upgradeToPro()">Upgrade Now</button>
-            </div>
-        </div>
-        
-        <!-- Affiliate Program -->
-        <div class="control-group">
-            <h4>💰 Earn Money</h4>
-            <button class="social-btn" onclick="joinAffiliate()">🤝 Join Affiliate Program</button>
-            <small>Earn 30% commission on referrals!</small>
-        </div>
-        
-        <!-- Business Features -->
-        <div class="control-group">
-            <h4>🏢 Business Plan</h4>
-            <button onclick="showBusiness()">Enterprise Solutions</button>
-            <small>White-label licensing, API access, custom features</small>
-        </div>
-    </div>
-    
-    <!-- Watermark (Free Version) -->
-    <div class="watermark" id="watermark">
-        Created with VibeViz Free - Remove watermark with Pro
-    </div>
-    
-    <!-- Modals -->
-    <div id="pricingModal" class="modal hidden">
-        <div class="modal-content">
-            <h2>💎 Choose Your Plan</h2>
-            
-            <div class="pricing-card">
-                <h3>Free</h3>
-                <div class="price">$0</div>
-                <ul class="feature-list">
-                    <li>✅ Basic visualizations</li>
-                    <li>✅ 10-second recordings</li>
-                    <li>✅ Standard quality export</li>
-                    <li>❌ Watermark included</li>
-                </ul>
-            </div>
-            
-            <div class="pricing-card">
-                <h3>Pro</h3>
-                <div class="price">$4.99/mo</div>
-                <ul class="feature-list">
-                    <li>✅ All premium visuals</li>
-                    <li>✅ Unlimited recording</li>
-                    <li>✅ 4K quality export</li>
-                    <li>✅ No watermark</li>
-                    <li>✅ Custom branding</li>
-                    <li>✅ Priority support</li>
-                </ul>
-                <button class="premium-btn">Start Free Trial</button>
-            </div>
-            
-            <div class="pricing-card">
-                <h3>Business</h3>
-                <div class="price">$29.99/mo</div>
-                <ul class="feature-list">
-                    <li>✅ Everything in Pro</li>
-                    <li>✅ White-label licensing</li>
-                    <li>✅ API access</li>
-                    <li>✅ Custom development</li>
-                    <li>✅ Team management</li>
-                </ul>
-                <button class="premium-btn">Contact Sales</button>
-            </div>
-            
-            <button onclick="closePricing()" style="margin-top: 20px;">Close</button>
         </div>
     </div>
 
     <script>
-        class VibeVizPro {
+        class AudioVisualizer {
             constructor() {
                 this.canvas = document.getElementById('canvas');
                 this.ctx = this.canvas.getContext('2d');
@@ -430,17 +214,15 @@
                 this.dataArray = null;
                 this.particles = [];
                 this.isRunning = false;
-                this.isPremium = false; // Simulate premium status
-                this.isRecording = false;
                 this.startTime = null;
-                this.recordCount = 0;
-                this.shareCount = 0;
+                this.screenshotCount = 0;
                 
                 this.settings = {
                     sensitivity: 50,
                     visualStyle: 'particles',
                     colorMode: 'rainbow',
-                    quality: 2
+                    particleCount: 300,
+                    speed: 50
                 };
                 
                 this.setupCanvas();
@@ -462,52 +244,31 @@
             setupControls() {
                 document.getElementById('startBtn').addEventListener('click', () => this.start());
                 document.getElementById('demoBtn').addEventListener('click', () => this.playDemo());
-                document.getElementById('recordBtn').addEventListener('click', () => this.toggleRecording());
                 document.getElementById('screenshotBtn').addEventListener('click', () => this.takeScreenshot());
                 
-                // Premium feature restrictions
                 document.getElementById('visualStyle').addEventListener('change', (e) => {
-                    if (this.isPremiumFeature(e.target.value) && !this.isPremium) {
-                        this.showUpgradePrompt('Premium visual styles require Pro subscription!');
-                        e.target.value = 'particles';
-                        return;
-                    }
                     this.settings.visualStyle = e.target.value;
                 });
                 
                 document.getElementById('colorMode').addEventListener('change', (e) => {
-                    if (this.isPremiumFeature(e.target.value) && !this.isPremium) {
-                        this.showUpgradePrompt('Premium color themes require Pro subscription!');
-                        e.target.value = 'rainbow';
-                        return;
-                    }
                     this.settings.colorMode = e.target.value;
-                });
-                
-                document.getElementById('quality').addEventListener('input', (e) => {
-                    if (e.target.value > 2 && !this.isPremium) {
-                        this.showUpgradePrompt('High quality requires Pro subscription!');
-                        e.target.value = 2;
-                        return;
-                    }
-                    this.settings.quality = e.target.value;
-                    document.getElementById('qualityValue').textContent = 
-                        ['Low', 'Medium', 'High', 'Ultra'][e.target.value - 1];
                 });
                 
                 document.getElementById('sensitivity').addEventListener('input', (e) => {
                     this.settings.sensitivity = e.target.value;
                     document.getElementById('sensitivityValue').textContent = e.target.value;
                 });
-            }
-            
-            isPremiumFeature(value) {
-                const premiumFeatures = ['bars', 'tunnel', 'galaxy', 'neon', 'custom'];
-                return premiumFeatures.includes(value);
-            }
-            
-            showUpgradePrompt(message) {
-                alert(message + '\n\nUpgrade to Pro for just $4.99/month!');
+                
+                document.getElementById('particleCount').addEventListener('input', (e) => {
+                    this.settings.particleCount = parseInt(e.target.value);
+                    document.getElementById('particleCountValue').textContent = e.target.value;
+                    this.initParticles();
+                });
+                
+                document.getElementById('speed').addEventListener('input', (e) => {
+                    this.settings.speed = e.target.value;
+                    document.getElementById('speedValue').textContent = e.target.value;
+                });
             }
             
             async start() {
@@ -532,6 +293,7 @@
                 } catch (err) {
                     alert('Microphone access required. Try demo mode instead.');
                     document.getElementById('demoBtn').classList.remove('hidden');
+                    document.getElementById('mainControls').classList.remove('hidden');
                 }
             }
             
@@ -543,15 +305,15 @@
                 
                 // Create rich demo audio
                 const oscillators = [];
-                const frequencies = [220, 330, 440, 550, 660];
+                const frequencies = [220, 330, 440, 550, 660, 880];
                 
                 frequencies.forEach((freq, i) => {
                     const osc = this.audioContext.createOscillator();
                     const gain = this.audioContext.createGain();
                     
                     osc.frequency.setValueAtTime(freq, this.audioContext.currentTime);
-                    osc.type = ['sine', 'triangle', 'sawtooth'][i % 3];
-                    gain.gain.setValueAtTime(0.08, this.audioContext.currentTime);
+                    osc.type = ['sine', 'triangle', 'sawtooth', 'square'][i % 4];
+                    gain.gain.setValueAtTime(0.06, this.audioContext.currentTime);
                     
                     osc.connect(gain);
                     gain.connect(this.analyser);
@@ -564,11 +326,11 @@
                 // Dynamic demo animation
                 let time = 0;
                 const updateDemo = () => {
-                    time += 0.05;
+                    time += 0.03;
                     oscillators.forEach((item, i) => {
-                        const modulation = Math.sin(time * 2 + i) * 0.4 + 0.6;
-                        item.gain.gain.setValueAtTime(modulation * 0.08, this.audioContext.currentTime);
-                        const freqMod = 1 + Math.sin(time + i * 0.7) * 0.3;
+                        const modulation = Math.sin(time * 2 + i * 0.8) * 0.4 + 0.6;
+                        const freqMod = 1 + Math.sin(time * 1.5 + i * 0.5) * 0.4;
+                        item.gain.gain.setValueAtTime(modulation * 0.06, this.audioContext.currentTime);
                         item.osc.frequency.setValueAtTime(item.baseFreq * freqMod, this.audioContext.currentTime);
                     });
                 };
@@ -578,54 +340,27 @@
                 setTimeout(() => {
                     oscillators.forEach(item => item.osc.stop());
                     clearInterval(demoInterval);
-                }, 30000);
+                    alert('Demo ended - click "Start Visualizer" for live microphone input!');
+                }, 45000);
                 
                 this.isRunning = true;
                 this.startTime = Date.now();
                 this.animate();
             }
             
-            toggleRecording() {
-                if (!this.isRecording) {
-                    if (!this.isPremium && this.recordCount >= 3) {
-                        this.showUpgradePrompt('Free users limited to 3 recordings per day!');
-                        return;
-                    }
-                    this.startRecording();
-                } else {
-                    this.stopRecording();
-                }
-            }
-            
-            startRecording() {
-                this.isRecording = true;
-                this.recordCount++;
-                document.getElementById('recordBtn').innerHTML = '⏹️ Stop Recording';
-                document.getElementById('recordCount').textContent = this.recordCount;
-                
-                // Simulate recording
-                if (!this.isPremium) {
-                    setTimeout(() => {
-                        this.stopRecording();
-                        alert('Free version limited to 10 seconds. Upgrade for unlimited recording!');
-                    }, 10000);
-                }
-            }
-            
-            stopRecording() {
-                this.isRecording = false;
-                document.getElementById('recordBtn').innerHTML = '⏺️ Start Recording';
-                
-                // Simulate export options
-                const format = this.isPremium ? '4K MP4' : '720p MP4 (with watermark)';
-                alert(`Recording saved as ${format}!\n\nShare on social media to grow your audience!`);
-            }
-            
             takeScreenshot() {
-                // Simulate screenshot
-                alert('Screenshot saved! Perfect for Instagram stories and posts.');
-                this.shareCount++;
-                document.getElementById('shareCount').textContent = this.shareCount;
+                // Convert canvas to image
+                const link = document.createElement('a');
+                link.download = `vibeViz-${Date.now()}.png`;
+                link.href = this.canvas.toDataURL();
+                link.click();
+                
+                this.screenshotCount++;
+                document.getElementById('screenshotCount').textContent = this.screenshotCount;
+                
+                // Visual feedback
+                this.ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
             }
             
             startStats() {
@@ -641,8 +376,7 @@
             
             initParticles() {
                 this.particles = [];
-                const count = this.settings.quality * 150;
-                for (let i = 0; i < count; i++) {
+                for (let i = 0; i < this.settings.particleCount; i++) {
                     this.particles.push({
                         x: Math.random() * this.canvas.width,
                         y: Math.random() * this.canvas.height,
@@ -650,8 +384,13 @@
                         vy: (Math.random() - 0.5) * 2,
                         size: Math.random() * 3 + 1,
                         hue: Math.random() * 360,
-                        life: 1
+                        life: 1,
+                        originalX: 0,
+                        originalY: 0,
+                        angle: Math.random() * Math.PI * 2
                     });
+                    this.particles[i].originalX = this.particles[i].x;
+                    this.particles[i].originalY = this.particles[i].y;
                 }
             }
             
@@ -663,25 +402,29 @@
                 switch (this.settings.colorMode) {
                     case 'fire':
                         return `hsl(${intensity * 60}, 100%, ${lightness}%)`;
+                    case 'ocean':
+                        return `hsl(${180 + intensity * 60}, 80%, ${lightness}%)`;
                     case 'neon':
                         return `hsl(${(hue + intensity * 180) % 360}, 100%, ${50 + intensity * 25}%)`;
-                    default:
+                    case 'galaxy':
+                        return `hsl(${260 + intensity * 80}, 90%, ${40 + intensity * 30}%)`;
+                    default: // rainbow
                         return `hsl(${hue + intensity * 60}, ${saturation}%, ${lightness}%)`;
                 }
             }
             
             drawParticles(audioData) {
-                const avgIntensity = audioData.reduce((a, b) => a + b, 0) / audioData.length / 255;
+                const speedMultiplier = this.settings.speed / 50;
                 
                 this.particles.forEach((particle, i) => {
                     const audioIndex = Math.floor((i / this.particles.length) * audioData.length);
                     const intensity = (audioData[audioIndex] / 255) * (this.settings.sensitivity / 50);
                     
-                    particle.vx += (Math.random() - 0.5) * intensity * 0.5;
-                    particle.vy += (Math.random() - 0.5) * intensity * 0.5;
+                    particle.vx += (Math.random() - 0.5) * intensity * 0.5 * speedMultiplier;
+                    particle.vy += (Math.random() - 0.5) * intensity * 0.5 * speedMultiplier;
                     particle.x += particle.vx;
                     particle.y += particle.vy;
-                    particle.size = 1 + intensity * 5;
+                    particle.size = 1 + intensity * 6;
                     
                     if (particle.x < 0 || particle.x > this.canvas.width) particle.vx *= -0.8;
                     if (particle.y < 0 || particle.y > this.canvas.height) particle.vy *= -0.8;
@@ -720,6 +463,94 @@
                 }
             }
             
+            drawBars(audioData) {
+                const barWidth = this.canvas.width / audioData.length;
+                
+                for (let i = 0; i < audioData.length; i++) {
+                    const intensity = (audioData[i] / 255) * (this.settings.sensitivity / 50);
+                    const barHeight = intensity * this.canvas.height * 0.8;
+                    
+                    const x = i * barWidth;
+                    const y = this.canvas.height - barHeight;
+                    
+                    const gradient = this.ctx.createLinearGradient(x, y, x, this.canvas.height);
+                    gradient.addColorStop(0, this.getColor(intensity, i));
+                    gradient.addColorStop(1, 'rgba(0,0,0,0.2)');
+                    
+                    this.ctx.fillStyle = gradient;
+                    this.ctx.fillRect(x, y, barWidth - 1, barHeight);
+                    this.ctx.shadowBlur = 10;
+                    this.ctx.shadowColor = this.getColor(intensity, i);
+                    this.ctx.fillRect(x, y, barWidth - 1, Math.min(30, barHeight));
+                }
+            }
+            
+            drawTunnel(audioData) {
+                const centerX = this.canvas.width / 2;
+                const centerY = this.canvas.height / 2;
+                const avgIntensity = audioData.reduce((a, b) => a + b, 0) / audioData.length / 255;
+                
+                for (let ring = 0; ring < 15; ring++) {
+                    const radius = ring * 40 + avgIntensity * 150;
+                    const segments = 24;
+                    
+                    for (let i = 0; i < segments; i++) {
+                        const angle = (i / segments) * Math.PI * 2;
+                        const audioIndex = Math.floor((i / segments) * audioData.length);
+                        const intensity = (audioData[audioIndex] / 255) * (this.settings.sensitivity / 50);
+                        
+                        const innerRadius = radius - intensity * 25;
+                        const outerRadius = radius + intensity * 25;
+                        
+                        this.ctx.beginPath();
+                        this.ctx.arc(centerX, centerY, outerRadius, angle, angle + (Math.PI * 2) / segments);
+                        this.ctx.arc(centerX, centerY, innerRadius, angle + (Math.PI * 2) / segments, angle, true);
+                        this.ctx.closePath();
+                        
+                        this.ctx.fillStyle = this.getColor(intensity, ring * segments + i);
+                        this.ctx.shadowBlur = 5;
+                        this.ctx.shadowColor = this.getColor(intensity, ring * segments + i);
+                        this.ctx.fill();
+                    }
+                }
+            }
+            
+            drawGalaxy(audioData) {
+                const centerX = this.canvas.width / 2;
+                const centerY = this.canvas.height / 2;
+                const time = Date.now() * 0.001;
+                
+                for (let i = 0; i < audioData.length; i++) {
+                    const intensity = (audioData[i] / 255) * (this.settings.sensitivity / 50);
+                    const angle = (i / audioData.length) * Math.PI * 4 + time;
+                    const radius = (i / audioData.length) * Math.min(centerX, centerY) * 0.8;
+                    
+                    const spiralX = centerX + Math.cos(angle) * radius;
+                    const spiralY = centerY + Math.sin(angle) * radius;
+                    
+                    const size = 2 + intensity * 8;
+                    
+                    this.ctx.beginPath();
+                    this.ctx.arc(spiralX, spiralY, size, 0, Math.PI * 2);
+                    this.ctx.fillStyle = this.getColor(intensity, i);
+                    this.ctx.shadowBlur = 15 + intensity * 10;
+                    this.ctx.shadowColor = this.getColor(intensity, i);
+                    this.ctx.fill();
+                    
+                    // Add sparkle effect
+                    if (intensity > 0.5) {
+                        for (let j = 0; j < 3; j++) {
+                            const sparkleX = spiralX + (Math.random() - 0.5) * 20;
+                            const sparkleY = spiralY + (Math.random() - 0.5) * 20;
+                            this.ctx.beginPath();
+                            this.ctx.arc(sparkleX, sparkleY, 1, 0, Math.PI * 2);
+                            this.ctx.fillStyle = `rgba(255, 255, 255, ${intensity})`;
+                            this.ctx.fill();
+                        }
+                    }
+                }
+            }
+            
             animate() {
                 if (!this.isRunning) return;
                 
@@ -738,68 +569,25 @@
                         case 'waves':
                             this.drawWaves(this.dataArray);
                             break;
+                        case 'bars':
+                            this.drawBars(this.dataArray);
+                            break;
+                        case 'tunnel':
+                            this.drawTunnel(this.dataArray);
+                            break;
+                        case 'galaxy':
+                            this.drawGalaxy(this.dataArray);
+                            break;
                     }
-                }
-                
-                // Add recording indicator
-                if (this.isRecording) {
-                    this.ctx.fillStyle = '#ff4444';
-                    this.ctx.beginPath();
-                    this.ctx.arc(50, 50, 10, 0, Math.PI * 2);
-                    this.ctx.fill();
-                    this.ctx.fillStyle = 'white';
-                    this.ctx.font = '14px Arial';
-                    this.ctx.fillText('REC', 70, 55);
                 }
                 
                 requestAnimationFrame(() => this.animate());
             }
         }
         
-        // Global functions for monetization features
-        function shareToTikTok() {
-            alert('🎵 TikTok Integration:\n\n✅ Auto-optimized for 9:16 ratio\n✅ Trending hashtags suggested\n✅ Direct upload to TikTok\n\nUpgrade to Pro to unlock this feature!');
-        }
-        
-        function shareToInstagram() {
-            alert('📸 Instagram Integration:\n\n✅ Stories & Reels format\n✅ Auto-generated captions\n✅ Music sync optimization\n\nThis drives massive engagement and followers!');
-        }
-        
-        function shareToYouTube() {
-            alert('📺 YouTube Shorts Integration:\n\n✅ Perfect vertical format\n✅ Trending music detection\n✅ SEO-optimized titles\n\nMonetize your content with YouTube revenue sharing!');
-        }
-        
-        function copyLink() {
-            alert('🔗 Shareable Link Created!\n\nLink copied to clipboard. Share this to:\n• Get referral commissions\n• Build your audience\n• Drive traffic to your content');
-        }
-        
-        function joinAffiliate() {
-            alert('🤝 Affiliate Program:\n\n💰 Earn 30% on every referral\n💰 Monthly bonus payments\n💰 Special creator perks\n💰 Exclusive access to new features\n\nStart earning money today!');
-        }
-        
-        function upgradeToPro() {
-            alert('💎 Upgrading to Pro unlocks:\n\n📹 Unlimited recording time\n🎨 Premium visual effects\n📱 Social media integrations\n💰 Monetization tools\n🚫 Remove watermarks\n\nJust $4.99/month - Cancel anytime!');
-        }
-        
-        function showPricing() {
-            document.getElementById('pricingModal').classList.remove('hidden');
-        }
-        
-        function closePricing() {
-            document.getElementById('pricingModal').classList.add('hidden');
-        }
-        
-        function showBusiness() {
-            alert('🏢 Business Solutions:\n\n🎯 White-label licensing: $299/month\n🔧 Custom development: $5,000+\n📊 Analytics dashboard: $99/month\n🎪 Event licensing: $199/event\n\nPerfect for:\n• Marketing agencies\n• Event companies  \n• Music venues\n• Content creators');
-        }
-        
-        function showHelp() {
-            alert('❓ How to Make Money:\n\n1️⃣ Create viral visuals with trending music\n2️⃣ Share on TikTok/Instagram with our hashtags\n3️⃣ Build your following\n4️⃣ Join our affiliate program (30% commission)\n5️⃣ Offer custom visualizations as a service\n6️⃣ License for events and businesses\n\nMany users earn $500-2000/month!');
-        }
-        
         // Initialize the app
         window.addEventListener('load', () => {
-            new VibeVizPro();
+            new AudioVisualizer();
         });
     </script>
 </body>
