@@ -363,6 +363,27 @@
                 this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
             }
             
+            showAudioStatus() {
+                setInterval(() => {
+                    if (this.analyser && this.dataArray) {
+                        this.analyser.getByteFrequencyData(this.dataArray);
+                        const average = this.dataArray.reduce((a, b) => a + b, 0) / this.dataArray.length;
+                        const percentage = Math.round((average / 255) * 100);
+                        document.getElementById('audioLevel').textContent = percentage + '%';
+                        
+                        // Change color based on audio level
+                        const levelElement = document.getElementById('audioLevel');
+                        if (percentage > 30) {
+                            levelElement.style.color = '#4ecdc4'; // Good level
+                        } else if (percentage > 10) {
+                            levelElement.style.color = '#ffa500'; // Low level
+                        } else {
+                            levelElement.style.color = '#ff6b6b'; // No audio
+                        }
+                    }
+                }, 100);
+            }
+            
             startStats() {
                 setInterval(() => {
                     if (this.startTime) {
