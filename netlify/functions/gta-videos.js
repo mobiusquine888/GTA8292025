@@ -12,10 +12,9 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({ error: 'YouTube API key not configured' }),
     };
   }
-
   try {
     const query = 'GTA 6 Grand Theft Auto VI news trailer gameplay';
-    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&type=video&maxResults=12&order=relevance&key=${YOUTUBE_API_KEY}`;
+    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&type=video&maxResults=50&order=relevance&key=${YOUTUBE_API_KEY}`;
     
     const response = await fetch(url);
     const data = await response.json();
@@ -31,7 +30,6 @@ exports.handler = async (event, context) => {
         body: JSON.stringify({ error: data.error.message }),
       };
     }
-
     const videos = data.items || [];
     
     return {
