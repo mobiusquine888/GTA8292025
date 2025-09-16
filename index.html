@@ -1647,54 +1647,120 @@ if (!document.getElementById('rumors-styles')) {
                 </div>
             </div>
 
-            <!-- Theories Content Area -->
-            <div id="theoriesContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
-                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                    Loading community theories and analysis...
-                </div>
-            </div>
+            <!-- Theories Content Area - REPLACE THIS ENTIRE SECTION -->
+<div id="theoriesContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
+    <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
+        Loading community theories...
+    </div>
+</div>
 
-            <!-- Top Contributors Leaderboard -->
-            <div style="background: var(--card-bg); border-radius: 15px; padding: 2rem; margin-bottom: 2rem;">
-                <h3 style="color: var(--gold-color); margin-bottom: 1rem; text-align: center;">🏆 Top Theory Contributors</h3>
-                <div id="contributorsLeaderboard" style="display: grid; gap: 0.5rem;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="color: var(--gold-color); font-weight: bold;">#1</span>
-                            <span style="color: var(--primary-color);">GTATheoryMaster</span>
-                            <span style="background: var(--gold-color); color: black; padding: 0.2rem 0.4rem; border-radius: 8px; font-size: 0.7rem;">LEGEND</span>
-                        </div>
-                        <span style="color: var(--text-color); font-weight: 600;">1,247 votes</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="color: var(--secondary-color); font-weight: bold;">#2</span>
-                            <span style="color: var(--primary-color);">ViceCity2026</span>
-                            <span style="background: var(--secondary-color); color: white; padding: 0.2rem 0.4rem; border-radius: 8px; font-size: 0.7rem;">EXPERT</span>
-                        </div>
-                        <span style="color: var(--text-color); font-weight: 600;">892 votes</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="color: var(--accent-color); font-weight: bold;">#3</span>
-                            <span style="color: var(--primary-color);">ArchitecturalGamer</span>
-                            <span style="background: var(--accent-color); color: white; padding: 0.2rem 0.4rem; border-radius: 8px; font-size: 0.7rem;">ANALYST</span>
-                        </div>
-                        <span style="color: var(--text-color); font-weight: 600;">445 votes</span>
-                    </div>
-                </div>
-            </div>
+<!-- Add this script at the bottom of your page, before </body> -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// Your database connection info
+const supabaseUrl = 'https://umltdjhpblilppkwmqkg.supabase.co'
+const supabaseKey = 'sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
 
-            <!-- Newsletter Signup -->
-            <div style="background: linear-gradient(135deg, var(--accent-color), var(--gold-color)); border-radius: 15px; padding: 2rem; text-align: center;">
-                <h3 style="margin-bottom: 1rem;">📬 Theory Digest Newsletter</h3>
-                <p style="margin-bottom: 1rem; opacity: 0.9;">Get weekly roundups of the best community theories!</p>
-                <div style="display: flex; gap: 0.5rem; max-width: 400px; margin: 0 auto; flex-wrap: wrap;">
-                    <input type="email" id="theoryEmail" placeholder="Enter your email" style="flex: 1; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 0.75rem; border-radius: 8px; outline: none; min-width: 200px;" onkeypress="if(event.key==='Enter') subscribeTheoryDigest()">
-                    <button onclick="subscribeTheoryDigest()" style="background: white; color: var(--accent-color); border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600; white-space: nowrap;">Subscribe</button>
+// Function to get theories from database
+async function loadTheories() {
+    try {
+        const { data: theories, error } = await supabase
+            .from('theories')
+            .select('*')
+            .order('votes', { ascending: false })
+        
+        if (error) {
+            console.log('Error:', error)
+            document.getElementById('theoriesContainer').innerHTML = 
+                '<div style="text-align: center; padding: 2rem; color: var(--secondary-color);">Failed to load theories. Please refresh the page.</div>'
+            return
+        }
+        
+        // Show theories on your website
+        displayTheories(theories)
+    } catch (err) {
+        console.log('Network error:', err)
+        document.getElementById('theoriesContainer').innerHTML = 
+            '<div style="text-align: center; padding: 2rem; color: var(--secondary-color);">Connection error. Please check your internet.</div>'
+    }
+}
+
+// Function to show theories on the page
+function displayTheories(theories) {
+    const container = document.getElementById('theoriesContainer')
+    
+    if (theories.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--primary-color);">No theories yet! Be the first to submit one!</div>'
+        return
+    }
+    
+    container.innerHTML = '' // Clear loading message
+    
+    theories.forEach(theory => {
+        container.innerHTML += `
+            <div style="background: var(--card-bg); border-radius: 15px; padding: 1.5rem; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                <h3 style="color: var(--primary-color); margin-bottom: 0.5rem; font-size: 1.3rem;">${escapeHtml(theory.title)}</h3>
+                <p style="color: var(--text-color); margin-bottom: 1rem; line-height: 1.6;">${escapeHtml(theory.content)}</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                    <span style="color: var(--secondary-color); font-weight: 500;">By: ${escapeHtml(theory.author_name)}</span>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <button onclick="voteForTheory(${theory.id})" style="background: var(--accent-color); color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-weight: 600; transition: background 0.2s;" onmouseover="this.style.background='var(--primary-color)'" onmouseout="this.style.background='var(--accent-color)'">👍 Vote</button>
+                        <span style="color: var(--gold-color); font-weight: bold;">${theory.votes} votes</span>
+                    </div>
                 </div>
             </div>
-        </div>   
+        `
+    })
+}
+
+// Function to vote for a theory
+async function voteForTheory(theoryId) {
+    try {
+        // Get current votes
+        const { data: theory, error: fetchError } = await supabase
+            .from('theories')
+            .select('votes')
+            .eq('id', theoryId)
+            .single()
+
+        if (fetchError) {
+            alert('Failed to vote. Please try again.')
+            return
+        }
+
+        // Update votes
+        const { error: updateError } = await supabase
+            .from('theories')
+            .update({ votes: theory.votes + 1 })
+            .eq('id', theoryId)
+
+        if (updateError) {
+            alert('Failed to vote. Please try again.')
+            return
+        }
+
+        // Refresh the list
+        loadTheories()
+    } catch (err) {
+        alert('Connection error. Please try again.')
+    }
+}
+
+// Helper function to prevent HTML injection
+function escapeHtml(text) {
+    const div = document.createElement('div')
+    div.textContent = text
+    return div.innerHTML
+}
+
+// Load theories when page loads
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadTheories)
+} else {
+    loadTheories()
+}
+</script>  
         
         <div id="shop" class="tab-content">
             <h2 style="color: var(--primary-color);">🛒 GTAFastLane Shop</h2>
@@ -3133,6 +3199,7 @@ if (!document.getElementById('rumors-styles')) {
 
 </body>
 </html>
+
 
 
 
