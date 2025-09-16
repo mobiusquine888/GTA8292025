@@ -618,29 +618,81 @@
             🔴 LIVE: <span id="onlineCount">12,847</span> fans online | Limited event active!
         </div>
         
-        <div class="trailer-link" style="max-width: 600px; margin: 1rem auto; position: relative;">
-            <div id="trailerPreview" style="position: relative; aspect-ratio: 16/9; overflow: hidden; border-radius: 12px; cursor: pointer; transition: transform 0.3s ease;">
-                <div style="position: absolute; inset: 0; background: url('https://i.imgur.com/Z0x2Io2.jpeg') center/cover; display: flex; align-items: center; justify-content: center;">
-                    <div style="text-align: center; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); z-index: 2;">
-                        <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(1.2rem, 3vw, 2.5rem); font-weight: 900; margin-bottom: 0.5rem; letter-spacing: 2px;">GRAND THEFT AUTO VI</div>
-                        <div style="font-size: clamp(0.8rem, 2vw, 1.2rem); opacity: 0.9; font-weight: 600;">SPRING 2026</div>
-                        <div style="font-size: clamp(0.7rem, 1.8vw, 1rem); opacity: 0.8; margin-top: 0.5rem;">Jason & Lucia • Vice City</div>
-                    </div>
-                    <div style="position: absolute; top: 20px; left: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; animation: float 3s ease-in-out infinite;"></div>
-                    <div style="position: absolute; bottom: 30px; right: 30px; width: 25px; height: 25px; background: rgba(255,255,255,0.15); border-radius: 50%; animation: float 2s ease-in-out infinite reverse;"></div>
-                    <div style="position: absolute; top: 50%; left: 15px; width: 15px; height: 15px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: float 2.5s ease-in-out infinite;"></div>
-                    <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.6) 100%); z-index: 1;"></div>
-                </div>
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,0,0,0.9); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; transition: all 0.3s ease; z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.3);" class="play-button">▶</div>
-                <div style="position: absolute; bottom: 12px; left: 12px; background: rgba(0,0,0,0.8); color: white; padding: 6px 10px; border-radius: 4px; font-size: 12px; font-weight: 600;">Official Trailer</div>
-                <div style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">2:47</div>
-                <div style="position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s ease; background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);" class="overlay"></div>
+      <div class="trailer-link" style="max-width: 600px; margin: 1rem auto; position: relative;">
+    <div id="trailerPreview" style="position: relative; aspect-ratio: 16/9; overflow: hidden; border-radius: 12px; cursor: pointer; transition: transform 0.3s ease;">
+        <div style="position: absolute; inset: 0; background: url('https://i.imgur.com/Z0x2Io2.jpeg') center/cover; display: flex; align-items: center; justify-content: center;">
+            <div style="text-align: center; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); z-index: 2;">
+                <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(1.2rem, 3vw, 2.5rem); font-weight: 900; margin-bottom: 0.5rem; letter-spacing: 2px;">GRAND THEFT AUTO VI</div>
+                <div style="font-size: clamp(0.8rem, 2vw, 1.2rem); opacity: 0.9; font-weight: 600;">SPRING 2026</div>
+                <div style="font-size: clamp(0.7rem, 1.8vw, 1rem); opacity: 0.8; margin-top: 0.5rem;">Jason & Lucia • Vice City</div>
             </div>
-            <div id="trailerPlayer" style="display:none; aspect-ratio:16/9; border-radius:12px; overflow:hidden;">
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/VQRLujxTm3c?autoplay=1" title="GTA 6 Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
-            </div>
-            <p style="text-align: center; margin-top: 0.5rem; color: var(--text-color); font-size: 0.9rem; font-weight: 600;">Watch GTA 6 Official Trailer - Jason & Lucia</p>
+            <div class="floating-1" style="position: absolute; top: 20px; left: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%;"></div>
+            <div class="floating-2" style="position: absolute; bottom: 30px; right: 30px; width: 25px; height: 25px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+            <div class="floating-3" style="position: absolute; top: 50%; left: 15px; width: 15px; height: 15px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+            <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.6) 100%); z-index: 1;"></div>
         </div>
+        <div id="playButton" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,0,0,0.9); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; transition: all 0.3s ease; z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer;" class="play-button">▶</div>
+        <div style="position: absolute; bottom: 12px; left: 12px; background: rgba(0,0,0,0.8); color: white; padding: 6px 10px; border-radius: 4px; font-size: 12px; font-weight: 600;">Official Trailer</div>
+        <div style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">2:47</div>
+        <div style="position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s ease; background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);" class="overlay"></div>
+    </div>
+    <div id="trailerPlayer" style="display:none; aspect-ratio:16/9; border-radius:12px; overflow:hidden;">
+        <iframe id="youtubeFrame" width="100%" height="100%" src="" title="GTA 6 Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <p style="text-align: center; margin-top: 0.5rem; color: var(--text-color); font-size: 0.9rem; font-weight: 600;">Watch GTA 6 Official Trailer - Jason & Lucia</p>
+    
+    <!-- Back button (hidden initially) -->
+    <button id="backButton" style="display: none; position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 14px; z-index: 20;">← Back</button>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const trailerPreview = document.getElementById('trailerPreview');
+    const trailerPlayer = document.getElementById('trailerPlayer');
+    const youtubeFrame = document.getElementById('youtubeFrame');
+    const playButton = document.getElementById('playButton');
+    const backButton = document.getElementById('backButton');
+    
+    function playTrailer() {
+        // Hide preview
+        trailerPreview.style.display = 'none';
+        
+        // Show player with autoplay
+        trailerPlayer.style.display = 'block';
+        youtubeFrame.src = 'https://www.youtube.com/embed/VQRLujxTm3c?autoplay=1&mute=0';
+        
+        // Show back button
+        backButton.style.display = 'block';
+    }
+    
+    function showPreview() {
+        // Show preview
+        trailerPreview.style.display = 'block';
+        
+        // Hide player and stop video
+        trailerPlayer.style.display = 'none';
+        youtubeFrame.src = '';
+        
+        // Hide back button
+        backButton.style.display = 'none';
+    }
+    
+    // Click handlers
+    trailerPreview.addEventListener('click', playTrailer);
+    playButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        playTrailer();
+    });
+    backButton.addEventListener('click', showPreview);
+    
+    // Keyboard support
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && trailerPlayer.style.display === 'block') {
+            showPreview();
+        }
+    });
+});
+</script>
         
         <div class="countdown-container">
             <div class="countdown-item" onclick="awardRewards(5, 2, 'Countdown clicked!')">
@@ -2530,4 +2582,5 @@
 
 </body>
 </html>
+
 
