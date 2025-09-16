@@ -1095,6 +1095,7 @@ async function fetchGTA6Rumors() {
         console.log('ℹ️ Skipping NewsAPI due to CORS restrictions');
 
         // Always add high-quality demo rumors to ensure content
+        const now = Math.floor(Date.now() / 1000); // Current time in seconds
         const demoRumors = [
             {
                 title: "BREAKING: GTA 6 Vice City Map Leaked - Massive Open World",
@@ -1102,7 +1103,7 @@ async function fetchGTA6Rumors() {
                 author: "GameSpot News",
                 score: 2847,
                 comments: 456,
-                created: Date.now() / 1000 - 3600,
+                created: now - 7200, // 2 hours ago
                 permalink: "https://gamespot.com/gta6-leak",
                 credibility: "high",
                 source: "News",
@@ -1114,7 +1115,7 @@ async function fetchGTA6Rumors() {
                 author: "IGN Gaming",
                 score: 2156,
                 comments: 389,
-                created: Date.now() / 1000 - 7200,
+                created: now - 28800, // 8 hours ago
                 permalink: "https://ign.com/gta6-protagonists",
                 credibility: "high",
                 source: "News",
@@ -1126,7 +1127,7 @@ async function fetchGTA6Rumors() {
                 author: "Polygon Exclusive",
                 score: 1923,
                 comments: 267,
-                created: Date.now() / 1000 - 10800,
+                created: now - 86400, // 1 day ago
                 permalink: "https://polygon.com/gta6-release",
                 credibility: "high",
                 source: "News",
@@ -1138,7 +1139,7 @@ async function fetchGTA6Rumors() {
                 author: "Kotaku Investigation",
                 score: 1678,
                 comments: 234,
-                created: Date.now() / 1000 - 14400,
+                created: now - 172800, // 2 days ago
                 permalink: "https://kotaku.com/gta6-weather",
                 credibility: "medium",
                 source: "News",
@@ -1150,7 +1151,7 @@ async function fetchGTA6Rumors() {
                 author: "Eurogamer Report",
                 score: 1445,
                 comments: 198,
-                created: Date.now() / 1000 - 18000,
+                created: now - 259200, // 3 days ago
                 permalink: "https://eurogamer.net/gta6-vehicles",
                 credibility: "medium",
                 source: "News",
@@ -1162,7 +1163,7 @@ async function fetchGTA6Rumors() {
                 author: "PC Gamer Analysis",
                 score: 1289,
                 comments: 167,
-                created: Date.now() / 1000 - 21600,
+                created: now - 604800, // 1 week ago
                 permalink: "https://pcgamer.com/gta6-online",
                 credibility: "medium",
                 source: "News",
@@ -1353,7 +1354,7 @@ if (!document.getElementById('rumors-styles')) {
 
 <!-- ALSO ADD THIS: In your tab click handler, make sure to call loadRumorsTab() -->
 <!-- Example: when someone clicks the rumors tab button, call: loadRumorsTab(); -->
-        
+
         <!-- Theories Tab - Enhanced with Real API Content & Community Features -->
         <div id="theories" class="tab-content">
             <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🧠 Community Theories</h2>
@@ -2894,6 +2895,7 @@ if (!document.getElementById('rumors-styles')) {
 
 </body>
 </html>
+
 
 
 
