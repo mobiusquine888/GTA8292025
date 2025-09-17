@@ -1340,9 +1340,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
-        // Supabase Configuration
-        const supabaseUrl = 'https://umltdjhpblilppkwmqkg.supabase.co'
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtbHRkamhwYmxpbHBwa3dtcWtnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE4NjExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
+ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
         const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
 
         // API Configuration
@@ -1540,21 +1538,38 @@
 
         // SUPABASE THEORIES INTEGRATION - COMPLETE IMPLEMENTATION
         
-        // Function to load theories from Supabase
+        // Function to load theories from Supabase - ENHANCED WITH BETTER ERROR HANDLING
         async function loadTheories() {
             try {
                 const container = safeGetElement('theoriesContainer');
                 if (!container) return;
 
+                // Check if Supabase is properly initialized
+                if (!supabase) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
+                            <h3>❌ Database Connection Failed</h3>
+                            <p>Supabase client not initialized. Please check the console for errors.</p>
+                            <button onclick="location.reload()" style="background: var(--primary-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                                🔄 Reload Page
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
                 // Show loading state
                 container.innerHTML = `
                     <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
                         <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid var(--primary-color); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                        <div style="margin-top: 1rem;">Loading theories from database...</div>
+                        <div style="margin-top: 1rem;">Connecting to theories database...</div>
                     </div>
                 `;
 
                 console.log('🔥 Loading theories from Supabase...');
+                console.log('Database URL:', supabaseUrl);
+                console.log('Using filter:', currentFilter);
+                console.log('Using sort:', currentSort);
 
                 // Build query based on current filter and sort
                 let query = supabase.from('theories').select('*');
@@ -1576,30 +1591,53 @@
                 const { data: theories, error } = await query;
                 
                 if (error) {
-                    console.error('Supabase error:', error);
+                    console.error('❌ Supabase query error:', error);
                     container.innerHTML = `
                         <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
-                            <h3>❌ Database Connection Error</h3>
-                            <p style="margin: 1rem 0; font-size: 0.9rem;">Unable to load theories from database.</p>
-                            <button onclick="loadTheories()" style="background: var(--primary-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                            <h3>❌ Database Query Failed</h3>
+                            <p style="margin: 1rem 0; font-size: 0.9rem;">Error: ${error.message}</p>
+                            <p style="margin: 1rem 0; font-size: 0.8rem; color: rgba(255,255,255,0.6);">
+                                This might be due to:
+                                <br>• Table 'theories' doesn't exist
+                                <br>• Incorrect column names
+                                <br>• RLS (Row Level Security) policies
+                                <br>• API key permissions
+                            </p>
+                            <button onclick="loadTheories()" style="background: var(--primary-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 0.5rem;">
                                 🔄 Retry Loading
                             </button>
-                            <div style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px; font-size: 0.8rem; text-align: left;">
-                                <strong>Debug Info:</strong><br>
-                                Error: ${error.message}<br>
-                                Code: ${error.code || 'Unknown'}<br>
-                                Filter: ${currentFilter}<br>
-                                Sort: ${currentSort}
-                            </div>
+                            <button onclick="createSampleTheory()" style="background: var(--warning-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 0.5rem;">
+                                ➕ Test Database Connection
+                            </button>
                         </div>
                     `;
                     return;
                 }
                 
-                console.log(`✅ Loaded ${theories.length} theories from Supabase`);
+                console.log(`✅ Successfully loaded ${(theories || []).length} theories from Supabase`);
                 
-                // Display theories
-                displayTheories(theories || []);
+                // Display theories or show empty state
+                if (!theories || theories.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 3rem; color: var(--primary-color);">
+                            <h3>🌟 No theories found!</h3>
+                            <p style="color: var(--text-color); margin: 1rem 0;">
+                                ${currentFilter !== 'all' ? `No theories found in "${currentFilter}" category.` : 'Be the first to submit a theory and start the discussion!'}
+                            </p>
+                            <button onclick="document.getElementById('theoryTitle').focus()" style="background: var(--gradient-primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 0.5rem;">
+                                ✨ Submit ${currentFilter !== 'all' ? 'First' : 'New'} Theory
+                            </button>
+                            ${currentFilter !== 'all' ? `
+                                <button onclick="filterTheories('all')" style="background: var(--accent-color); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 0.5rem;">
+                                    📁 Show All Categories
+                                </button>
+                            ` : ''}
+                        </div>
+                    `;
+                } else {
+                    displayTheories(theories);
+                }
+                
                 updateTheoryStats(theories || []);
                 
                 // Award user for loading theories
@@ -1612,7 +1650,10 @@
                     container.innerHTML = `
                         <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
                             <h3>🚫 Connection Failed</h3>
-                            <p style="margin: 1rem 0;">Network error or database unavailable.</p>
+                            <p style="margin: 1rem 0;">Network error or Supabase service unavailable.</p>
+                            <p style="margin: 1rem 0; font-size: 0.8rem; color: rgba(255,255,255,0.6);">
+                                Error: ${error.message}
+                            </p>
                             <button onclick="loadTheories()" style="background: var(--primary-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold;">
                                 🔄 Try Again
                             </button>
@@ -1622,55 +1663,7 @@
             }
         }
 
-        // Function to display theories in the UI
-        function displayTheories(theories) {
-            const container = safeGetElement('theoriesContainer');
-            if (!container) return;
-            
-            if (theories.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 3rem; color: var(--primary-color);">
-                        <h3>🌟 No theories yet!</h3>
-                        <p style="color: var(--text-color); margin: 1rem 0;">Be the first to submit a theory and start the discussion!</p>
-                        <button onclick="document.getElementById('theoryTitle').focus()" style="background: var(--gradient-primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: bold;">
-                            ✨ Submit First Theory
-                        </button>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = ''; // Clear loading message
-            
-            theories.forEach(theory => {
-                const theoryCard = document.createElement('div');
-                theoryCard.className = 'theory-card';
-                theoryCard.innerHTML = `
-                    <div class="theory-header">
-                        <div class="theory-votes">
-                            <button class="vote-btn" onclick="voteForTheory(${theory.id}, 'up')" title="Upvote this theory">
-                                ▲
-                            </button>
-                            <span class="vote-count">${theory.votes}</span>
-                            <button class="vote-btn" onclick="voteForTheory(${theory.id}, 'down')" title="Downvote this theory">
-                                ▼
-                            </button>
-                        </div>
-                        <div class="theory-content">
-                            <h3 class="theory-title">${escapeHtml(theory.title)}</h3>
-                            <p class="theory-description">${escapeHtml(theory.content)}</p>
-                            <div class="theory-meta">
-                                <span class="theory-author">By: ${escapeHtml(theory.author_name)}</span>
-                                <span class="theory-category">${theory.category}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(theoryCard);
-            });
-        }
-
-        // Function to submit a new theory
+        // ENHANCED: Function to submit a new theory with better error handling
         async function submitTheory(event) {
             event.preventDefault();
             
@@ -1681,17 +1674,53 @@
                     submitBtn.textContent = '🚀 Submitting...';
                 }
 
+                // Check if Supabase is initialized
+                if (!supabase) {
+                    showNotification('❌ Database connection not available. Please reload the page.');
+                    return;
+                }
+
                 const formData = new FormData(event.target);
                 const theoryData = {
-                    title: formData.get('title'),
-                    content: formData.get('content'),
-                    author_name: formData.get('author'),
+                    title: formData.get('title')?.trim(),
+                    content: formData.get('content')?.trim(),
+                    author_name: formData.get('author')?.trim(),
                     category: formData.get('category'),
                     votes: 0
                 };
 
-                console.log('📝 Submitting theory:', theoryData);
+                // Validate form data
+                if (!theoryData.title || !theoryData.content || !theoryData.author_name || !theoryData.category) {
+                    showNotification('❌ Please fill in all required fields.');
+                    return;
+                }
 
+                if (theoryData.title.length < 5) {
+                    showNotification('❌ Theory title must be at least 5 characters long.');
+                    return;
+                }
+
+                if (theoryData.content.length < 20) {
+                    showNotification('❌ Theory description must be at least 20 characters long.');
+                    return;
+                }
+
+                console.log('📝 Submitting theory to Supabase:', theoryData);
+
+                // Test connection first
+                const { data: testData, error: testError } = await supabase
+                    .from('theories')
+                    .select('count', { count: 'exact', head: true });
+
+                if (testError) {
+                    console.error('❌ Database connection test failed:', testError);
+                    showNotification(`❌ Database error: ${testError.message}`);
+                    return;
+                }
+
+                console.log('✅ Database connection test passed');
+
+                // Insert the new theory
                 const { data, error } = await supabase
                     .from('theories')
                     .insert([theoryData])
@@ -1699,7 +1728,22 @@
 
                 if (error) {
                     console.error('❌ Supabase insert error:', error);
-                    showNotification('❌ Failed to submit theory. Please try again.');
+                    showNotification(`❌ Failed to submit theory: ${error.message}`);
+                    
+                    // Show detailed error information
+                    const container = safeGetElement('theoriesContainer');
+                    if (container && error.code) {
+                        const errorDiv = document.createElement('div');
+                        errorDiv.style.cssText = 'background: rgba(255,71,87,0.1); border: 1px solid var(--danger-color); padding: 1rem; border-radius: 8px; margin: 1rem 0; font-size: 0.9rem;';
+                        errorDiv.innerHTML = `
+                            <strong>Database Error Details:</strong><br>
+                            Code: ${error.code}<br>
+                            Message: ${error.message}<br>
+                            ${error.details ? `Details: ${error.details}<br>` : ''}
+                            ${error.hint ? `Hint: ${error.hint}` : ''}
+                        `;
+                        container.prepend(errorDiv);
+                    }
                     return;
                 }
 
@@ -1708,22 +1752,65 @@
                 // Clear form
                 event.target.reset();
                 
-                // Reload theories
+                // Reload theories to show the new one
                 await loadTheories();
                 
-                // Award user
+                // Award user and show success
                 awardRewards(25, 10, 'Theory submitted!');
                 showNotification(`🎉 Theory "${theoryData.title}" submitted successfully!`);
                 
+                // Scroll to see the new theory
+                const container = safeGetElement('theoriesContainer');
+                if (container) {
+                    container.scrollIntoView({ behavior: 'smooth' });
+                }
+                
             } catch (error) {
                 console.error('❌ Submit theory error:', error);
-                showNotification('❌ Network error. Please check your connection.');
+                showNotification(`❌ Network error: ${error.message}`);
             } finally {
                 const submitBtn = safeGetElement('submitBtn');
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.textContent = '🚀 Submit Theory';
                 }
+            }
+        }
+
+        // NEW: Function to create a test theory (for debugging)
+        async function createSampleTheory() {
+            try {
+                if (!supabase) {
+                    showNotification('❌ Supabase not initialized');
+                    return;
+                }
+
+                const testTheory = {
+                    title: "Test Theory - GTA 6 Vice City Connection",
+                    content: "This is a test theory to verify database connectivity. GTA 6 will likely feature connections to previous Vice City stories through easter eggs and character references.",
+                    author_name: "TestUser",
+                    category: "story",
+                    votes: 1
+                };
+
+                console.log('🧪 Creating test theory:', testTheory);
+
+                const { data, error } = await supabase
+                    .from('theories')
+                    .insert([testTheory])
+                    .select();
+
+                if (error) {
+                    console.error('❌ Test theory creation failed:', error);
+                    showNotification(`❌ Test failed: ${error.message}`);
+                } else {
+                    console.log('✅ Test theory created successfully:', data);
+                    showNotification('✅ Test theory created! Database is working.');
+                    await loadTheories();
+                }
+            } catch (error) {
+                console.error('❌ Test theory error:', error);
+                showNotification(`❌ Test error: ${error.message}`);
             }
         }
 
