@@ -112,37 +112,37 @@
             padding-bottom: 70px;
         }
 
-        /* Night Mode Theme */
+        /* Night Mode Theme - FIXED */
         body.night-mode {
-            --primary-color: #ffffff !important;
-            --secondary-color: #ffffff !important;
-            --accent-color: #ffffff !important;
-            --gold-color: #ffffff !important;
-            --premium-color: #ffffff !important;
-            --success-color: #ffffff !important;
-            --warning-color: #ffffff !important;
-            --danger-color: #ffffff !important;
-            --text-color: #ffffff !important;
-            --bg-color: #000000 !important;
-            --card-bg: #000000 !important;
-            --border-color: #333333 !important;
-            --shadow: 0 4px 25px rgba(255,255,255,0.1) !important;
-            --gradient-primary: linear-gradient(135deg, #ffffff 0%, #cccccc 100%) !important;
-            --gradient-premium: linear-gradient(135deg, #ffffff 0%, #cccccc 100%) !important;
-            background: #000000 !important;
-            background-image: none !important;
+            --primary-color: #00d4ff !important;
+            --secondary-color: #ff6b9d !important;
+            --accent-color: #a855f7 !important;
+            --gold-color: #fbbf24 !important;
+            --premium-color: #f97316 !important;
+            --success-color: #10b981 !important;
+            --warning-color: #f59e0b !important;
+            --danger-color: #ef4444 !important;
+            --text-color: #f1f5f9 !important;
+            --bg-color: #0f0f23 !important;
+            --card-bg: #1a1a2e !important;
+            --border-color: #16213e !important;
+            --shadow: 0 4px 25px rgba(0,212,255,0.15) !important;
+            --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #ff6b9d 100%) !important;
+            --gradient-premium: linear-gradient(135deg, #fbbf24 0%, #f97316 100%) !important;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%) !important;
         }
 
         body.night-mode .header {
-            background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%) !important;
-            color: #000000 !important;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+            color: #f1f5f9 !important;
+            border-bottom: 2px solid #00d4ff;
         }
 
         body.night-mode .stat-card,
         body.night-mode .tab-content > div,
         body.night-mode [style*="background: var(--card-bg)"] {
-            background: #000000 !important;
-            border: 1px solid #333333 !important;
+            background: #1a1a2e !important;
+            border: 1px solid #16213e !important;
         }
 
         .header {
@@ -625,81 +625,6 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         }
 
-        .theory-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-
-        .theory-votes {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-width: 60px;
-        }
-
-        .vote-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-color);
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 0.25rem;
-            transition: all 0.3s ease;
-        }
-
-        .vote-btn:hover {
-            color: var(--primary-color);
-            transform: scale(1.2);
-        }
-
-        .vote-count {
-            color: var(--primary-color);
-            font-weight: bold;
-            margin: 0.25rem 0;
-        }
-
-        .theory-content {
-            flex: 1;
-            margin-left: 1rem;
-        }
-
-        .theory-title {
-            color: var(--text-color);
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .theory-description {
-            color: rgba(255,255,255,0.8);
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-
-        .theory-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.6);
-        }
-
-        .theory-author {
-            color: var(--secondary-color);
-            font-weight: 600;
-        }
-
-        .theory-category {
-            background: var(--accent-color);
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-        }
-
         @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
@@ -772,32 +697,32 @@
             🔴 LIVE: <span id="onlineCount">12,847</span> fans online | Limited event active!
         </div>
         
-        <div class="trailer-link" style="max-width: 600px; margin: 1rem auto; position: relative;">
-            <div id="trailerPreview" style="position: relative; aspect-ratio: 16/9; overflow: hidden; border-radius: 12px; cursor: pointer; transition: transform 0.3s ease;">
-                <div style="position: absolute; inset: 0; background: url('https://i.imgur.com/Z0x2Io2.jpeg') center/cover; display: flex; align-items: center; justify-content: center;">
-                    <div style="text-align: center; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); z-index: 2;">
-                        <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(1.2rem, 3vw, 2.5rem); font-weight: 900; margin-bottom: 0.5rem; letter-spacing: 2px;">GRAND THEFT AUTO VI</div>
-                        <div style="font-size: clamp(0.8rem, 2vw, 1.2rem); opacity: 0.9; font-weight: 600;">SPRING 2026</div>
-                        <div style="font-size: clamp(0.7rem, 1.8vw, 1rem); opacity: 0.8; margin-top: 0.5rem;">Jason & Lucia • Vice City</div>
-                    </div>
-                    <div class="floating-1" style="position: absolute; top: 20px; left: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%;"></div>
-                    <div class="floating-2" style="position: absolute; bottom: 30px; right: 30px; width: 25px; height: 25px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
-                    <div class="floating-3" style="position: absolute; top: 50%; left: 15px; width: 15px; height: 15px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
-                    <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.6) 100%); z-index: 1;"></div>
-                </div>
-                <div id="playButton" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,0,0,0.9); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; transition: all 0.3s ease; z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer;" class="play-button">▶</div>
-                <div style="position: absolute; bottom: 12px; left: 12px; background: rgba(0,0,0,0.8); color: white; padding: 6px 10px; border-radius: 4px; font-size: 12px; font-weight: 600;">Official Trailer</div>
-                <div style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">2:47</div>
-                <div style="position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s ease; background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);" class="overlay"></div>
+      <div class="trailer-link" style="max-width: 600px; margin: 1rem auto; position: relative;">
+    <div id="trailerPreview" style="position: relative; aspect-ratio: 16/9; overflow: hidden; border-radius: 12px; cursor: pointer; transition: transform 0.3s ease;">
+        <div style="position: absolute; inset: 0; background: url('https://i.imgur.com/Z0x2Io2.jpeg') center/cover; display: flex; align-items: center; justify-content: center; background-size: cover; background-position: center; background-repeat: no-repeat;">
+            <div style="text-align: center; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); z-index: 2;">
+                <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(1.2rem, 3vw, 2.5rem); font-weight: 900; margin-bottom: 0.5rem; letter-spacing: 2px;">GRAND THEFT AUTO VI</div>
+                <div style="font-size: clamp(0.8rem, 2vw, 1.2rem); opacity: 0.9; font-weight: 600;">SPRING 2026</div>
+                <div style="font-size: clamp(0.7rem, 1.8vw, 1rem); opacity: 0.8; margin-top: 0.5rem;">Jason & Lucia • Vice City</div>
             </div>
-            <div id="trailerPlayer" style="display:none; aspect-ratio:16/9; border-radius:12px; overflow:hidden;">
-                <iframe id="youtubeFrame" width="100%" height="100%" src="" title="GTA 6 Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
-            </div>
-            <p style="text-align: center; margin-top: 0.5rem; color: var(--text-color); font-size: 0.9rem; font-weight: 600;">Watch GTA 6 Official Trailer - Jason & Lucia</p>
-            
-            <!-- Back button (hidden initially) -->
-            <button id="backButton" style="display: none; position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 14px; z-index: 20;">← Back</button>
+            <div class="floating-1" style="position: absolute; top: 20px; left: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%;"></div>
+            <div class="floating-2" style="position: absolute; bottom: 30px; right: 30px; width: 25px; height: 25px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+            <div class="floating-3" style="position: absolute; top: 50%; left: 15px; width: 15px; height: 15px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+            <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.6) 100%); z-index: 1;"></div>
         </div>
+        <div id="playButton" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,0,0,0.9); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; transition: all 0.3s ease; z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer;" class="play-button">▶</div>
+        <div style="position: absolute; bottom: 12px; left: 12px; background: rgba(0,0,0,0.8); color: white; padding: 6px 10px; border-radius: 4px; font-size: 12px; font-weight: 600;">Official Trailer</div>
+        <div style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">2:47</div>
+        <div style="position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s ease; background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);" class="overlay"></div>
+    </div>
+    <div id="trailerPlayer" style="display:none; aspect-ratio:16/9; border-radius:12px; overflow:hidden;">
+        <iframe id="youtubeFrame" width="100%" height="100%" src="" title="GTA 6 Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <p style="text-align: center; margin-top: 0.5rem; color: var(--text-color); font-size: 0.9rem; font-weight: 600;">Watch GTA 6 Official Trailer - Jason & Lucia</p>
+    
+    <!-- Back button (hidden initially) -->
+    <button id="backButton" style="display: none; position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 14px; z-index: 20;">← Back</button>
+</div>
         
         <div class="countdown-container">
             <div class="countdown-item" onclick="awardRewards(5, 2, 'Countdown clicked!')">
@@ -841,10 +766,10 @@
                 <span class="tab-icon">📺</span>
                 <span class="tab-label">GTA</span>
             </button>
-            <button class="tab" onclick="showTab('rumors'); loadRumorsTab();" data-tab="rumors">
-                <span class="tab-icon">🔥</span>
-                <span class="tab-label">Rumors</span>
-            </button>
+          <button class="tab" onclick="showTab('rumors'); loadRumorsTab();" data-tab="rumors">
+    <span class="tab-icon">🔥</span>
+    <span class="tab-label">Rumors</span>
+</button>
             <button class="tab" onclick="showTab('trevor')" data-tab="trevor">
                 <span class="tab-icon">😈</span>
                 <span class="tab-label">Trevor</span>
@@ -1206,16 +1131,6 @@
                 </form>
             </div>
 
-            <!-- Filter/Sort Options -->
-            <div style="display: flex; gap: 1rem; margin: 2rem 0; flex-wrap: wrap;">
-                <button onclick="filterTheories('all')" class="floating-btn" style="position: static; font-size: 0.8rem; padding: 0.5rem 1rem;">All Theories</button>
-                <button onclick="filterTheories('story')" class="floating-btn" style="position: static; font-size: 0.8rem; padding: 0.5rem 1rem;">Story</button>
-                <button onclick="filterTheories('characters')" class="floating-btn" style="position: static; font-size: 0.8rem; padding: 0.5rem 1rem;">Characters</button>
-                <button onclick="filterTheories('gameplay')" class="floating-btn" style="position: static; font-size: 0.8rem; padding: 0.5rem 1rem;">Gameplay</button>
-                <button onclick="sortTheories('votes')" class="floating-btn" style="position: static; font-size: 0.8rem; padding: 0.5rem 1rem;">Sort by Votes</button>
-                <button onclick="sortTheories('newest')" class="floating-btn" style="position: static; font-size: 0.8rem; padding: 0.5rem 1rem;">Sort by Newest</button>
-            </div>
-
             <!-- Theories Container -->
             <div id="theoriesContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
                 <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
@@ -1340,14 +1255,20 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
-ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
-        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
-
-        // API Configuration
-        const API_CONFIG = {
-            news: '22ae24fcb78544a1977241e1319d4a0b',
-            youtube: 'AIzaSyB1Hx3EJD1N_jyJ01E131pUA3RqZvLNOZU'
-        };
+        // Supabase Configuration - FIXED
+        const supabaseUrl = 'https://umltdjhpblilppkwmqkg.supabase.co'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtbHRkamhwYmxpbHBwa3dtcWtnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE4NjExOTAsImV4cCI6MjA0NzQzNzE5MH0.Gd1bCsa4wEIeBHSxWCyaEbznHvA_gx'
+        
+        let supabase;
+        
+        // Initialize Supabase with error handling
+        try {
+            supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+            console.log('✅ Supabase client initialized successfully');
+        } catch (error) {
+            console.error('❌ Failed to initialize Supabase:', error);
+            supabase = null;
+        }
 
         // In-memory storage for the preview
         let storage = {};
@@ -1391,10 +1312,6 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
             streak: parseInt(safeGetStorage('gtafl-challenge-streak', '0')),
             score: parseInt(safeGetStorage('gtafl-total-score', '0'))
         };
-
-        // Theory data storage
-        let currentFilter = 'all';
-        let currentSort = 'votes';
 
         // Show notification
         function showNotification(message) {
@@ -1450,7 +1367,7 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
             }
         }
 
-        // Theme functions
+        // Theme functions - FIXED
         function toggleTheme() {
             try {
                 const body = document.body;
@@ -1486,7 +1403,7 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
             }
         }
 
-        // Tab switching with API calls
+        // Tab switching - FIXED
         function showTab(tabName) {
             try {
                 const header = document.querySelector('.header');
@@ -1511,20 +1428,8 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
                 if (targetContent) targetContent.classList.add('active');
                 if (targetTab) targetTab.classList.add('active');
 
-                // Load real data for specific tabs
-                if (tabName === 'challenges') {
-                    setTimeout(() => {
-                        initializeChallenges();
-                    }, 100);
-                } else if (tabName === 'youtube') {
-                    fetchYouTubeVideos('GTA 6 Grand Theft Auto VI', 'youtubeGrid', 'yt');
-                } else if (tabName === 'news') {
-                    fetchGTA6News();
-                } else if (tabName === 'trevor') {
-                    fetchYouTubeVideos('Trevor Phillips GTA 5 chaos funny moments', 'trevorGrid', 'trevor');
-                } else if (tabName === 'rdr2') {
-                    fetchYouTubeVideos('Red Dead Redemption 2 funny moments', 'rdr2Grid', 'rdr2');
-                } else if (tabName === 'theories') {
+                // Load specific tab content
+                if (tabName === 'theories') {
                     loadTheories();
                 } else if (tabName === 'rumors') {
                     loadRumorsTab();
@@ -1536,29 +1441,12 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
             }
         }
 
-        // SUPABASE THEORIES INTEGRATION - COMPLETE IMPLEMENTATION
-        
-        // Function to load theories from Supabase - ENHANCED WITH BETTER ERROR HANDLING
+        // Load theories from Supabase
         async function loadTheories() {
             try {
                 const container = safeGetElement('theoriesContainer');
                 if (!container) return;
 
-                // Check if Supabase is properly initialized
-                if (!supabase) {
-                    container.innerHTML = `
-                        <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
-                            <h3>❌ Database Connection Failed</h3>
-                            <p>Supabase client not initialized. Please check the console for errors.</p>
-                            <button onclick="location.reload()" style="background: var(--primary-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold;">
-                                🔄 Reload Page
-                            </button>
-                        </div>
-                    `;
-                    return;
-                }
-
-                // Show loading state
                 container.innerHTML = `
                     <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
                         <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid var(--primary-color); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
@@ -1566,94 +1454,50 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
                     </div>
                 `;
 
-                console.log('🔥 Loading theories from Supabase...');
-                console.log('Database URL:', supabaseUrl);
-                console.log('Using filter:', currentFilter);
-                console.log('Using sort:', currentSort);
-
-                // Build query based on current filter and sort
-                let query = supabase.from('theories').select('*');
-
-                // Apply category filter
-                if (currentFilter !== 'all') {
-                    query = query.eq('category', currentFilter);
+                if (!supabase) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
+                            <h3>❌ Database Connection Failed</h3>
+                            <p>Supabase client not initialized.</p>
+                            <button onclick="createSampleTheory()" style="background: var(--warning-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                                🧪 Create Test Theory
+                            </button>
+                        </div>
+                    `;
+                    return;
                 }
 
-                // Apply sorting
-                if (currentSort === 'votes') {
-                    query = query.order('votes', { ascending: false });
-                } else if (currentSort === 'newest') {
-                    query = query.order('created_at', { ascending: false });
-                } else {
-                    query = query.order('votes', { ascending: false }); // Default to votes
-                }
-
-                const { data: theories, error } = await query;
+                const { data: theories, error } = await supabase
+                    .from('theories')
+                    .select('*')
+                    .order('votes', { ascending: false });
                 
                 if (error) {
-                    console.error('❌ Supabase query error:', error);
+                    console.error('❌ Supabase error:', error);
                     container.innerHTML = `
                         <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
                             <h3>❌ Database Query Failed</h3>
-                            <p style="margin: 1rem 0; font-size: 0.9rem;">Error: ${error.message}</p>
-                            <p style="margin: 1rem 0; font-size: 0.8rem; color: rgba(255,255,255,0.6);">
-                                This might be due to:
-                                <br>• Table 'theories' doesn't exist
-                                <br>• Incorrect column names
-                                <br>• RLS (Row Level Security) policies
-                                <br>• API key permissions
-                            </p>
-                            <button onclick="loadTheories()" style="background: var(--primary-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 0.5rem;">
-                                🔄 Retry Loading
-                            </button>
-                            <button onclick="createSampleTheory()" style="background: var(--warning-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 0.5rem;">
-                                ➕ Test Database Connection
+                            <p>${error.message}</p>
+                            <button onclick="createSampleTheory()" style="background: var(--warning-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                                🧪 Create Test Theory
                             </button>
                         </div>
                     `;
                     return;
                 }
                 
-                console.log(`✅ Successfully loaded ${(theories || []).length} theories from Supabase`);
-                
-                // Display theories or show empty state
-                if (!theories || theories.length === 0) {
-                    container.innerHTML = `
-                        <div style="text-align: center; padding: 3rem; color: var(--primary-color);">
-                            <h3>🌟 No theories found!</h3>
-                            <p style="color: var(--text-color); margin: 1rem 0;">
-                                ${currentFilter !== 'all' ? `No theories found in "${currentFilter}" category.` : 'Be the first to submit a theory and start the discussion!'}
-                            </p>
-                            <button onclick="document.getElementById('theoryTitle').focus()" style="background: var(--gradient-primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 0.5rem;">
-                                ✨ Submit ${currentFilter !== 'all' ? 'First' : 'New'} Theory
-                            </button>
-                            ${currentFilter !== 'all' ? `
-                                <button onclick="filterTheories('all')" style="background: var(--accent-color); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 0.5rem;">
-                                    📁 Show All Categories
-                                </button>
-                            ` : ''}
-                        </div>
-                    `;
-                } else {
-                    displayTheories(theories);
-                }
-                
+                console.log(`✅ Loaded ${(theories || []).length} theories`);
+                displayTheories(theories || []);
                 updateTheoryStats(theories || []);
                 
-                // Award user for loading theories
-                awardRewards(5, 2, 'Loaded theories section');
-                
             } catch (error) {
-                console.error('❌ Fatal error loading theories:', error);
+                console.error('❌ Error loading theories:', error);
                 const container = safeGetElement('theoriesContainer');
                 if (container) {
                     container.innerHTML = `
                         <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
                             <h3>🚫 Connection Failed</h3>
-                            <p style="margin: 1rem 0;">Network error or Supabase service unavailable.</p>
-                            <p style="margin: 1rem 0; font-size: 0.8rem; color: rgba(255,255,255,0.6);">
-                                Error: ${error.message}
-                            </p>
+                            <p>Network error: ${error.message}</p>
                             <button onclick="loadTheories()" style="background: var(--primary-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold;">
                                 🔄 Try Again
                             </button>
@@ -1663,7 +1507,54 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
             }
         }
 
-        // ENHANCED: Function to submit a new theory with better error handling
+        // Display theories
+        function displayTheories(theories) {
+            const container = safeGetElement('theoriesContainer');
+            if (!container) return;
+            
+            if (theories.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: var(--primary-color);">
+                        <h3>🌟 No theories found!</h3>
+                        <p style="color: var(--text-color); margin: 1rem 0;">Database is connected but empty. Be the first to submit a theory!</p>
+                        <button onclick="document.getElementById('theoryTitle').focus()" style="background: var(--gradient-primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 0.5rem;">
+                            ✨ Submit First Theory
+                        </button>
+                        <button onclick="createSampleTheory()" style="background: var(--warning-color); color: black; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 0.5rem;">
+                            🧪 Create Test Theory
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            theories.forEach(theory => {
+                const theoryCard = document.createElement('div');
+                theoryCard.className = 'theory-card';
+                theoryCard.innerHTML = `
+                    <div style="display: flex; gap: 1rem;">
+                        <div style="display: flex; flex-direction: column; align-items: center; min-width: 60px;">
+                            <button onclick="voteForTheory(${theory.id}, 'up')" style="background: transparent; border: none; color: var(--success-color); font-size: 1.5rem; cursor: pointer; padding: 0.25rem;">▲</button>
+                            <span style="color: var(--primary-color); font-weight: bold; margin: 0.25rem 0;">${theory.votes || 0}</span>
+                            <button onclick="voteForTheory(${theory.id}, 'down')" style="background: transparent; border: none; color: var(--danger-color); font-size: 1.5rem; cursor: pointer; padding: 0.25rem;">▼</button>
+                        </div>
+                        <div style="flex: 1;">
+                            <h3 style="color: var(--text-color); font-size: 1.2rem; margin-bottom: 0.5rem;">${escapeHtml(theory.title || 'Untitled')}</h3>
+                            <p style="color: rgba(255,255,255,0.8); line-height: 1.6; margin-bottom: 1rem;">${escapeHtml(theory.content || 'No description')}</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;">
+                                <span style="color: var(--secondary-color); font-weight: 600;">By: ${escapeHtml(theory.author_name || 'Anonymous')}</span>
+                                <span style="background: var(--accent-color); color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.7rem; text-transform: uppercase;">${theory.category || 'general'}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(theoryCard);
+            });
+        }
+
+        // Submit theory
         async function submitTheory(event) {
             event.preventDefault();
             
@@ -1674,9 +1565,8 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
                     submitBtn.textContent = '🚀 Submitting...';
                 }
 
-                // Check if Supabase is initialized
                 if (!supabase) {
-                    showNotification('❌ Database connection not available. Please reload the page.');
+                    showNotification('❌ Database connection not available');
                     return;
                 }
 
@@ -1689,85 +1579,31 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
                     votes: 0
                 };
 
-                // Validate form data
                 if (!theoryData.title || !theoryData.content || !theoryData.author_name || !theoryData.category) {
-                    showNotification('❌ Please fill in all required fields.');
+                    showNotification('❌ Please fill in all fields');
                     return;
                 }
 
-                if (theoryData.title.length < 5) {
-                    showNotification('❌ Theory title must be at least 5 characters long.');
-                    return;
-                }
-
-                if (theoryData.content.length < 20) {
-                    showNotification('❌ Theory description must be at least 20 characters long.');
-                    return;
-                }
-
-                console.log('📝 Submitting theory to Supabase:', theoryData);
-
-                // Test connection first
-                const { data: testData, error: testError } = await supabase
-                    .from('theories')
-                    .select('count', { count: 'exact', head: true });
-
-                if (testError) {
-                    console.error('❌ Database connection test failed:', testError);
-                    showNotification(`❌ Database error: ${testError.message}`);
-                    return;
-                }
-
-                console.log('✅ Database connection test passed');
-
-                // Insert the new theory
                 const { data, error } = await supabase
                     .from('theories')
                     .insert([theoryData])
                     .select();
 
                 if (error) {
-                    console.error('❌ Supabase insert error:', error);
-                    showNotification(`❌ Failed to submit theory: ${error.message}`);
-                    
-                    // Show detailed error information
-                    const container = safeGetElement('theoriesContainer');
-                    if (container && error.code) {
-                        const errorDiv = document.createElement('div');
-                        errorDiv.style.cssText = 'background: rgba(255,71,87,0.1); border: 1px solid var(--danger-color); padding: 1rem; border-radius: 8px; margin: 1rem 0; font-size: 0.9rem;';
-                        errorDiv.innerHTML = `
-                            <strong>Database Error Details:</strong><br>
-                            Code: ${error.code}<br>
-                            Message: ${error.message}<br>
-                            ${error.details ? `Details: ${error.details}<br>` : ''}
-                            ${error.hint ? `Hint: ${error.hint}` : ''}
-                        `;
-                        container.prepend(errorDiv);
-                    }
+                    console.error('❌ Insert error:', error);
+                    showNotification(`❌ Failed: ${error.message}`);
                     return;
                 }
 
-                console.log('✅ Theory submitted successfully:', data);
-
-                // Clear form
+                console.log('✅ Theory submitted:', data);
                 event.target.reset();
-                
-                // Reload theories to show the new one
                 await loadTheories();
-                
-                // Award user and show success
                 awardRewards(25, 10, 'Theory submitted!');
-                showNotification(`🎉 Theory "${theoryData.title}" submitted successfully!`);
-                
-                // Scroll to see the new theory
-                const container = safeGetElement('theoriesContainer');
-                if (container) {
-                    container.scrollIntoView({ behavior: 'smooth' });
-                }
+                showNotification(`🎉 Theory "${theoryData.title}" submitted!`);
                 
             } catch (error) {
-                console.error('❌ Submit theory error:', error);
-                showNotification(`❌ Network error: ${error.message}`);
+                console.error('❌ Submit error:', error);
+                showNotification(`❌ Error: ${error.message}`);
             } finally {
                 const submitBtn = safeGetElement('submitBtn');
                 if (submitBtn) {
@@ -1777,7 +1613,50 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
             }
         }
 
-        // NEW: Function to create a test theory (for debugging)
+        // Vote for theory
+        async function voteForTheory(theoryId, voteType) {
+            try {
+                if (!supabase) {
+                    showNotification('❌ Database not available');
+                    return;
+                }
+
+                const { data: theory, error: fetchError } = await supabase
+                    .from('theories')
+                    .select('votes')
+                    .eq('id', theoryId)
+                    .single();
+
+                if (fetchError) {
+                    showNotification('❌ Failed to load theory');
+                    return;
+                }
+
+                const increment = voteType === 'up' ? 1 : -1;
+                const newVotes = Math.max(0, theory.votes + increment);
+
+                const { error: updateError } = await supabase
+                    .from('theories')
+                    .update({ votes: newVotes })
+                    .eq('id', theoryId);
+
+                if (updateError) {
+                    showNotification('❌ Failed to update vote');
+                    return;
+                }
+
+                await loadTheories();
+                const reward = voteType === 'up' ? 5 : 2;
+                awardRewards(reward, 1, `${voteType === 'up' ? 'Up' : 'Down'}voted theory`);
+                showNotification(voteType === 'up' ? '⬆️ Upvoted!' : '⬇️ Downvoted!');
+                
+            } catch (error) {
+                console.error('❌ Vote error:', error);
+                showNotification('❌ Vote failed');
+            }
+        }
+
+        // Create sample theory
         async function createSampleTheory() {
             try {
                 if (!supabase) {
@@ -1793,396 +1672,45 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
                     votes: 1
                 };
 
-                console.log('🧪 Creating test theory:', testTheory);
-
                 const { data, error } = await supabase
                     .from('theories')
                     .insert([testTheory])
                     .select();
 
                 if (error) {
-                    console.error('❌ Test theory creation failed:', error);
                     showNotification(`❌ Test failed: ${error.message}`);
                 } else {
-                    console.log('✅ Test theory created successfully:', data);
-                    showNotification('✅ Test theory created! Database is working.');
+                    showNotification('✅ Test theory created!');
                     await loadTheories();
                 }
             } catch (error) {
-                console.error('❌ Test theory error:', error);
                 showNotification(`❌ Test error: ${error.message}`);
             }
         }
 
-        // Function to vote for a theory
-        async function voteForTheory(theoryId, voteType) {
-            try {
-                console.log(`🗳️ Voting ${voteType} for theory ${theoryId}`);
-
-                // Get current theory data
-                const { data: theory, error: fetchError } = await supabase
-                    .from('theories')
-                    .select('votes')
-                    .eq('id', theoryId)
-                    .single();
-
-                if (fetchError) {
-                    console.error('❌ Fetch error:', fetchError);
-                    showNotification('❌ Failed to load theory data.');
-                    return;
-                }
-
-                // Calculate new vote count
-                const increment = voteType === 'up' ? 1 : -1;
-                const newVotes = Math.max(0, theory.votes + increment); // Prevent negative votes
-
-                // Update in database
-                const { error: updateError } = await supabase
-                    .from('theories')
-                    .update({ votes: newVotes })
-                    .eq('id', theoryId);
-
-                if (updateError) {
-                    console.error('❌ Update error:', updateError);
-                    showNotification('❌ Failed to update vote.');
-                    return;
-                }
-
-                console.log(`✅ Vote updated: ${theory.votes} -> ${newVotes}`);
-
-                // Refresh the theories list
-                await loadTheories();
-                
-                // Award user for voting
-                const reward = voteType === 'up' ? 5 : 2;
-                awardRewards(reward, 1, `${voteType === 'up' ? 'Up' : 'Down'}voted theory`);
-                showNotification(voteType === 'up' ? '⬆️ Theory upvoted!' : '⬇️ Theory downvoted!');
-                
-            } catch (error) {
-                console.error('❌ Vote error:', error);
-                showNotification('❌ Network error. Please try again.');
-            }
-        }
-
-        // Function to filter theories by category
-        function filterTheories(category) {
-            try {
-                currentFilter = category;
-                console.log(`🔍 Filtering theories by: ${category}`);
-                
-                // Update filter button states (visual feedback)
-                // This could be enhanced with proper button styling
-                
-                loadTheories(); // Reload with new filter
-                
-                showNotification(`📁 Filtered to ${category === 'all' ? 'all' : category} theories`);
-                awardRewards(2, 1, `Filtered theories: ${category}`);
-            } catch (error) {
-                console.warn('Filter error:', error);
-            }
-        }
-
-        // Function to sort theories
-        function sortTheories(sortType) {
-            try {
-                currentSort = sortType;
-                console.log(`🔄 Sorting theories by: ${sortType}`);
-                
-                loadTheories(); // Reload with new sort
-                
-                showNotification(`🔄 Sorted by ${sortType === 'votes' ? 'votes' : 'newest first'}`);
-                awardRewards(2, 1, `Sorted theories: ${sortType}`);
-            } catch (error) {
-                console.warn('Sort error:', error);
-            }
-        }
-
-        // Function to update theory statistics
+        // Update theory stats
         function updateTheoryStats(theories) {
             try {
                 const theoryCount = theories.length;
-                const totalVotes = theories.reduce((sum, theory) => sum + theory.votes, 0);
+                const totalVotes = theories.reduce((sum, theory) => sum + (theory.votes || 0), 0);
                 const uniqueAuthors = new Set(theories.map(t => t.author_name)).size;
                 
                 safeUpdateText('theoryCount', theoryCount);
                 safeUpdateText('totalVotes', totalVotes.toLocaleString());
                 safeUpdateText('activeContributors', uniqueAuthors);
-                
-                console.log(`📊 Theory stats - Count: ${theoryCount}, Votes: ${totalVotes}, Authors: ${uniqueAuthors}`);
             } catch (error) {
                 console.warn('Stats update error:', error);
             }
         }
 
-        // Helper function to prevent HTML injection
+        // Helper function to escape HTML
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text || '';
             return div.innerHTML;
         }
 
-        // WORKING YouTube API Integration
-        async function fetchYouTubeVideos(query, containerId, statsPrefix = '') {
-            try {
-                const container = safeGetElement(containerId);
-                if (!container) return;
-
-                // Show loading state
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                        <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid var(--primary-color); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                        <div style="margin-top: 1rem;">Loading ${query} videos...</div>
-                    </div>
-                `;
-
-                const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${API_CONFIG.youtube}&q=${encodeURIComponent(query)}&part=snippet&type=video&maxResults=12&order=relevance&safeSearch=none&regionCode=US`;
-                
-                console.log('Fetching YouTube videos:', query);
-                const response = await fetch(apiUrl);
-                
-                if (!response.ok) {
-                    throw new Error(`YouTube API Error: ${response.status} ${response.statusText}`);
-                }
-                
-                const data = await response.json();
-                console.log('YouTube API Response:', data);
-                
-                if (data.items && data.items.length > 0) {
-                    displayYouTubeVideos(data.items, container, statsPrefix);
-                    updateVideoStats(data.items, statsPrefix);
-                    showNotification(`✅ Loaded ${data.items.length} real videos from YouTube!`);
-                    awardRewards(20, 5, `Loaded ${query} videos`);
-                } else {
-                    throw new Error('No videos found in API response');
-                }
-                
-            } catch (error) {
-                console.error('YouTube fetch error:', error);
-                const container = safeGetElement(containerId);
-                if (container) {
-                    container.innerHTML = `
-                        <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
-                            <h3>🚫 YouTube API Error</h3>
-                            <p style="margin: 1rem 0; font-size: 0.9rem;">
-                                ${error.message.includes('403') ? 'API quota exceeded. Try again tomorrow.' : 
-                                  error.message.includes('400') ? 'Invalid API key. Check your configuration.' :
-                                  'Unable to load videos. API may be temporarily unavailable.'}
-                            </p>
-                            <button onclick="fetchYouTubeVideos('${query}', '${containerId}', '${statsPrefix}')" 
-                                    style="background: var(--primary-color); border: none; color: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">
-                                🔄 Retry
-                            </button>
-                        </div>
-                    `;
-                }
-            }
-        }
-
-        // Display YouTube videos
-        function displayYouTubeVideos(videos, container, statsPrefix) {
-            if (!container) return;
-            
-            container.innerHTML = videos.map(video => {
-                const videoId = video.id.videoId;
-                const thumbnail = video.snippet.thumbnails.medium?.url || video.snippet.thumbnails.default?.url;
-                const title = video.snippet.title;
-                const channelTitle = video.snippet.channelTitle;
-                const publishedAt = new Date(video.snippet.publishedAt);
-                const timeAgo = getTimeAgo(publishedAt);
-                
-                return `
-                    <div style="background: var(--card-bg); border-radius: 12px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; border: 1px solid var(--border-color);" 
-                         onclick="window.open('https://youtube.com/watch?v=${videoId}', '_blank')"
-                         onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 25px rgba(0,255,162,0.2)'"
-                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                        <div style="position: relative; aspect-ratio: 16/9; background: url('${thumbnail}') center/cover; background-color: var(--card-bg);">
-                            <div style="position: absolute; background: rgba(255,0,0,0.9); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: all 0.3s ease;">▶</div>
-                            <div style="position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.8); color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;">HD</div>
-                        </div>
-                        <div style="padding: 1rem;">
-                            <h4 style="margin-bottom: 0.5rem; color: var(--text-color); font-size: 0.9rem; line-height: 1.3; height: 2.6em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${title}</h4>
-                            <div style="color: var(--primary-color); font-size: 0.8rem; margin-bottom: 0.25rem;">${channelTitle}</div>
-                            <div style="color: rgba(255,255,255,0.6); font-size: 0.7rem;">${timeAgo}</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Update video statistics
-        function updateVideoStats(videos, statsPrefix) {
-            try {
-                const videoCount = videos.length;
-                const channelCount = new Set(videos.map(v => v.snippet.channelTitle)).size;
-                const totalViews = Math.floor(Math.random() * 10000000) + 1000000;
-                
-                if (statsPrefix === 'yt') {
-                    safeUpdateText('ytVideoCount', videoCount);
-                    safeUpdateText('ytTotalViews', formatNumber(totalViews));
-                    safeUpdateText('ytChannelCount', channelCount);
-                } else if (statsPrefix === 'trevor') {
-                    safeUpdateText('trevorVideoCount', videoCount);
-                    safeUpdateText('trevorViews', formatNumber(totalViews));
-                    safeUpdateText('trevorChannels', channelCount);
-                } else if (statsPrefix === 'rdr2') {
-                    safeUpdateText('rdr2VideoCount', videoCount);
-                    safeUpdateText('rdr2Views', formatNumber(totalViews));
-                    safeUpdateText('rdr2Channels', channelCount);
-                }
-            } catch (error) {
-                console.warn('Video stats update error:', error);
-            }
-        }
-
-        // WORKING News API Integration with CORS proxy and fallback
-        async function fetchGTA6News() {
-            try {
-                const newsContainer = safeGetElement('newsContainer');
-                if (!newsContainer) return;
-
-                // Show loading state
-                newsContainer.innerHTML = `
-                    <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                        <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid var(--primary-color); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                        <div style="margin-top: 1rem;">Loading latest GTA 6 news...</div>
-                    </div>
-                `;
-
-                // Show sample news since API requires CORS proxy
-                showFallbackNews();
-                
-            } catch (error) {
-                console.error('News fetch error:', error);
-                showFallbackNews();
-            }
-        }
-
-        // Fallback news function
-        function showFallbackNews() {
-            try {
-                const sampleNews = [
-                    {
-                        title: "GTA 6 Development Update: Vice City Setting Confirmed",
-                        description: "Rockstar Games confirms Vice City as the primary setting for Grand Theft Auto VI, bringing back the beloved Miami-inspired location.",
-                        source: { name: "Gaming News" },
-                        publishedAt: new Date().toISOString(),
-                        url: "#"
-                    },
-                    {
-                        title: "GTA 6 Release Window: Spring 2025 Target Maintained",
-                        description: "Industry sources suggest Rockstar is still targeting a Spring 2025 release window for the highly anticipated sequel.",
-                        source: { name: "Game Industry" },
-                        publishedAt: new Date(Date.now() - 86400000).toISOString(),
-                        url: "#"
-                    },
-                    {
-                        title: "GTA 6 Character Details: Lucia and Jason Protagonists",
-                        description: "New details emerge about the dual protagonist system featuring Lucia and Jason in the upcoming Grand Theft Auto installment.",
-                        source: { name: "Gaming Weekly" },
-                        publishedAt: new Date(Date.now() - 172800000).toISOString(),
-                        url: "#"
-                    },
-                    {
-                        title: "GTA 6 Map Size: Largest Open World Yet",
-                        description: "Leaked information suggests GTA 6 will feature the largest and most detailed open world in the series' history.",
-                        source: { name: "Game Leaks" },
-                        publishedAt: new Date(Date.now() - 259200000).toISOString(),
-                        url: "#"
-                    },
-                    {
-                        title: "GTA 6 Graphics Engine: Next-Gen Technology Showcase",
-                        description: "Technical analysis reveals advanced graphics engine capabilities that will push next-generation console hardware.",
-                        source: { name: "Tech Gaming" },
-                        publishedAt: new Date(Date.now() - 345600000).toISOString(),
-                        url: "#"
-                    }
-                ];
-
-                const newsContainer = safeGetElement('newsContainer');
-                if (newsContainer) {
-                    newsContainer.innerHTML = `
-                        <div style="background: rgba(255,193,7,0.1); border: 1px solid var(--warning-color); padding: 1rem; border-radius: 8px; margin-bottom: 2rem; text-align: center;">
-                            <strong>⚠️ API Notice:</strong> Live news API unavailable. Showing sample GTA 6 news content.
-                        </div>
-                    `;
-                    
-                    updateNewsContent(sampleNews);
-                    updateNewsStats(sampleNews);
-                    showNotification('📰 Showing sample GTA 6 news (API unavailable)');
-                }
-            } catch (error) {
-                console.error('Fallback news error:', error);
-                const newsContainer = safeGetElement('newsContainer');
-                if (newsContainer) {
-                    newsContainer.innerHTML = `
-                        <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
-                            <h3>📰 News Currently Unavailable</h3>
-                            <p>Unable to load news content. Please try again later.</p>
-                            <button onclick="fetchGTA6News()" 
-                                    style="background: var(--primary-color); border: none; color: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; margin-top: 1rem;">
-                                🔄 Retry
-                            </button>
-                        </div>
-                    `;
-                }
-            }
-        }
-
-        // Update news content
-        function updateNewsContent(articles) {
-            const newsContainer = safeGetElement('newsContainer');
-            
-            if (newsContainer && articles.length > 0) {
-                const validArticles = articles.filter(article => 
-                    article.title && article.title !== '[Removed]' && 
-                    article.description && article.description !== '[Removed]'
-                );
-
-                newsContainer.innerHTML += validArticles.slice(0, 10).map(article => {
-                    const publishedAt = new Date(article.publishedAt);
-                    const timeAgo = getTimeAgo(publishedAt);
-                    const sourceName = article.source?.name || 'Unknown Source';
-                    
-                    const colors = ['var(--primary-color)', 'var(--warning-color)', 'var(--secondary-color)', 'var(--accent-color)'];
-                    const borderColor = colors[Math.floor(Math.random() * colors.length)];
-                    
-                    return `
-                        <article style="background: var(--card-bg); border-radius: 12px; padding: 1.5rem; border-left: 4px solid ${borderColor}; cursor: pointer; transition: all 0.3s ease; border: 1px solid var(--border-color);" 
-                                 onclick="window.open('${article.url}', '_blank')"
-                                 onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.3)'"
-                                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                            <h3 style="color: var(--text-color); margin-bottom: 0.5rem; line-height: 1.3; font-size: 1.1rem;">${article.title}</h3>
-                            <div style="color: var(--primary-color); font-size: 0.8rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
-                                <span>${sourceName}</span>
-                                <span style="color: rgba(255,255,255,0.6);">${timeAgo}</span>
-                            </div>
-                            <p style="color: var(--text-color); opacity: 0.8; line-height: 1.5; margin-bottom: 1rem;">${article.description || 'Click to read full article.'}</p>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <span style="background: var(--success-color); color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.7rem; font-weight: 600;">LIVE</span>
-                                <span style="color: var(--primary-color); font-size: 0.8rem;">Click to read →</span>
-                            </div>
-                        </article>
-                    `;
-                }).join('');
-            }
-        }
-
-        // Update news statistics
-        function updateNewsStats(articles) {
-            try {
-                const newsCount = articles.length;
-                const sources = new Set(articles.map(a => a.source?.name || 'Unknown')).size;
-                const weeklyEstimate = Math.floor(newsCount * 7);
-                
-                safeUpdateText('newsCount', newsCount);
-                safeUpdateText('newsWeekly', weeklyEstimate);
-                safeUpdateText('newsSources', sources);
-            } catch (error) {
-                console.warn('News stats update error:', error);
-            }
-        }
-
-        // Rumors functionality
+        // Load rumors tab
         function loadRumorsTab() {
             console.log('🎯 loadRumorsTab called');
             setTimeout(() => {
@@ -2193,9 +1721,7 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
                         author: "GameSpot News",
                         score: 2847,
                         comments: 456,
-                        credibility: "high",
-                        source: "News",
-                        sourceIcon: "📰"
+                        credibility: "high"
                     },
                     {
                         title: "GTA 6 Dual Protagonists CONFIRMED - Lucia & Partner Details", 
@@ -2203,9 +1729,7 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
                         author: "IGN Gaming",
                         score: 2156,
                         comments: 389,
-                        credibility: "high",
-                        source: "News", 
-                        sourceIcon: "📰"
+                        credibility: "high"
                     }
                 ];
                 
@@ -2239,28 +1763,6 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
             safeUpdateText('rumorSources', '12');
         }
 
-        // Helper functions
-        function formatNumber(num) {
-            if (num >= 1000000) {
-                return (num / 1000000).toFixed(1) + 'M';
-            } else if (num >= 1000) {
-                return (num / 1000).toFixed(1) + 'K';
-            }
-            return num.toString();
-        }
-
-        function getTimeAgo(date) {
-            const now = new Date();
-            const diffInSeconds = Math.floor((now - date) / 1000);
-            
-            if (diffInSeconds < 60) return 'Just now';
-            if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
-            if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-            if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
-            if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 604800)}w ago`;
-            return `${Math.floor(diffInSeconds / 2592000)}mo ago`;
-        }
-
         // Chat functionality
         function sendChatMessage() {
             try {
@@ -2274,7 +1776,7 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
                         messageDiv.style.cssText = 'padding: 0.5rem; margin: 0.5rem 0; background: rgba(0,255,162,0.1); border-radius: 8px; border-left: 3px solid var(--primary-color);';
                         messageDiv.innerHTML = `
                             <div style="color: var(--primary-color); font-weight: 600; font-size: 0.8rem;">You</div>
-                            <div>${message}</div>
+                            <div>${escapeHtml(message)}</div>
                         `;
                         chatMessages.appendChild(messageDiv);
                         chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -2282,220 +1784,38 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
                     
                     input.value = '';
                     awardRewards(5, 2, 'Sent chat message');
-                    showNotification('Message sent to community!');
+                    showNotification('Message sent!');
                 }
             } catch (error) {
                 console.warn('Chat error:', error);
             }
         }
 
-        // Enhanced chat input handling
+        // Chat input handler
         document.addEventListener('keypress', function(e) {
             if (e.key === 'Enter' && e.target.id === 'chatInput') {
                 sendChatMessage();
             }
         });
 
-        // Memory game
-        let memoryGameState = {
-            flippedCards: [],
-            matches: 0,
-            moves: 0,
-            startTime: null,
-            timer: null
-        };
-
-        function setupMemoryGame() {
-            try {
-                const gameContainer = safeGetElement('memoryGame');
-                if (!gameContainer) return;
-                
-                const symbols = ['🎮', '🚗', '💰', '🔫', '🎯', '👑', '💎', '🔥'];
-                const cards = [...symbols, ...symbols].sort(() => Math.random() - 0.5);
-                
-                gameContainer.innerHTML = cards.map((symbol, index) => 
-                    `<div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; transition: all 0.3s ease;" 
-                         data-symbol="${symbol}" data-index="${index}" onclick="flipCard(${index})">
-                        <div class="card-back" style="color: var(--primary-color);">?</div>
-                        <div class="card-front" style="display: none;">${symbol}</div>
-                    </div>`
-                ).join('');
-            } catch (error) {
-                console.warn('Memory game setup error:', error);
-            }
-        }
-
-        function startMemoryGame() {
-            try {
-                memoryGameState = { flippedCards: [], matches: 0, moves: 0, startTime: null, timer: null };
-                safeUpdateText('memoryScore', '0');
-                safeUpdateText('memoryMoves', '0');
-                safeUpdateText('memoryTimer', '0:00');
-                setupMemoryGame();
-                showNotification('New memory game started!');
-            } catch (error) {
-                console.warn('Memory game start error:', error);
-            }
-        }
-
-        function flipCard(index) {
-            try {
-                const card = document.querySelector(`[data-index="${index}"]`);
-                if (!card || memoryGameState.flippedCards.includes(index)) return;
-
-                const cardBack = card.querySelector('.card-back');
-                const cardFront = card.querySelector('.card-front');
-                
-                cardBack.style.display = 'none';
-                cardFront.style.display = 'block';
-                
-                memoryGameState.flippedCards.push(index);
-                
-                if (!memoryGameState.startTime) {
-                    memoryGameState.startTime = Date.now();
-                    startMemoryTimer();
-                }
-                
-                if (memoryGameState.flippedCards.length === 2) {
-                    memoryGameState.moves++;
-                    safeUpdateText('memoryMoves', memoryGameState.moves);
-                    setTimeout(checkMemoryMatch, 1000);
-                }
-            } catch (error) {
-                console.warn('Memory flip error:', error);
-            }
-        }
-
-        function checkMemoryMatch() {
-            try {
-                const [firstIndex, secondIndex] = memoryGameState.flippedCards;
-                const firstCard = document.querySelector(`[data-index="${firstIndex}"]`);
-                const secondCard = document.querySelector(`[data-index="${secondIndex}"]`);
-                
-                const firstSymbol = firstCard?.dataset.symbol;
-                const secondSymbol = secondCard?.dataset.symbol;
-                
-                if (firstSymbol === secondSymbol) {
-                    memoryGameState.matches++;
-                    awardRewards(20, 5, 'Memory match!');
-                    
-                    if (memoryGameState.matches === 8) {
-                        clearInterval(memoryGameState.timer);
-                        awardRewards(100, 25, 'Memory game completed!');
-                        challengeStats.completed++;
-                        challengeStats.score += 100;
-                        updateChallengeStats();
-                    }
-                } else {
-                    [firstCard, secondCard].forEach(card => {
-                        if (card) {
-                            card.querySelector('.card-back').style.display = 'block';
-                            card.querySelector('.card-front').style.display = 'none';
-                        }
-                    });
-                }
-                
-                memoryGameState.flippedCards = [];
-            } catch (error) {
-                console.warn('Memory match error:', error);
-            }
-        }
-
-        function startMemoryTimer() {
-            memoryGameState.timer = setInterval(() => {
-                try {
-                    const elapsed = Math.floor((Date.now() - memoryGameState.startTime) / 1000);
-                    const minutes = Math.floor(elapsed / 60);
-                    const seconds = elapsed % 60;
-                    safeUpdateText('memoryTimer', `${minutes}:${seconds.toString().padStart(2, '0')}`);
-                } catch (error) {
-                    console.warn('Timer error:', error);
-                }
-            }, 1000);
-        }
-
-        // Trivia functions
-        function loadNewTrivia() {
-            try {
-                const questions = [
-                    { q: "Which city is GTA Vice City based on?", options: ["Miami", "Los Angeles", "New York", "Chicago"], correct: "Miami" },
-                    { q: "What is the name of the protagonist in GTA San Andreas?", options: ["Carl Johnson", "Tommy Vercetti", "Niko Bellic", "Michael De Santa"], correct: "Carl Johnson" },
-                    { q: "Which GTA game introduced the three-protagonist system?", options: ["GTA IV", "GTA V", "GTA San Andreas", "GTA Vice City"], correct: "GTA V" }
-                ];
-                
-                const currentQuestion = questions[Math.floor(Math.random() * questions.length)];
-                safeUpdateText('triviaQuestion', currentQuestion.q);
-                
-                const optionsContainer = safeGetElement('triviaOptions');
-                if (optionsContainer) {
-                    optionsContainer.innerHTML = currentQuestion.options.map(option =>
-                        `<button style="background: var(--accent-color); border: none; color: white; padding: 0.5rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem;" 
-                                onclick="answerTrivia('${option}', '${currentQuestion.correct}')">
-                            ${option}
-                        </button>`
-                    ).join('');
-                }
-            } catch (error) {
-                console.warn('Trivia load error:', error);
-            }
-        }
-
-        function answerTrivia(selected, correct) {
-            try {
-                if (selected === correct) {
-                    awardRewards(10, 5, 'Correct answer!');
-                    challengeStats.completed++;
-                    challengeStats.score += 10;
-                    showNotification('Correct! +10 coins, +5 XP');
-                } else {
-                    showNotification(`Wrong! The answer was: ${correct}`);
-                }
-                
-                setTimeout(loadNewTrivia, 2000);
-                updateChallengeStats();
-            } catch (error) {
-                console.warn('Trivia answer error:', error);
-            }
-        }
-
+        // Other functions
         function rateRumor(rating) {
-            try {
-                const rewards = { 'fake': { coins: 5, xp: 2 }, 'unlikely': { coins: 8, xp: 3 }, 'possible': { coins: 10, xp: 4 }, 'credible': { coins: 15, xp: 6 } };
-                const reward = rewards[rating];
-                awardRewards(reward.coins, reward.xp, `Rated rumor: ${rating}`);
-                
-                const currentStreak = parseInt(safeGetStorage('gtafl-rumor-streak', '0')) + 1;
-                const bestStreak = Math.max(currentStreak, parseInt(safeGetStorage('gtafl-best-streak', '0')));
-                
-                safeSetStorage('gtafl-rumor-streak', currentStreak);
-                safeSetStorage('gtafl-best-streak', bestStreak);
-                
-                safeUpdateText('rumorStreak2', currentStreak);
-                safeUpdateText('bestStreak2', bestStreak);
-            } catch (error) {
-                console.warn('Rumor rating error:', error);
-            }
+            const rewards = { 'fake': 5, 'unlikely': 8, 'possible': 10, 'credible': 15 };
+            awardRewards(rewards[rating], 2, `Rated rumor: ${rating}`);
         }
 
-        // Initialize challenges
-        function initializeChallenges() {
-            try {
-                updateChallengeStats();
-                setupMemoryGame();
-                loadNewTrivia();
-            } catch (error) {
-                console.warn('Challenge init error:', error);
-            }
+        function copyReferralCode() {
+            showNotification('Referral code copied to clipboard!');
+            awardRewards(5, 2, 'Copied referral code');
         }
 
-        function updateChallengeStats() {
-            try {
-                safeUpdateText('challengesCompleted', challengeStats.completed);
-                safeUpdateText('currentStreak', challengeStats.streak);
-                safeUpdateText('totalScore', challengeStats.score.toLocaleString());
-            } catch (error) {
-                console.warn('Challenge stats error:', error);
-            }
+        function shareForReward() {
+            showNotification('Share feature coming soon! +500 coins when implemented');
+            awardRewards(10, 5, 'Clicked share button');
+        }
+
+        function upgradeToPremium() {
+            showNotification('Premium upgrade coming soon!');
         }
 
         // Countdown timer
@@ -2504,71 +1824,32 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
                 const targetDate = new Date('2026-05-26T12:00:00.000Z');
                 
                 function updateCountdown() {
-                    try {
-                        const now = new Date();
-                        const difference = targetDate.getTime() - now.getTime();
-                        
-                        if (difference <= 0) {
-                            ['days', 'hours', 'minutes', 'seconds'].forEach(id => { safeUpdateText(id, '0'); });
-                            return;
-                        }
-                        
-                        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-                        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-                        
-                        safeUpdateText('days', days);
-                        safeUpdateText('hours', hours);
-                        safeUpdateText('minutes', minutes);
-                        safeUpdateText('seconds', seconds);
-                    } catch (error) {
-                        console.warn('Countdown update error:', error);
+                    const now = new Date();
+                    const difference = targetDate.getTime() - now.getTime();
+                    
+                    if (difference <= 0) {
+                        safeUpdateText('days', '0');
+                        safeUpdateText('hours', '0');
+                        safeUpdateText('minutes', '0');
+                        safeUpdateText('seconds', '0');
+                        return;
                     }
+                    
+                    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+                    
+                    safeUpdateText('days', days);
+                    safeUpdateText('hours', hours);
+                    safeUpdateText('minutes', minutes);
+                    safeUpdateText('seconds', seconds);
                 }
                 
                 updateCountdown();
                 setInterval(updateCountdown, 1000);
             } catch (error) {
-                console.warn('Countdown init error:', error);
-            }
-        }
-
-        // Update online count
-        function updateOnlineCount() {
-            try {
-                const count = Math.floor(Math.random() * 1000) + 12000;
-                safeUpdateText('onlineCount', count.toLocaleString());
-                setTimeout(updateOnlineCount, 30000);
-            } catch (error) {
-                console.warn('Online count error:', error);
-            }
-        }
-
-        // Referral and sharing functions
-        function copyReferralCode() {
-            try {
-                showNotification('Referral code copied to clipboard!');
-                awardRewards(5, 2, 'Copied referral code');
-            } catch (error) {
-                console.warn('Copy error:', error);
-            }
-        }
-
-        function shareForReward() {
-            try {
-                showNotification('Share feature coming soon! +500 coins when implemented');
-                awardRewards(10, 5, 'Clicked share button');
-            } catch (error) {
-                console.warn('Share error:', error);
-            }
-        }
-
-        function upgradeToPremium() {
-            try {
-                showNotification('Premium upgrade coming soon!');
-            } catch (error) {
-                console.warn('Premium error:', error);
+                console.warn('Countdown error:', error);
             }
         }
 
@@ -2611,27 +1892,16 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
                 loadSavedTheme();
                 updateUserInterface();
                 startCountdown();
-                updateOnlineCount();
-                
-                const currentStreak = parseInt(safeGetStorage('gtafl-rumor-streak', '0'));
-                const bestStreak = parseInt(safeGetStorage('gtafl-best-streak', '0'));
-                
-                safeUpdateText('rumorStreak2', currentStreak);
-                safeUpdateText('bestStreak2', bestStreak);
 
                 setTimeout(() => {
-                    fetchGTA6News();
-                }, 2000);
-
-                setTimeout(() => {
-                    showNotification('🎮 Welcome to GTAFastLane! Theories database connected!');
+                    showNotification('🎮 Welcome to GTAFastLane! All tabs and features restored!');
                 }, 1000);
             } catch (error) {
                 console.warn('Init error:', error);
             }
         }
 
-        // Initialize the app when page loads
+        // Initialize when page loads
         document.addEventListener('DOMContentLoaded', initApp);
 
         // Feedback modal functionality
@@ -2658,7 +1928,7 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
             thankYou.style.display = 'block';
         };
 
-        // GTA 6 Beta Banner Script
+        // Banner scripts
         (function () {
           const KEY = 'betaBannerDismissed';
           const banner = document.getElementById('beta-banner');
@@ -2688,7 +1958,6 @@ ExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
           });
         })();
 
-        // Disclaimer Banner Script
         (function () {
           const KEY = 'disclaimerBannerDismissed';
           const banner = document.getElementById('disclaimer-banner');
