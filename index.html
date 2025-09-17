@@ -550,6 +550,160 @@
                 padding: 0 0.5rem;
             }
         }
+
+        /* Theory submission form styles */
+        .theory-form {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Theory card styles */
+        .theory-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .theory-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .theory-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .theory-votes {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 60px;
+        }
+
+        .vote-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .vote-btn:hover {
+            color: var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        .vote-count {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin: 0.25rem 0;
+        }
+
+        .theory-content {
+            flex: 1;
+            margin-left: 1rem;
+        }
+
+        .theory-title {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .theory-description {
+            color: rgba(255,255,255,0.8);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .theory-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .theory-author {
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        .theory-category {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -618,81 +772,32 @@
             🔴 LIVE: <span id="onlineCount">12,847</span> fans online | Limited event active!
         </div>
         
-      <div class="trailer-link" style="max-width: 600px; margin: 1rem auto; position: relative;">
-    <div id="trailerPreview" style="position: relative; aspect-ratio: 16/9; overflow: hidden; border-radius: 12px; cursor: pointer; transition: transform 0.3s ease;">
-        <div style="position: absolute; inset: 0; background: url('https://i.imgur.com/Z0x2Io2.jpeg') center/cover; display: flex; align-items: center; justify-content: center;">
-            <div style="text-align: center; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); z-index: 2;">
-                <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(1.2rem, 3vw, 2.5rem); font-weight: 900; margin-bottom: 0.5rem; letter-spacing: 2px;">GRAND THEFT AUTO VI</div>
-                <div style="font-size: clamp(0.8rem, 2vw, 1.2rem); opacity: 0.9; font-weight: 600;">SPRING 2026</div>
-                <div style="font-size: clamp(0.7rem, 1.8vw, 1rem); opacity: 0.8; margin-top: 0.5rem;">Jason & Lucia • Vice City</div>
+        <div class="trailer-link" style="max-width: 600px; margin: 1rem auto; position: relative;">
+            <div id="trailerPreview" style="position: relative; aspect-ratio: 16/9; overflow: hidden; border-radius: 12px; cursor: pointer; transition: transform 0.3s ease;">
+                <div style="position: absolute; inset: 0; background: url('https://i.imgur.com/Z0x2Io2.jpeg') center/cover; display: flex; align-items: center; justify-content: center;">
+                    <div style="text-align: center; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); z-index: 2;">
+                        <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(1.2rem, 3vw, 2.5rem); font-weight: 900; margin-bottom: 0.5rem; letter-spacing: 2px;">GRAND THEFT AUTO VI</div>
+                        <div style="font-size: clamp(0.8rem, 2vw, 1.2rem); opacity: 0.9; font-weight: 600;">SPRING 2026</div>
+                        <div style="font-size: clamp(0.7rem, 1.8vw, 1rem); opacity: 0.8; margin-top: 0.5rem;">Jason & Lucia • Vice City</div>
+                    </div>
+                    <div class="floating-1" style="position: absolute; top: 20px; left: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%;"></div>
+                    <div class="floating-2" style="position: absolute; bottom: 30px; right: 30px; width: 25px; height: 25px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+                    <div class="floating-3" style="position: absolute; top: 50%; left: 15px; width: 15px; height: 15px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                    <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.6) 100%); z-index: 1;"></div>
+                </div>
+                <div id="playButton" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,0,0,0.9); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; transition: all 0.3s ease; z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer;" class="play-button">▶</div>
+                <div style="position: absolute; bottom: 12px; left: 12px; background: rgba(0,0,0,0.8); color: white; padding: 6px 10px; border-radius: 4px; font-size: 12px; font-weight: 600;">Official Trailer</div>
+                <div style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">2:47</div>
+                <div style="position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s ease; background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);" class="overlay"></div>
             </div>
-            <div class="floating-1" style="position: absolute; top: 20px; left: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%;"></div>
-            <div class="floating-2" style="position: absolute; bottom: 30px; right: 30px; width: 25px; height: 25px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
-            <div class="floating-3" style="position: absolute; top: 50%; left: 15px; width: 15px; height: 15px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
-            <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.6) 100%); z-index: 1;"></div>
+            <div id="trailerPlayer" style="display:none; aspect-ratio:16/9; border-radius:12px; overflow:hidden;">
+                <iframe id="youtubeFrame" width="100%" height="100%" src="" title="GTA 6 Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <p style="text-align: center; margin-top: 0.5rem; color: var(--text-color); font-size: 0.9rem; font-weight: 600;">Watch GTA 6 Official Trailer - Jason & Lucia</p>
+            
+            <!-- Back button (hidden initially) -->
+            <button id="backButton" style="display: none; position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 14px; z-index: 20;">← Back</button>
         </div>
-        <div id="playButton" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,0,0,0.9); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; transition: all 0.3s ease; z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer;" class="play-button">▶</div>
-        <div style="position: absolute; bottom: 12px; left: 12px; background: rgba(0,0,0,0.8); color: white; padding: 6px 10px; border-radius: 4px; font-size: 12px; font-weight: 600;">Official Trailer</div>
-        <div style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">2:47</div>
-        <div style="position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s ease; background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);" class="overlay"></div>
-    </div>
-    <div id="trailerPlayer" style="display:none; aspect-ratio:16/9; border-radius:12px; overflow:hidden;">
-        <iframe id="youtubeFrame" width="100%" height="100%" src="" title="GTA 6 Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
-    </div>
-    <p style="text-align: center; margin-top: 0.5rem; color: var(--text-color); font-size: 0.9rem; font-weight: 600;">Watch GTA 6 Official Trailer - Jason & Lucia</p>
-    
-    <!-- Back button (hidden initially) -->
-    <button id="backButton" style="display: none; position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 14px; z-index: 20;">← Back</button>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const trailerPreview = document.getElementById('trailerPreview');
-    const trailerPlayer = document.getElementById('trailerPlayer');
-    const youtubeFrame = document.getElementById('youtubeFrame');
-    const playButton = document.getElementById('playButton');
-    const backButton = document.getElementById('backButton');
-    
-    function playTrailer() {
-        // Hide preview
-        trailerPreview.style.display = 'none';
-        
-        // Show player with autoplay
-        trailerPlayer.style.display = 'block';
-        youtubeFrame.src = 'https://www.youtube.com/embed/VQRLujxTm3c?autoplay=1&mute=0';
-        
-        // Show back button
-        backButton.style.display = 'block';
-    }
-    
-    function showPreview() {
-        // Show preview
-        trailerPreview.style.display = 'block';
-        
-        // Hide player and stop video
-        trailerPlayer.style.display = 'none';
-        youtubeFrame.src = '';
-        
-        // Hide back button
-        backButton.style.display = 'none';
-    }
-    
-    // Click handlers
-    trailerPreview.addEventListener('click', playTrailer);
-    playButton.addEventListener('click', function(e) {
-        e.stopPropagation();
-        playTrailer();
-    });
-    backButton.addEventListener('click', showPreview);
-    
-    // Keyboard support
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && trailerPlayer.style.display === 'block') {
-            showPreview();
-        }
-    });
-});
-</script>
         
         <div class="countdown-container">
             <div class="countdown-item" onclick="awardRewards(5, 2, 'Countdown clicked!')">
@@ -736,10 +841,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 <span class="tab-icon">📺</span>
                 <span class="tab-label">GTA</span>
             </button>
-          <button class="tab" onclick="showTab('rumors'); loadRumorsTab();" data-tab="rumors">
-    <span class="tab-icon">🔥</span>
-    <span class="tab-label">Rumors</span>
-</button>
+            <button class="tab" onclick="showTab('rumors'); loadRumorsTab();" data-tab="rumors">
+                <span class="tab-icon">🔥</span>
+                <span class="tab-label">Rumors</span>
+            </button>
             <button class="tab" onclick="showTab('trevor')" data-tab="trevor">
                 <span class="tab-icon">😈</span>
                 <span class="tab-label">Trevor</span>
@@ -1011,596 +1116,115 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         </div>
 
-<!-- COMPLETE RUMORS TAB - Replace your entire rumors section with this -->
-
-<!-- Rumors Tab - Enhanced with Real API Content -->
-<div id="rumors" class="tab-content">
-    <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🔥 GTA 6 Rumors & Leaks</h2>
-    
-    <!-- Rumors Stats -->        
-    <div class="stats-grid" style="margin-bottom: 2rem;">
-        <div class="stat-card">
-            <span class="stat-number" id="rumorsCount">Loading...</span>
-            <div>Active Rumors</div>
-        </div>
-        <div class="stat-card">
-            <span class="stat-number" id="rumorCredibility">Loading...</span>
-            <div>Credibility Score</div>
-        </div>
-        <div class="stat-card">
-            <span class="stat-number" id="rumorSources">Loading...</span>
-            <div>Sources</div>
-        </div>
-        <div class="stat-card premium">
-            <span class="stat-number">HOT</span>
-            <div>Status</div>
-        </div>
-    </div>
-    
-    <div id="rumorsContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
-        <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-            Loading latest GTA 6 rumors and leaks...
-        </div>
-    </div>
-</div>
-
-<script>
-// GTA 6 Rumors - Complete Integration
-async function fetchGTA6Rumors() {
-    try {
-        const rumorsContainer = document.getElementById('rumorsContainer');
-        if (!rumorsContainer) return;
-
-        // Show loading
-        rumorsContainer.innerHTML = `
-            <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid var(--primary-color); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                <div style="margin-top: 1rem;">Loading GTA 6 rumors...</div>
-            </div>
-        `;
-
-        let allRumors = [];
-        console.log('🚀 Starting rumors fetch...');
-
-        // Try YouTube API (this usually works)
-        try {
-            console.log('📥 Trying YouTube API...');
-            const ytResponse = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=GTA+6+leak+rumor+news+2024+2025&key=AIzaSyB1Hx3EJD1N_jyJ01E131pUA3RqZvLNOZU&type=video&order=relevance`);
+        <!-- COMPLETE RUMORS TAB -->
+        <div id="rumors" class="tab-content">
+            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🔥 GTA 6 Rumors & Leaks</h2>
             
-            if (ytResponse.ok) {
-                const ytData = await ytResponse.json();
-                if (ytData.items && ytData.items.length > 0) {
-                    const youtubeRumors = ytData.items.map(item => ({
-                        title: item.snippet.title,
-                        content: item.snippet.description ? item.snippet.description.substring(0, 200) + '...' : `YouTube video: ${item.snippet.title}`,
-                        author: item.snippet.channelTitle,
-                        score: Math.floor(Math.random() * 1000) + 100,
-                        views: Math.floor(Math.random() * 500000) + 10000,
-                        created: new Date(item.snippet.publishedAt).getTime() / 1000,
-                        permalink: `https://youtube.com/watch?v=${item.id.videoId}`,
-                        credibility: calculateYouTubeCredibility(item.snippet.channelTitle),
-                        source: 'YouTube',
-                        sourceIcon: '🎥',
-                        thumbnail: item.snippet.thumbnails.medium?.url
-                    }));
-                    allRumors.push(...youtubeRumors);
-                    console.log(`✅ YouTube success! Got ${youtubeRumors.length} videos`);
-                }
-            } else {
-                console.log('❌ YouTube API failed:', ytResponse.status);
-            }
-        } catch (ytError) {
-            console.log('❌ YouTube error:', ytError.message);
-        }
+            <!-- Rumors Stats -->        
+            <div class="stats-grid" style="margin-bottom: 2rem;">
+                <div class="stat-card">
+                    <span class="stat-number" id="rumorsCount">Loading...</span>
+                    <div>Active Rumors</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="rumorCredibility">Loading...</span>
+                    <div>Credibility Score</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="rumorSources">Loading...</span>
+                    <div>Sources</div>
+                </div>
+                <div class="stat-card premium">
+                    <span class="stat-number">HOT</span>
+                    <div>Status</div>
+                </div>
+            </div>
+            
+            <div id="rumorsContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
+                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
+                    Loading latest GTA 6 rumors and leaks...
+                </div>
+            </div>
+        </div>
 
-        // Try Reddit API (multiple subreddits)
-        const subreddits = ['GTA6', 'GrandTheftAutoVI', 'rockstar', 'gaming', 'Games', 'gamingleaks'];
-        for (const subreddit of subreddits) {
-            try {
-                console.log(`📥 Trying Reddit r/${subreddit}...`);
-                let response;
-                
-                try {
-                    response = await fetch(`https://www.reddit.com/r/${subreddit}/hot.json?limit=10`);
-                } catch (corsError) {
-                    // Try CORS proxy
-                    response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://www.reddit.com/r/${subreddit}/hot.json?limit=10`)}`);
-                    if (response.ok) {
-                        const proxyData = await response.json();
-                        response = { ok: true, json: () => JSON.parse(proxyData.contents) };
-                    }
-                }
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    const posts = data.data.children
-                        .filter(post => {
-                            const title = post.data.title.toLowerCase();
-                            return title.includes('gta') || title.includes('grand theft auto') || 
-                                   title.includes('rockstar') || title.includes('vice city') ||
-                                   title.includes('leak') || title.includes('rumor');
-                        })
-                        .map(post => ({
-                            title: post.data.title,
-                            content: post.data.selftext ? post.data.selftext.substring(0, 200) + '...' : `Reddit discussion: ${post.data.title}`,
-                            author: post.data.author || 'Reddit User',
-                            score: post.data.score || Math.floor(Math.random() * 200) + 50,
-                            comments: post.data.num_comments || Math.floor(Math.random() * 100) + 10,
-                            created: post.data.created_utc || (Math.floor(Date.now() / 1000) - Math.random() * 604800),
-                            permalink: `https://reddit.com${post.data.permalink}`,
-                            credibility: calculateRedditCredibility(post.data.score, post.data.num_comments),
-                            source: 'Reddit',
-                            sourceIcon: '🔴',
-                            subreddit: post.data.subreddit
-                        }));
-                    allRumors.push(...posts);
-                    console.log(`✅ Reddit r/${subreddit} success! Got ${posts.length} posts`);
-                }
-            } catch (redditError) {
-                console.log(`❌ Reddit r/${subreddit} error:`, redditError.message);
-            }
-        }
+        <!-- THEORIES TAB - FIXED WITH PROPER SUPABASE INTEGRATION -->
+        <div id="theories" class="tab-content">
+            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🧠 GTA 6 Theories Hub</h2>
+            
+            <!-- Theory Stats -->
+            <div class="stats-grid" style="margin-bottom: 2rem;">
+                <div class="stat-card">
+                    <span class="stat-number" id="theoryCount">0</span>
+                    <div>Total Theories</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="totalVotes">0</span>
+                    <div>Total Votes</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="activeContributors">0</span>
+                    <div>Contributors</div>
+                </div>
+                <div class="stat-card premium">
+                    <span class="stat-number">LIVE</span>
+                    <div>Status</div>
+                </div>
+            </div>
 
-        // Skip NewsAPI due to CORS issues and use enhanced demo data instead
-        console.log('ℹ️ Skipping NewsAPI due to CORS restrictions');
-
-        // Always add expanded demo rumors to ensure content (20+ high-quality rumors)
-        const now = Math.floor(Date.now() / 1000);
-        const demoRumors = [
-            {
-                title: "BREAKING: GTA 6 Vice City Map Leaked - Massive Open World",
-                content: "New leaked screenshots show an incredibly detailed Vice City with expanded areas including the Everglades, multiple islands, and parts of South America. The map is reportedly 3x larger than GTA 5.",
-                author: "GameSpot News",
-                score: 2847,
-                comments: 456,
-                created: now - 7200,
-                permalink: "https://www.gamespot.com/games/grand-theft-auto-vi/",
-                credibility: "high",
-                source: "News",
-                sourceIcon: "📰"
-            },
-            {
-                title: "GTA 6 Dual Protagonists CONFIRMED - Lucia & Partner Details",
-                content: "Industry insiders confirm GTA 6 will feature two main characters in a Bonnie & Clyde style story. The female protagonist Lucia is reportedly voiced by a major Hollywood actress.",
-                author: "IGN Gaming",
-                score: 2156,
-                comments: 389,
-                created: now - 28800,
-                permalink: "https://www.ign.com/wikis/gta-6",
-                credibility: "high",
-                source: "News",
-                sourceIcon: "📰"
-            },
-            {
-                title: "GTA 6 Release Date: Fall 2025 Window Confirmed by Sources",
-                content: "Multiple industry analysts and insiders point to Q4 2025 as the most likely release window, aligning with Take-Two's fiscal projections and recent hiring patterns at Rockstar.",
-                author: "Polygon Exclusive",
-                score: 1923,
-                comments: 267,
-                created: now - 86400,
-                permalink: "https://www.polygon.com/grand-theft-auto-6-gta-6-guide",
-                credibility: "high",
-                source: "News",
-                sourceIcon: "📰"
-            },
-            {
-                title: "MASSIVE LEAK: GTA 6 Advanced Weather & Natural Disasters",
-                content: "Leaked development footage shows dynamic hurricane systems that can flood areas, destroy buildings, and create new gameplay opportunities. Weather will be a core mechanic.",
-                author: "Kotaku Investigation",
-                score: 1678,
-                comments: 234,
-                created: now - 172800,
-                permalink: "https://kotaku.com/tag/grand-theft-auto-vi",
-                credibility: "medium",
-                source: "News",
-                sourceIcon: "📰"
-            },
-            {
-                title: "GTA 6 Enhanced Vehicle System - Dealerships & Customization",
-                content: "New UI screenshots reveal deep vehicle modification systems and the ability to own and operate car dealerships as business ventures, expanding beyond GTA 5's capabilities.",
-                author: "Eurogamer Report",
-                score: 1445,
-                comments: 198,
-                created: now - 259200,
-                permalink: "https://www.eurogamer.net/topics/gta-6",
-                credibility: "medium",
-                source: "News",
-                sourceIcon: "📰"
-            },
-            {
-                title: "GTA 6 Online: 100+ Players, Cross-Platform at Launch",
-                content: "Unconfirmed reports suggest GTA 6 Online will launch simultaneously with single-player, supporting massive multiplayer sessions with cross-platform compatibility.",
-                author: "PC Gamer Analysis",
-                score: 1289,
-                comments: 167,
-                created: now - 604800,
-                permalink: "https://www.pcgamer.com/games/action/gta-6/",
-                credibility: "medium",
-                source: "News",
-                sourceIcon: "📰"
-            },
-            {
-                title: "Former Rockstar Dev Hints at GTA 6 Miami Setting Details",
-                content: "A former Rockstar Games developer shared cryptic posts on LinkedIn mentioning 'Project Americas' and references to '80s nostalgia' that fans believe confirm Vice City return.",
-                author: "Reddit User",
-                score: 3456,
-                comments: 523,
-                created: now - 43200,
-                permalink: "https://www.reddit.com/r/GTA6/",
-                credibility: "high",
-                source: "Reddit",
-                sourceIcon: "🔴"
-            },
-            {
-                title: "GTA 6 Budget Reportedly Exceeds $2 Billion Development Cost",
-                content: "Industry sources claim GTA 6's development budget has surpassed $2 billion, making it the most expensive entertainment product ever created, exceeding even major Hollywood blockbusters.",
-                author: "GameInformer",
-                score: 2234,
-                comments: 445,
-                created: now - 129600,
-                permalink: "https://www.gameinformer.com/",
-                credibility: "high",
-                source: "News",
-                sourceIcon: "📰"
-            },
-            {
-                title: "Leaked Audio Confirms Dynamic Music System in GTA 6",
-                content: "Datamined audio files suggest GTA 6 will feature an adaptive music system that changes based on player actions, weather, and story progression, similar to Red Dead Redemption 2 but more advanced.",
-                author: "Reddit User",
-                score: 1876,
-                comments: 234,
-                created: now - 201600,
-                permalink: "https://www.reddit.com/r/GrandTheftAutoVI/",
-                credibility: "medium",
-                source: "Reddit",
-                sourceIcon: "🔴"
-            },
-            {
-                title: "GTA 6 Will Feature Cryptocurrency & Stock Market Integration",
-                content: "Leaked source code references suggest GTA 6 will include a fully functional in-game cryptocurrency system and stock market that mirrors real-world financial mechanics.",
-                author: "Tech Insider",
-                score: 1654,
-                comments: 789,
-                created: now - 302400,
-                permalink: "https://www.businessinsider.com/",
-                credibility: "low",
-                source: "News",
-                sourceIcon: "📰"
-            },
-            {
-                title: "RUMOR: GTA 6 Alpha Testing Begins at Rockstar Studios",
-                content: "Anonymous industry sources claim closed alpha testing has begun at Rockstar's offices, with employees testing core gameplay mechanics and the open-world systems.",
-                author: "Reddit User",
-                score: 2145,
-                comments: 456,
-                created: now - 388800,
-                permalink: "https://www.reddit.com/r/rockstar/",
-                credibility: "medium",
-                source: "Reddit",
-                sourceIcon: "🔴"
-            },
-            {
-                title: "GTA 6 Physics Engine Upgrade: Realistic Damage & Destruction",
-                content: "Leaked technical documents describe a revolutionary physics engine that will allow for realistic building destruction, advanced vehicle damage, and environmental interactions.",
-                author: "Digital Foundry",
-                score: 1987,
-                comments: 321,
-                created: now - 475200,
-                permalink: "https://www.eurogamer.net/digitalfoundry",
-                credibility: "high",
-                source: "News",
-                sourceIcon: "📰"
-            },
-            {
-                title: "Voice Actor Leak Suggests A-List Celebrity Cast for GTA 6",
-                content: "Hollywood talent agency documents accidentally revealed potential voice actors including Oscar winners and A-list celebrities signed for 'Project Americas' motion capture work.",
-                author: "Entertainment Weekly",
-                score: 1543,
-                comments: 234,
-                created: now - 561600,
-                permalink: "https://ew.com/",
-                credibility: "medium",
-                source: "News",
-                sourceIcon: "📰"
-            },
-            {
-                title: "GTA 6 Day/Night Cycle: 48 Minutes Real-Time Confirmed",
-                content: "Datamined files reveal GTA 6 will feature a 48-minute day/night cycle, double the length of GTA 5, allowing for more realistic lighting and weather transitions.",
-                author: "Reddit User",
-                score: 1234,
-                comments: 189,
-                created: now - 648000,
-                permalink: "https://www.reddit.com/r/gaming/",
-                credibility: "medium",
-                source: "Reddit",
-                sourceIcon: "🔴"
-            },
-            {
-                title: "Leaked Screenshots Show GTA 6 Character Customization System",
-                content: "New leaked images reveal an extensive character customization system allowing players to modify appearance, clothing, tattoos, and even body modifications with unprecedented detail.",
-                author: "GamesRadar",
-                score: 1876,
-                comments: 345,
-                created: now - 734400,
-                permalink: "https://www.gamesradar.com/",
-                credibility: "medium",
-                source: "News",
-                sourceIcon: "📰"
-            },
-            {
-                title: "GTA 6 Real Estate System: Buy, Renovate, and Manage Properties",
-                content: "Leaked UI elements show a complex property management system where players can purchase, renovate, and rent out various properties across Vice City for passive income generation.",
-                author: "Reddit User",
-                score: 2456,
-                comments: 567,
-                created: now - 820800,
-                permalink: "https://www.reddit.com/r/GTA6/",
-                credibility: "high",
-                source: "Reddit",
-                sourceIcon: "🔴"
-            },
-            {
-                title: "BREAKING: GTA 6 Will Support VR Mode on Next-Gen Consoles",
-                content: "Industry insiders claim GTA 6 will include full VR support for PlayStation VR2 and future Xbox VR systems, offering an immersive first-person Vice City experience.",
-                author: "VR Gaming News",
-                score: 1345,
-                comments: 234,
-                created: now - 907200,
-                permalink: "https://uploadvr.com/",
-                credibility: "low",
-                source: "News",
-                sourceIcon: "📰"
-            },
-            {
-                title: "GTA 6 Wanted System Overhaul: Witness Mechanics & Investigations",
-                content: "Leaked gameplay footage reveals a completely redesigned wanted system featuring witness mechanics, police investigations, and the ability to lay low to reduce heat levels.",
-                author: "Reddit User",
-                score: 1987,
-                comments: 432,
-                created: now - 993600,
-                permalink: "https://www.reddit.com/r/GrandTheftAutoVI/",
-                credibility: "medium",
-                source: "Reddit",
-                sourceIcon: "🔴"
-            },
-            {
-                title: "GTA 6 Soundtrack Leak: 400+ Licensed Songs Across Multiple Decades",
-                content: "Music industry sources reveal GTA 6 will feature over 400 licensed tracks spanning from the 1970s to present day, with multiple radio stations themed around different eras and genres.",
-                author: "Billboard",
-                score: 1654,
-                comments: 298,
-                created: now - 1080000,
-                permalink: "https://www.billboard.com/",
-                credibility: "high",
-                source: "News",
-                sourceIcon: "📰"
-            },
-            {
-                title: "RUMOR: GTA 6 Beta Access Coming to Rockstar Games Launcher",
-                content: "Unverified reports suggest selected Rockstar Games Launcher users will receive beta access invitations starting Q2 2025, similar to Red Dead Online's early access program.",
-                author: "Reddit User",
-                score: 2876,
-                comments: 654,
-                created: now - 1166400,
-                permalink: "https://www.reddit.com/r/rockstar/",
-                credibility: "low",
-                source: "Reddit",
-                sourceIcon: "🔴"
-            }
-        ];
-
-        allRumors.push(...demoRumors);
-        console.log(`📊 Added ${demoRumors.length} demo rumors`);
-
-        // Sort and display - Show up to 40 rumors
-        const finalRumors = allRumors
-            .sort((a, b) => (b.score + (b.views || 0) / 1000) - (a.score + (a.views || 0) / 1000))
-            .slice(0, 40); // Increased from 12 to 40
-
-        console.log(`✅ Displaying ${finalRumors.length} total rumors`);
-        displayRumors(finalRumors);
-        updateRumorStats(finalRumors);
-
-    } catch (error) {
-        console.error('❌ Fatal error in fetchGTA6Rumors:', error);
-        displayEmergencyFallback();
-    }
-}
-
-function calculateYouTubeCredibility(channelName) {
-    const name = channelName.toLowerCase();
-    if (['gamespot', 'ign', 'kotaku', 'polygon'].some(ch => name.includes(ch))) return 'high';
-    if (['gta leaks', 'gaming leaks', 'rockstar'].some(ch => name.includes(ch))) return 'medium';
-    return 'low';
-}
-
-function calculateRedditCredibility(score, comments) {
-    let credibilityScore = 0;
-    if (score > 1000) credibilityScore += 40;
-    else if (score > 500) credibilityScore += 30;
-    else if (score > 100) credibilityScore += 20;
-    else if (score > 50) credibilityScore += 10;
-    
-    if (comments > 200) credibilityScore += 30;
-    else if (comments > 100) credibilityScore += 20;
-    else if (comments > 50) credibilityScore += 15;
-    else if (comments > 20) credibilityScore += 10;
-    
-    if (credibilityScore >= 60) return 'high';
-    if (credibilityScore >= 30) return 'medium';
-    return 'low';
-}
-
-function displayRumors(rumors) {
-    const container = document.getElementById('rumorsContainer');
-    if (!container) return;
-    
-    container.innerHTML = rumors.map(rumor => `
-        <div class="rumor-card" style="background: var(--card-bg, #1a1a1a); border-radius: 12px; padding: 1.5rem; border-left: 4px solid var(--primary-color); margin-bottom: 1rem; transition: all 0.3s ease;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
-                <div style="flex: 1;">
-                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                        <span style="font-size: 1.2rem;">${rumor.sourceIcon}</span>
-                        <span style="color: var(--primary-color); font-size: 0.9rem; font-weight: 600;">${rumor.source}</span>
-                        ${rumor.views ? `<span style="color: var(--text-secondary, #888); font-size: 0.8rem;">• ${formatViews(rumor.views)} views</span>` : ''}
+            <!-- Theory Submission Form -->
+            <div class="theory-form">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">📝 Submit Your Theory</h3>
+                <form id="theoryForm" onsubmit="submitTheory(event)">
+                    <div class="form-group">
+                        <label for="theoryAuthor">Your Name:</label>
+                        <input type="text" id="theoryAuthor" name="author" required placeholder="Enter your name">
                     </div>
-                    <h3 style="color: var(--text-color, #ffffff); margin: 0; font-size: 1.1rem; line-height: 1.4;">${rumor.title}</h3>
-                </div>
-                <span style="
-                    padding: 0.3rem 0.8rem; 
-                    border-radius: 20px; 
-                    font-size: 0.75rem; 
-                    font-weight: bold; 
-                    text-transform: uppercase;
-                    background: ${getCredibilityColor(rumor.credibility)};
-                    color: white;
-                    white-space: nowrap;
-                    margin-left: 1rem;
-                ">${rumor.credibility}</span>
+                    <div class="form-group">
+                        <label for="theoryTitle">Theory Title:</label>
+                        <input type="text" id="theoryTitle" name="title" required placeholder="Give your theory a catchy title">
+                    </div>
+                    <div class="form-group">
+                        <label for="theoryCategory">Category:</label>
+                        <select id="theoryCategory" name="category" required>
+                            <option value="">Select Category</option>
+                            <option value="story">Story & Plot</option>
+                            <option value="characters">Characters</option>
+                            <option value="gameplay">Gameplay</option>
+                            <option value="map">Map & Setting</option>
+                            <option value="easter-eggs">Easter Eggs</option>
+                            <option value="technology">Technology</option>
+                            <option value="speculation">General Speculation</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="theoryContent">Theory Description:</label>
+                        <textarea id="theoryContent" name="content" required placeholder="Describe your theory in detail... What evidence supports it? What makes it plausible?"></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        🚀 Submit Theory
+                    </button>
+                </form>
             </div>
-            
-            ${rumor.thumbnail ? `
-                <div style="margin-bottom: 1rem;">
-                    <img src="${rumor.thumbnail}" alt="Thumbnail" style="width: 100%; max-width: 250px; height: auto; border-radius: 8px; object-fit: cover;" onerror="this.style.display='none'">
-                </div>
-            ` : ''}
-            
-            <p style="color: var(--text-secondary, #888); margin: 1rem 0; line-height: 1.6; font-size: 0.95rem;">
-                ${rumor.content}
-            </p>
-            
-            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-secondary, #888); flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;">
-                <div>
-                    <span style="color: var(--primary-color);">${rumor.author}</span>
-                </div>
-                <div>
-                    <span>↑ ${rumor.score}</span>
-                    ${rumor.comments ? `<span style="margin: 0 0.5rem;">•</span><span>${rumor.comments} comments</span>` : ''}
-                    <span style="margin: 0 0.5rem;">•</span>
-                    <span>${getTimeAgo(rumor.created)}</span>
-                </div>
+
+            <!-- Filter/Sort Options -->
+            <div style="display: flex; gap: 1rem; margin: 2rem 0; flex-wrap: wrap;">
+                <button onclick="filterTheories('all')" class="floating-btn" style="position: static; font-size: 0.8rem; padding: 0.5rem 1rem;">All Theories</button>
+                <button onclick="filterTheories('story')" class="floating-btn" style="position: static; font-size: 0.8rem; padding: 0.5rem 1rem;">Story</button>
+                <button onclick="filterTheories('characters')" class="floating-btn" style="position: static; font-size: 0.8rem; padding: 0.5rem 1rem;">Characters</button>
+                <button onclick="filterTheories('gameplay')" class="floating-btn" style="position: static; font-size: 0.8rem; padding: 0.5rem 1rem;">Gameplay</button>
+                <button onclick="sortTheories('votes')" class="floating-btn" style="position: static; font-size: 0.8rem; padding: 0.5rem 1rem;">Sort by Votes</button>
+                <button onclick="sortTheories('newest')" class="floating-btn" style="position: static; font-size: 0.8rem; padding: 0.5rem 1rem;">Sort by Newest</button>
             </div>
-            
-            <div style="margin-top: 1rem;">
-                <a href="${rumor.permalink}" target="_blank" style="
-                    color: var(--primary-color); 
-                    text-decoration: none; 
-                    font-size: 0.9rem; 
-                    font-weight: 600;
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                ">
-                    ${rumor.source === 'YouTube' ? 'Watch Video' : 'Read Article'} →
-                </a>
+
+            <!-- Theories Container -->
+            <div id="theoriesContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
+                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
+                    <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid var(--primary-color); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                    <div style="margin-top: 1rem;">Loading community theories...</div>
+                </div>
             </div>
         </div>
-    `).join('');
-}
-
-function displayEmergencyFallback() {
-    const container = document.getElementById('rumorsContainer');
-    if (!container) return;
-    
-    container.innerHTML = `
-        <div style="text-align: center; padding: 3rem; color: var(--primary-color);">
-            <h3>🔥 GTA 6 Rumors Hub</h3>
-            <p style="color: var(--text-secondary, #888); margin: 1rem 0;">Loading rumors from our sources...</p>
-            <button onclick="fetchGTA6Rumors()" style="background: var(--primary-color); color: black; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: bold;">🔄 Retry Loading</button>
-        </div>
-    `;
-}
-
-function formatViews(views) {
-    if (views >= 1000000) return (views / 1000000).toFixed(1) + 'M';
-    if (views >= 1000) return (views / 1000).toFixed(1) + 'K';
-    return views.toString();
-}
-
-function getCredibilityColor(credibility) {
-    switch(credibility) {
-        case 'high': return '#2ed573';
-        case 'medium': return '#ffa502';  
-        case 'low': return '#ff4757';
-        default: return '#888';
-    }
-}
-
-function getTimeAgo(timestamp) {
-    const now = Math.floor(Date.now() / 1000);
-    const diff = now - timestamp;
-    
-    if (diff < 60) return `${diff}s ago`;
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-    if (diff < 604800) return `${Math.floor(diff / 86400)}d ago`;
-    if (diff < 2592000) return `${Math.floor(diff / 604800)}w ago`;
-    return `${Math.floor(diff / 2592000)}mo ago`;
-}
-
-function updateRumorStats(rumors) {
-    const rumorsCount = document.getElementById('rumorsCount');
-    const rumorCredibility = document.getElementById('rumorCredibility');
-    const rumorSources = document.getElementById('rumorSources');
-    
-    if (rumorsCount) rumorsCount.textContent = rumors.length;
-    
-    if (rumorCredibility) {
-        const credScores = rumors.map(r => ({ high: 85, medium: 60, low: 35 }[r.credibility] || 50));
-        const avgCred = Math.round(credScores.reduce((a, b) => a + b, 0) / credScores.length);
-        rumorCredibility.textContent = `${avgCred}%`;
-    }
-    
-    if (rumorSources) {
-        const uniqueSources = [...new Set(rumors.map(r => r.source))].length;
-        rumorSources.textContent = uniqueSources;
-    }
-}
-
-// Main integration functions
-function loadRumorsTab() {
-    console.log('🎯 loadRumorsTab called');
-    setTimeout(fetchGTA6Rumors, 300);
-}
-
-// Auto-load if rumors tab is already visible
-document.addEventListener('DOMContentLoaded', function() {
-    const rumorsTab = document.getElementById('rumors');
-    if (rumorsTab && rumorsTab.style.display !== 'none' && !rumorsTab.classList.contains('hidden')) {
-        console.log('🚀 Auto-loading rumors on page load');
-        loadRumorsTab();
-    }
-});
-
-// Add required CSS for animations
-if (!document.getElementById('rumors-styles')) {
-    const style = document.createElement('style');
-    style.id = 'rumors-styles';
-    style.textContent = `
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .rumor-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.1);
-        }
-    `;
-    document.head.appendChild(style);
-}
-</script>
-
-<!-- ALSO ADD THIS: In your tab click handler, make sure to call loadRumorsTab() -->
-<!-- Example: when someone clicks the rumors tab button, call: loadRumorsTab(); -->
         
-       
-            <!-- Theories Content Area - REPLACE THIS ENTIRE SECTION -->
-<div id="theoriesContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
-    <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-        Loading community theories...
-    </div>
-</div>
-
         <div id="shop" class="tab-content">
             <h2 style="color: var(--primary-color);">🛒 GTAFastLane Shop</h2>
             <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
@@ -1623,7 +1247,104 @@ if (!document.getElementById('rumors-styles')) {
         <button class="floating-btn premium" onclick="upgradeToPremium()">👑 Go Premium</button>
     </div>
 
+    <!-- Floating Feedback Button -->
+    <button id="feedbackBtn" style="
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background-color: #ff9800;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 1000;
+    ">Feedback</button>
+
+    <!-- Feedback Modal -->
+    <div id="feedbackModal" style="
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+    ">
+      <div style="
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 700px;
+        position: relative;
+      ">
+        <!-- Close Button -->
+        <span id="closeModal" style="
+          position: absolute;
+          top: 10px; right: 15px;
+          cursor: pointer;
+          font-size: 20px;
+          font-weight: bold;
+        ">&times;</span>
+
+        <!-- Google Form Embed -->
+        <iframe id="feedbackForm" src="https://docs.google.com/forms/d/e/1FAIpQLScc_a4ao1LnrS1W3qRWgHem-1p9eCcsNlI_5uTOk_FadloJPg/viewform?embedded=true" width="100%" height="520" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+
+        <!-- Custom Thank You Message -->
+        <div id="thankYouMessage" style="display:none; text-align:center; padding: 40px;">
+          <h2>Thank you for your feedback!</h2>
+          <p>We really appreciate you taking the time to help us improve.</p>
+        </div>
+
+        <!-- Manual Submit & Close Button -->
+        <button id="manualSubmit" style="
+          margin-top: 20px;
+          padding: 10px 20px;
+          background-color: #4caf50;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+        ">Submit and Close</button>
+
+      </div>
+    </div>
+        
+    <!-- Disclaimer Banner -->
+    <div id="disclaimer-banner"
+         style="
+          position: fixed; bottom: 100px; left: 0; right: 0; z-index: 9999;
+          background: rgba(30, 30, 30, 0.95);
+          color: #f0f0f0;
+          border-top: 2px solid #ff0055;
+          font-size: 1.1rem;
+          text-align: center;
+          padding: 1rem 1rem;
+          font-family: 'Trebuchet MS', Impact, system-ui, sans-serif;
+          box-shadow: 0 -2px 10px rgba(255,0,85,0.4);
+          letter-spacing: 0.5px;
+          text-shadow: 0 0 3px rgba(255,0,85,0.5);
+          display: none;
+          transform: translateY(100%);
+          opacity: 0;
+          transition: transform 0.6s ease, opacity 0.6s ease;
+         ">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+        <span>⚠️ <strong>Disclaimer:</strong> All user counts, stats, and numbers shown are <u>mock data for testing purposes only</u>.</span>
+        <button id="disclaimer-banner-close" aria-label="Dismiss disclaimer banner">✕</button>
+      </div>
+    </div>
+
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <script>
+        // Supabase Configuration
+        const supabaseUrl = 'https://umltdjhpblilppkwmqkg.supabase.co'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtbHRkamhwYmxpbHBwa3dtcWtnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE4NjExOTAsImV4cCI6MjA0NzQzNzE5MH0.sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
+
         // API Configuration
         const API_CONFIG = {
             news: '22ae24fcb78544a1977241e1319d4a0b',
@@ -1672,6 +1393,10 @@ if (!document.getElementById('rumors-styles')) {
             streak: parseInt(safeGetStorage('gtafl-challenge-streak', '0')),
             score: parseInt(safeGetStorage('gtafl-total-score', '0'))
         };
+
+        // Theory data storage
+        let currentFilter = 'all';
+        let currentSort = 'votes';
 
         // Show notification
         function showNotification(message) {
@@ -1802,13 +1527,311 @@ if (!document.getElementById('rumors-styles')) {
                 } else if (tabName === 'rdr2') {
                     fetchYouTubeVideos('Red Dead Redemption 2 funny moments', 'rdr2Grid', 'rdr2');
                 } else if (tabName === 'theories') {
-                    fetchTheories();
+                    loadTheories();
+                } else if (tabName === 'rumors') {
+                    loadRumorsTab();
                 }
 
                 awardRewards(2, 1, `Explored ${tabName}`);
             } catch (error) {
                 console.warn('Tab switching error:', error);
             }
+        }
+
+        // SUPABASE THEORIES INTEGRATION - COMPLETE IMPLEMENTATION
+        
+        // Function to load theories from Supabase
+        async function loadTheories() {
+            try {
+                const container = safeGetElement('theoriesContainer');
+                if (!container) return;
+
+                // Show loading state
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
+                        <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid var(--primary-color); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                        <div style="margin-top: 1rem;">Loading theories from database...</div>
+                    </div>
+                `;
+
+                console.log('🔥 Loading theories from Supabase...');
+
+                // Build query based on current filter and sort
+                let query = supabase.from('theories').select('*');
+
+                // Apply category filter
+                if (currentFilter !== 'all') {
+                    query = query.eq('category', currentFilter);
+                }
+
+                // Apply sorting
+                if (currentSort === 'votes') {
+                    query = query.order('votes', { ascending: false });
+                } else if (currentSort === 'newest') {
+                    query = query.order('created_at', { ascending: false });
+                } else {
+                    query = query.order('votes', { ascending: false }); // Default to votes
+                }
+
+                const { data: theories, error } = await query;
+                
+                if (error) {
+                    console.error('Supabase error:', error);
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
+                            <h3>❌ Database Connection Error</h3>
+                            <p style="margin: 1rem 0; font-size: 0.9rem;">Unable to load theories from database.</p>
+                            <button onclick="loadTheories()" style="background: var(--primary-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                                🔄 Retry Loading
+                            </button>
+                            <div style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px; font-size: 0.8rem; text-align: left;">
+                                <strong>Debug Info:</strong><br>
+                                Error: ${error.message}<br>
+                                Code: ${error.code || 'Unknown'}<br>
+                                Filter: ${currentFilter}<br>
+                                Sort: ${currentSort}
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                console.log(`✅ Loaded ${theories.length} theories from Supabase`);
+                
+                // Display theories
+                displayTheories(theories || []);
+                updateTheoryStats(theories || []);
+                
+                // Award user for loading theories
+                awardRewards(5, 2, 'Loaded theories section');
+                
+            } catch (error) {
+                console.error('❌ Fatal error loading theories:', error);
+                const container = safeGetElement('theoriesContainer');
+                if (container) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
+                            <h3>🚫 Connection Failed</h3>
+                            <p style="margin: 1rem 0;">Network error or database unavailable.</p>
+                            <button onclick="loadTheories()" style="background: var(--primary-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                                🔄 Try Again
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Function to display theories in the UI
+        function displayTheories(theories) {
+            const container = safeGetElement('theoriesContainer');
+            if (!container) return;
+            
+            if (theories.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: var(--primary-color);">
+                        <h3>🌟 No theories yet!</h3>
+                        <p style="color: var(--text-color); margin: 1rem 0;">Be the first to submit a theory and start the discussion!</p>
+                        <button onclick="document.getElementById('theoryTitle').focus()" style="background: var(--gradient-primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                            ✨ Submit First Theory
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = ''; // Clear loading message
+            
+            theories.forEach(theory => {
+                const theoryCard = document.createElement('div');
+                theoryCard.className = 'theory-card';
+                theoryCard.innerHTML = `
+                    <div class="theory-header">
+                        <div class="theory-votes">
+                            <button class="vote-btn" onclick="voteForTheory(${theory.id}, 'up')" title="Upvote this theory">
+                                ▲
+                            </button>
+                            <span class="vote-count">${theory.votes}</span>
+                            <button class="vote-btn" onclick="voteForTheory(${theory.id}, 'down')" title="Downvote this theory">
+                                ▼
+                            </button>
+                        </div>
+                        <div class="theory-content">
+                            <h3 class="theory-title">${escapeHtml(theory.title)}</h3>
+                            <p class="theory-description">${escapeHtml(theory.content)}</p>
+                            <div class="theory-meta">
+                                <span class="theory-author">By: ${escapeHtml(theory.author_name)}</span>
+                                <span class="theory-category">${theory.category}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(theoryCard);
+            });
+        }
+
+        // Function to submit a new theory
+        async function submitTheory(event) {
+            event.preventDefault();
+            
+            try {
+                const submitBtn = safeGetElement('submitBtn');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = '🚀 Submitting...';
+                }
+
+                const formData = new FormData(event.target);
+                const theoryData = {
+                    title: formData.get('title'),
+                    content: formData.get('content'),
+                    author_name: formData.get('author'),
+                    category: formData.get('category'),
+                    votes: 0
+                };
+
+                console.log('📝 Submitting theory:', theoryData);
+
+                const { data, error } = await supabase
+                    .from('theories')
+                    .insert([theoryData])
+                    .select();
+
+                if (error) {
+                    console.error('❌ Supabase insert error:', error);
+                    showNotification('❌ Failed to submit theory. Please try again.');
+                    return;
+                }
+
+                console.log('✅ Theory submitted successfully:', data);
+
+                // Clear form
+                event.target.reset();
+                
+                // Reload theories
+                await loadTheories();
+                
+                // Award user
+                awardRewards(25, 10, 'Theory submitted!');
+                showNotification(`🎉 Theory "${theoryData.title}" submitted successfully!`);
+                
+            } catch (error) {
+                console.error('❌ Submit theory error:', error);
+                showNotification('❌ Network error. Please check your connection.');
+            } finally {
+                const submitBtn = safeGetElement('submitBtn');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '🚀 Submit Theory';
+                }
+            }
+        }
+
+        // Function to vote for a theory
+        async function voteForTheory(theoryId, voteType) {
+            try {
+                console.log(`🗳️ Voting ${voteType} for theory ${theoryId}`);
+
+                // Get current theory data
+                const { data: theory, error: fetchError } = await supabase
+                    .from('theories')
+                    .select('votes')
+                    .eq('id', theoryId)
+                    .single();
+
+                if (fetchError) {
+                    console.error('❌ Fetch error:', fetchError);
+                    showNotification('❌ Failed to load theory data.');
+                    return;
+                }
+
+                // Calculate new vote count
+                const increment = voteType === 'up' ? 1 : -1;
+                const newVotes = Math.max(0, theory.votes + increment); // Prevent negative votes
+
+                // Update in database
+                const { error: updateError } = await supabase
+                    .from('theories')
+                    .update({ votes: newVotes })
+                    .eq('id', theoryId);
+
+                if (updateError) {
+                    console.error('❌ Update error:', updateError);
+                    showNotification('❌ Failed to update vote.');
+                    return;
+                }
+
+                console.log(`✅ Vote updated: ${theory.votes} -> ${newVotes}`);
+
+                // Refresh the theories list
+                await loadTheories();
+                
+                // Award user for voting
+                const reward = voteType === 'up' ? 5 : 2;
+                awardRewards(reward, 1, `${voteType === 'up' ? 'Up' : 'Down'}voted theory`);
+                showNotification(voteType === 'up' ? '⬆️ Theory upvoted!' : '⬇️ Theory downvoted!');
+                
+            } catch (error) {
+                console.error('❌ Vote error:', error);
+                showNotification('❌ Network error. Please try again.');
+            }
+        }
+
+        // Function to filter theories by category
+        function filterTheories(category) {
+            try {
+                currentFilter = category;
+                console.log(`🔍 Filtering theories by: ${category}`);
+                
+                // Update filter button states (visual feedback)
+                // This could be enhanced with proper button styling
+                
+                loadTheories(); // Reload with new filter
+                
+                showNotification(`📁 Filtered to ${category === 'all' ? 'all' : category} theories`);
+                awardRewards(2, 1, `Filtered theories: ${category}`);
+            } catch (error) {
+                console.warn('Filter error:', error);
+            }
+        }
+
+        // Function to sort theories
+        function sortTheories(sortType) {
+            try {
+                currentSort = sortType;
+                console.log(`🔄 Sorting theories by: ${sortType}`);
+                
+                loadTheories(); // Reload with new sort
+                
+                showNotification(`🔄 Sorted by ${sortType === 'votes' ? 'votes' : 'newest first'}`);
+                awardRewards(2, 1, `Sorted theories: ${sortType}`);
+            } catch (error) {
+                console.warn('Sort error:', error);
+            }
+        }
+
+        // Function to update theory statistics
+        function updateTheoryStats(theories) {
+            try {
+                const theoryCount = theories.length;
+                const totalVotes = theories.reduce((sum, theory) => sum + theory.votes, 0);
+                const uniqueAuthors = new Set(theories.map(t => t.author_name)).size;
+                
+                safeUpdateText('theoryCount', theoryCount);
+                safeUpdateText('totalVotes', totalVotes.toLocaleString());
+                safeUpdateText('activeContributors', uniqueAuthors);
+                
+                console.log(`📊 Theory stats - Count: ${theoryCount}, Votes: ${totalVotes}, Authors: ${uniqueAuthors}`);
+            } catch (error) {
+                console.warn('Stats update error:', error);
+            }
+        }
+
+        // Helper function to prevent HTML injection
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text || '';
+            return div.innerHTML;
         }
 
         // WORKING YouTube API Integration
@@ -1862,12 +1885,6 @@ if (!document.getElementById('rumors-styles')) {
                                     style="background: var(--primary-color); border: none; color: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">
                                 🔄 Retry
                             </button>
-                            <div style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px; font-size: 0.8rem;">
-                                <strong>Debug Info:</strong><br>
-                                Query: ${query}<br>
-                                Container: ${containerId}<br>
-                                Error: ${error.message}
-                            </div>
                         </div>
                     `;
                 }
@@ -1910,7 +1927,7 @@ if (!document.getElementById('rumors-styles')) {
             try {
                 const videoCount = videos.length;
                 const channelCount = new Set(videos.map(v => v.snippet.channelTitle)).size;
-                const totalViews = Math.floor(Math.random() * 10000000) + 1000000; // Simulated since YouTube API doesn't return view counts in search
+                const totalViews = Math.floor(Math.random() * 10000000) + 1000000;
                 
                 if (statsPrefix === 'yt') {
                     safeUpdateText('ytVideoCount', videoCount);
@@ -1944,63 +1961,11 @@ if (!document.getElementById('rumors-styles')) {
                     </div>
                 `;
 
-                // Try multiple approaches for news fetching
-                let data = null;
-                let error = null;
-
-                // Approach 1: Direct API call (works locally)
-                try {
-                    const apiUrl = `https://newsapi.org/v2/everything?q=GTA%206%20OR%20"Grand%20Theft%20Auto%206"&apiKey=${API_CONFIG.news}&sortBy=publishedAt&pageSize=15&language=en`;
-                    console.log('Attempting direct News API call...');
-                    
-                    const response = await fetch(apiUrl, {
-                        method: 'GET',
-                        headers: {
-                            'X-API-Key': API_CONFIG.news
-                        }
-                    });
-                    
-                    if (response.ok) {
-                        data = await response.json();
-                        console.log('Direct API Success:', data);
-                    } else {
-                        throw new Error(`Direct API failed: ${response.status} ${response.statusText}`);
-                    }
-                } catch (directError) {
-                    console.log('Direct API failed, trying CORS proxy...', directError.message);
-                    error = directError;
-                    
-                    // Approach 2: CORS proxy (for deployment)
-                    try {
-                        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://newsapi.org/v2/everything?q=GTA%206%20OR%20"Grand%20Theft%20Auto%206"&apiKey=${API_CONFIG.news}&sortBy=publishedAt&pageSize=15&language=en`)}`;
-                        const proxyResponse = await fetch(proxyUrl);
-                        
-                        if (proxyResponse.ok) {
-                            data = await proxyResponse.json();
-                            console.log('CORS Proxy Success:', data);
-                        } else {
-                            throw new Error(`CORS Proxy failed: ${proxyResponse.status}`);
-                        }
-                    } catch (proxyError) {
-                        console.log('CORS proxy failed, using fallback...', proxyError.message);
-                        error = proxyError;
-                    }
-                }
-                
-                // Check if we got valid data
-                if (data && data.articles && data.articles.length > 0) {
-                    updateNewsContent(data.articles);
-                    updateNewsStats(data.articles);
-                    showNotification(`📰 Loaded ${data.articles.length} real news articles!`);
-                    awardRewards(15, 4, 'Loaded latest news');
-                } else {
-                    // Fallback: Show sample news if API fails
-                    console.log('No valid data received, showing fallback news');
-                    showFallbackNews();
-                }
+                // Show sample news since API requires CORS proxy
+                showFallbackNews();
                 
             } catch (error) {
-                console.error('All news fetch methods failed:', error);
+                console.error('News fetch error:', error);
                 showFallbackNews();
             }
         }
@@ -2081,15 +2046,12 @@ if (!document.getElementById('rumors-styles')) {
             const newsContainer = safeGetElement('newsContainer');
             
             if (newsContainer && articles.length > 0) {
-                // Filter out articles with '[Removed]' content (NewsAPI sometimes returns deleted articles)
                 const validArticles = articles.filter(article => 
-                    article.title && 
-                    article.title !== '[Removed]' && 
-                    article.description && 
-                    article.description !== '[Removed]'
+                    article.title && article.title !== '[Removed]' && 
+                    article.description && article.description !== '[Removed]'
                 );
 
-                newsContainer.innerHTML = validArticles.slice(0, 10).map(article => {
+                newsContainer.innerHTML += validArticles.slice(0, 10).map(article => {
                     const publishedAt = new Date(article.publishedAt);
                     const timeAgo = getTimeAgo(publishedAt);
                     const sourceName = article.source?.name || 'Unknown Source';
@@ -2133,324 +2095,64 @@ if (!document.getElementById('rumors-styles')) {
             }
         }
 
-        // WORKING Theories API Integration
-        async function fetchTheories() {
-            try {
-                const theoriesContainer = safeGetElement('theoriesContainer');
-                if (!theoriesContainer) return;
-
-                // Show loading state
-                theoriesContainer.innerHTML = `
-                    <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                        <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid var(--primary-color); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                        <div style="margin-top: 1rem;">Loading community theories and analysis...</div>
-                    </div>
-                `;
-
-                const apiUrl = `https://newsapi.org/v2/everything?q=GTA%206%20AND%20(theory%20OR%20analysis%20OR%20discussion%20OR%20breakdown%20OR%20speculation)&apiKey=${API_CONFIG.news}&sortBy=popularity&pageSize=10&language=en`;
-                
-                console.log('Fetching GTA 6 theories...');
-                const response = await fetch(apiUrl);
-                
-                if (!response.ok) {
-                    throw new Error(`News API Error: ${response.status} ${response.statusText}`);
-                }
-                
-                const data = await response.json();
-                console.log('Theories API Response:', data);
-                
-                if (data.articles && data.articles.length > 0) {
-                    updateTheoriesContent(data.articles);
-                    updateTheoriesStats(data.articles);
-                    showNotification(`🧠 Loaded ${data.articles.length} community theories and analysis!`);
-                    awardRewards(12, 3, 'Loaded theories section');
-                } else {
-                    displaySampleTheories();
-                }
-                
-            } catch (error) {
-                console.error('Theories fetch error:', error);
-                displaySampleTheories();
-            }
-        }
-
-        // Update theories content with real API data + community features
-        function updateTheoriesContent(articles) {
-            const theoriesContainer = safeGetElement('theoriesContainer');
-            
-            if (theoriesContainer && articles.length > 0) {
-                const validArticles = articles.filter(article => 
-                    article.title && 
-                    article.title !== '[Removed]' && 
-                    article.description && 
-                    article.description !== '[Removed]'
-                );
-
-                // Mix real articles with enhanced community-style theories
-                const communityTheories = [
+        // Rumors functionality
+        function loadRumorsTab() {
+            console.log('🎯 loadRumorsTab called');
+            setTimeout(() => {
+                const sampleRumors = [
                     {
-                        title: "Multi-Timeline Theory",
-                        author: "GTATheoryMaster",
-                        badge: "LEGEND",
-                        votes: 892,
-                        category: "story",
-                        content: "GTA 6 spans multiple decades, connecting Vice City Stories timeline with modern day through flashbacks and character connections. Evidence includes period-specific vehicles and architecture in different trailer scenes.",
-                        comments: 247,
-                        credibility: 89
+                        title: "BREAKING: GTA 6 Vice City Map Leaked - Massive Open World",
+                        content: "New leaked screenshots show an incredibly detailed Vice City with expanded areas including the Everglades, multiple islands, and parts of South America.",
+                        author: "GameSpot News",
+                        score: 2847,
+                        comments: 456,
+                        credibility: "high",
+                        source: "News",
+                        sourceIcon: "📰"
                     },
                     {
-                        title: "Dual Protagonist Connection Theory", 
-                        author: "ViceCity2026",
-                        badge: "EXPERT",
-                        votes: 634,
-                        category: "characters",
-                        content: "Lucia and Jason have deeper connections than shown - possibly siblings or partners with tragic backstory driving the main narrative. Their chemistry suggests shared history.",
-                        comments: 189,
-                        credibility: 76
-                    },
-                    {
-                        title: "Cross-Game Easter Egg Theory",
-                        author: "ArchitecturalGamer", 
-                        badge: "ANALYST",
-                        votes: 445,
-                        category: "easter-eggs",
-                        content: "Hidden references in RDR2, GTA Online, and other Rockstar games form a connected universe leading to GTA 6's reveal. Background architecture suggests development boom setting.",
-                        comments: 127,
-                        credibility: 82
+                        title: "GTA 6 Dual Protagonists CONFIRMED - Lucia & Partner Details", 
+                        content: "Industry insiders confirm GTA 6 will feature two main characters in a Bonnie & Clyde style story.",
+                        author: "IGN Gaming",
+                        score: 2156,
+                        comments: 389,
+                        credibility: "high",
+                        source: "News", 
+                        sourceIcon: "📰"
                     }
                 ];
-
-                let allContent = [];
-
-                // Add community theories
-                allContent = allContent.concat(communityTheories.map(theory => {
-                    const colors = {
-                        'story': 'var(--primary-color)',
-                        'characters': 'var(--secondary-color)', 
-                        'easter-eggs': 'var(--accent-color)',
-                        'gameplay': 'var(--success-color)',
-                        'map': 'var(--warning-color)'
-                    };
-                    
-                    const badgeColors = {
-                        'LEGEND': 'var(--gold-color)',
-                        'EXPERT': 'var(--secondary-color)',
-                        'ANALYST': 'var(--accent-color)'
-                    };
-
-                    return `
-                        <article style="background: var(--card-bg); border-radius: 12px; padding: 1.5rem; border-left: 4px solid ${colors[theory.category]}; transition: all 0.3s ease; border: 1px solid var(--border-color);" 
-                                 onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.3)'"
-                                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
-                                <div style="display: flex; align-items: center; gap: 0.25rem;">
-                                    <span style="color: var(--success-color); font-weight: bold; cursor: pointer;" onclick="voteTheory('${theory.author}', 'up')">▲</span>
-                                    <span style="color: var(--text-color); font-weight: bold; min-width: 30px; text-align: center;">${theory.votes}</span>
-                                    <span style="color: var(--danger-color); font-weight: bold; cursor: pointer;" onclick="voteTheory('${theory.author}', 'down')">▼</span>
-                                </div>
-                                <strong style="color: var(--text-color); font-size: 1.1rem;">${theory.title}</strong>
-                                <span style="background: ${colors[theory.category]}; color: white; padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.7rem; margin-left: auto; text-transform: uppercase;">${theory.category}</span>
-                            </div>
-                            <p style="color: rgba(255,255,255,0.8); line-height: 1.5; margin-bottom: 1rem;">${theory.content}</p>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div style="display: flex; gap: 1rem; align-items: center;">
-                                    <span style="color: var(--primary-color); font-weight: 600;">u/${theory.author}</span>
-                                    <span style="background: ${badgeColors[theory.badge]}; color: black; padding: 0.2rem 0.5rem; border-radius: 8px; font-size: 0.7rem; font-weight: bold;">${theory.badge}</span>
-                                </div>
-                                <div style="display: flex; gap: 1rem; align-items: center; font-size: 0.8rem; color: rgba(255,255,255,0.6);">
-                                    <span>${theory.credibility}% credible</span>
-                                    <span>${theory.comments} comments</span>
-                                </div>
-                            </div>
-                        </article>
-                    `;
-                }));
-
-                // Add real news articles as theory analysis
-                allContent = allContent.concat(validArticles.slice(0, 5).map(article => {
-                    const publishedAt = new Date(article.publishedAt);
-                    const timeAgo = getTimeAgo(publishedAt);
-                    const sourceName = article.source?.name || 'Unknown Source';
-                    const votes = Math.floor(Math.random() * 300) + 50;
-                    
-                    return `
-                        <article style="background: var(--card-bg); border-radius: 12px; padding: 1.5rem; border-left: 4px solid var(--warning-color); transition: all 0.3s ease; border: 1px solid var(--border-color);" 
-                                 onclick="window.open('${article.url}', '_blank')"
-                                 onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.3)'"
-                                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
-                                <div style="display: flex; align-items: center; gap: 0.25rem;">
-                                    <span style="color: var(--success-color); font-weight: bold;">▲</span>
-                                    <span style="color: var(--text-color); font-weight: bold; min-width: 30px; text-align: center;">${votes}</span>
-                                    <span style="color: var(--danger-color); font-weight: bold;">▼</span>
-                                </div>
-                                <strong style="color: var(--text-color); font-size: 1.1rem;">${article.title}</strong>
-                                <span style="background: var(--warning-color); color: white; padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.7rem; margin-left: auto;">ANALYSIS</span>
-                            </div>
-                            <p style="color: rgba(255,255,255,0.8); line-height: 1.5; margin-bottom: 1rem;">${article.description || 'Professional gaming analysis and theory breakdown.'}</p>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div style="display: flex; gap: 1rem; align-items: center;">
-                                    <span style="color: var(--primary-color); font-weight: 600;">${sourceName}</span>
-                                    <span style="background: var(--success-color); color: white; padding: 0.2rem 0.5rem; border-radius: 8px; font-size: 0.7rem; font-weight: bold;">VERIFIED</span>
-                                </div>
-                                <div style="display: flex; gap: 1rem; align-items: center; font-size: 0.8rem; color: rgba(255,255,255,0.6);">
-                                    <span>${timeAgo}</span>
-                                    <span>Click to read →</span>
-                                </div>
-                            </div>
-                        </article>
-                    `;
-                }));
-
-                theoriesContainer.innerHTML = allContent.join('');
-            }
+                
+                displayRumors(sampleRumors);
+                updateRumorStats(sampleRumors);
+            }, 300);
         }
 
-        // Display sample theories if API fails
-        function displaySampleTheories() {
-            const theoriesContainer = safeGetElement('theoriesContainer');
-            if (!theoriesContainer) return;
+        function displayRumors(rumors) {
+            const container = safeGetElement('rumorsContainer');
+            if (!container) return;
             
-            const sampleTheories = [
-                {
-                    title: "Multi-Timeline Theory",
-                    author: "GTATheoryMaster",
-                    votes: 892,
-                    content: "GTA 6 spans multiple decades, connecting Vice City Stories timeline with modern day through flashbacks.",
-                    category: "story"
-                },
-                {
-                    title: "Dual Protagonist Connection", 
-                    author: "ViceCity2026",
-                    votes: 634,
-                    content: "Lucia and Jason have deeper connections - possibly siblings with tragic backstory driving narrative.",
-                    category: "characters"
-                },
-                {
-                    title: "Cross-Game Easter Eggs",
-                    author: "ArchitecturalGamer",
-                    votes: 445,
-                    content: "Hidden references in RDR2 and GTA Online form connected universe leading to GTA 6.",
-                    category: "easter-eggs"
-                }
-            ];
-
-            theoriesContainer.innerHTML = sampleTheories.map(theory => `
-                <article style="background: var(--card-bg); border-radius: 12px; padding: 1.5rem; border-left: 4px solid var(--primary-color);">
-                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
-                        <div style="display: flex; align-items: center; gap: 0.25rem;">
-                            <span style="color: var(--success-color); font-weight: bold;">▲</span>
-                            <span style="color: var(--text-color); font-weight: bold;">${theory.votes}</span>
-                            <span style="color: var(--danger-color); font-weight: bold;">▼</span>
-                        </div>
-                        <strong style="color: var(--text-color);">${theory.title}</strong>
-                        <span style="background: var(--primary-color); color: white; padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.7rem; margin-left: auto;">${theory.category.toUpperCase()}</span>
+            container.innerHTML = rumors.map(rumor => `
+                <div style="background: var(--card-bg); border-radius: 12px; padding: 1.5rem; border-left: 4px solid var(--primary-color); margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                        <h3 style="color: var(--text-color); font-size: 1.1rem;">${rumor.title}</h3>
+                        <span style="background: var(--success-color); color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem;">HIGH</span>
                     </div>
-                    <p style="color: rgba(255,255,255,0.8); line-height: 1.5; margin-bottom: 1rem;">${theory.content}</p>
-                    <div style="color: var(--primary-color); font-weight: 600;">u/${theory.author}</div>
-                </article>
+                    <p style="color: rgba(255,255,255,0.8); margin: 1rem 0;">${rumor.content}</p>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: rgba(255,255,255,0.6);">
+                        <span style="color: var(--primary-color);">${rumor.author}</span>
+                        <span>↗ ${rumor.score} • ${rumor.comments} comments</span>
+                    </div>
+                </div>
             `).join('');
         }
 
-        // Update theories statistics
-        function updateTheoriesStats(articles) {
-            try {
-                const theoryCount = articles.length + 25; // Community theories + news analysis
-                const topVotes = Math.max(892, Math.floor(Math.random() * 500) + 400);
-                
-                safeUpdateText('theoryCount', theoryCount);
-                safeUpdateText('topTheoryVotes', topVotes);
-            } catch (error) {
-                console.warn('Theories stats update error:', error);
-            }
+        function updateRumorStats(rumors) {
+            safeUpdateText('rumorsCount', rumors.length);
+            safeUpdateText('rumorCredibility', '89%');
+            safeUpdateText('rumorSources', '12');
         }
 
-        // Theory voting system
-        function voteTheory(author, direction) {
-            try {
-                const isUpvote = direction === 'up';
-                const reward = isUpvote ? 3 : 1;
-                const message = isUpvote ? `Upvoted ${author}'s theory` : `Downvoted ${author}'s theory`;
-                
-                awardRewards(reward, 1, message);
-                showNotification(isUpvote ? '⬆️ Theory upvoted!' : '⬇️ Theory downvoted!');
-            } catch (error) {
-                console.warn('Vote theory error:', error);
-            }
-        }
-
-        // Category filtering for theories
-        function filterTheories(category) {
-            try {
-                // Update active filter button
-                document.querySelectorAll('[id^="category-"]').forEach(btn => {
-                    btn.style.background = 'var(--card-bg)';
-                    btn.style.color = 'var(--text-color)';
-                });
-                
-                const activeBtn = safeGetElement(`category-${category}`);
-                if (activeBtn) {
-                    activeBtn.style.background = 'var(--primary-color)';
-                    activeBtn.style.color = 'black';
-                }
-                
-                showNotification(`Filtered to ${category} theories`);
-                awardRewards(2, 1, `Filtered theories: ${category}`);
-            } catch (error) {
-                console.warn('Filter theories error:', error);
-            }
-        }
-
-        // Submit new theory
-        function submitNewTheory() {
-            try {
-                const username = safeGetElement('newTheoryUsername')?.value || '';
-                const category = safeGetElement('newTheoryCategory')?.value || 'gameplay';
-                const theoryText = safeGetElement('newTheoryText')?.value || '';
-                const imageUrl = safeGetElement('newTheoryImage')?.value || '';
-                
-                if (!username.trim() || !theoryText.trim()) {
-                    showNotification('Please fill in username and theory text!');
-                    return;
-                }
-                
-                // Clear form
-                if (safeGetElement('newTheoryUsername')) safeGetElement('newTheoryUsername').value = '';
-                if (safeGetElement('newTheoryText')) safeGetElement('newTheoryText').value = '';
-                if (safeGetElement('newTheoryImage')) safeGetElement('newTheoryImage').value = '';
-                
-                // Award rewards for submission
-                awardRewards(25, 10, 'Submitted new theory!');
-                showNotification(`🧠 Theory submitted! Thanks ${username}!`);
-                
-                // Update contributor count
-                const currentContributors = parseInt(safeGetStorage('theory-contributors', '45'));
-                safeSetStorage('theory-contributors', currentContributors + 1);
-                safeUpdateText('activeContributors', currentContributors + 1);
-                
-            } catch (error) {
-                console.warn('Submit theory error:', error);
-            }
-        }
-
-        // Newsletter subscription for theories
-        function subscribeTheoryDigest() {
-            try {
-                const email = safeGetElement('theoryEmail')?.value || '';
-                
-                if (!email.includes('@')) {
-                    showNotification('Please enter a valid email address!');
-                    return;
-                }
-                
-                if (safeGetElement('theoryEmail')) safeGetElement('theoryEmail').value = '';
-                
-                awardRewards(20, 8, 'Subscribed to Theory Digest!');
-                showNotification('📬 Subscribed to Theory Digest! Check your email for confirmation.');
-            } catch (error) {
-                console.warn('Theory subscription error:', error);
-            }
-        }
+        // Helper functions
         function formatNumber(num) {
             if (num >= 1000000) {
                 return (num / 1000000).toFixed(1) + 'M';
@@ -2479,7 +2181,6 @@ if (!document.getElementById('rumors-styles')) {
                 if (input && input.value.trim()) {
                     const message = input.value.trim();
                     
-                    // Add message to chat
                     const chatMessages = safeGetElement('chatMessages');
                     if (chatMessages) {
                         const messageDiv = document.createElement('div');
@@ -2539,18 +2240,10 @@ if (!document.getElementById('rumors-styles')) {
 
         function startMemoryGame() {
             try {
-                memoryGameState = {
-                    flippedCards: [],
-                    matches: 0,
-                    moves: 0,
-                    startTime: null,
-                    timer: null
-                };
-                
+                memoryGameState = { flippedCards: [], matches: 0, moves: 0, startTime: null, timer: null };
                 safeUpdateText('memoryScore', '0');
                 safeUpdateText('memoryMoves', '0');
                 safeUpdateText('memoryTimer', '0:00');
-                
                 setupMemoryGame();
                 showNotification('New memory game started!');
             } catch (error) {
@@ -2579,7 +2272,6 @@ if (!document.getElementById('rumors-styles')) {
                 if (memoryGameState.flippedCards.length === 2) {
                     memoryGameState.moves++;
                     safeUpdateText('memoryMoves', memoryGameState.moves);
-                    
                     setTimeout(checkMemoryMatch, 1000);
                 }
             } catch (error) {
@@ -2641,22 +2333,17 @@ if (!document.getElementById('rumors-styles')) {
                 const questions = [
                     { q: "Which city is GTA Vice City based on?", options: ["Miami", "Los Angeles", "New York", "Chicago"], correct: "Miami" },
                     { q: "What is the name of the protagonist in GTA San Andreas?", options: ["Carl Johnson", "Tommy Vercetti", "Niko Bellic", "Michael De Santa"], correct: "Carl Johnson" },
-                    { q: "Which GTA game introduced the three-protagonist system?", options: ["GTA IV", "GTA V", "GTA San Andreas", "GTA Vice City"], correct: "GTA V" },
-                    { q: "What is Trevor's last name in GTA V?", options: ["Phillips", "Johnson", "Vercetti", "De Santa"], correct: "Phillips" },
-                    { q: "Which radio station plays rock music in Vice City?", options: ["V-Rock", "Flash FM", "Wave 103", "K-Chat"], correct: "V-Rock" }
+                    { q: "Which GTA game introduced the three-protagonist system?", options: ["GTA IV", "GTA V", "GTA San Andreas", "GTA Vice City"], correct: "GTA V" }
                 ];
                 
                 const currentQuestion = questions[Math.floor(Math.random() * questions.length)];
-                
                 safeUpdateText('triviaQuestion', currentQuestion.q);
                 
                 const optionsContainer = safeGetElement('triviaOptions');
                 if (optionsContainer) {
                     optionsContainer.innerHTML = currentQuestion.options.map(option =>
-                        `<button style="background: var(--accent-color); border: none; color: white; padding: 0.5rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem; transition: all 0.3s ease;" 
-                                onclick="answerTrivia('${option}', '${currentQuestion.correct}')"
-                                onmouseover="this.style.background='var(--primary-color)'"
-                                onmouseout="this.style.background='var(--accent-color)'">
+                        `<button style="background: var(--accent-color); border: none; color: white; padding: 0.5rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem;" 
+                                onclick="answerTrivia('${option}', '${currentQuestion.correct}')">
                             ${option}
                         </button>`
                     ).join('');
@@ -2686,13 +2373,7 @@ if (!document.getElementById('rumors-styles')) {
 
         function rateRumor(rating) {
             try {
-                const rewards = {
-                    'fake': { coins: 5, xp: 2 },
-                    'unlikely': { coins: 8, xp: 3 },
-                    'possible': { coins: 10, xp: 4 },
-                    'credible': { coins: 15, xp: 6 }
-                };
-                
+                const rewards = { 'fake': { coins: 5, xp: 2 }, 'unlikely': { coins: 8, xp: 3 }, 'possible': { coins: 10, xp: 4 }, 'credible': { coins: 15, xp: 6 } };
                 const reward = rewards[rating];
                 awardRewards(reward.coins, reward.xp, `Rated rumor: ${rating}`);
                 
@@ -2704,7 +2385,6 @@ if (!document.getElementById('rumors-styles')) {
                 
                 safeUpdateText('rumorStreak2', currentStreak);
                 safeUpdateText('bestStreak2', bestStreak);
-                
             } catch (error) {
                 console.warn('Rumor rating error:', error);
             }
@@ -2742,9 +2422,7 @@ if (!document.getElementById('rumors-styles')) {
                         const difference = targetDate.getTime() - now.getTime();
                         
                         if (difference <= 0) {
-                            ['days', 'hours', 'minutes', 'seconds'].forEach(id => {
-                                safeUpdateText(id, '0');
-                            });
+                            ['days', 'hours', 'minutes', 'seconds'].forEach(id => { safeUpdateText(id, '0'); });
                             return;
                         }
                         
@@ -2807,7 +2485,40 @@ if (!document.getElementById('rumors-styles')) {
             }
         }
 
-        // Initialize app
+        // Trailer functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const trailerPreview = document.getElementById('trailerPreview');
+            const trailerPlayer = document.getElementById('trailerPlayer');
+            const youtubeFrame = document.getElementById('youtubeFrame');
+            const playButton = document.getElementById('playButton');
+            const backButton = document.getElementById('backButton');
+            
+            function playTrailer() {
+                trailerPreview.style.display = 'none';
+                trailerPlayer.style.display = 'block';
+                youtubeFrame.src = 'https://www.youtube.com/embed/VQRLujxTm3c?autoplay=1&mute=0';
+                backButton.style.display = 'block';
+            }
+            
+            function showPreview() {
+                trailerPreview.style.display = 'block';
+                trailerPlayer.style.display = 'none';
+                youtubeFrame.src = '';
+                backButton.style.display = 'none';
+            }
+            
+            trailerPreview.addEventListener('click', playTrailer);
+            playButton.addEventListener('click', function(e) { e.stopPropagation(); playTrailer(); });
+            backButton.addEventListener('click', showPreview);
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && trailerPlayer.style.display === 'block') {
+                    showPreview();
+                }
+            });
+        });
+
+        // Initialize the app
         function initApp() {
             try {
                 loadSavedTheme();
@@ -2821,14 +2532,12 @@ if (!document.getElementById('rumors-styles')) {
                 safeUpdateText('rumorStreak2', currentStreak);
                 safeUpdateText('bestStreak2', bestStreak);
 
-                // Auto-load news on startup
                 setTimeout(() => {
                     fetchGTA6News();
                 }, 2000);
 
-                // Show welcome notification
                 setTimeout(() => {
-                    showNotification('🎮 Welcome to GTAFastLane! APIs loading...');
+                    showNotification('🎮 Welcome to GTAFastLane! Theories database connected!');
                 }, 1000);
             } catch (error) {
                 console.warn('Init error:', error);
@@ -2838,23 +2547,29 @@ if (!document.getElementById('rumors-styles')) {
         // Initialize the app when page loads
         document.addEventListener('DOMContentLoaded', initApp);
 
-        // Add CSS for loading animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes spin {
-                from { transform: rotate(0deg); }
-                to { transform: rotate(360deg); }
-            }
-            @keyframes pulse {
-                0%, 100% { opacity: 1; }
-                50% { opacity: 0.5; }
-            }
-            @keyframes danceFloor {
-                0%, 100% { filter: hue-rotate(0deg); }
-                50% { filter: hue-rotate(180deg); }
-            }
-        `;
-        document.head.appendChild(style);
+        // Feedback modal functionality
+        const btn = document.getElementById('feedbackBtn');
+        const modal = document.getElementById('feedbackModal');
+        const close = document.getElementById('closeModal');
+        const form = document.getElementById('feedbackForm');
+        const thankYou = document.getElementById('thankYouMessage');
+        const manualSubmit = document.getElementById('manualSubmit');
+
+        btn.onclick = () => {
+            form.style.display = 'block';
+            thankYou.style.display = 'none';
+            manualSubmit.style.display = 'inline-block';
+            modal.style.display = 'flex';
+        };
+
+        close.onclick = () => modal.style.display = 'none';
+        window.onclick = (e) => { if(e.target === modal) modal.style.display = 'none'; };
+
+        manualSubmit.onclick = () => {
+            form.style.display = 'none';
+            manualSubmit.style.display = 'none';
+            thankYou.style.display = 'block';
+        };
 
         // GTA 6 Beta Banner Script
         (function () {
@@ -2885,272 +2600,36 @@ if (!document.getElementById('rumors-styles')) {
             }
           });
         })();
+
+        // Disclaimer Banner Script
+        (function () {
+          const KEY = 'disclaimerBannerDismissed';
+          const banner = document.getElementById('disclaimer-banner');
+          const closeBtn = document.getElementById('disclaimer-banner-close');
+          
+          if (banner && safeGetStorage(KEY, 'false') !== 'true') {
+            banner.style.display = 'block';
+            setTimeout(() => {
+              if (banner) {
+                banner.style.transform = 'translateY(0)';
+                banner.style.opacity = '1';
+              }
+            }, 100);
+          }
+          
+          closeBtn?.addEventListener('click', () => {
+            if (banner) {
+              banner.style.transform = 'translateY(100%)';
+              banner.style.opacity = '0';
+              setTimeout(() => {
+                if (banner) {
+                  banner.style.display = 'none';
+                  safeSetStorage(KEY, 'true');
+                }
+              }, 600);
+            }
+          });
+        })();
     </script>
-
-<!-- Floating Feedback Button -->
-<button id="feedbackBtn" style="
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  background-color: #ff9800;
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  z-index: 1000;
-">Feedback</button>
-
-<!-- Feedback Modal -->
-<div id="feedbackModal" style="
-  display: none;
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.5);
-  z-index: 999;
-  justify-content: center;
-  align-items: center;
-">
-  <div style="
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 700px;
-    position: relative;
-  ">
-    <!-- Close Button -->
-    <span id="closeModal" style="
-      position: absolute;
-      top: 10px; right: 15px;
-      cursor: pointer;
-      font-size: 20px;
-      font-weight: bold;
-    ">&times;</span>
-
-    <!-- Google Form Embed -->
-    <iframe id="feedbackForm" src="https://docs.google.com/forms/d/e/1FAIpQLScc_a4ao1LnrS1W3qRWgHem-1p9eCcsNlI_5uTOk_FadloJPg/viewform?embedded=true" width="100%" height="520" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-
-    <!-- Custom Thank You Message -->
-    <div id="thankYouMessage" style="display:none; text-align:center; padding: 40px;">
-      <h2>Thank you for your feedback!</h2>
-      <p>We really appreciate you taking the time to help us improve.</p>
-    </div>
-
-    <!-- Manual Submit & Close Button -->
-    <button id="manualSubmit" style="
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #4caf50;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    ">Submit and Close</button>
-
-  </div>
-</div>
-
-<script>
-  const btn = document.getElementById('feedbackBtn');
-  const modal = document.getElementById('feedbackModal');
-  const close = document.getElementById('closeModal');
-  const form = document.getElementById('feedbackForm');
-  const thankYou = document.getElementById('thankYouMessage');
-  const manualSubmit = document.getElementById('manualSubmit');
-
-  // Open modal
-  btn.onclick = () => {
-    form.style.display = 'block';
-    thankYou.style.display = 'none';
-    manualSubmit.style.display = 'inline-block';
-    modal.style.display = 'flex';
-  };
-
-  // Close modal
-  close.onclick = () => modal.style.display = 'none';
-  window.onclick = (e) => { if(e.target === modal) modal.style.display = 'none'; };
-
-  // Manual submit: hide form, show thank-you
-  manualSubmit.onclick = () => {
-    form.style.display = 'none';
-    manualSubmit.style.display = 'none';
-    thankYou.style.display = 'block';
-  };
-</script>
-    
-<!-- Disclaimer Banner -->
-<div id="disclaimer-banner"
-     style="
-      position: fixed; bottom: 100px; left: 0; right: 0; z-index: 9999;
-      background: rgba(30, 30, 30, 0.95);
-      color: #f0f0f0;
-      border-top: 2px solid #ff0055;
-      font-size: 1.1rem;
-      text-align: center;
-      padding: 1rem 1rem;
-      font-family: 'Trebuchet MS', Impact, system-ui, sans-serif;
-      box-shadow: 0 -2px 10px rgba(255,0,85,0.4);
-      letter-spacing: 0.5px;
-      text-shadow: 0 0 3px rgba(255,0,85,0.5);
-      display: none;
-      transform: translateY(100%);
-      opacity: 0;
-      transition: transform 0.6s ease, opacity 0.6s ease;
-     ">
-  <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
-    <span>⚠️ <strong>Disclaimer:</strong> All user counts, stats, and numbers shown are <u>mock data for testing purposes only</u>.</span>
-    <button id="disclaimer-banner-close" aria-label="Dismiss disclaimer banner">✕</button>
-  </div>
-</div>
-
-<script>
-// Disclaimer Banner Script
-(function () {
-  const KEY = 'disclaimerBannerDismissed';
-  const banner = document.getElementById('disclaimer-banner');
-  const closeBtn = document.getElementById('disclaimer-banner-close');
-  
-  if (banner && safeGetStorage(KEY, 'false') !== 'true') {
-    banner.style.display = 'block';
-    setTimeout(() => {
-      if (banner) {
-        banner.style.transform = 'translateY(0)';
-        banner.style.opacity = '1';
-      }
-    }, 100);
-  }
-  
-  closeBtn?.addEventListener('click', () => {
-    if (banner) {
-      banner.style.transform = 'translateY(100%)';
-      banner.style.opacity = '0';
-      setTimeout(() => {
-        if (banner) {
-          banner.style.display = 'none';
-          safeSetStorage(KEY, 'true');
-        }
-      }, 600);
-    }
-  });
-})();
-</script>
-<!-- Add this script at the bottom of your page, before </body> -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-// Your database connection info
-const supabaseUrl = 'https://umltdjhpblilppkwmqkg.supabase.co'
-const supabaseKey = 'sb_publishable_gx_wEIeBHSxWCyaEbznHvA_Gd1bCsa4'
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
-
-// Function to get theories from database
-async function loadTheories() {
-    try {
-        const { data: theories, error } = await supabase
-            .from('theories')
-            .select('*')
-            .order('votes', { ascending: false })
-        
-        if (error) {
-            console.log('Error:', error)
-            document.getElementById('theoriesContainer').innerHTML = 
-                '<div style="text-align: center; padding: 2rem; color: var(--secondary-color);">Failed to load theories. Please refresh the page.</div>'
-            return
-        }
-        
-        // Show theories on your website
-        displayTheories(theories)
-    } catch (err) {
-        console.log('Network error:', err)
-        document.getElementById('theoriesContainer').innerHTML = 
-            '<div style="text-align: center; padding: 2rem; color: var(--secondary-color);">Connection error. Please check your internet.</div>'
-    }
-}
-
-// Function to show theories on the page
-function displayTheories(theories) {
-    const container = document.getElementById('theoriesContainer')
-    
-    if (theories.length === 0) {
-        container.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--primary-color);">No theories yet! Be the first to submit one!</div>'
-        return
-    }
-    
-    container.innerHTML = '' // Clear loading message
-    
-    theories.forEach(theory => {
-        container.innerHTML += `
-            <div style="background: var(--card-bg); border-radius: 15px; padding: 1.5rem; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
-                <h3 style="color: var(--primary-color); margin-bottom: 0.5rem; font-size: 1.3rem;">${escapeHtml(theory.title)}</h3>
-                <p style="color: var(--text-color); margin-bottom: 1rem; line-height: 1.6;">${escapeHtml(theory.content)}</p>
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                    <span style="color: var(--secondary-color); font-weight: 500;">By: ${escapeHtml(theory.author_name)}</span>
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <button onclick="voteForTheory(${theory.id})" style="background: var(--accent-color); color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-weight: 600; transition: background 0.2s;" onmouseover="this.style.background='var(--primary-color)'" onmouseout="this.style.background='var(--accent-color)'">👍 Vote</button>
-                        <span style="color: var(--gold-color); font-weight: bold;">${theory.votes} votes</span>
-                    </div>
-                </div>
-            </div>
-        `
-    })
-}
-
-// Function to vote for a theory
-async function voteForTheory(theoryId) {
-    try {
-        // Get current votes
-        const { data: theory, error: fetchError } = await supabase
-            .from('theories')
-            .select('votes')
-            .eq('id', theoryId)
-            .single()
-
-        if (fetchError) {
-            alert('Failed to vote. Please try again.')
-            return
-        }
-
-        // Update votes
-        const { error: updateError } = await supabase
-            .from('theories')
-            .update({ votes: theory.votes + 1 })
-            .eq('id', theoryId)
-
-        if (updateError) {
-            alert('Failed to vote. Please try again.')
-            return
-        }
-
-        // Refresh the list
-        loadTheories()
-    } catch (err) {
-        alert('Connection error. Please try again.')
-    }
-}
-
-// Helper function to prevent HTML injection
-function escapeHtml(text) {
-    const div = document.createElement('div')
-    div.textContent = text
-    return div.innerHTML
-}
-
-// Load theories when page loads
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadTheories)
-} else {
-    loadTheories()
-}
-</script>  
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
