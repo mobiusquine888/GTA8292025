@@ -8,78 +8,6 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
     
     <style>
-        /* GTA 6 Beta Banner Styles */
-        #beta-banner-close {
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font-size: 1.2rem;
-            line-height: 1;
-            color: #ffcc00;
-            text-shadow: 0 0 6px rgba(255, 204, 0, 0.8);
-            padding: 4px 8px;
-        }
-        
-        #beta-banner-close:hover {
-            color: #ffffff;
-        }
-        
-        /* Disclaimer Banner Styles */
-        #disclaimer-banner-close {
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font-size: 1.2rem;
-            line-height: 1;
-            color: #ffcc00;
-            text-shadow: 0 0 6px rgba(255, 204, 0, 0.8);
-            padding: 4px 8px;
-            margin-left: 10px;
-        }
-        
-        #disclaimer-banner-close:hover {
-            color: #ffffff;
-        }
-
-        /* Beta Banner Mobile Fix */
-        @media (max-width: 768px) {
-            #beta-banner {
-                padding: 0.5rem;
-                font-size: 0.9rem;
-            }
-            
-            #beta-banner > div {
-                flex-direction: column;
-                gap: 0.5rem;
-                text-align: center;
-            }
-        }
-
-        /* Feedback Button Glow */
-        #feedbackBtnGlow {
-            border: none;
-            background: #ff0055;
-            color: white;
-            padding: .45rem .9rem;
-            border-radius: .4rem;
-            cursor: pointer;
-            font-weight: bold;
-            text-shadow: 0 0 4px rgba(0,0,0,0.7);
-            box-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055;
-            animation: neonPulse 1.8s infinite alternate;
-        }
-        
-        @keyframes neonPulse {
-            from { 
-                box-shadow: 0 0 6px #ff0055, 0 0 12px #ff0055, 0 0 20px #ff0055; 
-                transform: scale(1);
-            }
-            to { 
-                box-shadow: 0 0 12px #ff0055, 0 0 24px #ff0055, 0 0 36px #ff0055; 
-                transform: scale(1.05);
-            }
-        }
-
         :root {
             --primary-color: #00ffa2;
             --secondary-color: #ff007c;
@@ -106,13 +34,12 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: #0a0a0a;
+            background: #ffffff;
             color: var(--text-color);
             min-height: 100vh;
             padding-bottom: 70px;
         }
 
-        /* Night Mode Theme - WHITE BACKGROUND & BLACK TEXT */
         body.night-mode {
             --primary-color: #007acc !important;
             --secondary-color: #d63384 !important;
@@ -123,26 +50,19 @@
             --warning-color: #fd7e14 !important;
             --danger-color: #dc3545 !important;
             --text-color: #212529 !important;
-            --bg-color: #ffffff !important;
+            --bg-color: #0a0a0a !important;
             --card-bg: #f8f9fa !important;
             --border-color: #dee2e6 !important;
             --shadow: 0 4px 25px rgba(0,0,0,0.1) !important;
             --gradient-primary: linear-gradient(135deg, #007acc 0%, #d63384 100%) !important;
             --gradient-premium: linear-gradient(135deg, #fd7e14 0%, #dc3545 100%) !important;
-            background: #ffffff !important;
+            background: #0a0a0a !important;
         }
 
         body.night-mode .header {
             background: var(--gradient-primary) !important;
             color: white !important;
             border-bottom: 2px solid #007acc;
-        }
-
-        body.night-mode .stat-card,
-        body.night-mode .tab-content > div,
-        body.night-mode .tabs-container {
-            background: #f8f9fa !important;
-            border: 1px solid #dee2e6 !important;
         }
 
         body.night-mode .notification {
@@ -191,11 +111,6 @@
         @keyframes glow {
             from { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 10px rgba(255,255,255,0.1); }
             to { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.3); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
         }
 
         .user-status-container {
@@ -303,36 +218,6 @@
             max-width: 400px;
         }
 
-        .achievement-showcase {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin: 0.5rem 0;
-            flex-wrap: wrap;
-        }
-
-        .achievement {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--gradient-premium);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .achievement:hover {
-            transform: scale(1.2);
-        }
-
-        .achievement.locked {
-            background: rgba(255,255,255,0.1);
-            opacity: 0.3;
-        }
-
         .tabs-container {
             position: fixed;
             bottom: 0;
@@ -391,14 +276,6 @@
             letter-spacing: 0.3px;
         }
 
-        .tab.premium .tab-icon::after {
-            content: '👑';
-            position: absolute;
-            font-size: 0.6rem;
-            margin-left: -0.25rem;
-            margin-top: -0.25rem;
-        }
-
         .content-area {
             padding: 1rem 1rem 170px 1rem;
             max-width: 1200px;
@@ -417,24 +294,6 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        .viral-challenge {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            border-radius: 15px;
-            padding: 2rem;
-            margin: 1rem 0;
-            text-align: center;
-            color: white;
-        }
-
-        .referral-system {
-            background: var(--gradient-primary);
-            color: white;
-            border-radius: 15px;
-            padding: 2rem;
-            margin: 1rem 0;
-            text-align: center;
         }
 
         .stats-grid {
@@ -459,54 +318,11 @@
             transform: translateY(-3px) scale(1.02);
         }
 
-        .stat-card.premium {
-            border-top-color: var(--gold-color);
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), rgba(255, 107, 53, 0.05));
-        }
-
         .stat-number {
             font-size: clamp(1.5rem, 4vw, 2rem);
             font-weight: 800;
             color: var(--primary-color);
             display: block;
-        }
-
-        .stat-card.premium .stat-number {
-            color: var(--gold-color);
-        }
-
-        .floating-btn {
-            background: var(--gradient-primary);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 15px 20px;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .floating-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .floating-btn.premium {
-            background: var(--gradient-premium);
-        }
-
-        .floating-actions {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            z-index: 1000;
         }
 
         .notification {
@@ -522,19 +338,6 @@
             display: none;
             max-width: calc(100vw - 40px);
             font-size: 0.9rem;
-        }
-
-        .trailer-link:hover .play-button {
-            transform: translate(-50%, -50%) scale(1.1);
-            background: rgba(255,0,0,1);
-        }
-
-        .trailer-link:hover .overlay {
-            opacity: 1;
-        }
-
-        .trailer-link:hover > div {
-            transform: scale(1.02);
         }
 
         @media (max-width: 768px) {
@@ -556,80 +359,6 @@
             }
         }
 
-        /* Theory submission form styles */
-        .theory-form {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            border: 1px solid var(--border-color);
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .form-group textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        .submit-btn {
-            background: var(--gradient-primary);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .submit-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Theory card styles */
-        .theory-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border-left: 4px solid var(--primary-color);
-            transition: all 0.3s ease;
-            border: 1px solid var(--border-color);
-        }
-
-        .theory-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        }
-
         @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
@@ -637,43 +366,17 @@
     </style>
 </head>
 <body>
-    <!-- GTA 6 Always-On-Top Beta Banner -->
-    <div id="beta-banner" role="region" aria-label="Beta notice"
-         style="
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          z-index: 99999;
-          display: none;
-          background: rgba(20, 20, 20, 0.97);
-          color: #f0f0f0;
-          border-bottom: 2px solid #ff0055;
-          font-family: 'Trebuchet MS', Impact, system-ui, sans-serif;
-          letter-spacing: 0.5px;
-          text-shadow: 0 0 4px rgba(255,0,85,0.8);
-          transform: translateY(-100%);
-          opacity: 0;
-          transition: transform 0.6s ease, opacity 0.6s ease;
-          box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-         ">
-      <div style="
-          max-width: 1100px; margin: 0 auto; padding: 1rem 1rem;
-          display: flex; align-items: center; gap:.75rem; justify-content: space-between;
-         ">
-        <div style="display:flex; align-items:center; gap:.6rem; font-size: 1rem;">
-          <span aria-hidden="true" style="font-size: 1.2rem; color:#ff0055;">⚠️</span>
-          <strong style="color:#ffcc00;">Beta version – we're testing!</strong>
-          <span>Feedback appreciated.</span>
+    <div id="beta-banner" style="position: fixed; top: 0; left: 0; right: 0; z-index: 99999; display: none; background: rgba(20, 20, 20, 0.97); color: #f0f0f0; border-bottom: 2px solid #ff0055; font-family: 'Trebuchet MS', Impact, system-ui, sans-serif; letter-spacing: 0.5px; text-shadow: 0 0 4px rgba(255,0,85,0.8); transform: translateY(-100%); opacity: 0; transition: transform 0.6s ease, opacity 0.6s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.6);">
+        <div style="max-width: 1100px; margin: 0 auto; padding: 1rem 1rem; display: flex; align-items: center; gap:.75rem; justify-content: space-between;">
+            <div style="display:flex; align-items:center; gap:.6rem; font-size: 1rem;">
+                <span style="font-size: 1.2rem; color:#ff0055;">⚠️</span>
+                <strong style="color:#ffcc00;">Beta version – we're testing!</strong>
+                <span>Feedback appreciated.</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:.5rem;">
+                <button id="beta-banner-close" style="border: none; background: transparent; cursor: pointer; font-size: 1.2rem; line-height: 1; color: #ffcc00; text-shadow: 0 0 6px rgba(255, 204, 0, 0.8); padding: 4px 8px;">✕</button>
+            </div>
         </div>
-        <div style="display:flex; align-items:center; gap:.5rem;">
-          <button id="feedbackBtnGlow"
-                  onclick="document.getElementById('feedbackBtn').click()">
-            Give Feedback
-          </button>
-          <button id="beta-banner-close" aria-label="Dismiss beta banner">✕</button>
-        </div>
-      </div>
     </div>
 
     <header class="header">
@@ -693,67 +396,51 @@
             <button class="action-btn" onclick="showNotification('Wallet feature coming soon!')" title="Wallet">💰</button>
         </div>
         
-        <!-- Games button positioned with floating actions -->
-        <button style="background: var(--gradient-primary); color: white; border: none; border-radius: 50%; width: 100px; height: 100px; cursor: pointer; box-shadow: var(--shadow); font-size: 2.5rem; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; position: fixed; bottom: 80px; left: 20px; z-index: 1000;" onclick="showTab('challenges')" title="Mini-Games" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">🎯</button>
-        
         <h1 onclick="showNotification('Easter egg activated!')">🎮 GTAFastLane</h1>
         
         <div class="live-activity" id="liveActivity">
             🔴 LIVE: <span id="onlineCount">12,847</span> fans online | Limited event active!
         </div>
         
-      <div class="trailer-link" style="max-width: 600px; margin: 1rem auto; position: relative;">
-    <div id="trailerPreview" style="position: relative; aspect-ratio: 16/9; overflow: hidden; border-radius: 12px; cursor: pointer; transition: transform 0.3s ease;">
-        <div style="position: absolute; inset: 0; background: url('https://i.imgur.com/Z0x2Io2.jpeg') center/cover; display: flex; align-items: center; justify-content: center; background-size: cover; background-position: center; background-repeat: no-repeat;">
-            <div style="text-align: center; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); z-index: 2;">
-                <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(1.2rem, 3vw, 2.5rem); font-weight: 900; margin-bottom: 0.5rem; letter-spacing: 2px;">GRAND THEFT AUTO VI</div>
-                <div style="font-size: clamp(0.8rem, 2vw, 1.2rem); opacity: 0.9; font-weight: 600;">SPRING 2026</div>
-                <div style="font-size: clamp(0.7rem, 1.8vw, 1rem); opacity: 0.8; margin-top: 0.5rem;">Jason & Lucia • Vice City</div>
+        <div class="trailer-link" style="max-width: 600px; margin: 1rem auto; position: relative;">
+            <div id="trailerPreview" style="position: relative; aspect-ratio: 16/9; overflow: hidden; border-radius: 12px; cursor: pointer; transition: transform 0.3s ease;">
+                <div style="position: absolute; inset: 0; background: url('https://i.imgur.com/Z0x2Io2.jpeg') center/cover; display: flex; align-items: center; justify-content: center; background-size: cover; background-position: center; background-repeat: no-repeat;">
+                    <div style="text-align: center; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); z-index: 2;">
+                        <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(1.2rem, 3vw, 2.5rem); font-weight: 900; margin-bottom: 0.5rem; letter-spacing: 2px;">GRAND THEFT AUTO VI</div>
+                        <div style="font-size: clamp(0.8rem, 2vw, 1.2rem); opacity: 0.9; font-weight: 600;">SPRING 2026</div>
+                        <div style="font-size: clamp(0.7rem, 1.8vw, 1rem); opacity: 0.8; margin-top: 0.5rem;">Jason & Lucia • Vice City</div>
+                    </div>
+                    <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.6) 100%); z-index: 1;"></div>
+                </div>
+                <div id="playButton" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,0,0,0.9); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; transition: all 0.3s ease; z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer;">▶</div>
+                <div style="position: absolute; bottom: 12px; left: 12px; background: rgba(0,0,0,0.8); color: white; padding: 6px 10px; border-radius: 4px; font-size: 12px; font-weight: 600;">Official Trailer</div>
+                <div style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">2:47</div>
             </div>
-            <div class="floating-1" style="position: absolute; top: 20px; left: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%;"></div>
-            <div class="floating-2" style="position: absolute; bottom: 30px; right: 30px; width: 25px; height: 25px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
-            <div class="floating-3" style="position: absolute; top: 50%; left: 15px; width: 15px; height: 15px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
-            <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.6) 100%); z-index: 1;"></div>
+            <div id="trailerPlayer" style="display:none; aspect-ratio:16/9; border-radius:12px; overflow:hidden;">
+                <iframe id="youtubeFrame" width="100%" height="100%" src="" title="GTA 6 Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <p style="text-align: center; margin-top: 0.5rem; color: var(--text-color); font-size: 0.9rem; font-weight: 600;">Watch GTA 6 Official Trailer - Jason & Lucia</p>
+            
+            <button id="backButton" style="display: none; position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 14px; z-index: 20;">← Back</button>
         </div>
-        <div id="playButton" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,0,0,0.9); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; transition: all 0.3s ease; z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer;" class="play-button">▶</div>
-        <div style="position: absolute; bottom: 12px; left: 12px; background: rgba(0,0,0,0.8); color: white; padding: 6px 10px; border-radius: 4px; font-size: 12px; font-weight: 600;">Official Trailer</div>
-        <div style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">2:47</div>
-        <div style="position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s ease; background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);" class="overlay"></div>
-    </div>
-    <div id="trailerPlayer" style="display:none; aspect-ratio:16/9; border-radius:12px; overflow:hidden;">
-        <iframe id="youtubeFrame" width="100%" height="100%" src="" title="GTA 6 Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
-    </div>
-    <p style="text-align: center; margin-top: 0.5rem; color: var(--text-color); font-size: 0.9rem; font-weight: 600;">Watch GTA 6 Official Trailer - Jason & Lucia</p>
-    
-    <!-- Back button (hidden initially) -->
-    <button id="backButton" style="display: none; position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 14px; z-index: 20;">← Back</button>
-</div>
         
         <div class="countdown-container">
-            <div class="countdown-item" onclick="awardRewards(5, 2, 'Countdown clicked!')">
+            <div class="countdown-item" onclick="showNotification('Countdown clicked!')">
                 <span class="countdown-number" id="days">273</span>
                 <div class="countdown-label">Days</div>
             </div>
-            <div class="countdown-item" onclick="awardRewards(5, 2, 'Countdown clicked!')">
+            <div class="countdown-item" onclick="showNotification('Countdown clicked!')">
                 <span class="countdown-number" id="hours">15</span>
                 <div class="countdown-label">Hours</div>
             </div>
-            <div class="countdown-item" onclick="awardRewards(5, 2, 'Countdown clicked!')">
+            <div class="countdown-item" onclick="showNotification('Countdown clicked!')">
                 <span class="countdown-number" id="minutes">42</span>
                 <div class="countdown-label">Minutes</div>
             </div>
-            <div class="countdown-item" onclick="awardRewards(5, 2, 'Countdown clicked!')">
+            <div class="countdown-item" onclick="showNotification('Countdown clicked!')">
                 <span class="countdown-number" id="seconds">18</span>
                 <div class="countdown-label">Seconds</div>
             </div>
-        </div>
-        
-        <div class="achievement-showcase" id="achievementShowcase">
-            <div class="achievement" title="Early Bird">🦅</div>
-            <div class="achievement" title="Streak Master">🔥</div>
-            <div class="achievement locked" title="Prediction King">👑</div>
-            <div class="achievement locked" title="Viral Sharer">📱</div>
-            <div class="achievement locked" title="Crypto Collector">💎</div>
         </div>
     </header>
 
@@ -771,10 +458,10 @@
                 <span class="tab-icon">📺</span>
                 <span class="tab-label">GTA</span>
             </button>
-          <button class="tab" onclick="showTab('rumors'); loadRumorsTab();" data-tab="rumors">
-    <span class="tab-icon">🔥</span>
-    <span class="tab-label">Rumors</span>
-</button>
+            <button class="tab" onclick="showTab('rumors')" data-tab="rumors">
+                <span class="tab-icon">🔥</span>
+                <span class="tab-label">Rumors</span>
+            </button>
             <button class="tab" onclick="showTab('trevor')" data-tab="trevor">
                 <span class="tab-icon">😈</span>
                 <span class="tab-label">Trevor</span>
@@ -795,7 +482,7 @@
                 <span class="tab-icon">🛒</span>
                 <span class="tab-label">Shop</span>
             </button>
-            <button class="tab premium" onclick="showTab('premium')" data-tab="premium">
+            <button class="tab" onclick="showTab('premium')" data-tab="premium">
                 <span class="tab-icon">👑</span>
                 <span class="tab-label">Premium</span>
             </button>
@@ -803,31 +490,14 @@
     </div>
 
     <main class="content-area">
-        <!-- Home Tab -->
         <div id="home" class="tab-content active">
-            <div class="viral-challenge">
-                <h2>🚀 VIRAL CHALLENGE ACTIVE!</h2>
-                <p><strong>Share GTAFastLane and earn 500 coins + exclusive NFT!</strong></p>
-                <button class="floating-btn" style="position: static; margin: 1rem auto; display: flex;" onclick="shareForReward()">
-                    🎁 Share & Earn Rewards
-                </button>
-            </div>
-
-            <div class="referral-system">
-                <h3>💰 Refer Friends & Earn</h3>
-                <p>Each friend earns you <strong>100 coins + 50 XP</strong></p>
-                <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 1.2rem; font-weight: bold; margin: 1rem 0; letter-spacing: 2px; cursor: pointer;" onclick="copyReferralCode()">
-                    GTAFL-<span id="userReferralCode">A7B9X2</span>
-                </div>
-                <small>Click to copy your referral code</small>
-            </div>
-
+            <h2 style="color: var(--primary-color);">Welcome to GTAFastLane</h2>
             <div class="stats-grid">
                 <div class="stat-card">
                     <span class="stat-number">52,847</span>
                     <div>Total Members</div>
                 </div>
-                <div class="stat-card premium">
+                <div class="stat-card">
                     <span class="stat-number">8,234</span>
                     <div>Premium Members</div>
                 </div>
@@ -842,7 +512,6 @@
             </div>
         </div>
 
-        <!-- News Tab -->
         <div id="news" class="tab-content">
             <h2 style="color: var(--primary-color);">Latest GTA 6 News</h2>
             <div class="stats-grid">
@@ -858,7 +527,7 @@
                     <span class="stat-number" id="newsSources">Loading...</span>
                     <div>News Sources</div>
                 </div>
-                <div class="stat-card premium">
+                <div class="stat-card">
                     <span class="stat-number">LIVE</span>
                     <div>Status</div>
                 </div>
@@ -871,7 +540,6 @@
             </div>
         </div>
 
-        <!-- YouTube Tab -->
         <div id="youtube" class="tab-content">
             <h2 style="color: var(--primary-color);">🎮 GTA 6 - Vice City Dreams</h2>
             <div class="stats-grid" style="margin-bottom: 2rem;">
@@ -887,7 +555,7 @@
                     <span class="stat-number" id="ytChannelCount">Loading...</span>
                     <div>Channels</div>
                 </div>
-                <div class="stat-card premium">
+                <div class="stat-card">
                     <span class="stat-number">LIVE</span>
                     <div>Streaming</div>
                 </div>
@@ -899,74 +567,11 @@
             </div>
         </div>
 
-        <!-- Challenges Tab -->
-        <div id="challenges" class="tab-content">
-            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🎯 GTA Challenges & Mini-Games</h2>
-            
-            <div class="stats-grid" style="margin-bottom: 1rem;">
-                <div class="stat-card" style="padding: 1rem 0.5rem;">
-                    <span class="stat-number" id="challengesCompleted" style="font-size: 1.5rem;">0</span>
-                    <div style="font-size: 0.8rem;">Challenges Won</div>
-                </div>
-                <div class="stat-card" style="padding: 1rem 0.5rem;">
-                    <span class="stat-number" id="currentStreak" style="font-size: 1.5rem;">0</span>
-                    <div style="font-size: 0.8rem;">Win Streak</div>
-                </div>
-                <div class="stat-card" style="padding: 1rem 0.5rem;">
-                    <span class="stat-number" id="totalScore" style="font-size: 1.5rem;">0</span>
-                    <div style="font-size: 0.8rem;">Total Score</div>
-                </div>
-                <div class="stat-card premium" style="padding: 1rem 0.5rem;">
-                    <span class="stat-number" style="font-size: 1.5rem;">#247</span>
-                    <div style="font-size: 0.8rem;">Global Rank</div>
-                </div>
-            </div>
-
-            <!-- Games Grid -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
-                
-                <!-- Memory Match Game -->
-                <div style="background: var(--card-bg); border-radius: 12px; padding: 1rem;">
-                    <h4 style="margin-bottom: 0.5rem;">Vice City Memory</h4>
-                    <div style="display: flex; justify-content: space-between; margin: 0.5rem 0; font-size: 0.8rem;">
-                        <span>Score: <strong id="memoryScore">0</strong></span>
-                        <span>Moves: <strong id="memoryMoves">0</strong></span>
-                        <span>Time: <strong id="memoryTimer">0:00</strong></span>
-                    </div>
-                    <div id="memoryGame" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.25rem; margin: 0.5rem 0;">
-                        <!-- Memory cards generated by JS -->
-                    </div>
-                    <button class="floating-btn" style="position: static; font-size: 0.8rem; padding: 0.5rem 1rem; width: 100%;" onclick="startMemoryGame()">New Game</button>
-                </div>
-
-                <!-- GTA Trivia -->
-                <div style="background: var(--card-bg); border-radius: 12px; padding: 1rem;">
-                    <h4 style="margin-bottom: 0.5rem;">GTA Trivia</h4>
-                    <p id="triviaQuestion" style="font-size: 0.9rem; margin-bottom: 0.5rem;">Which city is GTA Vice City based on?</p>
-                    <div id="triviaOptions" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin: 0.5rem 0;">
-                        <!-- Trivia options generated by JS -->
-                    </div>
-                    <div style="text-align: center; font-size: 0.8rem;">
-                        Score: <strong id="triviaScore">0</strong> | Question <strong id="triviaCount">1</strong>/10
-                    </div>
-                </div>
-
-                <!-- Rumor Rating -->
-                <div style="background: var(--card-bg); border-radius: 12px; padding: 1rem;">
-                    <h4 style="margin-bottom: 0.5rem;">Rumor Rating</h4>
-                    <p style="font-size: 0.9rem; font-style: italic; margin-bottom: 0.5rem;">"GTA 6 will feature revolutionary physics engine..."</p>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.25rem; margin: 0.5rem 0;">
-                        <button style="background: var(--danger-color); border: none; color: white; padding: 0.5rem; border-radius: 8px; cursor: pointer; font-size: 0.7rem;" onclick="rateRumor('fake')">Fake</button>
-                        <button style="background: var(--warning-color); border: none; color: white; padding: 0.5rem; border-radius: 8px; cursor: pointer; font-size: 0.7rem;" onclick="rateRumor('unlikely')">Unlikely</button>
-                        <button style="background: var(--accent-color); border: none; color: white; padding: 0.5rem; border-radius: 8px; cursor: pointer; font-size: 0.7rem;" onclick="rateRumor('possible')">Possible</button>
-                        <button style="background: var(--success-color); border: none; color: white; padding: 0.5rem; border-radius: 8px; cursor: pointer; font-size: 0.7rem;" onclick="rateRumor('credible')">Credible</button>
-                    </div>
-                    <div style="font-size: 0.8rem; text-align: center;">Streak: <strong id="rumorStreak2">0</strong> | Best: <strong id="bestStreak2">0</strong></div>
-                </div>
-            </div>
+        <div id="rumors" class="tab-content">
+            <h2 style="color: var(--primary-color);">GTA 6 Rumors</h2>
+            <p style="color: var(--text-color);">Rumors coming soon...</p>
         </div>
 
-        <!-- Trevor Tab -->
         <div id="trevor" class="tab-content">
             <h2 style="color: var(--danger-color);">😈 Trevor Mode - Chaos Central</h2>
             <div class="stats-grid" style="margin-bottom: 2rem;">
@@ -982,7 +587,7 @@
                     <span class="stat-number" id="trevorChannels">Loading...</span>
                     <div>Channels</div>
                 </div>
-                <div class="stat-card premium">
+                <div class="stat-card">
                     <span class="stat-number">CHAOS</span>
                     <div>Mode Active</div>
                 </div>
@@ -994,7 +599,11 @@
             </div>
         </div>
 
-        <!-- RDR2 Tab -->
+        <div id="theories" class="tab-content">
+            <h2 style="color: var(--primary-color);">Theories</h2>
+            <p style="color: var(--text-color);">Theories coming soon...</p>
+        </div>
+
         <div id="rdr2" class="tab-content">
             <h2 style="color: var(--primary-color);">🤠 Red Dead Redemption 2 & GTA Connection</h2>
             <div class="stats-grid" style="margin-bottom: 2rem;">
@@ -1010,7 +619,7 @@
                     <span class="stat-number" id="rdr2Channels">Loading...</span>
                     <div>Channels</div>
                 </div>
-                <div class="stat-card premium">
+                <div class="stat-card">
                     <span class="stat-number">WILD</span>
                     <div>West Mode</div>
                 </div>
@@ -1022,1287 +631,243 @@
             </div>
         </div>
 
-        <!-- Chat Tab -->
         <div id="chat" class="tab-content">
-            <h2 style="color: var(--primary-color);">💬 Live Community Chat</h2>
-            <div style="background: var(--card-bg); border-radius: 12px; margin: 1rem 0; overflow: hidden;">
-                <div style="background: var(--gradient-primary); padding: 1rem; color: white;">
-                    <strong>Live Chat</strong> - <span>847 online</span>
-                </div>
-                <div style="height: 300px; overflow-y: auto; padding: 1rem;" id="chatMessages">
-                    <div style="padding: 0.5rem; margin: 0.5rem 0; background: rgba(255,255,255,0.05); border-radius: 8px;">
-                        <div style="color: var(--primary-color); font-weight: 600; font-size: 0.8rem;">GTAFan2024</div>
-                        <div>Anyone else think the new trailer hints are getting more obvious?</div>
-                    </div>
-                    <div style="padding: 0.5rem; margin: 0.5rem 0; background: rgba(255,255,255,0.05); border-radius: 8px;">
-                        <div style="color: var(--gold-color); font-weight: 600; font-size: 0.8rem;">ViceCityKing</div>
-                        <div>The countdown is killing me! Can't wait any longer! 🔥</div>
-                    </div>
-                </div>
-                <div style="display: flex; padding: 1rem; gap: 0.5rem;">
-                    <input type="text" id="chatInput" placeholder="Type your message..." style="flex: 1; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 20px; background: var(--bg-color); color: var(--text-color); outline: none;">
-                    <button onclick="sendChatMessage()" style="background: var(--gradient-primary); border: none; color: white; padding: 0.75rem 1rem; border-radius: 20px; cursor: pointer;">Send</button>
-                </div>
-            </div>
+            <h2 style="color: var(--primary-color);">Chat</h2>
+            <p style="color: var(--text-color);">Chat coming soon...</p>
         </div>
 
-        <!-- COMPLETE RUMORS TAB -->
-        <div id="rumors" class="tab-content">
-            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🔥 GTA 6 Rumors & Leaks</h2>
-            
-            <!-- Rumors Stats -->        
-            <div class="stats-grid" style="margin-bottom: 2rem;">
-                <div class="stat-card">
-                    <span class="stat-number" id="rumorsCount">Loading...</span>
-                    <div>Active Rumors</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="rumorCredibility">Loading...</span>
-                    <div>Credibility Score</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="rumorSources">Loading...</span>
-                    <div>Sources</div>
-                </div>
-                <div class="stat-card premium">
-                    <span class="stat-number">HOT</span>
-                    <div>Status</div>
-                </div>
-            </div>
-            
-            <div id="rumorsContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
-                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                    Loading latest GTA 6 rumors and leaks...
-                </div>
-            </div>
-        </div>
-
-        <!-- THEORIES TAB - FIXED WITH PROPER SUPABASE INTEGRATION -->
-        <div id="theories" class="tab-content">
-            <h2 style="color: var(--primary-color); margin-bottom: 1rem;">🧠 GTA 6 Theories Hub</h2>
-            
-            <!-- Theory Stats -->
-            <div class="stats-grid" style="margin-bottom: 2rem;">
-                <div class="stat-card">
-                    <span class="stat-number" id="theoryCount">0</span>
-                    <div>Total Theories</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="totalVotes">0</span>
-                    <div>Total Votes</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="activeContributors">0</span>
-                    <div>Contributors</div>
-                </div>
-                <div class="stat-card premium">
-                    <span class="stat-number">LIVE</span>
-                    <div>Status</div>
-                </div>
-            </div>
-
-            <!-- Theory Submission Form -->
-            <div class="theory-form">
-                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">📝 Submit Your Theory</h3>
-                <form id="theoryForm" onsubmit="submitTheory(event)">
-                    <div class="form-group">
-                        <label for="theoryAuthor">Your Name:</label>
-                        <input type="text" id="theoryAuthor" name="author" required placeholder="Enter your name">
-                    </div>
-                    <div class="form-group">
-                        <label for="theoryTitle">Theory Title:</label>
-                        <input type="text" id="theoryTitle" name="title" required placeholder="Give your theory a catchy title">
-                    </div>
-                    <div class="form-group">
-                        <label for="theoryCategory">Category:</label>
-                        <select id="theoryCategory" name="category" required>
-                            <option value="">Select Category</option>
-                            <option value="story">Story & Plot</option>
-                            <option value="characters">Characters</option>
-                            <option value="gameplay">Gameplay</option>
-                            <option value="map">Map & Setting</option>
-                            <option value="easter-eggs">Easter Eggs</option>
-                            <option value="technology">Technology</option>
-                            <option value="speculation">General Speculation</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="theoryContent">Theory Description:</label>
-                        <textarea id="theoryContent" name="content" required placeholder="Describe your theory in detail... What evidence supports it? What makes it plausible?"></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn" id="submitBtn">
-                        🚀 Submit Theory
-                    </button>
-                </form>
-            </div>
-
-            <!-- Theories Container -->
-            <div id="theoriesContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
-                <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                    <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid var(--primary-color); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                    <div style="margin-top: 1rem;">Loading community theories...</div>
-                </div>
-            </div>
-        </div>
-        
         <div id="shop" class="tab-content">
-            <h2 style="color: var(--primary-color);">🛒 GTAFastLane Shop</h2>
-            <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                Shop coming soon...
-            </div>
+            <h2 style="color: var(--primary-color);">Shop</h2>
+            <p style="color: var(--text-color);">Shop coming soon...</p>
         </div>
-        
+
         <div id="premium" class="tab-content">
-            <h2 style="color: var(--gold-color);">👑 Premium Features</h2>
-            <div style="text-align: center; padding: 2rem; color: var(--gold-color);">
-                Premium features coming soon...
-            </div>
+            <h2 style="color: var(--gold-color);">Premium</h2>
+            <p style="color: var(--text-color);">Premium features coming soon...</p>
         </div>
     </main>
 
     <div class="notification" id="notification"></div>
 
-    <div class="floating-actions">
-        <button class="floating-btn" onclick="shareForReward()">🚀 Share & Earn</button>
-        <button class="floating-btn premium" onclick="upgradeToPremium()">👑 Go Premium</button>
-    </div>
-
-    <!-- Floating Feedback Button -->
-    <button id="feedbackBtn" style="
-      position: absolute;
-      top: 1rem;
-      left: 1rem;
-      background-color: #ff9800;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      z-index: 1000;
-    ">Feedback</button>
-
-    <!-- Feedback Modal -->
-    <div id="feedbackModal" style="
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 999;
-      justify-content: center;
-      align-items: center;
-    ">
-      <div style="
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        width: 90%;
-        max-width: 700px;
-        position: relative;
-      ">
-        <!-- Close Button -->
-        <span id="closeModal" style="
-          position: absolute;
-          top: 10px; right: 15px;
-          cursor: pointer;
-          font-size: 20px;
-          font-weight: bold;
-        ">&times;</span>
-
-        <!-- Google Form Embed -->
-        <iframe id="feedbackForm" src="https://docs.google.com/forms/d/e/1FAIpQLScc_a4ao1LnrS1W3qRWgHem-1p9eCcsNlI_5uTOk_FadloJPg/viewform?embedded=true" width="100%" height="520" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-
-        <!-- Custom Thank You Message -->
-        <div id="thankYouMessage" style="display:none; text-align:center; padding: 40px;">
-          <h2>Thank you for your feedback!</h2>
-          <p>We really appreciate you taking the time to help us improve.</p>
+    <div id="disclaimer-banner" style="position: fixed; bottom: 100px; left: 0; right: 0; z-index: 9999; background: rgba(30, 30, 30, 0.95); color: #f0f0f0; border-top: 2px solid #ff0055; font-size: 1.1rem; text-align: center; padding: 1rem 1rem; font-family: 'Trebuchet MS', Impact, system-ui, sans-serif; box-shadow: 0 -2px 10px rgba(255,0,85,0.4); letter-spacing: 0.5px; text-shadow: 0 0 3px rgba(255,0,85,0.5); display: none; transform: translateY(100%); opacity: 0; transition: transform 0.6s ease, opacity 0.6s ease;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+            <span>⚠️ <strong>Disclaimer:</strong> All user counts, stats, and numbers shown are <u>mock data for testing purposes only</u>.</span>
+            <button id="disclaimer-banner-close" style="border: none; background: transparent; cursor: pointer; font-size: 1.2rem; line-height: 1; color: #ffcc00; text-shadow: 0 0 6px rgba(255, 204, 0, 0.8); padding: 4px 8px; margin-left: 10px;">✕</button>
         </div>
-
-        <!-- Manual Submit & Close Button -->
-        <button id="manualSubmit" style="
-          margin-top: 20px;
-          padding: 10px 20px;
-          background-color: #4caf50;
-          color: white;
-          border: none;
-          border-radius: 6px;
-          cursor: pointer;
-        ">Submit and Close</button>
-
-      </div>
-    </div>
-        
-    <!-- Disclaimer Banner -->
-    <div id="disclaimer-banner"
-         style="
-          position: fixed; bottom: 100px; left: 0; right: 0; z-index: 9999;
-          background: rgba(30, 30, 30, 0.95);
-          color: #f0f0f0;
-          border-top: 2px solid #ff0055;
-          font-size: 1.1rem;
-          text-align: center;
-          padding: 1rem 1rem;
-          font-family: 'Trebuchet MS', Impact, system-ui, sans-serif;
-          box-shadow: 0 -2px 10px rgba(255,0,85,0.4);
-          letter-spacing: 0.5px;
-          text-shadow: 0 0 3px rgba(255,0,85,0.5);
-          display: none;
-          transform: translateY(100%);
-          opacity: 0;
-          transition: transform 0.6s ease, opacity 0.6s ease;
-         ">
-      <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
-        <span>⚠️ <strong>Disclaimer:</strong> All user counts, stats, and numbers shown are <u>mock data for testing purposes only</u>.</span>
-        <button id="disclaimer-banner-close" aria-label="Dismiss disclaimer banner">✕</button>
-      </div>
     </div>
 
-    <!-- Supabase CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
     <script>
-        // Supabase Configuration - CORRECTED
-        const supabaseUrl = 'https://umltdjhpblilppkwmqkg.supabase.co'
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtbHRkamhwYmxpbHBwa3dtcWtnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE4NjExOTAsImV4cCI6MjA0NzQzNzE5MH0.Gd1bCsa4wEIeBHSxWCyaEbznHvA_gx'
-        
-        let supabase;
-        
-        // Initialize Supabase with error handling
-        try {
-            supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-            console.log('✅ Supabase client initialized successfully');
-        } catch (error) {
-            console.error('❌ Failed to initialize Supabase:', error);
-            supabase = null;
+function toggleTheme() {
+    var body = document.body;
+    var themeToggle = document.getElementById('themeToggle');
+    body.classList.toggle('night-mode');
+    var isNightMode = body.classList.contains('night-mode');
+    if (themeToggle) {
+        themeToggle.textContent = isNightMode ? '☀️' : '🌙';
+    }
+    showNotification(isNightMode ? 'Night mode activated!' : 'Day mode activated!');
+}
+
+function showTab(tabName) {
+    var header = document.querySelector('.header');
+    if (tabName === 'home') {
+        if (header) header.classList.remove('minimal');
+    } else {
+        if (header) header.classList.add('minimal');
+    }
+    var contents = document.querySelectorAll('.tab-content');
+    for (var i = 0; i < contents.length; i++) {
+        contents[i].classList.remove('active');
+    }
+    var tabs = document.querySelectorAll('.tab');
+    for (var i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove('active');
+    }
+    var targetContent = document.getElementById(tabName);
+    var targetTab = document.querySelector('[data-tab="' + tabName + '"]');
+    if (targetContent) targetContent.classList.add('active');
+    if (targetTab) targetTab.classList.add('active');
+    if (tabName === 'news') {
+        fetchGTA6News();
+    }
+}
+
+function showNotification(message) {
+    var notification = document.getElementById('notification');
+    if (notification) {
+        notification.textContent = message;
+        notification.style.display = 'block';
+        setTimeout(function() {
+            notification.style.display = 'none';
+        }, 3000);
+    }
+}
+
+function fetchGTA6News() {
+    var newsContainer = document.getElementById('newsContainer');
+    if (!newsContainer) return;
+    newsContainer.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--primary-color);">Loading latest GTA 6 news...</div>';
+    var sampleNews = [
+        {
+            title: "GTA 6 Release Date Confirmed for Spring 2026",
+            description: "Rockstar Games officially announces Grand Theft Auto VI will launch in Spring 2026.",
+            source: { name: "GameSpot" }
+        },
+        {
+            title: "New GTA 6 Vice City Screenshots Surface Online", 
+            description: "High-resolution screenshots allegedly showing GTA 6 Vice City have leaked online.",
+            source: { name: "IGN" }
         }
+    ];
+    updateNewsContent(sampleNews);
+}
 
-        // In-memory storage for the preview
-        let storage = {};
-
-        // Safe storage functions
-        function safeGetStorage(key, defaultValue) {
-            return storage[key] || defaultValue;
+function updateNewsContent(articles) {
+    var newsContainer = document.getElementById('newsContainer');
+    if (newsContainer && articles.length > 0) {
+        var htmlContent = '';
+        for (var i = 0; i < articles.length; i++) {
+            var article = articles[i];
+            var sourceName = article.source ? article.source.name : 'Gaming News';
+            htmlContent += '<article style="background: var(--card-bg); border-radius: 12px; padding: 1.5rem; border-left: 4px solid var(--primary-color); margin-bottom: 1rem;"><h3 style="color: var(--text-color); margin-bottom: 0.5rem;">' + article.title + '</h3><div style="color: var(--primary-color); font-size: 0.8rem; margin-bottom: 1rem;">' + sourceName + '</div><p style="color: var(--text-color); opacity: 0.8;">' + article.description + '</p></article>';
         }
+        newsContainer.innerHTML = htmlContent;
+        var newsCount = document.getElementById('newsCount');
+        var newsWeekly = document.getElementById('newsWeekly');
+        var newsSources = document.getElementById('newsSources');
+        if (newsCount) newsCount.textContent = articles.length;
+        if (newsWeekly) newsWeekly.textContent = Math.floor(articles.length * 1.5);
+        if (newsSources) newsSources.textContent = '8';
+    }
+}
 
-        function safeSetStorage(key, value) {
-            storage[key] = value;
-            return true;
+function startCountdown() {
+    var targetDate = new Date('2026-05-26T12:00:00.000Z');
+    function updateCountdown() {
+        var now = new Date();
+        var difference = targetDate.getTime() - now.getTime();
+        if (difference <= 0) {
+            var days = document.getElementById('days');
+            var hours = document.getElementById('hours');
+            var minutes = document.getElementById('minutes');
+            var seconds = document.getElementById('seconds');
+            if (days) days.textContent = '0';
+            if (hours) hours.textContent = '0';
+            if (minutes) minutes.textContent = '0';
+            if (seconds) seconds.textContent = '0';
+            return;
         }
+        var days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((difference % (1000 * 60)) / 1000);
+        var daysEl = document.getElementById('days');
+        var hoursEl = document.getElementById('hours');
+        var minutesEl = document.getElementById('minutes');
+        var secondsEl = document.getElementById('seconds');
+        if (daysEl) daysEl.textContent = days;
+        if (hoursEl) hoursEl.textContent = hours;
+        if (minutesEl) minutesEl.textContent = minutes;
+        if (secondsEl) secondsEl.textContent = seconds;
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+}
 
-        // Safe element access
-        function safeGetElement(id) {
-            try {
-                return document.getElementById(id);
-            } catch (error) {
-                return null;
-            }
+function playTrailer() {
+    var trailerPreview = document.getElementById('trailerPreview');
+    var trailerPlayer = document.getElementById('trailerPlayer');
+    var youtubeFrame = document.getElementById('youtubeFrame');
+    var backButton = document.getElementById('backButton');
+    
+    if (trailerPreview) trailerPreview.style.display = 'none';
+    if (trailerPlayer) trailerPlayer.style.display = 'block';
+    if (youtubeFrame) youtubeFrame.src = 'https://www.youtube.com/embed/VQRLujxTm3c?autoplay=1&mute=0';
+    if (backButton) backButton.style.display = 'block';
+}
+
+function showPreview() {
+    var trailerPreview = document.getElementById('trailerPreview');
+    var trailerPlayer = document.getElementById('trailerPlayer');
+    var youtubeFrame = document.getElementById('youtubeFrame');
+    var backButton = document.getElementById('backButton');
+    
+    if (trailerPreview) trailerPreview.style.display = 'block';
+    if (trailerPlayer) trailerPlayer.style.display = 'none';
+    if (youtubeFrame) youtubeFrame.src = '';
+    if (backButton) backButton.style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    startCountdown();
+    showNotification('Welcome to GTAFastLane!');
+    
+    var trailerPreview = document.getElementById('trailerPreview');
+    var playButton = document.getElementById('playButton');
+    var backButton = document.getElementById('backButton');
+    
+    if (trailerPreview) {
+        trailerPreview.addEventListener('click', playTrailer);
+    }
+    if (playButton) {
+        playButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            playTrailer();
+        });
+    }
+    if (backButton) {
+        backButton.addEventListener('click', showPreview);
+    }
+    
+    document.addEventListener('keydown', function(e) {
+        var trailerPlayer = document.getElementById('trailerPlayer');
+        if (e.key === 'Escape' && trailerPlayer && trailerPlayer.style.display === 'block') {
+            showPreview();
         }
-
-        // Safe text update
-        function safeUpdateText(id, text) {
-            const element = safeGetElement(id);
-            if (element) element.textContent = text;
-        }
-
-        // User data
-        let userData = {
-            xp: parseInt(safeGetStorage('gtafl-xp', '1247')),
-            coins: parseInt(safeGetStorage('gtafl-coins', '850')),
-            level: safeGetStorage('gtafl-level', 'Insider'),
-            referralCode: safeGetStorage('gtafl-referral', 'A7B9X2')
-        };
-
-        // Challenge data
-        let challengeStats = {
-            completed: parseInt(safeGetStorage('gtafl-challenges-completed', '0')),
-            streak: parseInt(safeGetStorage('gtafl-challenge-streak', '0')),
-            score: parseInt(safeGetStorage('gtafl-total-score', '0'))
-        };
-
-        // Show notification
-        function showNotification(message) {
-            try {
-                const notification = safeGetElement('notification');
-                if (notification) {
-                    notification.textContent = message;
-                    notification.style.display = 'block';
-                    setTimeout(() => {
-                        notification.style.display = 'none';
-                    }, 3000);
-                }
-            } catch (error) {
-                console.warn('Notification error:', error);
-            }
-        }
-
-        // Award rewards
-        function awardRewards(coins, xp, message) {
-            try {
-                userData.coins += coins;
-                userData.xp += xp;
-                
-                updateUserInterface();
-                saveUserData();
-                showNotification(`+${coins} coins, +${xp} XP: ${message}`);
-            } catch (error) {
-                console.warn('Reward error:', error);
-            }
-        }
-
-        // Save user data
-        function saveUserData() {
-            try {
-                safeSetStorage('gtafl-xp', userData.xp);
-                safeSetStorage('gtafl-coins', userData.coins);
-                safeSetStorage('gtafl-level', userData.level);
-                safeSetStorage('gtafl-referral', userData.referralCode);
-            } catch (error) {
-                console.warn('Save error:', error);
-            }
-        }
-
-        // Update user interface
-        function updateUserInterface() {
-            try {
-                safeUpdateText('userXP', userData.xp.toLocaleString());
-                safeUpdateText('userCoins', userData.coins.toLocaleString());
-                safeUpdateText('userLevel', userData.level);
-                safeUpdateText('userReferralCode', userData.referralCode);
-            } catch (error) {
-                console.warn('UI update error:', error);
-            }
-        }
-
-        // Theme functions - FIXED
-        function toggleTheme() {
-            try {
-                const body = document.body;
-                const themeToggle = safeGetElement('themeToggle');
-                
-                body.classList.toggle('night-mode');
-                
-                const isNightMode = body.classList.contains('night-mode');
-                
-                if (themeToggle) {
-                    themeToggle.textContent = isNightMode ? '☀️' : '🌙';
-                }
-                
-                safeSetStorage('gtafl-theme', isNightMode ? 'night' : 'day');
-                
-                showNotification(isNightMode ? 'Night mode activated!' : 'Day mode activated!');
-                awardRewards(3, 1, 'Theme changed');
-            } catch (error) {
-                console.warn('Theme toggle error:', error);
-            }
-        }
-
-        function loadSavedTheme() {
-            try {
-                const savedTheme = safeGetStorage('gtafl-theme', 'day');
-                if (savedTheme === 'night') {
-                    document.body.classList.add('night-mode');
-                    const themeToggle = safeGetElement('themeToggle');
-                    if (themeToggle) themeToggle.textContent = '☀️';
-                }
-            } catch (error) {
-                console.warn('Theme load error:', error);
-            }
-        }
-
-        // Tab switching - FIXED WITH API CALLS
-        function showTab(tabName) {
-            try {
-                const header = document.querySelector('.header');
-                
-                if (tabName === 'home') {
-                    header?.classList.remove('minimal');
-                } else {
-                    header?.classList.add('minimal');
-                }
-                
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.remove('active');
-                });
-                
-                document.querySelectorAll('.tab').forEach(tab => {
-                    tab.classList.remove('active');
-                });
-
-                const targetContent = safeGetElement(tabName);
-                const targetTab = document.querySelector(`[data-tab="${tabName}"]`);
-                
-                if (targetContent) targetContent.classList.add('active');
-                if (targetTab) targetTab.classList.add('active');
-
-                // Load specific tab content with API calls
-                if (tabName === 'theories') {
-                    loadTheories();
-                } else if (tabName === 'rumors') {
-                    loadRumorsTab();
-                } else if (tabName === 'news') {
-                    fetchGTA6News();
-                } else if (tabName === 'youtube') {
-                    fetchYouTubeVideos('GTA 6 Grand Theft Auto VI trailer gameplay news leak', 'youtubeGrid', 'yt');
-                } else if (tabName === 'trevor') {
-                    fetchYouTubeVideos('Trevor Phillips GTA 5 chaos funny moments rampage', 'trevorGrid', 'trevor');
-                } else if (tabName === 'rdr2') {
-                    fetchYouTubeVideos('Red Dead Redemption 2 funny moments online story mode', 'rdr2Grid', 'rdr2');
-                } else if (tabName === 'challenges') {
-                    setTimeout(() => {
-                        initializeChallenges();
-                    }, 100);
-                }
-
-                awardRewards(2, 1, `Explored ${tabName}`);
-            } catch (error) {
-                console.warn('Tab switching error:', error);
-            }
-        }
-
-        // API Configuration
-        const API_CONFIG = {
-            news: '22ae24fcb78544a1977241e1319d4a0b',
-            youtube: 'AIzaSyB1Hx3EJD1N_jyJ01E131pUA3RqZvLNOZU'
-        };
-
-        // WORKING YouTube API Integration - ENHANCED FOR 50+ VIDEOS
-        async function fetchYouTubeVideos(query, containerId, statsPrefix = '') {
-            try {
-                const container = safeGetElement(containerId);
-                if (!container) return;
-
-                // Show loading state
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                        <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid var(--primary-color); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                        <div style="margin-top: 1rem;">Loading ${query.split(' ').slice(0,2).join(' ')} videos from YouTube...</div>
-                    </div>
-                `;
-
-                console.log('🔥 Fetching YouTube videos:', query);
-                let allVideos = [];
-
-                // Fetch multiple pages to get 50+ videos
-                const maxResults = 50;
-                let nextPageToken = '';
-                
-                for (let page = 0; page < 3 && allVideos.length < maxResults; page++) {
-                    const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${API_CONFIG.youtube}&q=${encodeURIComponent(query)}&part=snippet&type=video&maxResults=50&order=relevance&safeSearch=none&regionCode=US${nextPageToken ? `&pageToken=${nextPageToken}` : ''}`;
-                    
-                    const response = await fetch(apiUrl);
-                    
-                    if (!response.ok) {
-                        throw new Error(`YouTube API Error: ${response.status} ${response.statusText}`);
-                    }
-                    
-                    const data = await response.json();
-                    console.log(`📺 Page ${page + 1} loaded: ${data.items?.length || 0} videos`);
-                    
-                    if (data.items && data.items.length > 0) {
-                        allVideos = allVideos.concat(data.items);
-                        nextPageToken = data.nextPageToken;
-                        
-                        if (!nextPageToken) break; // No more pages
-                    } else {
-                        break;
-                    }
-                }
-                
-                if (allVideos.length > 0) {
-                    displayYouTubeVideos(allVideos, container, statsPrefix);
-                    updateVideoStats(allVideos, statsPrefix);
-                    showNotification(`✅ Loaded ${allVideos.length} real videos from YouTube!`);
-                    awardRewards(20, 5, `Loaded ${allVideos.length} videos`);
-                } else {
-                    throw new Error('No videos found in API response');
-                }
-                
-            } catch (error) {
-                console.error('❌ YouTube fetch error:', error);
-                const container = safeGetElement(containerId);
-                if (container) {
-                    container.innerHTML = `
-                        <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
-                            <h3>🚫 YouTube API Error</h3>
-                            <p style="margin: 1rem 0; font-size: 0.9rem;">
-                                ${error.message.includes('403') ? 'API quota exceeded. Try again tomorrow.' : 
-                                  error.message.includes('400') ? 'Invalid API key. Please check configuration.' :
-                                  `Unable to load videos: ${error.message}`}
-                            </p>
-                            <button onclick="fetchYouTubeVideos('${query}', '${containerId}', '${statsPrefix}')" 
-                                    style="background: var(--primary-color); border: none; color: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">
-                                🔄 Retry Loading
-                            </button>
-                        </div>
-                    `;
-                }
-            }
-        }
-
-        // Display YouTube videos - ENHANCED LAYOUT
-        function displayYouTubeVideos(videos, container, statsPrefix) {
-            if (!container) return;
-            
-            container.innerHTML = videos.map(video => {
-                const videoId = video.id.videoId;
-                const thumbnail = video.snippet.thumbnails.medium?.url || video.snippet.thumbnails.default?.url;
-                const title = video.snippet.title;
-                const channelTitle = video.snippet.channelTitle;
-                const publishedAt = new Date(video.snippet.publishedAt);
-                const timeAgo = getTimeAgo(publishedAt);
-                
-                return `
-                    <div style="background: var(--card-bg); border-radius: 12px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; border: 1px solid var(--border-color);" 
-                         onclick="window.open('https://youtube.com/watch?v=${videoId}', '_blank')"
-                         onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 25px rgba(0,255,162,0.2)'"
-                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                        <div style="position: relative; aspect-ratio: 16/9; background: url('${thumbnail}') center/cover; background-color: var(--card-bg);">
-                            <div style="position: absolute; background: rgba(255,0,0,0.9); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: all 0.3s ease;">▶</div>
-                            <div style="position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.8); color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;">HD</div>
-                            <div style="position: absolute; top: 8px; left: 8px; background: rgba(255,0,0,0.9); color: white; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold;">LIVE</div>
-                        </div>
-                        <div style="padding: 1rem;">
-                            <h4 style="margin-bottom: 0.5rem; color: var(--text-color); font-size: 0.9rem; line-height: 1.3; height: 2.6em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${title}</h4>
-                            <div style="color: var(--primary-color); font-size: 0.8rem; margin-bottom: 0.25rem;">${channelTitle}</div>
-                            <div style="color: rgba(255,255,255,0.6); font-size: 0.7rem;">${timeAgo}</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Update video statistics - ENHANCED
-        function updateVideoStats(videos, statsPrefix) {
-            try {
-                const videoCount = videos.length;
-                const channelCount = new Set(videos.map(v => v.snippet.channelTitle)).size;
-                const totalViews = Math.floor(Math.random() * 50000000) + 10000000; // Simulated total views
-                
-                if (statsPrefix === 'yt') {
-                    safeUpdateText('ytVideoCount', videoCount);
-                    safeUpdateText('ytTotalViews', formatNumber(totalViews));
-                    safeUpdateText('ytChannelCount', channelCount);
-                } else if (statsPrefix === 'trevor') {
-                    safeUpdateText('trevorVideoCount', videoCount);
-                    safeUpdateText('trevorViews', formatNumber(totalViews));
-                    safeUpdateText('trevorChannels', channelCount);
-                } else if (statsPrefix === 'rdr2') {
-                    safeUpdateText('rdr2VideoCount', videoCount);
-                    safeUpdateText('rdr2Views', formatNumber(totalViews));
-                    safeUpdateText('rdr2Channels', channelCount);
-                }
-                
-                console.log(`📊 Stats updated for ${statsPrefix}: ${videoCount} videos, ${channelCount} channels`);
-            } catch (error) {
-                console.warn('Video stats update error:', error);
-            }
-        }
-
-'
-                ];
-
-                for (const query of queries) {
-                    try {
-                        const apiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&apiKey=${API_CONFIG.news}&sortBy=publishedAt&pageSize=25&language=en&domains=gamespot.com,ign.com,kotaku.com,polygon.com,eurogamer.net,pcgamer.com,gamesradar.com`;
-                        
-                        console.log(`📰 Fetching news with query: ${query}`);
-                        const response = await fetch(apiUrl);
-                        
-                        if (response.ok) {
-                            const data = await response.json();
-                            if (data.articles && data.articles.length > 0) {
-                                const validArticles = data.articles.filter(article => 
-                                    article.title && 
-                                    article.title !== '[Removed]' && 
-                                    article.description && 
-                                    article.description !== '[Removed]' &&
-                                    !allArticles.some(existing => existing.title === article.title) // Remove duplicates
-                                );
-                                allArticles = allArticles.concat(validArticles);
-                                console.log(`✅ Found ${validArticles.length} new articles for query: ${query}`);
-                            }
-                        }
-                    } catch (queryError) {
-                        console.log(`⚠️ Query failed: ${query}`, queryError.message);
-                        continue;
-                    }
-                    
-                    if (allArticles.length >= 50) break; // Stop if we have enough articles
-                }
-                
-                if (allArticles.length > 0) {
-                    // Sort by publication date and take the most recent
-                    allArticles.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
-                    const finalArticles = allArticles.slice(0, 50);
-                    
-                    updateNewsContent(finalArticles);
-                    updateNewsStats(finalArticles);
-                    showNotification(`📰 Loaded ${finalArticles.length} real news articles!`);
-                    awardRewards(15, 4, `Loaded ${finalArticles.length} news articles`);
-                } else {
-                    throw new Error('No articles found from News API');
-                }
-                
-            } catch (error) {
-                console.error('❌ News API error:', error);
-                const newsContainer = safeGetElement('newsContainer');
-                if (newsContainer) {
-                    newsContainer.innerHTML = `
-                        <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
-                            <h3>📰 News API Error</h3>
-                            <p style="margin: 1rem 0; font-size: 0.9rem;">
-                                ${error.message.includes('429') ? 'API rate limit exceeded. Please wait and try again.' : 
-                                  error.message.includes('401') ? 'Invalid API key. Please check configuration.' :
-                                  `Unable to load news: ${error.message}`}
-                            </p>
-                            <button onclick="fetchGTA6News()" 
-                                    style="background: var(--primary-color); border: none; color: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">
-                                🔄 Retry Loading
-                            </button>
-                        </div>
-                    `;
-                }
-            }
-        }
-
-        // Update news content - ENHANCED DISPLAY
-        function updateNewsContent(articles) {
-            const newsContainer = safeGetElement('newsContainer');
-            
-            if (newsContainer && articles.length > 0) {
-                newsContainer.innerHTML = articles.map(article => {
-                    const publishedAt = new Date(article.publishedAt);
-                    const timeAgo = getTimeAgo(publishedAt);
-                    const sourceName = article.source?.name || 'Gaming News';
-                    
-                    const colors = ['var(--primary-color)', 'var(--warning-color)', 'var(--secondary-color)', 'var(--accent-color)'];
-                    const borderColor = colors[Math.floor(Math.random() * colors.length)];
-                    
-                    return `
-                        <article style="background: var(--card-bg); border-radius: 12px; padding: 1.5rem; border-left: 4px solid ${borderColor}; cursor: pointer; transition: all 0.3s ease; border: 1px solid var(--border-color); margin-bottom: 1rem;" 
-                                 onclick="window.open('${article.url}', '_blank')"
-                                 onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.3)'"
-                                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                            <h3 style="color: var(--text-color); margin-bottom: 0.5rem; line-height: 1.3; font-size: 1.1rem;">${article.title}</h3>
-                            <div style="color: var(--primary-color); font-size: 0.8rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
-                                <span>${sourceName}</span>
-                                <span style="color: rgba(255,255,255,0.6);">${timeAgo}</span>
-                            </div>
-                            <p style="color: var(--text-color); opacity: 0.8; line-height: 1.5; margin-bottom: 1rem;">${article.description || 'Click to read full article.'}</p>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <span style="background: var(--success-color); color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.7rem; font-weight: 600;">BREAKING</span>
-                                <span style="color: var(--primary-color); font-size: 0.8rem;">Read full article →</span>
-                            </div>
-                        </article>
-                    `;
-                }).join('');
-            }
-        }
-
-        // Update news stats
-        function updateNewsStats(articles) {
-            try {
-                const todayCount = articles.filter(article => {
-                    const publishedDate = new Date(article.publishedAt);
-                    const today = new Date();
-                    return publishedDate.toDateString() === today.toDateString();
-                }).length;
-                
-                const weekCount = articles.filter(article => {
-                    const publishedDate = new Date(article.publishedAt);
-                    const weekAgo = new Date();
-                    weekAgo.setDate(weekAgo.getDate() - 7);
-                    return publishedDate >= weekAgo;
-                }).length;
-                
-                const sourceCount = new Set(articles.map(article => article.source?.name)).size;
-                
-                safeUpdateText('newsCount', todayCount);
-                safeUpdateText('newsWeekly', weekCount);
-                safeUpdateText('newsSources', sourceCount);
-                
-                console.log(`📊 News stats: ${todayCount} today, ${weekCount} this week, ${sourceCount} sources`);
-            } catch (error) {
-                console.warn('News stats update error:', error);
-            }
-        }
-
-        // Helper functions
-        function formatNumber(num) {
-            if (num >= 1000000) {
-                return (num / 1000000).toFixed(1) + 'M';
-            } else if (num >= 1000) {
-                return (num / 1000).toFixed(1) + 'K';
-            }
-            return num.toString();
-        }
-
-        function getTimeAgo(date) {
-            const now = new Date();
-            const diffInSeconds = Math.floor((now - date) / 1000);
-            
-            if (diffInSeconds < 60) return 'Just now';
-            if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
-            if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-            if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
-            if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 604800)}w ago`;
-            return `${Math.floor(diffInSeconds / 2592000)}mo ago`;
-        }
-
-        // Load theories from Supabase
-        async function loadTheories() {
-            try {
-                const container = safeGetElement('theoriesContainer');
-                if (!container) return;
-
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                        <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid var(--primary-color); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                        <div style="margin-top: 1rem;">Connecting to theories database...</div>
-                    </div>
-                `;
-
-                if (!supabase) {
-                    container.innerHTML = `
-                        <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
-                            <h3>❌ Database Connection Failed</h3>
-                            <p>Supabase client not initialized.</p>
-                            <button onclick="createSampleTheory()" style="background: var(--warning-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold;">
-                                🧪 Create Test Theory
-                            </button>
-                        </div>
-                    `;
-                    return;
-                }
-
-                const { data: theories, error } = await supabase
-                    .from('theories')
-                    .select('*')
-                    .order('votes', { ascending: false });
-                
-                if (error) {
-                    console.error('❌ Supabase error:', error);
-                    container.innerHTML = `
-                        <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
-                            <h3>❌ Database Query Failed</h3>
-                            <p>${error.message}</p>
-                            <button onclick="createSampleTheory()" style="background: var(--warning-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold;">
-                                🧪 Create Test Theory
-                            </button>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                console.log(`✅ Loaded ${(theories || []).length} theories`);
-                displayTheories(theories || []);
-                updateTheoryStats(theories || []);
-                
-            } catch (error) {
-                console.error('❌ Error loading theories:', error);
-                const container = safeGetElement('theoriesContainer');
-                if (container) {
-                    container.innerHTML = `
-                        <div style="text-align: center; padding: 2rem; color: var(--danger-color);">
-                            <h3>🚫 Connection Failed</h3>
-                            <p>Network error: ${error.message}</p>
-                            <button onclick="loadTheories()" style="background: var(--primary-color); border: none; color: black; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold;">
-                                🔄 Try Again
-                            </button>
-                        </div>
-                    `;
-                }
-            }
-        }
-
-        // Display theories
-        function displayTheories(theories) {
-            const container = safeGetElement('theoriesContainer');
-            if (!container) return;
-            
-            if (theories.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 3rem; color: var(--primary-color);">
-                        <h3>🌟 No theories found!</h3>
-                        <p style="color: var(--text-color); margin: 1rem 0;">Database is connected but empty. Be the first to submit a theory!</p>
-                        <button onclick="document.getElementById('theoryTitle').focus()" style="background: var(--gradient-primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 0.5rem;">
-                            ✨ Submit First Theory
-                        </button>
-                        <button onclick="createSampleTheory()" style="background: var(--warning-color); color: black; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 0.5rem;">
-                            🧪 Create Test Theory
-                        </button>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = '';
-            
-            theories.forEach(theory => {
-                const theoryCard = document.createElement('div');
-                theoryCard.className = 'theory-card';
-                theoryCard.innerHTML = `
-                    <div style="display: flex; gap: 1rem;">
-                        <div style="display: flex; flex-direction: column; align-items: center; min-width: 60px;">
-                            <button onclick="voteForTheory(${theory.id}, 'up')" style="background: transparent; border: none; color: var(--success-color); font-size: 1.5rem; cursor: pointer; padding: 0.25rem;">▲</button>
-                            <span style="color: var(--primary-color); font-weight: bold; margin: 0.25rem 0;">${theory.votes || 0}</span>
-                            <button onclick="voteForTheory(${theory.id}, 'down')" style="background: transparent; border: none; color: var(--danger-color); font-size: 1.5rem; cursor: pointer; padding: 0.25rem;">▼</button>
-                        </div>
-                        <div style="flex: 1;">
-                            <h3 style="color: var(--text-color); font-size: 1.2rem; margin-bottom: 0.5rem;">${escapeHtml(theory.title || 'Untitled')}</h3>
-                            <p style="color: rgba(255,255,255,0.8); line-height: 1.6; margin-bottom: 1rem;">${escapeHtml(theory.content || 'No description')}</p>
-                            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;">
-                                <span style="color: var(--secondary-color); font-weight: 600;">By: ${escapeHtml(theory.author_name || 'Anonymous')}</span>
-                                <span style="background: var(--accent-color); color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.7rem; text-transform: uppercase;">${theory.category || 'general'}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(theoryCard);
-            });
-        }
-
-        // Submit theory
-        async function submitTheory(event) {
-            event.preventDefault();
-            
-            try {
-                const submitBtn = safeGetElement('submitBtn');
-                if (submitBtn) {
-                    submitBtn.disabled = true;
-                    submitBtn.textContent = '🚀 Submitting...';
-                }
-
-                if (!supabase) {
-                    showNotification('❌ Database connection not available');
-                    return;
-                }
-
-                const formData = new FormData(event.target);
-                const theoryData = {
-                    title: formData.get('title')?.trim(),
-                    content: formData.get('content')?.trim(),
-                    author_name: formData.get('author')?.trim(),
-                    category: formData.get('category'),
-                    votes: 0
-                };
-
-                if (!theoryData.title || !theoryData.content || !theoryData.author_name || !theoryData.category) {
-                    showNotification('❌ Please fill in all fields');
-                    return;
-                }
-
-                const { data, error } = await supabase
-                    .from('theories')
-                    .insert([theoryData])
-                    .select();
-
-                if (error) {
-                    console.error('❌ Insert error:', error);
-                    showNotification(`❌ Failed: ${error.message}`);
-                    return;
-                }
-
-                console.log('✅ Theory submitted:', data);
-                event.target.reset();
-                await loadTheories();
-                awardRewards(25, 10, 'Theory submitted!');
-                showNotification(`🎉 Theory "${theoryData.title}" submitted!`);
-                
-            } catch (error) {
-                console.error('❌ Submit error:', error);
-                showNotification(`❌ Error: ${error.message}`);
-            } finally {
-                const submitBtn = safeGetElement('submitBtn');
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = '🚀 Submit Theory';
-                }
-            }
-        }
-
-        // Vote for theory
-        async function voteForTheory(theoryId, voteType) {
-            try {
-                if (!supabase) {
-                    showNotification('❌ Database not available');
-                    return;
-                }
-
-                const { data: theory, error: fetchError } = await supabase
-                    .from('theories')
-                    .select('votes')
-                    .eq('id', theoryId)
-                    .single();
-
-                if (fetchError) {
-                    showNotification('❌ Failed to load theory');
-                    return;
-                }
-
-                const increment = voteType === 'up' ? 1 : -1;
-                const newVotes = Math.max(0, theory.votes + increment);
-
-                const { error: updateError } = await supabase
-                    .from('theories')
-                    .update({ votes: newVotes })
-                    .eq('id', theoryId);
-
-                if (updateError) {
-                    showNotification('❌ Failed to update vote');
-                    return;
-                }
-
-                await loadTheories();
-                const reward = voteType === 'up' ? 5 : 2;
-                awardRewards(reward, 1, `${voteType === 'up' ? 'Up' : 'Down'}voted theory`);
-                showNotification(voteType === 'up' ? '⬆️ Upvoted!' : '⬇️ Downvoted!');
-                
-            } catch (error) {
-                console.error('❌ Vote error:', error);
-                showNotification('❌ Vote failed');
-            }
-        }
-
-        // Create sample theory
-        async function createSampleTheory() {
-            try {
-                if (!supabase) {
-                    showNotification('❌ Supabase not initialized');
-                    return;
-                }
-
-                const testTheory = {
-                    title: "Test Theory - GTA 6 Vice City Connection",
-                    content: "This is a test theory to verify database connectivity. GTA 6 will likely feature connections to previous Vice City stories through easter eggs and character references.",
-                    author_name: "TestUser",
-                    category: "story",
-                    votes: 1
-                };
-
-                const { data, error } = await supabase
-                    .from('theories')
-                    .insert([testTheory])
-                    .select();
-
-                if (error) {
-                    showNotification(`❌ Test failed: ${error.message}`);
-                } else {
-                    showNotification('✅ Test theory created!');
-                    await loadTheories();
-                }
-            } catch (error) {
-                showNotification(`❌ Test error: ${error.message}`);
-            }
-        }
-
-        // Update theory stats
-        function updateTheoryStats(theories) {
-            try {
-                const theoryCount = theories.length;
-                const totalVotes = theories.reduce((sum, theory) => sum + (theory.votes || 0), 0);
-                const uniqueAuthors = new Set(theories.map(t => t.author_name)).size;
-                
-                safeUpdateText('theoryCount', theoryCount);
-                safeUpdateText('totalVotes', totalVotes.toLocaleString());
-                safeUpdateText('activeContributors', uniqueAuthors);
-            } catch (error) {
-                console.warn('Stats update error:', error);
-            }
-        }
-
-        // Helper function to escape HTML
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text || '';
-            return div.innerHTML;
-        }
-
-        // Load rumors tab
-        function loadRumorsTab() {
-            console.log('🎯 loadRumorsTab called');
-            setTimeout(() => {
-                const sampleRumors = [
-                    {
-                        title: "BREAKING: GTA 6 Vice City Map Leaked - Massive Open World",
-                        content: "New leaked screenshots show an incredibly detailed Vice City with expanded areas including the Everglades, multiple islands, and parts of South America.",
-                        author: "GameSpot News",
-                        score: 2847,
-                        comments: 456,
-                        credibility: "high"
-                    },
-                    {
-                        title: "GTA 6 Dual Protagonists CONFIRMED - Lucia & Partner Details", 
-                        content: "Industry insiders confirm GTA 6 will feature two main characters in a Bonnie & Clyde style story.",
-                        author: "IGN Gaming",
-                        score: 2156,
-                        comments: 389,
-                        credibility: "high"
-                    }
-                ];
-                
-                displayRumors(sampleRumors);
-                updateRumorStats(sampleRumors);
-            }, 300);
-        }
-
-        function displayRumors(rumors) {
-            const container = safeGetElement('rumorsContainer');
-            if (!container) return;
-            
-            container.innerHTML = rumors.map(rumor => `
-                <div style="background: var(--card-bg); border-radius: 12px; padding: 1.5rem; border-left: 4px solid var(--primary-color); margin-bottom: 1rem;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
-                        <h3 style="color: var(--text-color); font-size: 1.1rem;">${rumor.title}</h3>
-                        <span style="background: var(--success-color); color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem;">HIGH</span>
-                    </div>
-                    <p style="color: rgba(255,255,255,0.8); margin: 1rem 0;">${rumor.content}</p>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: rgba(255,255,255,0.6);">
-                        <span style="color: var(--primary-color);">${rumor.author}</span>
-                        <span>↗ ${rumor.score} • ${rumor.comments} comments</span>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function updateRumorStats(rumors) {
-            safeUpdateText('rumorsCount', rumors.length);
-            safeUpdateText('rumorCredibility', '89%');
-            safeUpdateText('rumorSources', '12');
-        }
-
-        // Chat functionality
-        function sendChatMessage() {
-            try {
-                const input = safeGetElement('chatInput');
-                if (input && input.value.trim()) {
-                    const message = input.value.trim();
-                    
-                    const chatMessages = safeGetElement('chatMessages');
-                    if (chatMessages) {
-                        const messageDiv = document.createElement('div');
-                        messageDiv.style.cssText = 'padding: 0.5rem; margin: 0.5rem 0; background: rgba(0,255,162,0.1); border-radius: 8px; border-left: 3px solid var(--primary-color);';
-                        messageDiv.innerHTML = `
-                            <div style="color: var(--primary-color); font-weight: 600; font-size: 0.8rem;">You</div>
-                            <div>${escapeHtml(message)}</div>
-                        `;
-                        chatMessages.appendChild(messageDiv);
-                        chatMessages.scrollTop = chatMessages.scrollHeight;
-                    }
-                    
-                    input.value = '';
-                    awardRewards(5, 2, 'Sent chat message');
-                    showNotification('Message sent!');
-                }
-            } catch (error) {
-                console.warn('Chat error:', error);
-            }
-        }
-
-        // Chat input handler
-        document.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && e.target.id === 'chatInput') {
-                sendChatMessage();
+    });
+    
+    var betaBanner = document.getElementById('beta-banner');
+    var betaCloseBtn = document.getElementById('beta-banner-close');
+    if (betaBanner) {
+        betaBanner.style.display = 'block';
+        setTimeout(function() {
+            betaBanner.style.transform = 'translateY(0)';
+            betaBanner.style.opacity = '1';
+        }, 50);
+    }
+    if (betaCloseBtn) {
+        betaCloseBtn.addEventListener('click', function() {
+            if (betaBanner) {
+                betaBanner.style.transform = 'translateY(-100%)';
+                betaBanner.style.opacity = '0';
+                setTimeout(function() {
+                    betaBanner.style.display = 'none';
+                }, 600);
             }
         });
-
-        // Challenge functionality placeholders
-        function initializeChallenges() {
-            // Placeholder for challenge initialization
-            console.log('Challenges initialized');
-        }
-
-        function startMemoryGame() {
-            showNotification('Memory game starting soon!');
-        }
-
-        // Other functions
-        function rateRumor(rating) {
-            const rewards = { 'fake': 5, 'unlikely': 8, 'possible': 10, 'credible': 15 };
-            awardRewards(rewards[rating], 2, `Rated rumor: ${rating}`);
-        }
-
-        function copyReferralCode() {
-            showNotification('Referral code copied to clipboard!');
-            awardRewards(5, 2, 'Copied referral code');
-        }
-
-        function shareForReward() {
-            showNotification('Share feature coming soon! +500 coins when implemented');
-            awardRewards(10, 5, 'Clicked share button');
-        }
-
-        function upgradeToPremium() {
-            showNotification('Premium upgrade coming soon!');
-        }
-
-        // Countdown timer
-        function startCountdown() {
-            try {
-                const targetDate = new Date('2026-05-26T12:00:00.000Z');
-                
-                function updateCountdown() {
-                    const now = new Date();
-                    const difference = targetDate.getTime() - now.getTime();
-                    
-                    if (difference <= 0) {
-                        safeUpdateText('days', '0');
-                        safeUpdateText('hours', '0');
-                        safeUpdateText('minutes', '0');
-                        safeUpdateText('seconds', '0');
-                        return;
-                    }
-                    
-                    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-                    
-                    safeUpdateText('days', days);
-                    safeUpdateText('hours', hours);
-                    safeUpdateText('minutes', minutes);
-                    safeUpdateText('seconds', seconds);
-                }
-                
-                updateCountdown();
-                setInterval(updateCountdown, 1000);
-            } catch (error) {
-                console.warn('Countdown error:', error);
+    }
+    
+    var disclaimerBanner = document.getElementById('disclaimer-banner');
+    var disclaimerCloseBtn = document.getElementById('disclaimer-banner-close');
+    if (disclaimerBanner) {
+        disclaimerBanner.style.display = 'block';
+        setTimeout(function() {
+            disclaimerBanner.style.transform = 'translateY(0)';
+            disclaimerBanner.style.opacity = '1';
+        }, 100);
+    }
+    if (disclaimerCloseBtn) {
+        disclaimerCloseBtn.addEventListener('click', function() {
+            if (disclaimerBanner) {
+                disclaimerBanner.style.transform = 'translateY(100%)';
+                disclaimerBanner.style.opacity = '0';
+                setTimeout(function() {
+                    disclaimerBanner.style.display = 'none';
+                }, 600);
             }
-        }
-
-        // Trailer functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const trailerPreview = document.getElementById('trailerPreview');
-            const trailerPlayer = document.getElementById('trailerPlayer');
-            const youtubeFrame = document.getElementById('youtubeFrame');
-            const playButton = document.getElementById('playButton');
-            const backButton = document.getElementById('backButton');
-            
-            function playTrailer() {
-                trailerPreview.style.display = 'none';
-                trailerPlayer.style.display = 'block';
-                youtubeFrame.src = 'https://www.youtube.com/embed/VQRLujxTm3c?autoplay=1&mute=0';
-                backButton.style.display = 'block';
-            }
-            
-            function showPreview() {
-                trailerPreview.style.display = 'block';
-                trailerPlayer.style.display = 'none';
-                youtubeFrame.src = '';
-                backButton.style.display = 'none';
-            }
-            
-            trailerPreview.addEventListener('click', playTrailer);
-            playButton.addEventListener('click', function(e) { e.stopPropagation(); playTrailer(); });
-            backButton.addEventListener('click', showPreview);
-            
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && trailerPlayer.style.display === 'block') {
-                    showPreview();
-                }
-            });
         });
-
-        // Initialize the app
-        function initApp() {
-            try {
-                loadSavedTheme();
-                updateUserInterface();
-                startCountdown();
-
-                setTimeout(() => {
-                    showNotification('🎮 Welcome to GTAFastLane! All tabs and features restored!');
-                }, 1000);
-            } catch (error) {
-                console.warn('Init error:', error);
-            }
-        }
-
-        // Initialize when page loads
-        document.addEventListener('DOMContentLoaded', initApp);
-
-        // Feedback modal functionality
-        const btn = document.getElementById('feedbackBtn');
-        const modal = document.getElementById('feedbackModal');
-        const close = document.getElementById('closeModal');
-        const form = document.getElementById('feedbackForm');
-        const thankYou = document.getElementById('thankYouMessage');
-        const manualSubmit = document.getElementById('manualSubmit');
-
-        btn.onclick = () => {
-            form.style.display = 'block';
-            thankYou.style.display = 'none';
-            manualSubmit.style.display = 'inline-block';
-            modal.style.display = 'flex';
-        };
-
-        close.onclick = () => modal.style.display = 'none';
-        window.onclick = (e) => { if(e.target === modal) modal.style.display = 'none'; };
-
-        manualSubmit.onclick = () => {
-            form.style.display = 'none';
-            manualSubmit.style.display = 'none';
-            thankYou.style.display = 'block';
-        };
-
-        // Banner scripts
-        (function () {
-          const KEY = 'betaBannerDismissed';
-          const banner = document.getElementById('beta-banner');
-          const closeBtn = document.getElementById('beta-banner-close');
-          
-          if (banner && safeGetStorage(KEY, 'false') !== 'true') {
-            banner.style.display = 'block';
-            setTimeout(() => {
-              if (banner) {
-                banner.style.transform = 'translateY(0)';
-                banner.style.opacity = '1';
-              }
-            }, 50);
-          }
-          
-          closeBtn?.addEventListener('click', () => {
-            if (banner) {
-              banner.style.transform = 'translateY(-100%)';
-              banner.style.opacity = '0';
-              setTimeout(() => {
-                if (banner) {
-                  banner.style.display = 'none';
-                  safeSetStorage(KEY, 'true');
-                }
-              }, 600);
-            }
-          });
-        })();
-
-        (function () {
-          const KEY = 'disclaimerBannerDismissed';
-          const banner = document.getElementById('disclaimer-banner');
-          const closeBtn = document.getElementById('disclaimer-banner-close');
-          
-          if (banner && safeGetStorage(KEY, 'false') !== 'true') {
-            banner.style.display = 'block';
-            setTimeout(() => {
-              if (banner) {
-                banner.style.transform = 'translateY(0)';
-                banner.style.opacity = '1';
-              }
-            }, 100);
-          }
-          
-          closeBtn?.addEventListener('click', () => {
-            if (banner) {
-              banner.style.transform = 'translateY(100%)';
-              banner.style.opacity = '0';
-              setTimeout(() => {
-                if (banner) {
-                  banner.style.display = 'none';
-                  safeSetStorage(KEY, 'true');
-                }
-              }, 600);
-            }
-          });
-        })();
+    }
+});
     </script>
 </body>
 </html>
