@@ -112,37 +112,42 @@
             padding-bottom: 70px;
         }
 
-        /* Night Mode Theme - FIXED */
+        /* Night Mode Theme - WHITE BACKGROUND & BLACK TEXT */
         body.night-mode {
-            --primary-color: #00d4ff !important;
-            --secondary-color: #ff6b9d !important;
-            --accent-color: #a855f7 !important;
-            --gold-color: #fbbf24 !important;
-            --premium-color: #f97316 !important;
-            --success-color: #10b981 !important;
-            --warning-color: #f59e0b !important;
-            --danger-color: #ef4444 !important;
-            --text-color: #f1f5f9 !important;
-            --bg-color: #0f0f23 !important;
-            --card-bg: #1a1a2e !important;
-            --border-color: #16213e !important;
-            --shadow: 0 4px 25px rgba(0,212,255,0.15) !important;
-            --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #ff6b9d 100%) !important;
-            --gradient-premium: linear-gradient(135deg, #fbbf24 0%, #f97316 100%) !important;
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%) !important;
+            --primary-color: #007acc !important;
+            --secondary-color: #d63384 !important;
+            --accent-color: #6f42c1 !important;
+            --gold-color: #fd7e14 !important;
+            --premium-color: #dc3545 !important;
+            --success-color: #198754 !important;
+            --warning-color: #fd7e14 !important;
+            --danger-color: #dc3545 !important;
+            --text-color: #212529 !important;
+            --bg-color: #ffffff !important;
+            --card-bg: #f8f9fa !important;
+            --border-color: #dee2e6 !important;
+            --shadow: 0 4px 25px rgba(0,0,0,0.1) !important;
+            --gradient-primary: linear-gradient(135deg, #007acc 0%, #d63384 100%) !important;
+            --gradient-premium: linear-gradient(135deg, #fd7e14 0%, #dc3545 100%) !important;
+            background: #ffffff !important;
         }
 
         body.night-mode .header {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
-            color: #f1f5f9 !important;
-            border-bottom: 2px solid #00d4ff;
+            background: var(--gradient-primary) !important;
+            color: white !important;
+            border-bottom: 2px solid #007acc;
         }
 
         body.night-mode .stat-card,
         body.night-mode .tab-content > div,
-        body.night-mode [style*="background: var(--card-bg)"] {
-            background: #1a1a2e !important;
-            border: 1px solid #16213e !important;
+        body.night-mode .tabs-container {
+            background: #f8f9fa !important;
+            border: 1px solid #dee2e6 !important;
+        }
+
+        body.night-mode .notification {
+            background: var(--gradient-primary) !important;
+            color: white !important;
         }
 
         .header {
@@ -1714,6 +1719,34 @@
             }
         }
 
+        // Update news stats
+        function updateNewsStats(articles) {
+            try {
+                const todayCount = articles.filter(article => {
+                    const publishedDate = new Date(article.publishedAt);
+                    const today = new Date();
+                    return publishedDate.toDateString() === today.toDateString();
+                }).length;
+                
+                const weekCount = articles.filter(article => {
+                    const publishedDate = new Date(article.publishedAt);
+                    const weekAgo = new Date();
+                    weekAgo.setDate(weekAgo.getDate() - 7);
+                    return publishedDate >= weekAgo;
+                }).length;
+                
+                const sourceCount = new Set(articles.map(article => article.source?.name)).size;
+                
+                safeUpdateText('newsCount', todayCount);
+                safeUpdateText('newsWeekly', weekCount);
+                safeUpdateText('newsSources', sourceCount);
+                
+                console.log(`📊 News stats: ${todayCount} today, ${weekCount} this week, ${sourceCount} sources`);
+            } catch (error) {
+                console.warn('News stats update error:', error);
+            }
+        }
+
         // Helper functions
         function formatNumber(num) {
             if (num >= 1000000) {
@@ -2092,6 +2125,16 @@
                 sendChatMessage();
             }
         });
+
+        // Challenge functionality placeholders
+        function initializeChallenges() {
+            // Placeholder for challenge initialization
+            console.log('Challenges initialized');
+        }
+
+        function startMemoryGame() {
+            showNotification('Memory game starting soon!');
+        }
 
         // Other functions
         function rateRumor(rating) {
