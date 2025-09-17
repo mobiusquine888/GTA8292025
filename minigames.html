@@ -5,24 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GTAFastLane Mini-Games - Ultimate Gaming Hub</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
-    
     <style>
         :root {
             --primary-color: #00ffa2;
             --secondary-color: #ff007c;
             --accent-color: #8a2be2;
-            --gold-color: #ffd700;
-            --premium-color: #ff6b35;
-            --success-color: #2ed573;
-            --warning-color: #ffa502;
-            --danger-color: #ff4757;
             --text-color: #000000;
             --bg-color: #ffffff;
             --card-bg: #f8f9fa;
             --border-color: #dee2e6;
             --shadow: 0 4px 25px rgba(0,0,0,0.1);
             --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+
+        body.night-mode {
+            --text-color: #ffffff;
+            --bg-color: #000000;
+            --card-bg: #1a1a1a;
+            --border-color: #333333;
+            --shadow: 0 4px 25px rgba(255,255,255,0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,15 +34,6 @@
             color: var(--text-color);
             min-height: 100vh;
             transition: all 0.3s ease;
-        }
-
-        body.night-mode {
-            --text-color: #000000;
-            --bg-color: #ffffff;
-            --card-bg: #f8f9fa;
-            --border-color: #dee2e6;
-            --shadow: 0 4px 25px rgba(0,0,0,0.1);
-            background: #ffffff;
         }
 
         .header {
@@ -57,56 +49,33 @@
             font-size: clamp(2rem, 6vw, 3rem);
             margin-bottom: 0.5rem;
             font-weight: 900;
-            animation: glow 2s ease-in-out infinite alternate;
         }
-
-        @keyframes glow {
-            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 10px rgba(255,255,255,0.1); }
-            to { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.3); }
-        }
-
-        .header-subtitle { font-size: 1.2rem; opacity: 0.9; margin-bottom: 1rem; }
 
         .back-button {
             position: absolute; top: 1rem; left: 1rem;
             background: rgba(255,255,255,0.3); border: 2px solid rgba(255,255,255,0.5);
             color: white; padding: 0.75rem 1.5rem; border-radius: 50px;
-            cursor: pointer; transition: all 0.3s ease; font-weight: 600;
-            text-decoration: none; display: flex; align-items: center; gap: 0.5rem;
-        }
-
-        .back-button:hover {
-            background: rgba(255,255,255,0.5); transform: scale(1.05);
-            color: white; text-decoration: none;
+            cursor: pointer; font-weight: 600; text-decoration: none;
         }
 
         .theme-toggle {
             position: absolute; top: 1rem; right: 1rem;
             background: rgba(255,255,255,0.3); border: 2px solid rgba(255,255,255,0.5);
             color: white; padding: 0.75rem; border-radius: 50%; cursor: pointer;
-            transition: all 0.3s ease; width: 50px; height: 50px;
-            display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+            width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
         }
-
-        .theme-toggle:hover { background: rgba(255,255,255,0.5); transform: scale(1.1); }
 
         .stats-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem; margin: 1rem 0; max-width: 800px; margin-left: auto; margin-right: auto;
+            gap: 1rem; margin: 1rem auto; max-width: 800px;
         }
 
         .stat-card {
             background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem;
-            text-align: center; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s ease;
+            text-align: center; border: 1px solid rgba(255,255,255,0.2);
         }
 
-        .stat-card:hover { transform: translateY(-2px); background: rgba(255,255,255,0.25); }
-
-        .stat-number {
-            font-size: 1.8rem; font-weight: 900; color: white;
-            display: block; margin-bottom: 0.25rem;
-        }
-
+        .stat-number { font-size: 1.8rem; font-weight: 900; color: white; display: block; margin-bottom: 0.25rem; }
         .stat-label { font-size: 0.9rem; opacity: 0.9; font-weight: 600; }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
@@ -118,29 +87,20 @@
 
         .game-card {
             background: var(--card-bg); border-radius: 15px; padding: 1.5rem;
-            box-shadow: var(--shadow); transition: all 0.3s ease; border: 1px solid var(--border-color);
+            box-shadow: var(--shadow); border: 1px solid var(--border-color);
         }
 
-        .game-card:hover { transform: translateY(-5px); box-shadow: 0 8px 30px rgba(0,255,162,0.2); }
-
-        .game-title {
-            color: var(--primary-color); font-size: 1.3rem; font-weight: 700;
-            margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;
-        }
+        .game-title { color: var(--primary-color); font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; }
 
         .floating-btn {
             background: var(--gradient-primary); color: white; border: none;
             border-radius: 50px; padding: 12px 24px; cursor: pointer;
-            box-shadow: var(--shadow); font-weight: 600; transition: all 0.3s ease;
-            font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; justify-content: center;
+            width: 100%; margin-top: 1rem; font-weight: 600;
         }
-
-        .floating-btn:hover { transform: scale(1.05); }
-        .floating-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
         .game-stats {
             display: flex; justify-content: space-between; margin: 0.5rem 0;
-            font-size: 0.8rem; color: var(--text-color); opacity: 0.8;
+            font-size: 0.8rem; opacity: 0.8;
         }
 
         .game-controls {
@@ -149,99 +109,82 @@
 
         .control-btn {
             background: var(--accent-color); border: none; color: white;
-            padding: 0.75rem; border-radius: 8px; cursor: pointer;
-            font-size: 0.8rem; font-weight: 600; transition: all 0.2s ease;
+            padding: 0.75rem; border-radius: 8px; cursor: pointer; font-weight: 600;
         }
 
-        .control-btn:hover { background: var(--primary-color); transform: scale(1.02); }
-        .control-btn:active { transform: scale(0.98); }
-        .control-btn.gas { background: var(--success-color); }
-        .control-btn.gas:hover { background: var(--primary-color); }
+        .control-btn.gas { background: #2ed573; }
 
-        .game-status {
-            text-align: center; padding: 1rem; border-radius: 8px;
-            margin: 1rem 0; display: none; font-weight: 600;
-        }
+        .game-status { text-align: center; padding: 1rem; margin: 1rem 0; display: none; }
 
         .notification {
             position: fixed; top: 20px; right: 20px; background: var(--gradient-primary);
-            color: white; padding: 1rem 1.5rem; border-radius: 12px;
-            box-shadow: var(--shadow); z-index: 1000; display: none;
-            max-width: calc(100vw - 40px); font-size: 0.9rem;
+            color: white; padding: 1rem 1.5rem; border-radius: 12px; z-index: 1000; display: none;
         }
 
-        /* Game specific styles */
         .target {
             position: absolute; width: 30px; height: 30px; border-radius: 50%;
-            background: radial-gradient(circle, #ff0000 0%, #cc0000 30%, #990000 60%, #660000 100%);
-            border: 2px solid #fff; cursor: pointer; animation: targetFloat 2s ease-in-out infinite;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: transform 0.1s ease;
+            background: radial-gradient(circle, #ff0000 0%, #990000 100%);
+            border: 2px solid #fff; cursor: pointer;
         }
-        .target:hover { transform: scale(1.1); }
+
         .target::before {
             content: ''; position: absolute; top: 50%; left: 50%;
             width: 15px; height: 15px; background: #fff; border-radius: 50%;
             transform: translate(-50%, -50%);
         }
+
         .target::after {
             content: ''; position: absolute; top: 50%; left: 50%;
             width: 7px; height: 7px; background: #000; border-radius: 50%;
             transform: translate(-50%, -50%);
         }
-        @keyframes targetFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
 
         .hit-effect {
-            position: absolute; color: #ffff00; font-weight: bold; font-size: 1rem;
-            pointer-events: none; animation: hitFade 1s ease-out forwards;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8); z-index: 100;
+            position: absolute; color: #ffff00; font-weight: bold;
+            pointer-events: none; animation: hitFade 1s ease-out forwards; z-index: 100;
         }
-        @keyframes hitFade { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.5) translateY(-20px); } }
+
+        @keyframes hitFade {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1.5) translateY(-20px); }
+        }
 
         .police-car {
             position: absolute; width: 25px; height: 18px; background: #0066cc;
-            border-radius: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.5); transition: all 0.1s ease;
+            border-radius: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
-        .police-car::before {
-            content: ''; position: absolute; top: -3px; left: 50%;
-            width: 10px; height: 3px; background: #ff0000; border-radius: 2px;
-            transform: translateX(-50%); animation: policeLights 0.5s infinite alternate;
-        }
-        @keyframes policeLights { 0% { background: #ff0000; } 100% { background: #0000ff; } }
 
-        .obstacle { position: absolute; width: 20px; height: 15px; background: #666; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+        .obstacle { position: absolute; width: 20px; height: 15px; background: #666; border-radius: 2px; }
 
         .road-line {
             position: absolute; width: 3px; height: 20px; background: #fff;
             opacity: 0.7; animation: roadScroll 0.5s linear infinite;
         }
-        @keyframes roadScroll { 0% { transform: translateY(-20px); } 100% { transform: translateY(170px); } }
+
+        @keyframes roadScroll {
+            0% { transform: translateY(-20px); }
+            100% { transform: translateY(170px); }
+        }
 
         .explosion {
             position: absolute; width: 40px; height: 40px;
             background: radial-gradient(circle, #ff6600 0%, #ff0000 50%, transparent 100%);
-            border-radius: 50%; animation: explode 0.5s ease-out forwards; pointer-events: none;
+            border-radius: 50%; animation: explode 0.5s ease-out forwards;
         }
-        @keyframes explode { 0% { transform: scale(0.1); opacity: 1; } 100% { transform: scale(2); opacity: 0; } }
 
-        @media (max-width: 768px) {
-            .games-grid { grid-template-columns: 1fr; gap: 1rem; }
-            .back-button { position: static; margin: 1rem auto 0; width: fit-content; }
-            .theme-toggle { position: static; margin: 1rem auto 0; }
-            .header { padding: 1rem; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        @keyframes explode {
+            0% { transform: scale(0.1); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
         }
     </style>
 </head>
 <body>
     <header class="header">
-        <button class="back-button" onclick="goBack()">
-            <span>←</span><span>Back to Main Site</span>
-        </button>
-        
-        <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle" title="Toggle Theme">🌙</button>
+        <button class="back-button" onclick="goBack()">← Back to Main Site</button>
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</button>
         
         <h1>🎯 GTA6FastLane Mini-Games</h1>
-        <div class="header-subtitle">Ultimate Gaming Hub - 54 Games Coming Soon!</div>
+        <div style="font-size: 1.2rem; opacity: 0.9; margin-bottom: 1rem;">Ultimate Gaming Hub - 54 Games Coming Soon!</div>
         
         <div class="stats-grid">
             <div class="stat-card">
@@ -267,7 +210,6 @@
         <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 2rem; font-size: 2rem;">🎮 Play Now</h2>
         
         <div class="games-grid">
-            <!-- Target Practice Game -->
             <div class="game-card">
                 <div class="game-title">🎯 Vice City Target Practice</div>
                 <div class="game-stats">
@@ -280,10 +222,9 @@
                     <strong style="color: var(--primary-color);">Game Over!</strong>
                     <p id="finalScore" style="margin: 0.3rem 0; font-size: 0.9rem;"></p>
                 </div>
-                <button class="floating-btn" style="width: 100%; margin-top: 1rem;" id="startBtn" onclick="startTargetPractice()">🎯 Start Shooting</button>
+                <button class="floating-btn" id="startBtn" onclick="startTargetPractice()">🎯 Start Shooting</button>
             </div>
 
-            <!-- Car Chase Game -->
             <div class="game-card">
                 <div class="game-title">🚗 Highway Chase</div>
                 <div class="game-stats">
@@ -304,11 +245,9 @@
                     <button id="gasBtn" class="control-btn gas" onclick="accelerate()">▲ Gas</button>
                     <button id="rightBtn" class="control-btn" onclick="turnRight()">Right ▶</button>
                 </div>
-                <button class="floating-btn" style="width: 100%; margin-top: 1rem;" id="startChaseBtn" onclick="startChase()">🚗 Start Chase</button>
-                <div style="text-align: center; margin-top: 0.5rem; font-size: 0.7rem; opacity: 0.7;">Use WASD or Arrow Keys to play</div>
+                <button class="floating-btn" id="startChaseBtn" onclick="startChase()">🚗 Start Chase</button>
             </div>
 
-            <!-- Vice City Racing Game -->
             <div class="game-card">
                 <div class="game-title">🏆 Vice City Racing</div>
                 <div class="game-stats">
@@ -316,166 +255,83 @@
                     <span>Position: <strong id="racePosition">1st</strong></span>
                     <span>Lap: <strong id="raceLap">1/3</strong></span>
                 </div>
-                <div id="raceTrack" style="height: 300px; background: linear-gradient(45deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius: 8px; position: relative; overflow: hidden; border: 2px solid var(--border-color);">
-                    <div id="playerRacer" style="position: absolute; width: 20px; height: 12px; background: var(--primary-color); border-radius: 2px; transform: translate(-50%, -50%); box-shadow: 0 0 10px rgba(0,255,162,0.5); z-index: 10;"></div>
-                    <canvas id="raceCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                <div style="height: 200px; background: linear-gradient(45deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius: 8px; border: 2px solid var(--border-color); display: flex; align-items: center; justify-content: center; color: white;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🏁</div>
+                        <div>Advanced Racing Engine</div>
+                    </div>
                 </div>
-                <div id="raceStatus" class="game-status">
-                    <strong style="color: var(--primary-color);">Race Finished!</strong>
-                    <p id="raceResult" style="margin: 0.3rem 0; font-size: 0.9rem;"></p>
-                </div>
-                <div class="game-controls">
-                    <button id="raceLeftBtn" class="control-btn" onclick="turnRacerLeft()">◀ Turn</button>
-                    <button id="raceGasBtn" class="control-btn gas" onclick="accelerateRacer()">▲ Boost</button>
-                    <button id="raceRightBtn" class="control-btn" onclick="turnRacerRight()">Turn ▶</button>
-                </div>
-                <button class="floating-btn" style="width: 100%; margin-top: 1rem;" id="startRaceBtn" onclick="startRace()">🏆 Start Race</button>
-                <div style="text-align: center; margin-top: 0.5rem; font-size: 0.7rem; opacity: 0.7;">Navigate the neon-lit streets of Vice City</div>
+                <button class="floating-btn" onclick="showNotification('🏆 Racing game coming soon!')">🏆 Start Race</button>
             </div>
 
-            <!-- Helicopter Escape Game -->
             <div class="game-card">
                 <div class="game-title">🚁 Helicopter Escape</div>
                 <div class="game-stats">
-                    <span>Altitude: <strong id="heliAltitude">500</strong>ft</span>
-                    <span>Fuel: <strong id="heliFuel">100</strong>%</span>
-                    <span>Distance: <strong id="heliDistance">0</strong>m</span>
+                    <span>Altitude: <strong>500</strong>ft</span>
+                    <span>Fuel: <strong>100</strong>%</span>
+                    <span>Distance: <strong>0</strong>m</span>
                 </div>
-                <div id="heliTrack" style="height: 300px; background: linear-gradient(180deg, #87CEEB 0%, #B0C4DE 30%, #F0F8FF 60%, #DCDCDC 100%); border-radius: 8px; position: relative; overflow: hidden; border: 2px solid var(--border-color);">
-                    <div id="playerHeli" style="position: absolute; width: 25px; height: 15px; background: var(--primary-color); border-radius: 3px; transform: translate(-50%, -50%); box-shadow: 0 0 15px rgba(0,255,162,0.6); z-index: 20;"></div>
-                    <canvas id="heliCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                <div style="height: 200px; background: linear-gradient(180deg, #87CEEB 0%, #B0C4DE 30%, #F0F8FF 60%, #DCDCDC 100%); border-radius: 8px; border: 2px solid var(--border-color); display: flex; align-items: center; justify-content: center; color: #333;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🚁</div>
+                        <div>Advanced Flight Simulator</div>
+                    </div>
                 </div>
-                <div id="heliStatus" class="game-status">
-                    <strong style="color: var(--primary-color);">Flight Complete!</strong>
-                    <p id="heliResult" style="margin: 0.3rem 0; font-size: 0.9rem;"></p>
-                </div>
-                <div class="game-controls">
-                    <button id="heliUpBtn" class="control-btn" onclick="heliUp()">▲ Up</button>
-                    <button id="heliBoostBtn" class="control-btn gas" onclick="heliBoost()">⚡ Boost</button>
-                    <button id="heliDownBtn" class="control-btn" onclick="heliDown()">▼ Down</button>
-                </div>
-                <button class="floating-btn" style="width: 100%; margin-top: 1rem;" id="startHeliBtn" onclick="startHelicopter()">🚁 Take Flight</button>
-                <div style="text-align: center; margin-top: 0.5rem; font-size: 0.7rem; opacity: 0.7;">Navigate through the city skyline and avoid obstacles</div>
+                <button class="floating-btn" onclick="showNotification('🚁 Helicopter game coming soon!')">🚁 Take Flight</button>
             </div>
-        </div>
-
-        <h2 style="color: var(--secondary-color); text-align: center; margin: 3rem 0 2rem; font-size: 2rem;">🚀 Coming Soon - 50 More Games!</h2>
-        
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 2rem;">
-            <div style="background: var(--card-bg); border-radius: 12px; padding: 1.5rem; text-align: center; border: 2px dashed var(--border-color); transition: all 0.3s ease;">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.6;">💰</div>
-                <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--text-color);">Bank Heist Simulator</div>
-                <div style="font-size: 0.8rem; opacity: 0.7; color: var(--text-color);">Plan and execute the perfect heist</div>
-            </div>
-            
-            <div style="background: var(--card-bg); border-radius: 12px; padding: 1.5rem; text-align: center; border: 2px dashed var(--border-color); transition: all 0.3s ease;">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.6;">🔫</div>
-                <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--text-color);">Gang Territory War</div>
-                <div style="font-size: 0.8rem; opacity: 0.7; color: var(--text-color);">Control the streets in tactical combat</div>
-            </div>
-            
-            <div style="background: var(--card-bg); border-radius: 12px; padding: 1.5rem; text-align: center; border: 2px dashed var(--border-color); transition: all 0.3s ease;">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.6;">🎰</div>
-                <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--text-color);">Casino Royale</div>
-                <div style="font-size: 0.8rem; opacity: 0.7; color: var(--text-color);">High-stakes poker and slot machines</div>
-            </div>
-            
-            <div style="background: var(--card-bg); border-radius: 12px; padding: 1.5rem; text-align: center; border: 2px dashed var(--border-color); transition: all 0.3s ease;">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.6;">🏢</div>
-                <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--text-color);">Property Empire</div>
-                <div style="font-size: 0.8rem; opacity: 0.7; color: var(--text-color);">Build your real estate empire</div>
-            </div>
-            
-            <div style="background: var(--card-bg); border-radius: 12px; padding: 1.5rem; text-align: center; border: 2px dashed var(--border-color); transition: all 0.3s ease;">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.6;">🎪</div>
-                <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--text-color);">Stunt Jump Challenge</div>
-                <div style="font-size: 0.8rem; opacity: 0.7; color: var(--text-color);">Master impossible vehicle stunts</div>
-            </div>
-            
-            <div style="background: var(--card-bg); border-radius: 12px; padding: 1.5rem; text-align: center; border: 2px dashed var(--border-color); transition: all 0.3s ease;">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.6;">🔍</div>
-                <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--text-color);">Detective Mode</div>
-                <div style="font-size: 0.8rem; opacity: 0.7; color: var(--text-color);">Solve crimes in Vice City</div>
-            </div>
-        </div>
-        
-        <div style="text-align: center; margin: 3rem 0; padding: 2rem; background: var(--card-bg); border-radius: 15px; border: 1px solid var(--border-color);">
-            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">More Games Coming Soon!</h3>
-            <p style="opacity: 0.8; line-height: 1.6;">We're developing 40+ additional mini-games including puzzle games, arcade classics, sports challenges, and exclusive GTA-themed adventures. Stay tuned for regular updates!</p>
         </div>
     </div>
 
     <div class="notification" id="notification"></div>
 
     <script>
-        // Global game statistics
         let gameStats = {
             gamesPlayed: parseInt(localStorage.getItem('gtafl-games-played') || '0'),
             totalScore: parseInt(localStorage.getItem('gtafl-total-score') || '0'),
             highScore: parseInt(localStorage.getItem('gtafl-high-score') || '0')
         };
 
-        // Update stats display
         function updateStats() {
             document.getElementById('gamesPlayed').textContent = gameStats.gamesPlayed;
             document.getElementById('totalScore').textContent = gameStats.totalScore.toLocaleString();
             document.getElementById('highScore').textContent = gameStats.highScore.toLocaleString();
         }
 
-        // Save stats to localStorage
         function saveStats() {
             localStorage.setItem('gtafl-games-played', gameStats.gamesPlayed);
             localStorage.setItem('gtafl-total-score', gameStats.totalScore);
             localStorage.setItem('gtafl-high-score', gameStats.highScore);
         }
 
-        // Show notification
         function showNotification(message) {
             const notification = document.getElementById('notification');
             notification.textContent = message;
             notification.style.display = 'block';
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
+            setTimeout(() => notification.style.display = 'none', 3000);
         }
 
-        // Go back function
         function goBack() {
             window.location.href = 'https://gta6fastlane.com/';
         }
 
-        // Theme toggle
         function toggleTheme() {
-            const body = document.body;
-            const themeToggle = document.getElementById('themeToggle');
-            
-            body.classList.toggle('night-mode');
-            
-            const isNightMode = body.classList.contains('night-mode');
-            
-            if (themeToggle) {
-                themeToggle.textContent = isNightMode ? '☀️' : '🌙';
-            }
-            
+            document.body.classList.toggle('night-mode');
+            const isNightMode = document.body.classList.contains('night-mode');
+            document.getElementById('themeToggle').textContent = isNightMode ? '☀️' : '🌙';
             localStorage.setItem('gtafl-theme', isNightMode ? 'night' : 'day');
-            showNotification(isNightMode ? 'Day mode activated!' : 'Night mode activated!');
+            showNotification(isNightMode ? 'Night mode activated!' : 'Day mode activated!');
         }
 
-        // Load saved theme
         function loadSavedTheme() {
             const savedTheme = localStorage.getItem('gtafl-theme') || 'day';
             if (savedTheme === 'night') {
                 document.body.classList.add('night-mode');
-                const themeToggle = document.getElementById('themeToggle');
-                if (themeToggle) themeToggle.textContent = '☀️';
+                document.getElementById('themeToggle').textContent = '☀️';
             }
         }
 
         // TARGET PRACTICE GAME
-        let gameState = {
-            score: 0, hits: 0, timeLeft: 30, isPlaying: false,
-            timer: null, targetSpawner: null, targets: []
-        };
+        let gameState = { score: 0, hits: 0, timeLeft: 30, isPlaying: false, timer: null, targetSpawner: null, targets: [] };
 
         function updateDisplay() {
             document.getElementById('targetScore').textContent = gameState.score;
@@ -487,17 +343,13 @@
             if (gameState.timer) clearInterval(gameState.timer);
             if (gameState.targetSpawner) clearInterval(gameState.targetSpawner);
             
-            const range = document.getElementById('targetRange');
-            range.innerHTML = '';
-            
+            document.getElementById('targetRange').innerHTML = '';
             gameState = { score: 0, hits: 0, timeLeft: 30, isPlaying: false, timer: null, targetSpawner: null, targets: [] };
             
             updateDisplay();
             document.getElementById('gameOver').style.display = 'none';
-            
-            const startBtn = document.getElementById('startBtn');
-            startBtn.disabled = false;
-            startBtn.textContent = '🎯 Start Shooting';
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('startBtn').textContent = '🎯 Start Shooting';
         }
 
         function createTarget() {
@@ -507,10 +359,8 @@
             const target = document.createElement('div');
             target.className = 'target';
             
-            const maxX = range.clientWidth - 30;
-            const maxY = range.clientHeight - 30;
-            const x = Math.random() * maxX;
-            const y = Math.random() * maxY;
+            const x = Math.random() * (range.clientWidth - 30);
+            const y = Math.random() * (range.clientHeight - 30);
             
             target.style.left = x + 'px';
             target.style.top = y + 'px';
@@ -538,15 +388,6 @@
             gameState.score += 100;
             gameState.hits++;
             
-            showHitEffect(event);
-            updateDisplay();
-            
-            if (gameState.hits >= 10) {
-                endGame(true);
-            }
-        }
-
-        function showHitEffect(event) {
             const effect = document.createElement('div');
             effect.className = 'hit-effect';
             effect.textContent = '+100';
@@ -557,35 +398,31 @@
             effect.style.top = (event.clientY - rect.top) + 'px';
             
             document.getElementById('targetRange').appendChild(effect);
+            setTimeout(() => { if (effect.parentNode) effect.remove(); }, 1000);
             
-            setTimeout(() => {
-                if (effect.parentNode) effect.remove();
-            }, 1000);
+            updateDisplay();
+            
+            if (gameState.hits >= 10) {
+                endGame(true);
+            }
         }
 
         function startTargetPractice() {
             resetGame();
-            
             gameState.isPlaying = true;
             gameState.timeLeft = 30;
             
-            const startBtn = document.getElementById('startBtn');
-            startBtn.disabled = true;
-            startBtn.textContent = 'Game In Progress...';
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('startBtn').textContent = 'Game In Progress...';
             
             gameState.timer = setInterval(() => {
                 gameState.timeLeft--;
                 updateDisplay();
-                
-                if (gameState.timeLeft <= 0) {
-                    endGame(false);
-                }
+                if (gameState.timeLeft <= 0) endGame(false);
             }, 1000);
             
             gameState.targetSpawner = setInterval(() => {
-                if (gameState.targets.length < 3) {
-                    createTarget();
-                }
+                if (gameState.targets.length < 3) createTarget();
             }, 800);
             
             createTarget();
@@ -593,23 +430,18 @@
 
         function endGame(won) {
             gameState.isPlaying = false;
-            
             if (gameState.timer) clearInterval(gameState.timer);
             if (gameState.targetSpawner) clearInterval(gameState.targetSpawner);
             
             document.getElementById('targetRange').innerHTML = '';
             
-            const gameOverDiv = document.getElementById('gameOver');
-            const finalScoreP = document.getElementById('finalScore');
-            
             gameStats.gamesPlayed++;
             gameStats.totalScore += gameState.score;
-            if (gameState.score > gameStats.highScore) {
-                gameStats.highScore = gameState.score;
-            }
+            if (gameState.score > gameStats.highScore) gameStats.highScore = gameState.score;
             saveStats();
             updateStats();
             
+            const finalScoreP = document.getElementById('finalScore');
             if (won) {
                 finalScoreP.innerHTML = `🏆 Victory! Score: ${gameState.score} - Perfect shooting!`;
                 showNotification('🎯 Perfect shooting! All targets eliminated!');
@@ -618,54 +450,38 @@
                 showNotification('⏰ Time ran out! Keep practicing your aim!');
             }
             
-            gameOverDiv.style.display = 'block';
-            
-            const startBtn = document.getElementById('startBtn');
-            startBtn.disabled = false;
-            startBtn.textContent = '🎯 Play Again';
+            document.getElementById('gameOver').style.display = 'block';
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('startBtn').textContent = '🎯 Play Again';
         }
 
         // CAR CHASE GAME
-        let chaseState = {
-            speed: 0, distance: 0, heat: 0, isPlaying: false,
-            playerPosition: 50, gameLoop: null, policeCars: [], obstacles: [], roadLines: [], gameTime: 0
-        };
+        let chaseState = { speed: 0, distance: 0, heat: 0, isPlaying: false, playerPosition: 50, gameLoop: null, policeCars: [], obstacles: [], gameTime: 0 };
 
         function updateChaseDisplay() {
             document.getElementById('chaseSpeed').textContent = Math.floor(chaseState.speed);
             document.getElementById('chaseDistance').textContent = Math.floor(chaseState.distance);
             document.getElementById('chaseHeat').textContent = chaseState.heat;
-            
-            const playerCar = document.getElementById('playerCar');
-            playerCar.style.left = chaseState.playerPosition + '%';
+            document.getElementById('playerCar').style.left = chaseState.playerPosition + '%';
         }
 
         function resetChase() {
             if (chaseState.gameLoop) clearInterval(chaseState.gameLoop);
             
             const track = document.getElementById('chaseTrack');
-            const existingElements = track.querySelectorAll('.police-car, .obstacle, .explosion');
-            existingElements.forEach(el => el.remove());
-            
+            track.querySelectorAll('.police-car, .obstacle, .explosion').forEach(el => el.remove());
             document.getElementById('roadLines').innerHTML = '';
             
-            chaseState = { speed: 0, distance: 0, heat: 0, isPlaying: false, playerPosition: 50, gameLoop: null, policeCars: [], obstacles: [], roadLines: [], gameTime: 0 };
+            chaseState = { speed: 0, distance: 0, heat: 0, isPlaying: false, playerPosition: 50, gameLoop: null, policeCars: [], obstacles: [], gameTime: 0 };
             
             updateChaseDisplay();
             document.getElementById('gameStatus').style.display = 'none';
-            
-            const startBtn = document.getElementById('startChaseBtn');
-            startBtn.disabled = false;
-            startBtn.textContent = '🚗 Start Chase';
-            
-            ['leftBtn', 'gasBtn', 'rightBtn'].forEach(id => {
-                document.getElementById(id).disabled = false;
-            });
+            document.getElementById('startChaseBtn').disabled = false;
+            document.getElementById('startChaseBtn').textContent = '🚗 Start Chase';
         }
 
         function createRoadLines() {
             const roadLines = document.getElementById('roadLines');
-            
             for (let i = 0; i < 6; i++) {
                 const line = document.createElement('div');
                 line.className = 'road-line';
@@ -683,9 +499,7 @@
             const policeCar = document.createElement('div');
             policeCar.className = 'police-car';
             
-            const side = Math.random() < 0.5 ? 'left' : 'right';
-            const startX = side === 'left' ? 20 + Math.random() * 30 : 50 + Math.random() * 30;
-            
+            const startX = Math.random() < 0.5 ? 20 + Math.random() * 30 : 50 + Math.random() * 30;
             policeCar.style.left = startX + '%';
             policeCar.style.top = '-25px';
             
@@ -711,37 +525,19 @@
         function checkCollisions() {
             const playerRect = { x: chaseState.playerPosition, y: 85, width: 8, height: 5 };
             
-            chaseState.policeCars.forEach((police, index) => {
+            chaseState.policeCars.forEach(police => {
                 const policeRect = { x: police.x, y: police.y / 150 * 100, width: 6, height: 4 };
-                
                 if (Math.abs(playerRect.x - policeRect.x) < 8 && Math.abs(playerRect.y - policeRect.y) < 8) {
-                    createExplosion(chaseState.playerPosition, 80);
                     endChase(false, 'Caught by police!');
                 }
             });
             
-            chaseState.obstacles.forEach((obstacle, index) => {
+            chaseState.obstacles.forEach(obstacle => {
                 const obstacleRect = { x: obstacle.x, y: obstacle.y / 150 * 100, width: 5, height: 4 };
-                
                 if (Math.abs(playerRect.x - obstacleRect.x) < 7 && Math.abs(playerRect.y - obstacleRect.y) < 8) {
-                    createExplosion(chaseState.playerPosition, 80);
                     endChase(false, 'Crashed into obstacle!');
                 }
             });
-        }
-
-        function createExplosion(x, y) {
-            const track = document.getElementById('chaseTrack');
-            const explosion = document.createElement('div');
-            explosion.className = 'explosion';
-            explosion.style.left = x + '%';
-            explosion.style.bottom = y + 'px';
-            
-            track.appendChild(explosion);
-            
-            setTimeout(() => {
-                if (explosion.parentNode) explosion.remove();
-            }, 500);
         }
 
         function gameUpdate() {
@@ -753,7 +549,6 @@
             chaseState.policeCars.forEach((police, index) => {
                 police.y += police.speed + chaseState.speed / 20;
                 police.element.style.top = police.y + 'px';
-                
                 if (police.y > 170) {
                     police.element.remove();
                     chaseState.policeCars.splice(index, 1);
@@ -763,7 +558,6 @@
             chaseState.obstacles.forEach((obstacle, index) => {
                 obstacle.y += 3 + chaseState.speed / 15;
                 obstacle.element.style.top = obstacle.y + 'px';
-                
                 if (obstacle.y > 170) {
                     obstacle.element.remove();
                     chaseState.obstacles.splice(index, 1);
@@ -786,9 +580,8 @@
             chaseState.isPlaying = true;
             chaseState.speed = 20;
             
-            const startBtn = document.getElementById('startChaseBtn');
-            startBtn.disabled = true;
-            startBtn.textContent = 'Chase In Progress...';
+            document.getElementById('startChaseBtn').disabled = true;
+            document.getElementById('startChaseBtn').textContent = 'Chase In Progress...';
             
             createRoadLines();
             chaseState.gameLoop = setInterval(gameUpdate, 50);
@@ -799,9 +592,6 @@
             chaseState.isPlaying = false;
             if (chaseState.gameLoop) clearInterval(chaseState.gameLoop);
             
-            const gameStatus = document.getElementById('gameStatus');
-            const gameResult = document.getElementById('gameResult');
-            
             gameStats.gamesPlayed++;
             const score = Math.floor(chaseState.distance);
             gameStats.totalScore += score;
@@ -809,21 +599,20 @@
             saveStats();
             updateStats();
             
+            const gameResult = document.getElementById('gameResult');
             if (won) {
                 gameResult.innerHTML = `🏆 ${message}<br>Distance: ${Math.floor(chaseState.distance)}m - You're free!`;
-                gameStatus.style.background = 'rgba(76, 175, 80, 0.2)';
+                document.getElementById('gameStatus').style.background = 'rgba(76, 175, 80, 0.2)';
                 showNotification('🚗 Successful escape! You outran the police!');
             } else {
                 gameResult.innerHTML = `💥 ${message}<br>Distance: ${Math.floor(chaseState.distance)}m - Better luck next time!`;
-                gameStatus.style.background = 'rgba(255, 107, 107, 0.2)';
+                document.getElementById('gameStatus').style.background = 'rgba(255, 107, 107, 0.2)';
                 showNotification('💥 Chase ended! Try again to escape!');
             }
             
-            gameStatus.style.display = 'block';
-            
-            const startBtn = document.getElementById('startChaseBtn');
-            startBtn.disabled = false;
-            startBtn.textContent = '🚗 Play Again';
+            document.getElementById('gameStatus').style.display = 'block';
+            document.getElementById('startChaseBtn').disabled = false;
+            document.getElementById('startChaseBtn').textContent = '🚗 Play Again';
         }
 
         function turnLeft() {
@@ -844,29 +633,6 @@
             updateChaseDisplay();
         }
 
-        // RACING GAME - Simplified version
-        let raceState = { isPlaying: false };
-        
-        function startRace() {
-            showNotification('🏆 Racing game coming soon!');
-        }
-        
-        function turnRacerLeft() {}
-        function turnRacerRight() {}
-        function accelerateRacer() {}
-
-        // HELICOPTER GAME - Simplified version
-        let heliState = { isPlaying: false };
-        
-        function startHelicopter() {
-            showNotification('🚁 Helicopter game coming soon!');
-        }
-        
-        function heliUp() {}
-        function heliDown() {}
-        function heliBoost() {}
-
-        // Keyboard controls
         document.addEventListener('keydown', function(e) {
             if (chaseState.isPlaying) {
                 switch(e.key) {
@@ -891,7 +657,6 @@
             }
         });
 
-        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             loadSavedTheme();
             updateStats();
