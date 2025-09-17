@@ -1597,28 +1597,7 @@
             }
         }
 
-        // WORKING News API Integration - REAL NEWS
-        async function fetchGTA6News() {
-            try {
-                const newsContainer = safeGetElement('newsContainer');
-                if (!newsContainer) return;
-
-                // Show loading state
-                newsContainer.innerHTML = `
-                    <div style="text-align: center; padding: 2rem; color: var(--primary-color);">
-                        <div style="display: inline-block; width: 20px; height: 20px; border: 2px solid var(--primary-color); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                        <div style="margin-top: 1rem;">Loading latest GTA 6 news from multiple sources...</div>
-                    </div>
-                `;
-
-                let allArticles = [];
-                
-                // Try multiple search queries to get more articles
-                const queries = [
-                    'GTA 6 OR "Grand Theft Auto 6" OR "Grand Theft Auto VI"',
-                    'Rockstar Games GTA 6 Vice City',
-                    'GTA 6 trailer leak news update',
-                    'Grand Theft Auto 6 release date gameplay'
+'
                 ];
 
                 for (const query of queries) {
