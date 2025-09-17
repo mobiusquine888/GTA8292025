@@ -267,17 +267,25 @@
             <div class="game-card">
                 <div class="game-title">🚁 Helicopter Escape</div>
                 <div class="game-stats">
-                    <span>Altitude: <strong>500</strong>ft</span>
-                    <span>Fuel: <strong>100</strong>%</span>
-                    <span>Distance: <strong>0</strong>m</span>
+                    <span>Altitude: <strong id="heliAltitude">500</strong>ft</span>
+                    <span>Fuel: <strong id="heliFuel">100</strong>%</span>
+                    <span>Distance: <strong id="heliDistance">0</strong>m</span>
                 </div>
-                <div style="height: 200px; background: linear-gradient(180deg, #87CEEB 0%, #B0C4DE 30%, #F0F8FF 60%, #DCDCDC 100%); border-radius: 8px; border: 2px solid var(--border-color); display: flex; align-items: center; justify-content: center; color: #333;">
-                    <div style="text-align: center;">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">🚁</div>
-                        <div>Advanced Flight Simulator</div>
-                    </div>
+                <div id="heliTrack" style="height: 300px; background: linear-gradient(180deg, #87CEEB 0%, #B0C4DE 30%, #F0F8FF 60%, #DCDCDC 100%); border-radius: 8px; position: relative; overflow: hidden; border: 2px solid var(--border-color);">
+                    <div id="playerHeli" style="position: absolute; width: 25px; height: 15px; background: var(--primary-color); border-radius: 3px; transform: translate(-50%, -50%); box-shadow: 0 0 15px rgba(0,255,162,0.6); z-index: 20;"></div>
+                    <canvas id="heliCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
                 </div>
-                <button class="floating-btn" onclick="showNotification('🚁 Helicopter game coming soon!')">🚁 Take Flight</button>
+                <div id="heliStatus" class="game-status">
+                    <strong style="color: var(--primary-color);">Flight Complete!</strong>
+                    <p id="heliResult" style="margin: 0.3rem 0; font-size: 0.9rem;"></p>
+                </div>
+                <div class="game-controls">
+                    <button id="heliUpBtn" class="control-btn" onclick="heliUp()">▲ Up</button>
+                    <button id="heliBoostBtn" class="control-btn gas" onclick="heliBoost()">⚡ Boost</button>
+                    <button id="heliDownBtn" class="control-btn" onclick="heliDown()">▼ Down</button>
+                </div>
+                <button class="floating-btn" id="startHeliBtn" onclick="startHelicopter()">🚁 Take Flight</button>
+                <div style="text-align: center; margin-top: 0.5rem; font-size: 0.7rem; opacity: 0.7;">Navigate through the city skyline - WASD controls</div>
             </div>
         </div>
     </div>
@@ -458,6 +466,29 @@
         // CAR CHASE GAME
         let chaseState = { speed: 0, distance: 0, heat: 0, isPlaying: false, playerPosition: 50, gameLoop: null, policeCars: [], obstacles: [], gameTime: 0 };
 
+        // HELICOPTER ESCAPE GAME
+        let heliState = {
+            altitude: 500,
+            fuel: 100,
+            distance: 0,
+            isPlaying: false,
+            gameLoop: null,
+            playerX: 50,
+            playerY: 150,
+            velocity: { x: 2, y: 0 },
+            buildings: [],
+            obstacles: [],
+            fuelPickups: [],
+            checkpoints: [],
+            canvas: null,
+            ctx: null,
+            trackWidth: 0,
+            trackHeight: 0,
+            keys: {},
+            gameTime: 0,
+            nextCheckpoint: 0
+        };
+
         function updateChaseDisplay() {
             document.getElementById('chaseSpeed').textContent = Math.floor(chaseState.speed);
             document.getElementById('chaseDistance').textContent = Math.floor(chaseState.distance);
@@ -621,6 +652,364 @@
             updateChaseDisplay();
         }
 
+        // HELICOPTER ESCAPE FUNCTIONS
+        function initializeHeliTrack() {
+            const canvas = document.getElementById('heliCanvas');
+            const track = document.getElementById('heliTrack');
+            
+            canvas.width = track.clientWidth;
+            canvas.height = track.clientHeight;
+            heliState.canvas = canvas;
+            heliState.ctx = canvas.getContext('2d');
+            heliState.trackWidth = canvas.width;
+            heliState.trackHeight = canvas.height;
+            
+            heliState.playerX = 50;
+            heliState.playerY = canvas.height / 2;
+            
+            createBuildings();
+            heliState.checkpoints = [
+                { x: canvas.width * 0.3, y: canvas.height * 0.3, passed: false },
+                { x: canvas.width * 0.6, y: canvas.height * 0.7, passed: false },
+                { x: canvas.width * 0.9, y: canvas.height * 0.4, passed: false }
+            ];
+        }
+
+        function createBuildings() {
+            heliState.buildings = [];
+            for (let i = 0; i < 8; i++) {
+                heliState.buildings.push({
+                    x: (i * 80) + Math.random() * 40,
+                    y: heliState.trackHeight - 40 - Math.random() * 100,
+                    width: 20 + Math.random() * 30,
+                    height: 40 + Math.random() * 80
+                });
+            }
+        }
+
+        function updateHeliDisplay() {
+            document.getElementById('heliAltitude').textContent = Math.floor(heliState.altitude);
+            document.getElementById('heliFuel').textContent = Math.floor(heliState.fuel);
+            document.getElementById('heliDistance').textContent = Math.floor(heliState.distance);
+            
+            const playerHeli = document.getElementById('playerHeli');
+            playerHeli.style.left = heliState.playerX + 'px';
+            playerHeli.style.top = heliState.playerY + 'px';
+            
+            const rotation = heliState.velocity.x * 2 + heliState.velocity.y;
+            playerHeli.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
+            
+            if (heliState.fuel < 20) {
+                playerHeli.style.boxShadow = '0 0 15px rgba(255,0,0,0.8)';
+            } else {
+                playerHeli.style.boxShadow = '0 0 15px rgba(0,255,162,0.6)';
+            }
+        }
+
+        function drawHeliWorld() {
+            const ctx = heliState.ctx;
+            ctx.clearRect(0, 0, heliState.trackWidth, heliState.trackHeight);
+            
+            // Draw buildings
+            heliState.buildings.forEach(building => {
+                const gradient = ctx.createLinearGradient(0, building.y, 0, building.y + building.height);
+                gradient.addColorStop(0, '#696969');
+                gradient.addColorStop(0.5, '#2F4F4F');
+                gradient.addColorStop(1, '#000000');
+                
+                ctx.fillStyle = gradient;
+                ctx.fillRect(building.x, building.y, building.width, building.height);
+                
+                // Building lights
+                ctx.fillStyle = '#ffff00';
+                for (let i = 0; i < 3; i++) {
+                    for (let j = 0; j < 5; j++) {
+                        if (Math.random() < 0.3) {
+                            ctx.fillRect(building.x + 3 + (j * 4), building.y + 5 + (i * 8), 2, 2);
+                        }
+                    }
+                }
+                
+                // Building antenna
+                ctx.fillStyle = '#ff0000';
+                ctx.fillRect(building.x + building.width/2 - 1, building.y - 3, 2, 3);
+            });
+            
+            // Draw checkpoints
+            heliState.checkpoints.forEach((checkpoint, index) => {
+                if (index === heliState.nextCheckpoint) {
+                    ctx.fillStyle = 'rgba(0,255,0,0.8)';
+                } else if (checkpoint.passed) {
+                    ctx.fillStyle = 'rgba(0,255,0,0.3)';
+                } else {
+                    ctx.fillStyle = 'rgba(255,255,0,0.6)';
+                }
+                
+                ctx.fillRect(checkpoint.x - 40, checkpoint.y - 3, 80, 6);
+                
+                ctx.fillStyle = '#fff';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(index + 1, checkpoint.x, checkpoint.y - 10);
+            });
+            
+            // Draw obstacles
+            heliState.obstacles.forEach(obstacle => {
+                ctx.fillStyle = '#ff4444';
+                ctx.fillRect(obstacle.x - 7, obstacle.y - 4, 15, 8);
+                
+                const gradient = ctx.createRadialGradient(obstacle.x, obstacle.y, 0, obstacle.x, obstacle.y, 15);
+                gradient.addColorStop(0, 'rgba(255,68,68,0.5)');
+                gradient.addColorStop(1, 'transparent');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(obstacle.x - 15, obstacle.y - 15, 30, 30);
+            });
+            
+            // Draw fuel pickups
+            heliState.fuelPickups.forEach(fuel => {
+                const gradient = ctx.createRadialGradient(fuel.x, fuel.y, 0, fuel.x, fuel.y, 8);
+                gradient.addColorStop(0, '#00ff00');
+                gradient.addColorStop(1, 'rgba(0,255,0,0.3)');
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(fuel.x, fuel.y, 6, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        function spawnHeliObstacles() {
+            if (Math.random() < 0.03) {
+                heliState.obstacles.push({
+                    x: heliState.trackWidth + 20,
+                    y: 50 + Math.random() * (heliState.trackHeight - 150),
+                    speed: 1 + Math.random()
+                });
+            }
+            heliState.obstacles = heliState.obstacles.filter(obs => obs.x > -50);
+        }
+
+        function spawnFuelPickups() {
+            if (Math.random() < 0.01 && heliState.fuel < 80) {
+                heliState.fuelPickups.push({
+                    x: heliState.trackWidth + 20,
+                    y: 50 + Math.random() * (heliState.trackHeight - 150)
+                });
+            }
+            heliState.fuelPickups = heliState.fuelPickups.filter(fuel => fuel.x > -20);
+        }
+
+        function updateHeliPhysics() {
+            // Gravity
+            heliState.velocity.y += 0.1;
+            
+            // Update position
+            heliState.playerX += heliState.velocity.x;
+            heliState.playerY += heliState.velocity.y;
+            
+            heliState.distance += heliState.velocity.x * 0.5;
+            heliState.altitude = Math.max(0, 600 - heliState.playerY);
+            
+            // Fuel consumption
+            heliState.fuel -= 0.05;
+            if (heliState.velocity.y < -1) heliState.fuel -= 0.02;
+            
+            // Boundaries
+            if (heliState.playerY < 20) heliState.playerY = 20;
+            if (heliState.playerY > heliState.trackHeight - 20) heliState.playerY = heliState.trackHeight - 20;
+            if (heliState.playerX < 30) heliState.playerX = 30;
+            if (heliState.playerX > heliState.trackWidth - 30) heliState.playerX = heliState.trackWidth - 30;
+            
+            // Update obstacles
+            heliState.obstacles.forEach(obs => {
+                obs.x -= obs.speed + heliState.velocity.x;
+            });
+            
+            heliState.fuelPickups.forEach(fuel => {
+                fuel.x -= 2 + heliState.velocity.x;
+            });
+        }
+
+        function checkHeliCollisions() {
+            // Building collisions
+            heliState.buildings.forEach(building => {
+                if (heliState.playerX > building.x - 15 && 
+                    heliState.playerX < building.x + building.width + 15 &&
+                    heliState.playerY > building.y - 15 && 
+                    heliState.playerY < building.y + building.height + 15) {
+                    endHelicopter(false, 'Crashed into building!');
+                }
+            });
+            
+            // Obstacle collisions
+            heliState.obstacles.forEach((obstacle, index) => {
+                const distance = Math.sqrt(
+                    Math.pow(heliState.playerX - obstacle.x, 2) + 
+                    Math.pow(heliState.playerY - obstacle.y, 2)
+                );
+                
+                if (distance < 20) {
+                    endHelicopter(false, 'Hit by obstacle!');
+                }
+            });
+            
+            // Fuel pickup collisions
+            heliState.fuelPickups.forEach((fuel, index) => {
+                const distance = Math.sqrt(
+                    Math.pow(heliState.playerX - fuel.x, 2) + 
+                    Math.pow(heliState.playerY - fuel.y, 2)
+                );
+                
+                if (distance < 15) {
+                    heliState.fuel = Math.min(100, heliState.fuel + 25);
+                    heliState.fuelPickups.splice(index, 1);
+                    showNotification('Fuel collected! +25%');
+                }
+            });
+            
+            // Checkpoint collisions
+            const currentCheckpoint = heliState.checkpoints[heliState.nextCheckpoint];
+            if (currentCheckpoint && !currentCheckpoint.passed) {
+                const distance = Math.sqrt(
+                    Math.pow(heliState.playerX - currentCheckpoint.x, 2) + 
+                    Math.pow(heliState.playerY - currentCheckpoint.y, 2)
+                );
+                
+                if (distance < 30) {
+                    currentCheckpoint.passed = true;
+                    heliState.nextCheckpoint++;
+                    showNotification(`Checkpoint ${heliState.nextCheckpoint} passed!`);
+                    
+                    if (heliState.nextCheckpoint >= heliState.checkpoints.length) {
+                        endHelicopter(true, 'All checkpoints reached!');
+                    }
+                }
+            }
+            
+            // Fuel depletion
+            if (heliState.fuel <= 0) {
+                endHelicopter(false, 'Out of fuel!');
+            }
+        }
+
+        function handleHeliInput() {
+            if (heliState.keys['ArrowUp'] || heliState.keys['w'] || heliState.keys['W']) {
+                heliState.velocity.y -= 0.3;
+                heliState.velocity.y = Math.max(-3, heliState.velocity.y);
+            }
+            
+            if (heliState.keys['ArrowDown'] || heliState.keys['s'] || heliState.keys['S']) {
+                heliState.velocity.y += 0.2;
+                heliState.velocity.y = Math.min(3, heliState.velocity.y);
+            }
+            
+            if (heliState.keys['ArrowLeft'] || heliState.keys['a'] || heliState.keys['A']) {
+                heliState.velocity.x = Math.max(0.5, heliState.velocity.x - 0.1);
+            }
+            
+            if (heliState.keys['ArrowRight'] || heliState.keys['d'] || heliState.keys['D']) {
+                heliState.velocity.x = Math.min(4, heliState.velocity.x + 0.1);
+            }
+            
+            // Apply friction
+            heliState.velocity.x *= 0.98;
+            heliState.velocity.y *= 0.95;
+        }
+
+        function heliGameLoop() {
+            if (!heliState.isPlaying) return;
+            
+            heliState.gameTime++;
+            
+            handleHeliInput();
+            updateHeliPhysics();
+            spawnHeliObstacles();
+            spawnFuelPickups();
+            checkHeliCollisions();
+            
+            drawHeliWorld();
+            updateHeliDisplay();
+        }
+
+        function resetHelicopter() {
+            if (heliState.gameLoop) clearInterval(heliState.gameLoop);
+            
+            heliState = {
+                altitude: 500, fuel: 100, distance: 0, isPlaying: false, gameLoop: null,
+                playerX: 50, playerY: 150, velocity: { x: 2, y: 0 }, buildings: [],
+                obstacles: [], fuelPickups: [], checkpoints: [], canvas: null, ctx: null,
+                trackWidth: 0, trackHeight: 0, keys: {}, gameTime: 0, nextCheckpoint: 0
+            };
+            
+            initializeHeliTrack();
+            updateHeliDisplay();
+            document.getElementById('heliStatus').style.display = 'none';
+            document.getElementById('startHeliBtn').disabled = false;
+            document.getElementById('startHeliBtn').textContent = '🚁 Take Flight';
+        }
+
+        function startHelicopter() {
+            resetHelicopter();
+            heliState.isPlaying = true;
+            
+            document.getElementById('startHeliBtn').disabled = true;
+            document.getElementById('startHeliBtn').textContent = 'Flight In Progress...';
+            
+            heliState.gameLoop = setInterval(heliGameLoop, 50);
+            showNotification('🚁 Flight started! Navigate to all checkpoints!');
+        }
+
+        function endHelicopter(won, message) {
+            heliState.isPlaying = false;
+            if (heliState.gameLoop) clearInterval(heliState.gameLoop);
+            
+            let heliScore = 0;
+            if (won) {
+                heliScore = Math.floor(heliState.distance * 2 + heliState.fuel * 10 + heliState.nextCheckpoint * 500);
+            } else {
+                heliScore = Math.floor(heliState.distance + heliState.nextCheckpoint * 200);
+            }
+            
+            gameStats.gamesPlayed++;
+            gameStats.totalScore += heliScore;
+            if (heliScore > gameStats.highScore) gameStats.highScore = heliScore;
+            saveStats();
+            updateStats();
+            
+            const heliResult = document.getElementById('heliResult');
+            if (won) {
+                heliResult.innerHTML = `🚁 ${message}<br>Score: ${heliScore} - Master pilot!`;
+                document.getElementById('heliStatus').style.background = 'rgba(0, 255, 162, 0.2)';
+                showNotification('🚁 Mission accomplished! Perfect flight!');
+            } else {
+                heliResult.innerHTML = `💥 ${message}<br>Score: ${heliScore} - Try again, pilot!`;
+                document.getElementById('heliStatus').style.background = 'rgba(255, 107, 107, 0.2)';
+                showNotification('💥 Flight ended! Practice makes perfect!');
+            }
+            
+            document.getElementById('heliStatus').style.display = 'block';
+            document.getElementById('startHeliBtn').disabled = false;
+            document.getElementById('startHeliBtn').textContent = '🚁 Fly Again';
+        }
+
+        function heliUp() {
+            if (!heliState.isPlaying) return;
+            heliState.keys['ArrowUp'] = true;
+            setTimeout(() => heliState.keys['ArrowUp'] = false, 150);
+        }
+
+        function heliDown() {
+            if (!heliState.isPlaying) return;
+            heliState.keys['ArrowDown'] = true;
+            setTimeout(() => heliState.keys['ArrowDown'] = false, 150);
+        }
+
+        function heliBoost() {
+            if (!heliState.isPlaying) return;
+            heliState.velocity.x = Math.min(5, heliState.velocity.x + 1);
+            heliState.fuel = Math.max(0, heliState.fuel - 2);
+        }
+
         function turnRight() {
             if (!chaseState.isPlaying) return;
             chaseState.playerPosition = Math.min(85, chaseState.playerPosition + 8);
@@ -654,6 +1043,17 @@
                         e.preventDefault();
                         break;
                 }
+            }
+            
+            if (heliState.isPlaying) {
+                heliState.keys[e.key] = true;
+                e.preventDefault();
+            }
+        });
+
+        document.addEventListener('keyup', function(e) {
+            if (heliState.isPlaying) {
+                heliState.keys[e.key] = false;
             }
         });
 
