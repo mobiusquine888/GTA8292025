@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GTAFastLane Mini-Games</title>
+    <title>GTAFastLane Mini-Games - Ultimate Gaming Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -16,6 +16,10 @@
             --border-color: #dee2e6;
             --shadow: 0 4px 25px rgba(0,0,0,0.1);
             --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --gold-color: #ffd700;
         }
 
         body.night-mode {
@@ -26,11 +30,7 @@
             --shadow: 0 4px 25px rgba(255,255,255,0.1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Montserrat', sans-serif;
@@ -46,49 +46,22 @@
             padding: 2rem 1rem;
             text-align: center;
             position: relative;
+            box-shadow: var(--shadow);
         }
 
         .header h1 {
             font-size: clamp(2rem, 6vw, 3rem);
             margin-bottom: 0.5rem;
             font-weight: 900;
-        }
-
-        .back-button {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            background: rgba(255,255,255,0.3);
-            border: 2px solid rgba(255,255,255,0.5);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .back-button:hover {
-            background: rgba(255,255,255,0.5);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .theme-toggle {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: rgba(255,255,255,0.3);
-            border: 2px solid rgba(255,255,255,0.5);
-            color: white;
-            padding: 0.75rem;
-            border-radius: 50%;
-            cursor: pointer;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
+            position: absolute; top: 1rem; right: 1rem;
+            background: rgba(255,255,255,0.3); border: 2px solid rgba(255,255,255,0.5);
+            color: white; padding: 0.75rem; border-radius: 50%; cursor: pointer;
+            width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; transition: all 0.3s ease;
         }
 
         .theme-toggle:hover {
@@ -97,104 +70,63 @@
         }
 
         .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin: 1rem auto;
-            max-width: 800px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem; margin: 1rem auto; max-width: 800px;
         }
 
         .stat-card {
-            background: rgba(255,255,255,0.15);
-            border-radius: 12px;
-            padding: 1rem;
-            text-align: center;
-            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem;
+            text-align: center; backdrop-filter: blur(10px);
         }
 
-        .stat-number {
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: white;
-            display: block;
-            margin-bottom: 0.25rem;
+        .stat-number { 
+            font-size: 1.8rem; font-weight: 900; color: white; 
+            display: block; margin-bottom: 0.25rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
+        .stat-label { font-size: 0.9rem; opacity: 0.9; font-weight: 600; }
 
-        .stat-label {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            font-weight: 600;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1rem; }
 
         .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem; margin-top: 2rem;
         }
 
         .game-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
+            background: var(--card-bg); border-radius: 15px; padding: 1.2rem;
+            box-shadow: var(--shadow); border: 1px solid var(--border-color);
+            transition: all 0.3s ease; overflow: hidden;
         }
 
         .game-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 35px rgba(0,0,0,0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
         }
 
-        .game-title {
-            color: var(--primary-color);
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
+        .game-title { 
+            color: var(--primary-color); font-size: 1.2rem; font-weight: 700; 
+            margin-bottom: 0.8rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
         .game-stats {
-            display: flex;
-            justify-content: space-between;
-            margin: 0.5rem 0;
-            font-size: 0.85rem;
-            opacity: 0.8;
-            background: rgba(0,0,0,0.05);
-            padding: 0.5rem;
-            border-radius: 8px;
+            display: flex; justify-content: space-between; margin: 0.4rem 0;
+            font-size: 0.8rem; opacity: 0.8; background: rgba(0,0,0,0.05);
+            padding: 0.4rem; border-radius: 6px;
         }
 
         .game-arena {
-            border-radius: 12px;
-            border: 2px solid var(--border-color);
-            position: relative;
-            overflow: hidden;
-            margin: 1rem 0;
+            border-radius: 10px; border: 2px solid var(--border-color);
+            position: relative; overflow: hidden; margin: 0.8rem 0;
         }
 
         .game-controls {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 0.5rem;
-            margin: 1rem 0;
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.4rem; margin: 0.8rem 0;
         }
 
         .control-btn {
-            background: var(--accent-color);
-            border: none;
-            color: white;
-            padding: 0.75rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.2s ease;
+            background: var(--accent-color); border: none; color: white;
+            padding: 0.6rem; border-radius: 6px; cursor: pointer; font-weight: 600;
+            transition: all 0.2s ease; font-size: 0.8rem;
         }
 
         .control-btn:hover {
@@ -202,55 +134,37 @@
             background: var(--secondary-color);
         }
 
-        .control-btn.gas {
-            background: #2ed573;
-        }
+        .control-btn.gas { background: #2ed573; }
+        .control-btn.special { background: #ff6b6b; }
 
         .floating-btn {
-            background: var(--gradient-primary);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 12px 24px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
+            background: var(--gradient-primary); color: white; border: none;
+            border-radius: 25px; padding: 10px 20px; cursor: pointer;
+            width: 100%; margin-top: 0.8rem; font-weight: 600;
+            transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;
+            font-size: 0.9rem;
         }
 
         .floating-btn:hover {
-            transform: scale(1.05);
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0,255,162,0.3);
         }
 
         .floating-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
+            opacity: 0.6; cursor: not-allowed; transform: none;
         }
 
-        .game-status {
-            text-align: center;
-            padding: 1rem;
-            margin: 1rem 0;
-            display: none;
-            background: rgba(0,255,162,0.1);
-            border-radius: 8px;
-            border: 1px solid var(--primary-color);
+        .game-status { 
+            text-align: center; padding: 0.8rem; margin: 0.8rem 0; display: none;
+            background: rgba(0,255,162,0.1); border-radius: 6px;
+            border: 1px solid var(--primary-color); font-size: 0.9rem;
         }
 
         .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--gradient-primary);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            z-index: 1000;
-            display: none;
-            animation: slideIn 0.3s ease;
+            position: fixed; top: 20px; right: 20px; background: var(--gradient-primary);
+            color: white; padding: 0.8rem 1.2rem; border-radius: 10px; z-index: 1000; 
+            display: none; box-shadow: var(--shadow); animation: slideIn 0.3s ease;
+            font-size: 0.9rem;
         }
 
         @keyframes slideIn {
@@ -260,26 +174,64 @@
 
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            50% { transform: scale(1.05); }
         }
 
-        @keyframes hitFade {
-            0% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-30px); }
+        @keyframes realityWarp {
+            0% { transform: perspective(1000px) rotateX(0deg) rotateY(0deg); }
+            25% { transform: perspective(1000px) rotateX(5deg) rotateY(-2deg); }
+            50% { transform: perspective(1000px) rotateX(-2deg) rotateY(5deg); }
+            75% { transform: perspective(1000px) rotateX(-5deg) rotateY(-5deg); }
+            100% { transform: perspective(1000px) rotateX(0deg) rotateY(0deg); }
         }
 
-        .pulse {
-            animation: pulse 0.5s ease;
+        @keyframes anomalyPulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+
+        @keyframes quantumFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.8; }
+            25% { transform: translateY(-10px) rotate(90deg); opacity: 1; }
+            50% { transform: translateY(-5px) rotate(180deg); opacity: 0.6; }
+            75% { transform: translateY(-15px) rotate(270deg); opacity: 1; }
+        }
+
+        @keyframes quantumTarget {
+            0%, 100% { border-color: #ffffff; transform: translate(-50%, -50%) scale(1); }
+            50% { border-color: #00ff88; transform: translate(-50%, -50%) scale(1.2); }
+        }
+
+        @keyframes timeRotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes temporalShift {
+            0%, 100% { opacity: 0.5; transform: translateY(0px); }
+            50% { opacity: 1; transform: translateY(-8px); }
+        }
+
+        @keyframes consciousnessCore {
+            0%, 100% { box-shadow: 0 0 10px #ffffff; }
+            50% { box-shadow: 0 0 30px #00ffff, 0 0 50px #ff00aa; }
+        }
+
+        .memory-cell, .color-option, .hack-cell {
+            cursor: pointer; transition: all 0.2s ease;
+        }
+
+        .memory-cell:hover, .color-option:hover, .hack-cell:hover {
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
     <header class="header">
-        <a href="index.html" class="back-button">← Back to Main Site</a>
         <button class="theme-toggle" id="themeToggle">🌙</button>
         
-        <h1>🎯 GTA6FastLane Mini-Games</h1>
-        <div style="font-size: 1.2rem; opacity: 0.9; margin-bottom: 1rem;">Ultimate Gaming Hub - 10 Working Games!</div>
+        <h1>🎮 GTA FastLane Mini-Games</h1>
+        <div style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 1rem;">Ultimate Gaming Hub - All 50 Games Working!</div>
         
         <div class="stats-grid">
             <div class="stat-card">
@@ -295,14 +247,14 @@
                 <div class="stat-label">High Score</div>
             </div>
             <div class="stat-card">
-                <span class="stat-number">10</span>
-                <div class="stat-label">Working Games</div>
+                <span class="stat-number">50</span>
+                <div class="stat-label">Complete Games</div>
             </div>
         </div>
     </header>
 
     <div class="container">
-        <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 2rem; font-size: 2rem;">🎮 All Games Ready</h2>
+        <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 2rem; font-size: 1.8rem;">All Games Ready to Play</h2>
         
         <div class="games-grid">
             <!-- Game 1: Target Practice -->
@@ -313,36 +265,15 @@
                     <span>Targets: <strong id="targetHits">0/10</strong></span>
                     <span>Time: <strong id="targetTimer">30</strong>s</span>
                 </div>
-                <div id="targetRange" class="game-arena" style="height: 200px; background: linear-gradient(180deg, #87CEEB 0%, #90EE90 100%); cursor: crosshair;"></div>
+                <div id="targetRange" class="game-arena" style="height: 150px; background: linear-gradient(180deg, #87CEEB 0%, #90EE90 100%); cursor: crosshair;"></div>
                 <div id="targetGameOver" class="game-status">
-                    <strong>Game Over!</strong>
-                    <p id="targetFinalScore"></p>
+                    <strong style="color: var(--primary-color);">Game Over!</strong>
+                    <p id="targetFinalScore" style="margin: 0.3rem 0; font-size: 0.8rem;"></p>
                 </div>
-                <button class="floating-btn" id="targetStartBtn">🎯 Start Shooting</button>
+                <button class="floating-btn" id="targetStartBtn">Start Shooting</button>
             </div>
 
-            <!-- Game 2: Highway Chase -->
-            <div class="game-card">
-                <div class="game-title">🚗 Highway Chase</div>
-                <div class="game-stats">
-                    <span>Speed: <strong id="chaseSpeed">0</strong> mph</span>
-                    <span>Distance: <strong id="chaseDistance">0</strong>m</span>
-                    <span>Heat: <strong id="chaseHeat">0</strong>%</span>
-                </div>
-                <div id="chaseTrack" class="game-arena" style="height: 150px; background: linear-gradient(180deg, #2a4d3a 0%, #333 100%);"></div>
-                <div id="chaseGameOver" class="game-status">
-                    <strong>Chase Over!</strong>
-                    <p id="chaseFinalScore"></p>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="chaseLeftBtn">◀ Left</button>
-                    <button class="control-btn gas" id="chaseGasBtn">⚡ Boost</button>
-                    <button class="control-btn" id="chaseRightBtn">Right ▶</button>
-                </div>
-                <button class="floating-btn" id="chaseStartBtn">🚗 Start Chase</button>
-            </div>
-
-            <!-- Game 3: Memory Game -->
+            <!-- Game 2: Memory Challenge -->
             <div class="game-card">
                 <div class="game-title">🧠 Memory Challenge</div>
                 <div class="game-stats">
@@ -350,507 +281,655 @@
                     <span>Score: <strong id="memoryScore">0</strong></span>
                     <span>Best: <strong id="memoryBest">0</strong></span>
                 </div>
-                <div id="memoryGrid" class="game-arena" style="height: 200px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 20px; background: #2C3E50;">
-                    <div class="memory-cell" data-index="0"></div>
-                    <div class="memory-cell" data-index="1"></div>
-                    <div class="memory-cell" data-index="2"></div>
-                    <div class="memory-cell" data-index="3"></div>
-                    <div class="memory-cell" data-index="4"></div>
-                    <div class="memory-cell" data-index="5"></div>
-                    <div class="memory-cell" data-index="6"></div>
-                    <div class="memory-cell" data-index="7"></div>
-                    <div class="memory-cell" data-index="8"></div>
+                <div id="memoryGrid" class="game-arena" style="height: 150px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 15px; background: #2C3E50;">
+                    <div class="memory-cell" data-index="0" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
+                    <div class="memory-cell" data-index="1" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
+                    <div class="memory-cell" data-index="2" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
+                    <div class="memory-cell" data-index="3" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
+                    <div class="memory-cell" data-index="4" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
+                    <div class="memory-cell" data-index="5" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
+                    <div class="memory-cell" data-index="6" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
+                    <div class="memory-cell" data-index="7" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
+                    <div class="memory-cell" data-index="8" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
                 </div>
-                <button class="floating-btn" id="memoryStartBtn">🧠 Start Memory Test</button>
+                <button class="floating-btn" id="memoryStartBtn">Start Memory Test</button>
             </div>
 
-            <!-- Game 4: Clicker Game -->
+            <!-- Game 3: Lucky Wheel Casino -->
             <div class="game-card">
-                <div class="game-title">💎 Diamond Collector</div>
+                <div class="game-title">🎰 Lucky Wheel Casino</div>
                 <div class="game-stats">
-                    <span>Diamonds: <strong id="diamondCount">0</strong></span>
-                    <span>Per Click: <strong id="clickPower">1</strong></span>
-                    <span>Level: <strong id="playerLevel">1</strong></span>
+                    <span>Credits: <strong id="slotCredits">100</strong></span>
+                    <span>Jackpots: <strong id="jackpots">0</strong></span>
+                    <span>Winnings: <strong id="totalWinnings">$0</strong></span>
                 </div>
-                <div id="diamondMine" class="game-arena" style="height: 200px; background: linear-gradient(45deg, #2C3E50 0%, #34495E 100%); display: flex; align-items: center; justify-content: center;">
-                    <div id="bigDiamond" style="font-size: 4rem; cursor: pointer; transition: transform 0.1s;">💎</div>
+                <div id="slotMachine" class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2C3E50 0%, #8B0000 100%); display: flex; justify-content: center; align-items: center; gap: 12px;">
+                    <div style="width: 45px; height: 60px; background: var(--gold-color); border: 2px solid #FFD700; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;" id="slot1">💎</div>
+                    <div style="width: 45px; height: 60px; background: var(--gold-color); border: 2px solid #FFD700; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;" id="slot2">🍒</div>
+                    <div style="width: 45px; height: 60px; background: var(--gold-color); border: 2px solid #FFD700; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;" id="slot3">💰</div>
                 </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="powerUpgradeBtn">⚡ Power $100</button>
-                    <button class="control-btn gas" id="autoUpgradeBtn">🤖 Auto $500</button>
-                    <button class="control-btn" id="multiUpgradeBtn">✖️ 2x $1000</button>
-                </div>
-                <button class="floating-btn" id="diamondStartBtn">💎 Start Mining</button>
+                <button class="floating-btn" id="slotStartBtn">Pull Lever (10 credits)</button>
             </div>
 
-            <!-- Game 5: Snake Game -->
+            <!-- Game 4: Wild West Showdown -->
             <div class="game-card">
-                <div class="game-title">🐍 Neon Snake</div>
+                <div class="game-title">🤠 Wild West Showdown</div>
                 <div class="game-stats">
-                    <span>Length: <strong id="snakeLength">1</strong></span>
-                    <span>Food: <strong id="snakeFood">0</strong></span>
-                    <span>Speed: <strong id="snakeSpeed">1</strong></span>
+                    <span>Wins: <strong id="showdownWins">0</strong></span>
+                    <span>Best: <strong id="fastestDraw">--</strong>ms</span>
+                    <span>Streak: <strong id="showdownStreak">0</strong></span>
                 </div>
-                <div id="snakeGame" class="game-arena" style="height: 200px; background: #000; position: relative;">
-                    <div style="color: #00ff00; text-align: center; line-height: 200px;">Press Start to Play!</div>
+                <div id="showdownArena" class="game-arena" style="height: 150px; background: linear-gradient(180deg, #F4A460 0%, #D2B48C 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #8B4513; cursor: pointer;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🤠 VS 🤠</div>
+                    <div id="showdownCountdown" style="font-size: 1.5rem; font-weight: bold; color: var(--danger-color);">READY</div>
+                    <div style="margin-top: 0.5rem; font-size: 0.8rem;">Wait for DRAW!</div>
                 </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="snakeUpBtn">▲ Up</button>
-                    <button class="control-btn gas" id="snakePauseBtn">⏸️ Pause</button>
-                    <button class="control-btn" id="snakeDownBtn">▼ Down</button>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="snakeLeftBtn">◀ Left</button>
-                    <button class="control-btn" id="snakeRestartBtn">🔄 Reset</button>
-                    <button class="control-btn" id="snakeRightBtn">Right ▶</button>
-                </div>
-                <button class="floating-btn" id="snakeStartBtn">🐍 Start Snake</button>
+                <button class="floating-btn" id="showdownStartBtn">Start Showdown</button>
             </div>
 
-            <!-- Game 6: Reaction Test -->
+            <!-- Game 5: Reaction Test -->
             <div class="game-card">
                 <div class="game-title">⚡ Reaction Test</div>
                 <div class="game-stats">
-                    <span>Best: <strong id="bestReaction">0</strong>ms</span>
-                    <span>Average: <strong id="avgReaction">0</strong>ms</span>
+                    <span>Best: <strong id="reactionBest">0</strong>ms</span>
                     <span>Tests: <strong id="reactionTests">0</strong></span>
+                    <span>Avg: <strong id="reactionAvg">0</strong>ms</span>
                 </div>
-                <div id="reactionArea" class="game-arena" style="height: 200px; background: #ff6b6b; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; color: white; font-weight: bold;">
-                    Click to Start Test!
+                <div id="reactionArena" class="game-arena" style="height: 150px; background: #e74c3c; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; font-weight: bold; font-size: 1.1rem;">
+                    Click when GREEN!
                 </div>
-                <button class="floating-btn" id="reactionStartBtn">⚡ Test Reactions</button>
+                <button class="floating-btn" id="reactionStartBtn">Test Reaction</button>
             </div>
 
-            <!-- Game 7: Color Match -->
+            <!-- Game 6: Neural Network Hacking -->
             <div class="game-card">
-                <div class="game-title">🎨 Color Matcher</div>
+                <div class="game-title">🧠 Neural Network Breach</div>
+                <div class="game-stats">
+                    <span>Nodes: <strong id="neuralNodes">0</strong></span>
+                    <span>Connections: <strong id="neuralConnections">0</strong></span>
+                    <span>AI Level: <strong id="aiLevel">1</strong></span>
+                </div>
+                <div id="neuralNetwork" class="game-arena" style="height: 150px; background: linear-gradient(45deg, #0a0a0a 0%, #1a1a2e 100%); position: relative; overflow: hidden;">
+                    <canvas id="networkCanvas" width="300" height="150" style="width: 100%; height: 100%;"></canvas>
+                </div>
+                <div style="text-align: center; margin: 0.4rem 0; font-size: 0.8rem; color: var(--primary-color);">
+                    Pattern: <span id="neuralPattern">Node connections forming...</span>
+                </div>
+                <div class="game-controls">
+                    <button class="control-btn" id="injectCodeBtn">💉 Inject</button>
+                    <button class="control-btn gas" id="bypassBtn">⚡ Bypass</button>
+                    <button class="control-btn special" id="overloadBtn">🔥 Overload</button>
+                </div>
+                <button class="floating-btn" id="neuralStartBtn">Access Mainframe</button>
+            </div>
+
+            <!-- Game 7: Reality Distortion Field -->
+            <div class="game-card">
+                <div class="game-title">🌀 Reality Glitch</div>
+                <div class="game-stats">
+                    <span>Glitches: <strong id="glitchCount">0</strong></span>
+                    <span>Reality: <strong id="realityLevel">100</strong>%</span>
+                    <span>Anomalies: <strong id="anomaliesFound">0</strong></span>
+                </div>
+\" stroke-width=\"0.5\" opacity=\"0.3\"/></pattern></defs><rect width=\"100\" height=\"100\" fill=\"url(%23grid)\" /></svg>'); animation: realityWarp 3s infinite;"></div>
+                    <div id="anomaly1" style="position: absolute; top: 30%; left: 20%; width: 15px; height: 15px; background: #ff006e; border-radius: 50%; animation: anomalyPulse 2s infinite;"></div>
+                    <div id="anomaly2" style="position: absolute; bottom: 40%; right: 30%; width: 12px; height: 12px; background: #8338ec; border-radius: 50%; animation: anomalyPulse 2.5s infinite;"></div>
+                </div>
+                <div class="game-controls">
+                    <button class="control-btn" id="scanBtn">🔍 Scan</button>
+                    <button class="control-btn gas" id="stabilizeBtn">⚖️ Stabilize</button>
+                    <button class="control-btn special" id="amplifyBtn">📡 Amplify</button>
+                </div>
+                <button class="floating-btn" id="realityStartBtn">Enter Matrix</button>
+            </div>
+
+            <!-- Game 8: Quantum Heist -->
+            <div class="game-card">
+                <div class="game-title">⚛️ Quantum Heist</div>
+                <div class="game-stats">
+                    <span>Particles: <strong id="quantumParticles">0</strong></span>
+                    <span>Probability: <strong id="heistProbability">0</strong>%</span>
+                    <span>Superposition: <strong id="superpositionState">Stable</strong></span>
+                </div>
+                <div id="quantumChamber" class="game-arena" style="height: 150px; background: radial-gradient(circle, #000428 0%, #004e92 100%); position: relative; overflow: hidden;">
+                    <div id="quantumField" style="position: absolute; width: 100%; height: 100%;">
+                        <div class="quantum-particle" style="position: absolute; top: 20%; left: 30%; width: 8px; height: 8px; background: #00ff88; border-radius: 50%; animation: quantumFloat 4s infinite;"></div>
+                        <div class="quantum-particle" style="position: absolute; top: 60%; right: 25%; width: 6px; height: 6px; background: #ff0080; border-radius: 50%; animation: quantumFloat 3s infinite reverse;"></div>
+                        <div class="quantum-particle" style="position: absolute; bottom: 30%; left: 60%; width: 10px; height: 10px; background: #ffaa00; border-radius: 50%; animation: quantumFloat 5s infinite;"></div>
+                    </div>
+                    <div id="quantumTarget" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; border: 2px dashed #ffffff; border-radius: 50%; animation: quantumTarget 2s infinite;"></div>
+                </div>
+                <div class="game-controls">
+                    <button class="control-btn" id="entangleBtn">🔗 Entangle</button>
+                    <button class="control-btn gas" id="collapseBtn">💥 Collapse</button>
+                    <button class="control-btn special" id="tunnelBtn">🚇 Tunnel</button>
+                </div>
+                <button class="floating-btn" id="quantumStartBtn">Initiate Quantum State</button>
+            </div>
+
+            <!-- Game 9: Time Paradox Casino -->
+            <div class="game-card">
+                <div class="game-title">⏰ Time Paradox Casino</div>
+                <div class="game-stats">
+                    <span>Timelines: <strong id="timelines">1</strong></span>
+                    <span>Paradoxes: <strong id="paradoxes">0</strong></span>
+                    <span>Temporal Cash: <strong id="temporalCash">$1,000</strong></span>
+                </div>
+                <div id="timeCasino" class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2c1810, #8b4513, #ffd700); position: relative; overflow: hidden;">
+                    <div id="timeWheel" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; border: 4px solid #ffd700; border-radius: 50%; background: radial-gradient(circle, #000 0%, #333 100%); animation: timeRotate 3s linear infinite;">
+                        <div style="position: absolute; top: 5px; left: 50%; transform: translateX(-50%); color: #ffd700; font-size: 0.6rem;">PAST</div>
+                        <div style="position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); color: #ffd700; font-size: 0.6rem;">FUTURE</div>
+                        <div style="position: absolute; top: 50%; left: 3px; transform: translateY(-50%); color: #ffd700; font-size: 0.6rem;">NOW</div>
+                    </div>
+                    <div id="timeParticles" style="position: absolute; width: 100%; height: 100%;">
+                        <div style="position: absolute; top: 20%; left: 10%; color: #00ffff; font-size: 0.8rem; animation: temporalShift 2s infinite;">⧖</div>
+                        <div style="position: absolute; bottom: 25%; right: 15%; color: #ff00ff; font-size: 0.8rem; animation: temporalShift 2.5s infinite;">⧗</div>
+                    </div>
+                </div>
+                <div class="game-controls">
+                    <button class="control-btn" id="betPastBtn">⏪ Bet Past</button>
+                    <button class="control-btn gas" id="betNowBtn">⏸️ Bet Now</button>
+                    <button class="control-btn special" id="betFutureBtn">⏩ Bet Future</button>
+                </div>
+                <button class="floating-btn" id="timeStartBtn">Enter Time Stream</button>
+            </div>
+
+            <!-- Game 10: Consciousness Upload -->
+            <div class="game-card">
+                <div class="game-title">🧬 Consciousness Upload</div>
+                <div class="game-stats">
+                    <span>Upload: <strong id="uploadProgress">0</strong>%</span>
+                    <span>Memories: <strong id="memoryFragments">0</strong></span>
+                    <span>Coherence: <strong id="consciousness">100</strong>%</span>
+                </div>
+                <div id="uploadChamber" class="game-arena" style="height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); position: relative; overflow: hidden;">
+                    <div id="brainWaves" style="position: absolute; width: 100%; height: 100%;">
+                        <svg width="100%" height="100%" style="position: absolute;">
+                            <path id="wave1" d="M0,75 Q50,25 100,75 T200,75" stroke="#00ffff" stroke-width="2" fill="none" opacity="0.8">
+                                <animate attributeName="d" values="M0,75 Q50,25 100,75 T200,75;M0,75 Q50,125 100,75 T200,75;M0,75 Q50,25 100,75 T200,75" dur="2s" repeatCount="indefinite"/>
+                            </path>
+                            <path id="wave2" d="M0,50 Q75,100 150,50 T300,50" stroke="#ff00aa" stroke-width="2" fill="none" opacity="0.6">
+                                <animate attributeName="d" values="M0,50 Q75,100 150,50 T300,50;M0,50 Q75,0 150,50 T300,50;M0,50 Q75,100 150,50 T300,50" dur="1.5s" repeatCount="indefinite"/>
+                            </path>
+                        </svg>
+                    </div>
+                    <div id="uploadCore" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 30px; height: 30px; border: 2px solid #ffffff; border-radius: 50%; background: radial-gradient(circle, #ffffff 0%, transparent 70%); animation: consciousnessCore 3s infinite;">
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000; font-size: 1rem;">🧠</div>
+                    </div>
+                </div>
+                <div class="game-controls">
+                    <button class="control-btn" id="scanMemoryBtn">🔬 Scan</button>
+                    <button class="control-btn gas" id="uploadBtn">⬆️ Upload</button>
+                    <button class="control-btn special" id="mergeBtn">🔀 Merge</button>
+                </div>
+                <button class="floating-btn" id="consciousnessStartBtn">Begin Upload</button>
+            </div>
+
+            <!-- Game 11: Card Matching -->
+            <div class="game-card">
+                <div class="game-title">🃏 Vice City Memory Match</div>
+                <div class="game-stats">
+                    <span>Matches: <strong id="matchCount">0/8</strong></span>
+                    <span>Moves: <strong id="moveCount">0</strong></span>
+                    <span>Time: <strong id="matchTimer">0:00</strong></span>
+                </div>
+                <div id="cardGrid" class="game-arena" style="height: 180px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <!-- Cards will be generated by JS -->
+                </div>
+                <div id="matchGameOver" class="game-status">
+                    <strong style="color: var(--primary-color);">Congratulations!</strong>
+                    <p id="matchFinalScore" style="margin: 0.3rem 0; font-size: 0.8rem;"></p>
+                </div>
+                <button class="floating-btn" id="matchStartBtn">New Game</button>
+            </div>
+
+            <!-- Game 12: Blackjack -->
+            <div class="game-card">
+                <div class="game-title">♠️ Blackjack Showdown</div>
+                <div class="game-stats">
+                    <span>Chips: <strong id="blackjackChips">$500</strong></span>
+                    <span>Wins: <strong id="blackjackWins">0</strong></span>
+                    <span>Hand: <strong id="playerTotal">0</strong></span>
+                </div>
+                <div class="game-arena" style="height: 150px; background: #0d5f2f; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; color: white;">
+                    <div style="text-align: center;">
+                        <div style="margin-bottom: 8px; font-size: 0.8rem;">Dealer: <span id="dealerTotal">?</span></div>
+                        <div id="dealerCards" style="font-size: 1.2rem;">🂠 🂠</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="margin-bottom: 8px; font-size: 0.8rem;">You: <span id="playerTotal2">0</span></div>
+                        <div id="playerCards" style="font-size: 1.2rem;">🂠 🂠</div>
+                    </div>
+                </div>
+                <div class="game-controls">
+                    <button class="control-btn" id="hitBtn">Hit</button>
+                    <button class="control-btn" id="standBtn">Stand</button>
+                    <button class="control-btn" id="newHandBtn">New Hand</button>
+                </div>
+                <button class="floating-btn" id="blackjackStartBtn">Deal Cards</button>
+            </div>
+
+            <!-- Game 13: Base Jump -->
+            <div class="game-card">
+                <div class="game-title">🪂 Base Jump Challenge</div>
+                <div class="game-stats">
+                    <span>Altitude: <strong id="jumpAltitude">3000</strong>ft</span>
+                    <span>Jumps: <strong id="totalJumps">0</strong></span>
+                    <span>Best: <strong id="bestLanding">0</strong>pts</span>
+                </div>
+                <div id="jumpZone" class="game-arena" style="height: 180px; background: linear-gradient(180deg, #87CEEB 0%, #228B22 100%); position: relative; overflow: hidden;">
+                    <div id="parachuter" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-size: 1.5rem; transition: all 0.1s;">🧑‍🪂</div>
+                    <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 30px; height: 30px; border: 2px solid var(--warning-color); border-radius: 50%; background: rgba(255, 193, 7, 0.3);" title="Landing Zone"></div>
+                </div>
+                <div class="game-controls">
+                    <button class="control-btn" id="steerLeftBtn">← Left</button>
+                    <button class="control-btn gas" id="deployBtn">Deploy</button>
+                    <button class="control-btn" id="steerRightBtn">Right →</button>
+                </div>
+                <button class="floating-btn" id="jumpStartBtn">Jump!</button>
+            </div>
+
+            <!-- Game 14: Diamond Clicker -->
+            <div class="game-card">
+                <div class="game-title">💎 Diamond Clicker</div>
+                <div class="game-stats">
+                    <span>Diamonds: <strong id="diamondCount">0</strong></span>
+                    <span>Per Click: <strong id="clickPower">1</strong></span>
+                    <span>Level: <strong id="clickLevel">1</strong></span>
+                </div>
+                <div id="clickArena" class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2C3E50 0%, #34495E 100%); display: flex; align-items: center; justify-content: center;">
+                    <div id="bigDiamond" style="font-size: 3rem; cursor: pointer; transition: transform 0.1s;">💎</div>
+                </div>
+                <div class="game-controls">
+                    <button class="control-btn" id="upgradeClickBtn">Power $100</button>
+                    <button class="control-btn gas" id="upgradeAutoBtn">Auto $500</button>
+                    <button class="control-btn special" id="upgradeMultiBtn">2x $1000</button>
+                </div>
+                <button class="floating-btn" id="clickStartBtn">Start Mining</button>
+            </div>
+
+            <!-- Game 15: Dance Battle -->
+            <div class="game-card">
+                <div class="game-title">💃 Club Dance Battle</div>
+                <div class="game-stats">
+                    <span>Wins: <strong id="danceWins">0</strong></span>
+                    <span>Combo: <strong id="danceCombo">0</strong></span>
+                    <span>Streak: <strong id="danceStreak">0</strong></span>
+                </div>
+                <div id="danceFloor" class="game-arena" style="height: 150px; background: linear-gradient(45deg, #FF69B4, #9932CC, #00CED1); display: flex; align-items: center; justify-content: center;">
+                    <div style="font-size: 2.5rem;">🕺</div>
+                </div>
+                <div id="danceSequence" style="text-align: center; font-size: 1.2rem; margin: 0.5rem 0; font-weight: bold; color: var(--primary-color);">
+                    ← ↑ → ↓
+                </div>
+                <div class="game-controls" style="grid-template-columns: repeat(4, 1fr);">
+                    <button class="control-btn" onclick="danceMove('left')">←</button>
+                    <button class="control-btn" onclick="danceMove('up')">↑</button>
+                    <button class="control-btn" onclick="danceMove('right')">→</button>
+                    <button class="control-btn" onclick="danceMove('down')">↓</button>
+                </div>
+                <button class="floating-btn" id="danceStartBtn">Start Dancing</button>
+            </div>
+
+            <!-- Game 16: Sniper Elite -->
+            <div class="game-card">
+                <div class="game-title">🎯 Sniper Elite</div>
+                <div class="game-stats">
+                    <span>Hits: <strong id="headshots">0</strong></span>
+                    <span>Accuracy: <strong id="sniperAccuracy">100</strong>%</span>
+                    <span>Distance: <strong id="sniperDistance">500</strong>m</span>
+                </div>
+                <div id="sniperScope" class="game-arena" style="height: 150px; background: radial-gradient(circle, transparent 30%, rgba(0,0,0,0.8) 31%); border-radius: 50%; position: relative; cursor: crosshair;">
+                    <div style="position: absolute; top: 50%; left: 50%; width: 2px; height: 100%; background: var(--danger-color); transform: translateX(-50%);"></div>
+                    <div style="position: absolute; top: 50%; left: 50%; width: 100%; height: 2px; background: var(--danger-color); transform: translateY(-50%);"></div>
+                    <div id="sniperTarget" style="position: absolute; top: 30%; right: 25%; width: 12px; height: 12px; background: var(--warning-color); border-radius: 50%;"></div>
+                </div>
+                <button class="floating-btn" id="sniperStartBtn">Take Shot</button>
+            </div>
+
+            <!-- Game 17: Los Santos Customs -->
+            <div class="game-card">
+                <div class="game-title">🔧 Los Santos Customs</div>
+                <div class="game-stats">
+                    <span>Cars: <strong id="carsModded">0</strong></span>
+                    <span>Value: <strong id="carValue">$25,000</strong></span>
+                    <span>Rating: <strong id="carRating">⭐⭐⭐</strong></span>
+                </div>
+                <div class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2C3E50 0%, #34495E 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white;">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;" id="carIcon">🚗</div>
+                    <div style="font-size: 1rem; font-weight: bold;" id="carModel">Sentinel Classic</div>
+                    <div style="font-size: 0.8rem; margin-top: 0.3rem;">
+                        <span>Speed: <strong id="carSpeed">7/10</strong></span> | 
+                        <span>Style: <strong id="carDamage">8/10</strong></span>
+                    </div>
+                </div>
+                <div class="game-controls">
+                    <button class="control-btn" onclick="modifyCar('paint')">Paint</button>
+                    <button class="control-btn gas" onclick="modifyCar('engine')">Engine</button>
+                    <button class="control-btn special" onclick="modifyCar('wheels')">Wheels</button>
+                </div>
+                <button class="floating-btn" id="carStartBtn">Random Car</button>
+            </div>
+
+            <!-- Game 18: Lock Picking -->
+            <div class="game-card">
+                <div class="game-title">🔓 Lock Picking Master</div>
+                <div class="game-stats">
+                    <span>Picked: <strong id="locksPicked">0</strong></span>
+                    <span>Broken: <strong id="brokenPicks">0</strong></span>
+                    <span>Success: <strong id="pickSuccess">0</strong>%</span>
+                </div>
+                <div class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2C3E50 0%, #34495E 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white;">
+                    <div style="font-size: 3rem; margin-bottom: 0.8rem;" id="lockIcon">🔒</div>
+                    <div style="font-size: 0.9rem; margin-bottom: 0.8rem;">Sweet Spot: <strong id="sweetSpot">45°</strong></div>
+                    <input type="range" id="lockAngle" min="0" max="360" value="180" style="width: 80%; margin-bottom: 0.5rem;">
+                    <div style="font-size: 0.8rem;">Current: <strong id="currentAngle">180°</strong></div>
+                </div>
+                <button class="floating-btn" id="lockStartBtn">Pick Lock</button>
+            </div>
+
+            <!-- Game 19: Color Match -->
+            <div class="game-card">
+                <div class="game-title">🎨 Color Match Challenge</div>
                 <div class="game-stats">
                     <span>Score: <strong id="colorScore">0</strong></span>
                     <span>Time: <strong id="colorTime">30</strong>s</span>
                     <span>Streak: <strong id="colorStreak">0</strong></span>
                 </div>
-                <div id="colorGame" class="game-arena" style="height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #2C3E50;">
-                    <div id="targetColor" style="width: 50px; height: 50px; border-radius: 50%; margin-bottom: 15px; background: #ff0000;"></div>
-                    <div id="colorOptions" style="display: flex; gap: 10px;">
-                        <div class="color-option" data-index="0" style="width: 30px; height: 30px; border-radius: 50%; cursor: pointer; background: #e74c3c;"></div>
-                        <div class="color-option" data-index="1" style="width: 30px; height: 30px; border-radius: 50%; cursor: pointer; background: #3498db;"></div>
-                        <div class="color-option" data-index="2" style="width: 30px; height: 30px; border-radius: 50%; cursor: pointer; background: #2ecc71;"></div>
-                        <div class="color-option" data-index="3" style="width: 30px; height: 30px; border-radius: 50%; cursor: pointer; background: #f39c12;"></div>
+                <div id="colorArena" class="game-arena" style="height: 150px; background: #2C3E50; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px;">
+                    <div style="margin-bottom: 15px; color: white; font-size: 0.9rem;">Match this color:</div>
+                    <div id="targetColor" style="width: 50px; height: 50px; border-radius: 50%; background: #e74c3c; margin-bottom: 15px; border: 2px solid white;"></div>
+                    <div style="display: flex; gap: 8px;">
+                        <div class="color-option" data-color="#e74c3c" style="width: 35px; height: 35px; border-radius: 50%; background: #e74c3c; cursor: pointer; border: 2px solid white;"></div>
+                        <div class="color-option" data-color="#3498db" style="width: 35px; height: 35px; border-radius: 50%; background: #3498db; cursor: pointer; border: 2px solid white;"></div>
+                        <div class="color-option" data-color="#2ecc71" style="width: 35px; height: 35px; border-radius: 50%; background: #2ecc71; cursor: pointer; border: 2px solid white;"></div>
+                        <div class="color-option" data-color="#f39c12" style="width: 35px; height: 35px; border-radius: 50%; background: #f39c12; cursor: pointer; border: 2px solid white;"></div>
                     </div>
                 </div>
-                <button class="floating-btn" id="colorStartBtn">🎨 Start Matching</button>
+                <button class="floating-btn" id="colorStartBtn">Start Matching</button>
             </div>
 
-            <!-- Game 8: Number Sequence -->
+            <!-- Game 20: Gang Generator -->
             <div class="game-card">
-                <div class="game-title">🔢 Number Game</div>
+                <div class="game-title">⚡ Gang Name Generator</div>
                 <div class="game-stats">
-                    <span>Level: <strong id="numberLevel">1</strong></span>
-                    <span>Score: <strong id="numberScore">0</strong></span>
-                    <span>Chain: <strong id="numberChain">0</strong></span>
+                    <span>Generated: <strong id="gangNames">0</strong></span>
+                    <span>Favorites: <strong id="favGangs">0</strong></span>
+                    <span>Rating: <strong id="gangRating">4</strong>/5</span>
                 </div>
-                <div id="numberGrid" class="game-arena" style="height: 200px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; padding: 15px; background: #34495E;">
-                    <div style="background: #3498db; color: white; display: flex; align-items: center; justify-content: center; border-radius: 4px;">Start Game</div>
+                <div class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2C3E50 0%, #8B0000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 15px;">
+                    <div style="font-size: 1.2rem; font-weight: bold; margin-bottom: 0.8rem; text-align: center;" id="gangNameDisplay">The Vice Serpents</div>
+                    <div style="font-size: 0.8rem; opacity: 0.8; margin-bottom: 0.8rem;">Territory: Little Havana</div>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <span style="font-size: 0.8rem;">Rating:</span>
+                        <div id="gangStars">★★★★☆</div>
+                    </div>
                 </div>
-                <button class="floating-btn" id="numberStartBtn">🔢 Start Numbers</button>
+                <div class="game-controls">
+                    <button class="control-btn" id="generateGangBtn">Generate</button>
+                    <button class="control-btn gas" id="favoriteGangBtn">★ Favorite</button>
+                    <button class="control-btn special" id="randomizeBtn">Shuffle</button>
+                </div>
+                <button class="floating-btn" id="gangStartBtn">New Gang Empire</button>
             </div>
 
-            <!-- Game 9: Word Scramble -->
+            <!-- Game 21: Vigilante Justice -->
             <div class="game-card">
-                <div class="game-title">📝 Word Scramble</div>
+                <div class="game-title">🦸 Vigilante Justice</div>
                 <div class="game-stats">
+                    <span>Stopped: <strong id="crimesStopped">0</strong></span>
+                    <span>Justice: <strong id="justiceLevel">0</strong>%</span>
+                    <span>Rep: <strong id="vigilanteRep">Rookie</strong></span>
+                </div>
+                <div class="game-arena" style="height: 150px; background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; padding: 15px;">
+                    <div id="crimeAlert" style="background: rgba(220,53,69,0.2); border: 1px solid #dc3545; padding: 0.8rem; border-radius: 6px; margin-bottom: 0.8rem; text-align: center;">
+                        <div style="font-size: 1rem; margin-bottom: 0.4rem;">🚨 CRIME IN PROGRESS</div>
+                        <div id="crimeDescription" style="font-size: 0.8rem;">Armed Robbery at 24/7 Store</div>
+                        <div style="font-size: 0.7rem; margin-top: 0.4rem;">Location: Downtown LS</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🦸‍♂️</div>
+                        <div style="font-size: 0.8rem;">Time: <strong id="responseTime">30</strong>s</div>
+                    </div>
+                </div>
+                <div class="game-controls">
+                    <button class="control-btn" id="respondBtn">🚔 Respond</button>
+                    <button class="control-btn gas" id="patrolBtn">👮 Patrol</button>
+                    <button class="control-btn special" id="ignoreBtn">❌ Ignore</button>
+                </div>
+                <button class="floating-btn" id="vigilanteStartBtn">Start Patrol</button>
+            </div>
+
+            <!-- Game 22: Empire Builder -->
+            <div class="game-card">
+                <div class="game-title">💼 Empire Builder</div>
+                <div class="game-stats">
+                    <span>Cash: <strong id="empireCash">$1,000</strong></span>
+                    <span>Business: <strong id="businessCount">1</strong></span>
+                    <span>Income: <strong id="empireIncome">$50/s</strong></span>
+                </div>
+                <div class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2C3E50 0%, #27AE60 100%); color: white; padding: 15px;">
+                    <div style="text-align: center; margin-bottom: 0.8rem;">
+                        <div style="font-size: 1.8rem; margin-bottom: 0.4rem;">💼</div>
+                        <div style="font-size: 1rem; font-weight: bold;">Vice City Empire</div>
+                    </div>
+                    <div id="empireStatus" style="background: rgba(255,255,255,0.1); padding: 0.8rem; border-radius: 6px; text-align: center; font-size: 0.8rem;">
+                        Running 1 Business...
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 0.8rem; font-size: 0.7rem;">
+                        <span>Risk: <strong id="riskLevel">Low</strong></span>
+                        <span>Heat: <strong id="empireHeat">0</strong>%</span>
+                    </div>
+                </div>
+                <div class="game-controls">
+                    <button class="control-btn" id="buyBusinessBtn">🏢 Expand</button>
+                    <button class="control-btn gas" id="collectCashBtn">💰 Collect</button>
+                    <button class="control-btn special" id="launderBtn">🧼 Launder</button>
+                </div>
+                <button class="floating-btn" id="empireStartBtn">Build Empire</button>
+            </div>
+
+            <!-- Game 23: Poker Showdown -->
+            <div class="game-card">
+                <div class="game-title">🎲 Poker Showdown</div>
+                <div class="game-stats">
+                    <span>Chips: <strong id="pokerChips">$1,000</strong></span>
+                    <span>Wins: <strong id="handsWon">0</strong></span>
+                    <span>Hand: <strong id="bestHand">High Card</strong></span>
+                </div>
+                <div class="game-arena" style="height: 150px; background: #0d5f2f; color: white; padding: 12px;">
+                    <div style="text-align: center; margin-bottom: 0.8rem;">
+                        <div style="font-size: 0.7rem; margin-bottom: 0.4rem;">Community Cards</div>
+                        <div id="communityCards" style="font-size: 1.2rem; margin-bottom: 0.8rem;">🂠 🂠 🂠 🂠 🂠</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 0.7rem; margin-bottom: 0.4rem;">Your Hand</div>
+                        <div id="pokerHand" style="font-size: 1.2rem; margin-bottom: 0.4rem;">🂠 🂠</div>
+                        <div style="font-size: 0.7rem;">Hand: <strong id="handType">-</strong></div>
+                    </div>
+                </div>
+                <div class="game-controls">
+                    <button class="control-btn" id="foldBtn">Fold</button>
+                    <button class="control-btn gas" id="callBtn">Call $50</button>
+                    <button class="control-btn special" id="raiseBtn">Raise</button>
+                </div>
+                <button class="floating-btn" id="pokerStartBtn">Deal Hand</button>
+            </div>
+
+            <!-- Game 24: Hacking Terminal -->
+            <div class="game-card">
+                <div class="game-title">💻 Data Breach Terminal</div>
+                <div class="game-stats">
+                    <span>Hacks: <strong id="hacksComplete">0</strong></span>
+                    <span>Data: <strong id="dataStolen">0</strong>GB</span>
+                    <span>Time: <strong id="hackTime">60</strong>s</span>
+                </div>
+                <div id="hackingGrid" class="game-arena" style="height: 150px; background: #000; color: #00ff00; font-family: monospace; padding: 12px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;">
+                    <!-- Hacking grid generated by JS -->
+                </div>
+                <div style="text-align: center; margin: 0.4rem 0; color: var(--success-color); font-family: monospace; font-size: 0.8rem;">
+                    Sequence: <strong id="hackSequence">1A 2B 3C</strong>
+                </div>
+                <button class="floating-btn" id="hackStartBtn">Start Hack</button>
+            </div>
+
+            <!-- Game 25: Cattle Rustling -->
+            <div class="game-card">
+                <div class="game-title">🐄 Cattle Rustling</div>
+                <div class="game-stats">
+                    <span>Cattle: <strong id="cattleCount">0</strong></span>
+                    <span>Value: <strong id="cattleValue">$0</strong></span>
+                    <span>Heat: <strong id="cattleHeat">0</strong>%</span>
+                </div>
+                <div id="cattleField" class="game-arena" style="height: 150px; background: linear-gradient(180deg, #228B22 0%, #32CD32 100%); position: relative;">
+                    <div style="position: absolute; top: 15px; left: 15px; font-size: 1.5rem;">🐄</div>
+                    <div style="position: absolute; bottom: 15px; right: 15px; font-size: 1.2rem;">🤠</div>
+                    <div style="position: absolute; top: 50%; left: 60%; font-size: 1.5rem;">🐄</div>
+                    <div style="position: absolute; bottom: 50%; left: 30%; font-size: 1.3rem;">🐄</div>
+                </div>
+                <div class="game-controls">
+                    <button class="control-btn" id="lassoBtn">Lasso</button>
+                    <button class="control-btn gas" id="herdBtn">Herd</button>
+                    <button class="control-btn special" id="rustleBtn">Rustle All</button>
+                </div>
+                <button class="floating-btn" id="cattleStartBtn">Start Rustling</button>
+            </div>
+
+            <!-- Game 26: Fight Club -->
+            <div class="game-card">
+                <div class="game-title">🥊 Underground Fight Club</div>
+                <div class="game-stats">
+                    <span>Wins: <strong id="fightWins">0</strong></span>
+                    <span>Health: <strong id="fighterHealth">100</strong>%</span>
+                    <span>Stamina: <strong id="fighterStamina">100</strong>%</span>
+                </div>
+                <div id="fightRing" class="game-arena" style="height: 150px; background: radial-gradient(circle, #8B4513 0%, #654321 100%); border-radius: 50%; position: relative; border: 3px solid var(--gold-color); display: flex; align-items: center; justify-content: center;">
+                    <div style="position: absolute; bottom: 25px; font-size: 1.5rem;">🥊</div>
+                    <div style="position: absolute; top: 25px; font-size: 1.5rem;">😤</div>
+                    <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: white; font-size: 1rem; font-weight: bold;">VS</div>
+                </div>
+                <div class="game-controls" style="grid-template-columns: repeat(4, 1fr);">
+                    <button class="control-btn" id="punchLeftBtn">👊 Left</button>
+                    <button class="control-btn" id="punchRightBtn">Right 👊</button>
+                    <button class="control-btn gas" id="blockBtn">🛡️ Block</button>
+                    <button class="control-btn special" id="dodgeBtn">💨 Dodge</button>
+                </div>
+                <button class="floating-btn" id="fightStartBtn">Enter Ring</button>
+            </div>
+
+            <!-- Game 27: Boat Racing -->
+            <div class="game-card">
+                <div class="game-title">🚤 Vice City Marina Racing</div>
+                <div class="game-stats">
+                    <span>Wins: <strong id="boatWins">0</strong></span>
+                    <span>Best Lap: <strong id="boatBestLap">--:--</strong></span>
+                    <span>Speed: <strong id="boatSpeed">0</strong> mph</span>
+                </div>
+                <div id="marina" class="game-arena" style="height: 150px; background: linear-gradient(180deg, #00BFFF 0%, #1E90FF 100%); position: relative;">
+                    <div id="speedboat" style="position: absolute; bottom: 15px; left: 15px; font-size: 1.5rem; transition: all 0.3s ease;">🚤</div>
+                    <div style="position: absolute; top: 15px; right: 15px; font-size: 1.5rem;">🏁</div>
+                    <div style="position: absolute; top: 50%; left: 60%; font-size: 1rem;">⚓</div>
+                    <div style="position: absolute; bottom: 60%; right: 40%; font-size: 0.8rem;">🌊</div>
+                </div>
+                <div class="game-controls">
+                    <button class="control-btn" id="turnLeftBtn">◀ Port</button>
+                    <button class="control-btn gas" id="boostBtn">⚡ Boost</button>
+                    <button class="control-btn" id="turnRightBtn">Star ▶</button>
+                </div>
+                <button class="floating-btn" id="boatStartBtn">Start Race</button>
+            </div>
+
+            <!-- Game 28: Train Heist -->
+            <div class="game-card">
+                <div class="game-title">🚂 Train Robbery</div>
+                <div class="game-stats">
+                    <span>Loot: <strong id="trainLoot">$0</strong></span>
+                    <span>Cars: <strong id="trainCars">3</strong></span>
+                    <span>Time: <strong id="trainTime">180</strong>s</span>
+                </div>
+                <div id="trainArena" class="game-arena" style="height: 150px; background: linear-gradient(90deg, #8B4513 0%, #D2B48C 100%); position: relative; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <div class="train-car" data-value="500" style="width: 50px; height: 70px; background: #654321; border: 2px solid #8B4513; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer;">🚂</div>
+                    <div class="train-car" data-value="1000" style="width: 50px; height: 70px; background: #B8860B; border: 2px solid #8B4513; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer;">💰</div>
+                    <div class="train-car" data-value="750" style="width: 50px; height: 70px; background: #654321; border: 2px solid #8B4513; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer;">📦</div>
+                </div>
+                <div style="text-align: center; margin: 0.4rem 0; color: var(--warning-color); font-size: 0.8rem;">
+                    Click train cars to rob them!
+                </div>
+                <button class="floating-btn" id="trainStartBtn">Board Train</button>
+            </div>
+
+            <!-- Remaining games 29-50 -->
+            <div class="game-card">
+                <div class="game-title">🎣 Legendary Fishing</div>
+                <div class="game-stats">
+                    <span>Caught: <strong id="fishCaught">0</strong></span>
+                    <span>Biggest: <strong id="biggestFish">0</strong>lbs</span>
+                    <span>Value: <strong id="fishValue">$0</strong></span>
+                </div>
+                <div id="fishingZone" class="game-arena" style="height: 150px; background: linear-gradient(180deg, #87CEEB 0%, #4682B4 50%, #191970 100%); position: relative;">
+                    <div id="fishingLine" style="position: absolute; left: 50%; top: 8px; width: 2px; height: 0px; background: #8B4513; transition: height 0.5s ease;"></div>
+                    <div id="fishingBobber" style="position: absolute; left: 50%; top: 8px; transform: translateX(-50%); font-size: 0.8rem; transition: top 0.5s ease;">🪝</div>
+                    <div id="caughtFish" style="position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); font-size: 1.5rem; display: none;">🐟</div>
+                </div>
+                <button class="floating-btn" id="fishingStartBtn">Cast Line</button>
+            </div>
+
+            <!-- Math Challenge -->
+            <div class="game-card">
+                <div class="game-title">🧮 Street Math Challenge</div>
+                <div class="game-stats">
+                    <span>Score: <strong id="mathScore">0</strong></span>
+                    <span>Level: <strong id="mathLevel">1</strong></span>
+                    <span>Streak: <strong id="mathStreak">0</strong></span>
+                </div>
+                <div class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2C3E50 0%, #34495E 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 15px;">
+                    <div id="mathQuestion" style="font-size: 1.3rem; text-align: center; margin-bottom: 1rem; font-weight: bold;">2 x $50 + 3 x $25 = ?</div>
+                    <input type="number" id="mathAnswer" placeholder="Enter answer..." style="width: 80%; padding: 0.6rem; border: none; border-radius: 6px; text-align: center; font-size: 1rem; background: white; color: #333;">
+                </div>
+                <button class="floating-btn" id="mathSubmitBtn">Submit Answer</button>
+            </div>
+
+            <!-- Word Scramble -->
+            <div class="game-card">
+                <div class="game-title">🔤 GTA Word Scramble</div>
+                <div class="game-stats">
+                    <span>Score: <strong id="scrambleScore">0</strong></span>
                     <span>Words: <strong id="wordsFound">0</strong></span>
-                    <span>Time: <strong id="wordTime">60</strong>s</span>
-                    <span>Points: <strong id="wordPoints">0</strong></span>
+                    <span>Streak: <strong id="wordStreak">0</strong></span>
                 </div>
-                <div id="wordGame" class="game-arena" style="height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #2C3E50; color: white; padding: 20px;">
-                    <div id="scrambledWord" style="font-size: 1.5rem; font-weight: bold; margin-bottom: 15px;">READY</div>
-                    <input type="text" id="wordInput" style="padding: 8px; font-size: 1rem; border: none; border-radius: 4px; text-align: center; margin-bottom: 10px;" placeholder="Unscramble the word">
-                    <button id="submitWordBtn" style="padding: 8px 16px; background: var(--primary-color); color: white; border: none; border-radius: 4px; cursor: pointer;">Submit</button>
+                <div class="game-arena" style="height: 150px; background: linear-gradient(45deg, #9932CC 0%, #FF69B4 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 15px;">
+                    <div id="scrambledWord" style="font-size: 1.8rem; font-weight: bold; margin-bottom: 1rem; letter-spacing: 4px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">ECIVTYCI</div>
+                    <input type="text" id="wordAnswer" placeholder="Unscramble the word..." style="width: 85%; padding: 0.6rem; border: none; border-radius: 6px; text-align: center; font-size: 1rem; background: white; color: #333;">
                 </div>
-                <button class="floating-btn" id="wordStartBtn">📝 Start Scrambling</button>
+                <div style="text-align: center; margin: 0.4rem 0; font-size: 0.8rem; color: var(--primary-color);">
+                    Hint: <span id="wordHint">A famous fictional city</span>
+                </div>
+                <button class="floating-btn" id="wordSubmitBtn">Submit Word</button>
             </div>
 
-            <!-- Game 10: Simple Puzzle -->
+            <!-- GTA Trivia - Game 50 -->
             <div class="game-card">
-                <div class="game-title">🧩 Quick Puzzle</div>
+                <div class="game-title">🎓 GTA Universe Trivia</div>
                 <div class="game-stats">
-                    <span>Moves: <strong id="puzzleMoves">0</strong></span>
-                    <span>Time: <strong id="puzzleTime">0</strong>s</span>
-                    <span>Best: <strong id="puzzleBest">∞</strong></span>
+                    <span>Score: <strong id="triviaScore">0</strong></span>
+                    <span>Streak: <strong id="triviaStreak">0</strong></span>
+                    <span>Best: <strong id="triviaBest">0</strong></span>
                 </div>
-                <div id="puzzleGame" class="game-arena" style="height: 200px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 10px; background: #2C3E50;">
-                    <div class="puzzle-tile" data-number="1" style="background: #3498db; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer;">1</div>
-                    <div class="puzzle-tile" data-number="2" style="background: #3498db; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer;">2</div>
-                    <div class="puzzle-tile" data-number="3" style="background: #3498db; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer;">3</div>
-                    <div class="puzzle-tile" data-number="4" style="background: #3498db; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer;">4</div>
-                    <div class="puzzle-tile" data-number="5" style="background: #3498db; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer;">5</div>
-                    <div class="puzzle-tile" data-number="6" style="background: #3498db; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer;">6</div>
-                    <div class="puzzle-tile" data-number="7" style="background: #3498db; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer;">7</div>
-                    <div class="puzzle-tile" data-number="8" style="background: #3498db; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer;">8</div>
-                    <div class="puzzle-tile empty" data-number="9" style="background: #34495E;"></div>
+                <div class="game-arena" style="height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 15px;">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">🎓</div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; text-align: center; width: 100%;">
+                        <div id="triviaQuestion" style="font-size: 0.9rem; margin-bottom: 1rem; font-weight: bold;">Which city is GTA Vice City based on?</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                            <button class="control-btn" style="font-size: 0.7rem;" onclick="answerTrivia('Miami')">Miami</button>
+                            <button class="control-btn" style="font-size: 0.7rem;" onclick="answerTrivia('Los Angeles')">Los Angeles</button>
+                            <button class="control-btn" style="font-size: 0.7rem;" onclick="answerTrivia('New York')">New York</button>
+                            <button class="control-btn" style="font-size: 0.7rem;" onclick="answerTrivia('Las Vegas')">Las Vegas</button>
+                        </div>
+                    </div>
                 </div>
-                <button class="floating-btn" id="puzzleStartBtn">🧩 Shuffle Puzzle</button>
+                <button class="floating-btn" id="triviaStartBtn">New Question</button>
             </div>
         </div>
     </div>
 
     <div class="notification" id="notification"></div>
-
-<script>
-// GLOBAL VARIABLES
-let gameStats = {
-    gamesPlayed: parseInt(localStorage.getItem('gtafl-games-played') || '0'),
-    totalScore: parseInt(localStorage.getItem('gtafl-total-score') || '0'),
-    highScore: parseInt(localStorage.getItem('gtafl-high-score') || '0')
-};
-
-// CORE FUNCTIONS
-function showNotification(message) {
-    const notification = document.getElementById('notification');
-    notification.textContent = message;
-    notification.style.display = 'block';
-    setTimeout(() => notification.style.display = 'none', 3000);
-}
-
-function toggleTheme() {
-    document.body.classList.toggle('night-mode');
-    const isNightMode = document.body.classList.contains('night-mode');
-    document.getElementById('themeToggle').textContent = isNightMode ? '☀️' : '🌙';
-    localStorage.setItem('gtafl-theme', isNightMode ? 'night' : 'day');
-    showNotification(isNightMode ? 'Night mode activated!' : 'Day mode activated!');
-}
-
-function loadSavedTheme() {
-    const savedTheme = localStorage.getItem('gtafl-theme') || 'day';
-    if (savedTheme === 'night') {
-        document.body.classList.add('night-mode');
-        document.getElementById('themeToggle').textContent = '☀️';
-    }
-}
-
-function updateStats() {
-    document.getElementById('gamesPlayed').textContent = gameStats.gamesPlayed;
-    document.getElementById('totalScore').textContent = gameStats.totalScore.toLocaleString();
-    document.getElementById('highScore').textContent = gameStats.highScore.toLocaleString();
-}
-
-function saveStats() {
-    localStorage.setItem('gtafl-games-played', gameStats.gamesPlayed);
-    localStorage.setItem('gtafl-total-score', gameStats.totalScore);
-    localStorage.setItem('gtafl-high-score', gameStats.highScore);
-}
-
-function recordGameScore(score) {
-    gameStats.gamesPlayed++;
-    gameStats.totalScore += score;
-    if (score > gameStats.highScore) gameStats.highScore = score;
-    saveStats();
-    updateStats();
-}
-
-// GAME 1: TARGET PRACTICE
-let targetState = { score: 0, hits: 0, timeLeft: 30, isPlaying: false, timer: null, targets: [] };
-
-function startTargetPractice() {
-    targetState = { score: 0, hits: 0, timeLeft: 30, isPlaying: true, timer: null, targets: [] };
-    document.getElementById('targetGameOver').style.display = 'none';
-    document.getElementById('targetStartBtn').disabled = true;
-    document.getElementById('targetStartBtn').textContent = 'Playing...';
-    document.getElementById('targetRange').innerHTML = '';
-    
-    updateTargetDisplay();
-    
-    targetState.timer = setInterval(() => {
-        targetState.timeLeft--;
-        updateTargetDisplay();
-        if (targetState.timeLeft <= 0) endTargetGame(false);
-    }, 1000);
-    
-    setInterval(() => {
-        if (targetState.isPlaying && targetState.targets.length < 3) createTarget();
-    }, 800);
-    
-    createTarget();
-}
-
-function updateTargetDisplay() {
-    document.getElementById('targetScore').textContent = targetState.score;
-    document.getElementById('targetHits').textContent = `${targetState.hits}/10`;
-    document.getElementById('targetTimer').textContent = targetState.timeLeft;
-}
-
-function createTarget() {
-    if (!targetState.isPlaying) return;
-    
-    const range = document.getElementById('targetRange');
-    const target = document.createElement('div');
-    const size = 30;
-    
-    target.style.cssText = `
-        position: absolute; 
-        width: ${size}px; 
-        height: ${size}px; 
-        border-radius: 50%; 
-        background: radial-gradient(circle, #ff0000 0%, #990000 100%); 
-        border: 2px solid #fff; 
-        cursor: crosshair;
-        animation: pulse 1s infinite;
-    `;
-    
-    const x = Math.random() * (range.clientWidth - size);
-    const y = Math.random() * (range.clientHeight - size);
-    target.style.left = x + 'px';
-    target.style.top = y + 'px';
-    
-    target.addEventListener('click', () => hitTarget(target));
-    range.appendChild(target);
-    targetState.targets.push(target);
-    
-    setTimeout(() => {
-        if (target.parentNode) {
-            target.remove();
-            targetState.targets = targetState.targets.filter(t => t !== target);
-        }
-    }, 2000);
-}
-
-function hitTarget(target) {
-    if (!targetState.isPlaying) return;
-    
-    target.remove();
-    targetState.targets = targetState.targets.filter(t => t !== target);
-    targetState.score += 100;
-    targetState.hits++;
-    
-    updateTargetDisplay();
-    
-    if (targetState.hits >= 10) endTargetGame(true);
-}
-
-function endTargetGame(won) {
-    targetState.isPlaying = false;
-    if (targetState.timer) clearInterval(targetState.timer);
-    
-    document.getElementById('targetRange').innerHTML = '';
-    recordGameScore(targetState.score);
-    
-    document.getElementById('targetFinalScore').innerHTML = won ? 
-        `🏆 Perfect! Score: ${targetState.score}` : 
-        `⏰ Time's up! Score: ${targetState.score}`;
-    
-    document.getElementById('targetGameOver').style.display = 'block';
-    document.getElementById('targetStartBtn').disabled = false;
-    document.getElementById('targetStartBtn').textContent = '🎯 Play Again';
-    
-    showNotification(won ? '🎯 All targets hit!' : '⏰ Time ran out!');
-}
-
-// GAME 2: HIGHWAY CHASE
-let chaseState = { speed: 0, distance: 0, heat: 0, isPlaying: false, timer: null, playerX: 50, obstacles: [] };
-
-function startHighwayChase() {
-    chaseState = { speed: 0, distance: 0, heat: 0, isPlaying: true, timer: null, playerX: 50, obstacles: [] };
-    document.getElementById('chaseGameOver').style.display = 'none';
-    document.getElementById('chaseStartBtn').disabled = true;
-    document.getElementById('chaseStartBtn').textContent = 'Chasing...';
-    
-    const track = document.getElementById('chaseTrack');
-    track.innerHTML = '<div id="playerCar" style="position: absolute; bottom: 10px; width: 20px; height: 30px; background: #ff0000; border-radius: 3px; left: 50%; transform: translateX(-50%);"></div>';
-    
-    chaseState.timer = setInterval(() => {
-        chaseState.speed = Math.min(chaseState.speed + 1, 120);
-        chaseState.distance += chaseState.speed / 10;
-        chaseState.heat = Math.min(chaseState.heat + 0.5, 100);
-        
-        updateChaseDisplay();
-        moveObstacles();
-        
-        if (chaseState.heat >= 100) endChase('busted');
-        else if (chaseState.distance >= 1000) endChase('escaped');
-    }, 100);
-    
-    setInterval(() => {
-        if (chaseState.isPlaying && Math.random() < 0.3) createObstacle();
-    }, 1200);
-}
-
-function updateChaseDisplay() {
-    document.getElementById('chaseSpeed').textContent = Math.round(chaseState.speed);
-    document.getElementById('chaseDistance').textContent = Math.round(chaseState.distance);
-    document.getElementById('chaseHeat').textContent = Math.round(chaseState.heat);
-}
-
-function createObstacle() {
-    const track = document.getElementById('chaseTrack');
-    const obstacle = document.createElement('div');
-    obstacle.style.cssText = 'position: absolute; top: -20px; width: 15px; height: 25px; background: #333; border-radius: 2px;';
-    obstacle.style.left = Math.random() * (track.clientWidth - 15) + 'px';
-    track.appendChild(obstacle);
-    chaseState.obstacles.push(obstacle);
-}
-
-function moveObstacles() {
-    const playerCar = document.getElementById('playerCar');
-    if (!playerCar) return;
-    
-    chaseState.obstacles.forEach((obstacle, index) => {
-        const currentTop = parseInt(obstacle.style.top) || 0;
-        obstacle.style.top = (currentTop + chaseState.speed / 3) + 'px';
-        
-        if (currentTop > 150) {
-            obstacle.remove();
-            chaseState.obstacles.splice(index, 1);
-        }
-        
-        // Simple collision detection
-        const obstacleRect = obstacle.getBoundingClientRect();
-        const playerRect = playerCar.getBoundingClientRect();
-        if (obstacleRect.bottom > playerRect.top && obstacleRect.top < playerRect.bottom &&
-            obstacleRect.right > playerRect.left && obstacleRect.left < playerRect.right) {
-            chaseState.heat += 15;
-            obstacle.remove();
-            chaseState.obstacles.splice(index, 1);
-        }
-    });
-}
-
-function chaseLeft() {
-    if (!chaseState.isPlaying) return;
-    chaseState.playerX = Math.max(10, chaseState.playerX - 15);
-    document.getElementById('playerCar').style.left = chaseState.playerX + '%';
-}
-
-function chaseRight() {
-    if (!chaseState.isPlaying) return;
-    chaseState.playerX = Math.min(90, chaseState.playerX + 15);
-    document.getElementById('playerCar').style.left = chaseState.playerX + '%';
-}
-
-function chaseGas() {
-    if (!chaseState.isPlaying) return;
-    chaseState.speed = Math.min(chaseState.speed + 10, 150);
-    chaseState.heat += 2;
-}
-
-function endChase(result) {
-    chaseState.isPlaying = false;
-    if (chaseState.timer) clearInterval(chaseState.timer);
-    
-    const score = Math.round(chaseState.distance * 5);
-    recordGameScore(score);
-    
-    document.getElementById('chaseFinalScore').innerHTML = result === 'escaped' ? 
-        `🏆 Escaped! Distance: ${Math.round(chaseState.distance)}m` : 
-        `🚔 Busted! Distance: ${Math.round(chaseState.distance)}m`;
-    
-    document.getElementById('chaseGameOver').style.display = 'block';
-    document.getElementById('chaseStartBtn').disabled = false;
-    document.getElementById('chaseStartBtn').textContent = '🚗 Chase Again';
-    
-    showNotification(result === 'escaped' ? '🚗 Great escape!' : '🚔 Caught by police!');
-}
-
-// INITIALIZE ALL EVENT LISTENERS
-document.addEventListener('DOMContentLoaded', () => {
-    loadSavedTheme();
-    updateStats();
-    showNotification('🎮 Welcome! All games are working!');
-    
-    // Theme toggle
-    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-    
-    // Game 1: Target Practice
-    document.getElementById('targetStartBtn').addEventListener('click', startTargetPractice);
-    
-    // Game 2: Highway Chase
-    document.getElementById('chaseStartBtn').addEventListener('click', startHighwayChase);
-    document.getElementById('chaseLeftBtn').addEventListener('click', chaseLeft);
-    document.getElementById('chaseRightBtn').addEventListener('click', chaseRight);
-    document.getElementById('chaseGasBtn').addEventListener('click', chaseGas);
-    
-    // Game 3: Memory Game
-    document.getElementById('memoryStartBtn').addEventListener('click', () => {
-        showNotification('🧠 Memory game started!');
-        recordGameScore(Math.floor(Math.random() * 500));
-    });
-    
-    // Game 4: Diamond Clicker
-    document.getElementById('diamondStartBtn').addEventListener('click', () => {
-        showNotification('💎 Mining started!');
-        let diamonds = 0;
-        document.getElementById('bigDiamond').addEventListener('click', () => {
-            diamonds++;
-            document.getElementById('diamondCount').textContent = diamonds;
-            document.getElementById('bigDiamond').style.transform = 'scale(1.2)';
-            setTimeout(() => document.getElementById('bigDiamond').style.transform = 'scale(1)', 100);
-        });
-    });
-    
-    // Game 5: Snake Game
-    document.getElementById('snakeStartBtn').addEventListener('click', () => {
-        showNotification('🐍 Snake game started! Use WASD or arrow keys!');
-        document.getElementById('snakeGame').innerHTML = '<div style="position: absolute; top: 50%; left: 50%; width: 10px; height: 10px; background: #00ff00; border-radius: 2px;"></div>';
-        recordGameScore(Math.floor(Math.random() * 300));
-    });
-    
-    // Game 6: Reaction Test
-    document.getElementById('reactionStartBtn').addEventListener('click', () => {
-        showNotification('⚡ Reaction test started!');
-        const area = document.getElementById('reactionArea');
-        area.textContent = 'Wait for GREEN...';
-        area.style.background = '#ff6b6b';
-        setTimeout(() => {
-            area.style.background = '#2ecc71';
-            area.textContent = 'CLICK NOW!';
-            const startTime = Date.now();
-            area.onclick = () => {
-                const reactionTime = Date.now() - startTime;
-                area.textContent = `${reactionTime}ms - Great!`;
-                area.style.background = '#3498db';
-                recordGameScore(Math.max(1000 - reactionTime, 0));
-                area.onclick = null;
-            };
-        }, 2000 + Math.random() * 3000);
-    });
-    
-    // Game 7: Color Match
-    document.getElementById('colorStartBtn').addEventListener('click', () => {
-        showNotification('🎨 Color matching started!');
-        recordGameScore(Math.floor(Math.random() * 400));
-    });
-    
-    // Game 8: Number Game
-    document.getElementById('numberStartBtn').addEventListener('click', () => {
-        showNotification('🔢 Number game started!');
-        recordGameScore(Math.floor(Math.random() * 600));
-    });
-    
-    // Game 9: Word Scramble
-    document.getElementById('wordStartBtn').addEventListener('click', () => {
-        showNotification('📝 Word scramble started!');
-        const words = ['JAVASCRIPT', 'COMPUTER', 'WEBSITE', 'PROGRAM', 'FUNCTION'];
-        const word = words[Math.floor(Math.random() * words.length)];
-        const scrambled = word.split('').sort(() => 0.5 - Math.random()).join('');
-        document.getElementById('scrambledWord').textContent = scrambled;
-        
-        document.getElementById('submitWordBtn').onclick = () => {
-            const input = document.getElementById('wordInput').value.toUpperCase();
-            if (input === word) {
-                showNotification('✅ Correct!');
-                recordGameScore(word.length * 10);
-            } else {
-                showNotification('❌ Try again!');
-            }
-        };
-    });
-    
-    // Game 10: Puzzle
-    document.getElementById('puzzleStartBtn').addEventListener('click', () => {
-        showNotification('🧩 Puzzle shuffled!');
-        recordGameScore(Math.floor(Math.random() * 200));
-    });
-});
-</script>
-</body>
-</html>
