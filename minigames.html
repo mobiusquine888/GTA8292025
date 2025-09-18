@@ -18,1242 +18,24 @@
             --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
         }
 
-        function updateSkyPhysics() {
-            if (!skyState.isPlaying) return;
-            
-            skyState.fallTime += 0.016;
-            
-            // Handle different phases
-            if (skyState.phase === 'freefall') {
-                // Accelerate toward terminal velocity
-                if (!skyState.chuteDeployed) {
-                    skyState.speed = Math.min(skyState.terminalVelocity, skyState.speed + 2);
-                    skyState.altitude = Math.max(0, skyState.altitude - (skyState.speed * 0.1));
-                    
-                    // World scrolling effect
-                    skyState.worldOffset += skyState.speed * 0.05;
-                }
-                
-                // Check for automatic chute deployment at critical altitude
-                if (skyState.altitude <= 500 && !skyState.chuteDeployed) {
-                    deployParachute();
-                    showNotification('Emergency chute deployment!');
-                }
-            } else if (skyState.phase === 'parachute') {
-                // Slower descent with chute
-                skyState.speed = Math.max(10, skyState.speed * 0.95);
-                skyState.altitude = Math.max(0, skyState.altitude - (skyState.speed * 0.05));
-                skyState.worldOffset += skyState.speed * 0.03;
-                
-                // Check for landing
-                if (skyState.altitude <= 0) {
-                    skyState.phase = 'landing';
-                    checkLanding();
-                }
-            }
-            
-            // Player movement with air resistance
-            skyState.playerX += skyState.velocityX;
-            skyState.velocityX *= 0.98; // Air resistance
-            
-            // Keep player on screen
-            skyState.playerX = Math.max(20, Math.min(skyState.worldWidth - 20, skyState.playerX));
-            
-            // Check collisions
-            checkSkyCollisions();
-            
-            // Update slow motion
-            if (skyState.slowMotion) {
-                skyState.slowMotionTimer--;
-                if (skyState.slowMotionTimer <= 0) {
-                    skyState.slowMotion = false;
-                }
-            }
-        }
-
-        function checkSkyCollisions() {
-            // Check obstacle collisions
-            skyState.obstacles.forEach(obstacle => {
-                const screenY = obstacle.y + skyState.worldOffset;
-                
-                if (screenY > skyState.playerY - 10 && screenY < skyState.playerY + 10) {
-                    if (skyState.playerX > obstacle.x - 10 && skyState.playerX < obstacle.x + obstacle.width + 10) {
-                        // Near miss - activate slow motion
-                        if (!skyState.slowMotion && Math.abs(skyState.playerX - (obstacle.x + obstacle.width/2)) < 25) {
-                            activateSlowMotion();
-                            skyState.nearMissPoints += 50;
-                            skyState.score += 50;
-                            showNotification('Near miss! +50 points');
-                        }
-                        
-                        // Direct collision
-                        if (skyState.playerX > obstacle.x && skyState.playerX < obstacle.x + obstacle.width &&
-                            screenY > skyState.playerY - 5 && screenY < skyState.playerY + 5) {
-                            // Hit obstacle
-                            skyState.screenShake = 15;
-                            skyState.score = Math.max(0, skyState.score - 100);
-                            showNotification('Hit obstacle! -100 points');
-                            
-                            // Create crash particles
-                            createSkyParticles(skyState.playerX, skyState.playerY, 'crash');
-                        }
-                    }
-                }
-            });
-            
-            // Check ring collections
-            skyState.rings.forEach(ring => {
-                if (ring.collected) return;
-                
-                const screenY = ring.y + skyState.worldOffset;
-                const distance = Math.sqrt(
-                    Math.pow(skyState.playerX - ring.x, 2) + 
-                    Math.pow(skyState.playerY - screenY, 2)
-                );
-                
-                if (distance < ring.radius) {
-                    ring.collected = true;
-                    skyState.score += ring.points;
-                    
-                    // Bonus for threading the needle at high speed
-                    if (skyState.speed > 100) {
-                        const speedBonus = Math.floor(skyState.speed);
-                        skyState.score += speedBonus;
-                        showNotification(`Ring collected! +${ring.points} +${speedBonus} speed bonus`);
-                    } else {
-                        showNotification(`Ring collected! +${ring.points} points`);
-                    }
-                    
-                    // Create collection particles
-                    createSkyParticles(ring.x, screenY, 'collect');
-                }
-            });
-        }
-
-        function activateSlowMotion() {
-            skyState.slowMotion = true;
-            skyState.slowMotionTimer = 60; // 1 second at 60fps
-        }
-
-        function createSkyParticles(x, y, type) {
-            const colors = {
-                crash: ['#ff0000', '#ff6600', '#ffff00'],
-                collect: ['#ffd700', '#ffff00', '#ffffff'],
-                stunt: ['#00ffff', '#ff00ff', '#ffff00']
-            };
-            
-            const particleColors = colors[type] || colors.collect;
-            
-            for (let i = 0; i < 15; i++) {
-                skyState.particles.push({
-                    x: x + (Math.random() - 0.5) * 20,
-                    y: y + (Math.random() - 0.5) * 20,
-                    vx: (Math.random() - 0.5) * 8,
-                    vy: (Math.random() - 0.5) * 8,
-                    color: particleColors[Math.floor(Math.random() * particleColors.length)],
-                    life: 1
-                });
-            }
-        }
-
-        function deployParachute() {
-            if (skyState.chuteDeployed) return;
-            
-            skyState.chuteDeployed = true;
-            skyState.phase = 'parachute';
-            skyState.chuteAnimation = 30;
-            skyState.screenShake = 8;
-            
-            // Bonus points for good timing
-            if (skyState.altitude > skyState.chuteMinAltitude && skyState.altitude < skyState.chuteMinAltitude + 1000) {
-                const timingBonus = 200;
-                skyState.score += timingBonus;
-                showNotification(`Perfect timing! +${timingBonus} points`);
-            }
-            
-            createSkyParticles(skyState.playerX, skyState.playerY, 'stunt');
-        }
-
-        function checkLanding() {
-            const landingAccuracy = Math.abs(skyState.playerX - (skyState.landingZone.x + skyState.landingZone.width/2));
-            
-            if (landingAccuracy < skyState.landingZone.width/2) {
-                // Successful landing
-                const accuracyBonus = Math.floor((skyState.landingZone.width/2 - landingAccuracy) * 20);
-                skyState.score += accuracyBonus;
-                endSkyDiving(true, `Perfect landing! +${accuracyBonus} accuracy bonus`);
-            } else {
-                // Missed landing zone
-                endSkyDiving(false, 'Missed landing zone!');
-            }
-        }
-
-        function performStunt() {
-            if (skyState.chuteDeployed || skyState.currentStunt) return;
-            
-            skyState.stuntsPerformed++;
-            skyState.currentStunt = 'spin';
-            skyState.stuntTimer = 30;
-            
-            const stuntPoints = 150 + (skyState.speed * 2);
-            skyState.score += stuntPoints;
-            
-            showNotification(`Stunt performed! +${stuntPoints} points`);
-            createSkyParticles(skyState.playerX, skyState.playerY, 'stunt');
-            activateSlowMotion();
-        }
-
-        function handleSkyInput() {
-            const steerForce = skyState.chuteDeployed ? 3 : 1.5;
-            
-            if (skyState.keys['ArrowLeft'] || skyState.keys['a'] || skyState.keys['A']) {
-                skyState.velocityX = Math.max(-steerForce, skyState.velocityX - 0.3);
-            }
-            if (skyState.keys['ArrowRight'] || skyState.keys['d'] || skyState.keys['D']) {
-                skyState.velocityX = Math.min(steerForce, skyState.velocityX + 0.3);
-            }
-            if (skyState.keys['ArrowUp'] || skyState.keys['w'] || skyState.keys['W']) {
-                if (!skyState.chuteDeployed) {
-                    performStunt();
-                }
-            }
-            if (skyState.keys['ArrowDown'] || skyState.keys['s'] || skyState.keys['S']) {
-                if (!skyState.chuteDeployed) {
-                    // Dive for extra speed
-                    skyState.speed = Math.min(skyState.terminalVelocity + 20, skyState.speed + 3);
-                }
-            }
-        }
-
-        function skyGameLoop() {
-            if (!skyState.isPlaying) return;
-            
-            handleSkyInput();
-            updateSkyPhysics();
-            drawSkyWorld();
-            updateSkyDisplay();
-        }
-
-        function resetSkyDiving() {
-            if (skyState.gameLoop) clearInterval(skyState.gameLoop);
-            
-            skyState = {
-                altitude: 15000, speed: 0, terminalVelocity: 120, score: 0, fallTime: 0,
-                isPlaying: false, gameLoop: null, playerX: 200, playerY: 50, velocityX: 0,
-                velocityY: 0, canvas: null, ctx: null, worldWidth: 400, worldHeight: 400,
-                phase: 'freefall', chuteDeployed: false, chuteMinAltitude: 2000,
-                landingZone: { x: 180, y: 350, width: 40, height: 20 }, obstacles: [],
-                rings: [], clouds: [], particles: [], trailParticles: [], stuntsPerformed: 0,
-                currentStunt: null, stuntTimer: 0, slowMotion: false, slowMotionTimer: 0,
-                nearMissPoints: 0, screenShake: 0, windEffect: 0, chuteAnimation: 0,
-                jumpsuit: 'standard', parachute: 'standard', unlockedSuits: ['standard'],
-                unlockedChutes: ['standard'], keys: {}, worldOffset: 0, groundLevel: 0
-            };
-            
-            initializeSkyDiving();
-            updateSkyDisplay();
-            document.getElementById('skyStatus').style.display = 'none';
-            document.getElementById('startSkyBtn').disabled = false;
-            document.getElementById('startSkyBtn').textContent = '🪂 Start Jump';
-        }
-
-        function startSkyDiving() {
-            resetSkyDiving();
-            skyState.isPlaying = true;
-            
-            document.getElementById('startSkyBtn').disabled = true;
-            document.getElementById('startSkyBtn').textContent = 'Skydiving In Progress...';
-            
-            skyState.gameLoop = setInterval(skyGameLoop, 16);
-            showNotification('Sky diving started! Navigate through rings and deploy chute safely!');
-        }
-
-        function endSkyDiving(success, message) {
-            skyState.isPlaying = false;
-            if (skyState.gameLoop) clearInterval(skyState.gameLoop);
-            
-            // Calculate final score
-            let finalScore = skyState.score;
-            if (success) {
-                const survivalBonus = Math.floor(skyState.fallTime * 50);
-                const stuntBonus = skyState.stuntsPerformed * 300;
-                finalScore += survivalBonus + stuntBonus;
-            }
-            
-            gameStats.gamesPlayed++;
-            gameStats.totalScore += finalScore;
-            if (finalScore > gameStats.highScore) gameStats.highScore = finalScore;
-            saveStats();
-            updateStats();
-            
-            const skyResult = document.getElementById('skyResult');
-            if (success) {
-                skyResult.innerHTML = `🪂 ${message}<br>Fall time: ${skyState.fallTime.toFixed(1)}s - Stunts: ${skyState.stuntsPerformed}<br>Final score: ${finalScore} - Legendary skydiver!`;
-                document.getElementById('skyStatus').style.background = 'rgba(0, 255, 162, 0.2)';
-                showNotification('Perfect skydive! You nailed the landing!');
-            } else {
-                skyResult.innerHTML = `💥 ${message}<br>Fall time: ${skyState.fallTime.toFixed(1)}s - Score: ${finalScore}<br>Practice your landing technique!`;
-                document.getElementById('skyStatus').style.background = 'rgba(255, 107, 107, 0.2)';
-                showNotification('Skydive ended! Try again for a perfect landing!');
-            }
-            
-            document.getElementById('skyStatus').style.display = 'block';
-            document.getElementById('startSkyBtn').disabled = false;
-            document.getElementById('startSkyBtn').textContent = '🪂 Jump Again';
-        }
-
-        function skyLeft() {
-            if (!skyState.isPlaying) return;
-            skyState.keys['ArrowLeft'] = true;
-            setTimeout(() => skyState.keys['ArrowLeft'] = false, 100);
-        }
-
-        function skyRight() {
-            if (!skyState.isPlaying) return;
-            skyState.keys['ArrowRight'] = true;
-            setTimeout(() => skyState.keys['ArrowRight'] = false, 100);
-        }
-
-        function deployChuteBtn() {
-            if (!skyState.isPlaying || skyState.chuteDeployed) return;
-            deployParachute();
-        }
-
-        function updateZombiePhysics() {
-            if (!zombieState.isPlaying) return;
-            
-            zombieState.survivalTime += 0.016;
-            zombieState.waveTimer -= 0.016;
-            
-            // Handle wave spawning
-            if (zombieState.waveTimer <= 0) {
-                spawnZombieWave();
-                zombieState.waveTimer = 45 + (zombieState.waveNumber * 5); // Waves get longer
-            }
-            
-            // Update zombies
-            updateZombies();
-            
-            // Update bullets
-            updateBullets();
-            
-            // Handle reloading
-            if (zombieState.isReloading) {
-                zombieState.reloadTime -= 0.016;
-                if (zombieState.reloadTime <= 0) {
-                    zombieState.ammo = zombieState.maxAmmo;
-                    zombieState.isReloading = false;
-                    showNotification('Reloaded!');
-                }
-            }
-            
-            // Check supply pickups
-            checkSupplyPickups();
-            
-            // Check weapon pickups
-            checkWeaponPickups();
-            
-            // Update objectives
-            updateObjectives();
-            
-            // Check game over conditions
-            if (zombieState.health <= 0) {
-                endZombieSurvival(false, 'You have died...');
-            }
-        }
-
-        function spawnZombieWave() {
-            const zombieCount = 5 + (zombieState.waveNumber * 2);
-            zombieState.waveNumber++;
-            
-            for (let i = 0; i < zombieCount; i++) {
-                spawnZombie();
-            }
-            
-            zombieState.currentObjective = `Survive Wave ${zombieState.waveNumber - 1}! ${zombieCount} zombies incoming!`;
-            showNotification(`Wave ${zombieState.waveNumber - 1} - ${zombieCount} zombies!`);
-        }
-
-        function spawnZombie() {
-            const edge = Math.floor(Math.random() * 4); // 0=top, 1=right, 2=bottom, 3=left
-            let x, y;
-            
-            switch(edge) {
-                case 0: // top
-                    x = Math.random() * zombieState.worldWidth;
-                    y = -20;
-                    break;
-                case 1: // right
-                    x = zombieState.worldWidth + 20;
-                    y = Math.random() * zombieState.worldHeight;
-                    break;
-                case 2: // bottom
-                    x = Math.random() * zombieState.worldWidth;
-                    y = zombieState.worldHeight + 20;
-                    break;
-                case 3: // left
-                    x = -20;
-                    y = Math.random() * zombieState.worldHeight;
-                    break;
-            }
-            
-            const zombie = {
-                x: x,
-                y: y,
-                health: 100,
-                maxHealth: 100,
-                size: 8,
-                speed: 0.5 + Math.random() * 0.5,
-                type: 'normal',
-                lastAttack: 0,
-                attackDamage: 20
-            };
-            
-            zombieState.zombies.push(zombie);
-        }
-
-        function updateZombies() {
-            zombieState.zombies.forEach((zombie, index) => {
-                // AI: Move toward player
-                const dx = zombieState.playerX - zombie.x;
-                const dy = zombieState.playerY - zombie.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance > 0) {
-                    zombie.angle = Math.atan2(dy, dx);
-                    zombie.x += Math.cos(zombie.angle) * zombie.speed;
-                    zombie.y += Math.sin(zombie.angle) * zombie.speed;
-                }
-                
-                // Attack player if close enough
-                if (distance < 15 && Date.now() - zombie.lastAttack > 1000) {
-                    zombieState.health -= zombie.attackDamage;
-                    zombieState.damageFlash = 50;
-                    zombieState.screenShake = 10;
-                    zombie.lastAttack = Date.now();
-                    showNotification(`-${zombie.attackDamage} Health!`);
-                }
-                
-                // Remove dead zombies
-                if (zombie.health <= 0) {
-                    createBloodSplatter(zombie.x, zombie.y);
-                    createParticles(zombie.x, zombie.y, 'blood');
-                    zombieState.zombiesKilled++;
-                    zombieState.zombies.splice(index, 1);
-                }
-            });
-        }
-
-        function updateBullets() {
-            zombieState.bullets.forEach((bullet, bulletIndex) => {
-                bullet.x += bullet.vx;
-                bullet.y += bullet.vy;
-                bullet.life--;
-                
-                // Check zombie collisions
-                zombieState.zombies.forEach((zombie, zombieIndex) => {
-                    const dx = bullet.x - zombie.x;
-                    const dy = bullet.y - zombie.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (distance < zombie.size) {
-                        zombie.health -= bullet.damage;
-                        createParticles(bullet.x, bullet.y, 'hit');
-                        zombieState.bullets.splice(bulletIndex, 1);
-                        
-                        if (zombie.health <= 0) {
-                            zombieState.experience += zombie.type === 'tank' ? 50 : (zombie.type === 'fast' ? 30 : 20);
-                        }
-                    }
-                });
-                
-                // Remove old bullets
-                if (bullet.life <= 0 || bullet.x < 0 || bullet.x > zombieState.worldWidth || bullet.y < 0 || bullet.y > zombieState.worldHeight) {
-                    zombieState.bullets.splice(bulletIndex, 1);
-                }
-            });
-        }
-
-        function checkSupplyPickups() {
-            zombieState.supplies.forEach(supply => {
-                if (supply.collected) return;
-                
-                const dx = zombieState.playerX - supply.x;
-                const dy = zombieState.playerY - supply.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance < 15) {
-                    supply.collected = true;
-                    
-                    switch(supply.type) {
-                        case 'ammo':
-                            zombieState.ammo = Math.min(zombieState.maxAmmo, zombieState.ammo + 15);
-                            showNotification('+15 Ammo');
-                            break;
-                        case 'health':
-                            zombieState.health = Math.min(100, zombieState.health + 25);
-                            showNotification('+25 Health');
-                            break;
-                        case 'food':
-                            zombieState.food += 10;
-                            showNotification('+10 Food');
-                            break;
-                    }
-                }
-            });
-        }
-
-        function checkWeaponPickups() {
-            zombieState.weapons.forEach(weapon => {
-                if (weapon.collected) return;
-                
-                const dx = zombieState.playerX - weapon.x;
-                const dy = zombieState.playerY - weapon.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance < 20) {
-                    weapon.collected = true;
-                    zombieState.weapon = weapon.type;
-                    
-                    // Update weapon stats
-                    switch(weapon.type) {
-                        case 'shotgun':
-                            zombieState.maxAmmo = 20;
-                            break;
-                        case 'rifle':
-                            zombieState.maxAmmo = 40;
-                            break;
-                        case 'machinegun':
-                            zombieState.maxAmmo = 100;
-                            break;
-                    }
-                    
-                    zombieState.ammo = zombieState.maxAmmo;
-                    showNotification(`Picked up ${weapon.type}!`);
-                }
-            });
-        }
-
-        function updateObjectives() {
-            const aliveZombies = zombieState.zombies.length;
-            
-            if (aliveZombies === 0 && zombieState.waveTimer > 5) {
-                zombieState.currentObjective = `All zombies eliminated! Next wave in ${Math.floor(zombieState.waveTimer)}s`;
-            }
-            
-            if (zombieState.waveNumber > 10) {
-                zombieState.currentObjective = 'You are a true survivor! Keep going!';
-            }
-        }
-
-        function createBloodSplatter(x, y) {
-            for (let i = 0; i < 5; i++) {
-                zombieState.bloodSplatters.push({
-                    x: x + (Math.random() - 0.5) * 20,
-                    y: y + (Math.random() - 0.5) * 20,
-                    size: 3 + Math.random() * 5,
-                    alpha: 0.8
-                });
-            }
-        }
-
-        function createParticles(x, y, type) {
-            const colors = {
-                blood: ['#8B0000', '#A52A2A', '#DC143C'],
-                hit: ['#ffff00', '#ffa500', '#ff6600'],
-                muzzle: ['#ffff00', '#ffffff', '#ffa500']
-            };
-            
-            const particleColors = colors[type] || colors.hit;
-            
-            for (let i = 0; i < 10; i++) {
-                zombieState.particles.push({
-                    x: x + (Math.random() - 0.5) * 10,
-                    y: y + (Math.random() - 0.5) * 10,
-                    vx: (Math.random() - 0.5) * 4,
-                    vy: (Math.random() - 0.5) * 4,
-                    color: particleColors[Math.floor(Math.random() * particleColors.length)],
-                    life: 1
-                });
-            }
-        }
-
-        function zombieGameLoop() {
-            if (!zombieState.isPlaying) return;
-            
-            handleZombieInput();
-            updateZombiePhysics();
-            drawZombieWorld();
-            updateZombieDisplay();
-        }
-
-        function handleZombieInput() {
-            const speed = 2;
-            
-            if (zombieState.keys['w'] || zombieState.keys['W'] || zombieState.keys['ArrowUp']) {
-                zombieState.playerY = Math.max(20, zombieState.playerY - speed);
-            }
-            if (zombieState.keys['s'] || zombieState.keys['S'] || zombieState.keys['ArrowDown']) {
-                zombieState.playerY = Math.min(zombieState.worldHeight - 20, zombieState.playerY + speed);
-            }
-            if (zombieState.keys['a'] || zombieState.keys['A'] || zombieState.keys['ArrowLeft']) {
-                zombieState.playerX = Math.max(20, zombieState.playerX - speed);
-            }
-            if (zombieState.keys['d'] || zombieState.keys['D'] || zombieState.keys['ArrowRight']) {
-                zombieState.playerX = Math.min(zombieState.worldWidth - 20, zombieState.playerX + speed);
-            }
-        }
-
-        function resetZombieSurvival() {
-            if (zombieState.gameLoop) clearInterval(zombieState.gameLoop);
-            
-            zombieState = {
-                day: 1, survivors: 1, supplies: 50, health: 100, ammo: 30, maxAmmo: 30,
-                weapon: 'pistol', isPlaying: false, gameLoop: null, playerX: 200, playerY: 200,
-                playerAngle: 0, canvas: null, ctx: null, minimapCanvas: null, minimapCtx: null,
-                worldWidth: 800, worldHeight: 600, cameraX: 0, cameraY: 0, waveNumber: 1,
-                waveTimer: 30, zombiesKilled: 0, totalZombies: 0, isReloading: false,
-                reloadTime: 0, zombies: [], bullets: [], bloodSplatters: [], buildings: [],
-                barricades: [], supplies: [], weapons: [], lightRadius: 80, flashlightOn: true,
-                muzzleFlash: 0, explosions: [], particles: [], safehouse: null, doors: [],
-                windows: [], upgrades: [], experience: 0, level: 1, unlockedWeapons: ['pistol'],
-                keys: {}, mouseX: 0, mouseY: 0, screenShake: 0, damageFlash: 0, survivalTime: 0,
-                storyFragments: [], currentObjective: 'Survive the first wave', food: 20,
-                water: 15, materials: 10
-            };
-            
-            initializeZombieWorld();
-            updateZombieDisplay();
-            document.getElementById('zombieStatus').style.display = 'none';
-            document.getElementById('startZombieBtn').disabled = false;
-            document.getElementById('startZombieBtn').textContent = '🧟 Start Survival';
-        }
-
-        function startZombieSurvival() {
-            resetZombieSurvival();
-            zombieState.isPlaying = true;
-            
-            document.getElementById('startZombieBtn').disabled = true;
-            document.getElementById('startZombieBtn').textContent = 'Survival In Progress...';
-            
-            zombieState.gameLoop = setInterval(zombieGameLoop, 16);
-            showNotification('Zombie apocalypse started! Survive the waves!');
-        }
-
-        function endZombieSurvival(survived, message) {
-            zombieState.isPlaying = false;
-            if (zombieState.gameLoop) clearInterval(zombieState.gameLoop);
-            
-            let survivalScore = 0;
-            if (survived) {
-                survivalScore = Math.floor(zombieState.zombiesKilled * 100 + zombieState.survivalTime * 10 + zombieState.waveNumber * 500);
-            } else {
-                survivalScore = Math.floor(zombieState.zombiesKilled * 50 + zombieState.survivalTime * 5);
-            }
-            
-            gameStats.gamesPlayed++;
-            gameStats.totalScore += survivalScore;
-            if (survivalScore > gameStats.highScore) gameStats.highScore = survivalScore;
-            saveStats();
-            updateStats();
-            
-            const zombieResult = document.getElementById('zombieResult');
-            if (survived) {
-                zombieResult.innerHTML = `🧟 ${message}<br>Waves: ${zombieState.waveNumber} - Zombies killed: ${zombieState.zombiesKilled}<br>Score: ${survivalScore} - Legendary survivor!`;
-                document.getElementById('zombieStatus').style.background = 'rgba(0, 255, 162, 0.2)';
-                showNotification('You survived the zombie apocalypse!');
-            } else {
-                zombieResult.innerHTML = `💀 ${message}<br>Waves survived: ${zombieState.waveNumber - 1} - Zombies killed: ${zombieState.zombiesKilled}<br>Score: ${survivalScore} - Fight harder next time!`;
-                document.getElementById('zombieStatus').style.background = 'rgba(255, 107, 107, 0.2)';
-                showNotification('The zombies got you! Try again!');
-            }
-            
-            document.getElementById('zombieStatus').style.display = 'block';
-            document.getElementById('startZombieBtn').disabled = false;
-            document.getElementById('startZombieBtn').textContent = '🧟 Survive Again';
-        }
-
-        function zombieShoot() {
-            if (!zombieState.isPlaying || zombieState.ammo <= 0 || zombieState.isReloading) return;
-            
-            const dx = zombieState.mouseX - zombieState.playerX;
-            const dy = zombieState.mouseY - zombieState.playerY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            
-            if (distance > 0) {
-                let damage = 25;
-                let bulletSpeed = 8;
-                let bulletCount = 1;
-                
-                switch(zombieState.weapon) {
-                    case 'shotgun':
-                        damage = 15;
-                        bulletCount = 5;
-                        break;
-                    case 'rifle':
-                        damage = 50;
-                        bulletSpeed = 12;
-                        break;
-                    case 'machinegun':
-                        damage = 20;
-                        bulletSpeed = 10;
-                        break;
-                }
-                
-                for (let i = 0; i < bulletCount; i++) {
-                    const spread = bulletCount > 1 ? (Math.random() - 0.5) * 0.3 : 0;
-                    const angle = Math.atan2(dy, dx) + spread;
-                    
-                    zombieState.bullets.push({
-                        x: zombieState.playerX,
-                        y: zombieState.playerY,
-                        vx: Math.cos(angle) * bulletSpeed,
-                        vy: Math.sin(angle) * bulletSpeed,
-                        damage: damage,
-                        life: 100
-                    });
-                }
-                
-                zombieState.ammo--;
-                zombieState.muzzleFlash = 1;
-                zombieState.screenShake = 5;
-                
-                createParticles(zombieState.playerX, zombieState.playerY, 'muzzle');
-            }
-        }
-
-        function zombieReload() {
-            if (!zombieState.isPlaying || zombieState.isReloading || zombieState.ammo === zombieState.maxAmmo) return;
-            
-            zombieState.isReloading = true;
-            zombieState.reloadTime = zombieState.weapon === 'shotgun' ? 3 : (zombieState.weapon === 'rifle' ? 2.5 : 2);
-            showNotification('Reloading...');
-        }
-
-        function zombieBuild() {
-            if (!zombieState.isPlaying || zombieState.materials < 5) return;
-            
-            // Simple barricade building near player
-            const barricade = {
-                x: zombieState.playerX + (Math.random() - 0.5) * 40,
-                y: zombieState.playerY + (Math.random() - 0.5) * 40,
-                health: 100
-            };
-            
-            zombieState.barricades.push(barricade);
-            zombieState.materials -= 5;
-            showNotification('Barricade built!');
-        }
-
-        // SKY DIVING EXTREME FUNCTIONS
-        function initializeSkyDiving() {
-            const canvas = document.getElementById('skyCanvas');
-            const world = document.getElementById('skyWorld');
-            
-            canvas.width = world.clientWidth;
-            canvas.height = world.clientHeight;
-            skyState.canvas = canvas;
-            skyState.ctx = canvas.getContext('2d');
-            skyState.worldWidth = canvas.width;
-            skyState.worldHeight = canvas.height;
-            
-            // Reset player position
-            skyState.playerX = canvas.width / 2;
-            skyState.playerY = 50;
-            skyState.velocityX = 0;
-            skyState.velocityY = 0;
-            
-            // Create sky diving world
-            createSkyWorld();
-            
-            // Reset game state
-            skyState.altitude = 15000;
-            skyState.speed = 0;
-            skyState.score = 0;
-            skyState.fallTime = 0;
-            skyState.phase = 'freefall';
-            skyState.chuteDeployed = false;
-            skyState.stuntsPerformed = 0;
-            skyState.worldOffset = 0;
-            skyState.groundLevel = canvas.height - 50;
-            
-            // Clear arrays
-            skyState.obstacles = [];
-            skyState.rings = [];
-            skyState.clouds = [];
-            skyState.particles = [];
-            skyState.trailParticles = [];
-        }
-
-        function createSkyWorld() {
-            // Create floating obstacles at various altitudes
-            for (let i = 0; i < 15; i++) {
-                skyState.obstacles.push({
-                    x: Math.random() * (skyState.worldWidth - 40) + 20,
-                    y: 100 + (i * 80) + Math.random() * 60,
-                    width: 30 + Math.random() * 20,
-                    height: 15 + Math.random() * 10,
-                    type: Math.random() < 0.7 ? 'platform' : 'balloon',
-                    altitude: 14000 - (i * 800)
-                });
-            }
-            
-            // Create point rings to collect
-            for (let i = 0; i < 20; i++) {
-                skyState.rings.push({
-                    x: Math.random() * (skyState.worldWidth - 60) + 30,
-                    y: 80 + (i * 60) + Math.random() * 40,
-                    radius: 20 + Math.random() * 10,
-                    points: 100 + Math.floor(Math.random() * 200),
-                    collected: false,
-                    pulse: Math.random() * Math.PI * 2,
-                    altitude: 14500 - (i * 700)
-                });
-            }
-            
-            // Create clouds for visual depth
-            for (let i = 0; i < 10; i++) {
-                skyState.clouds.push({
-                    x: Math.random() * skyState.worldWidth,
-                    y: 50 + (i * 100) + Math.random() * 80,
-                    size: 30 + Math.random() * 40,
-                    opacity: 0.3 + Math.random() * 0.4,
-                    speed: 0.5 + Math.random() * 1
-                });
-            }
-        }
-
-        function updateSkyDisplay() {
-            document.getElementById('skyAltitude').textContent = Math.floor(skyState.altitude);
-            document.getElementById('skySpeed').textContent = Math.floor(skyState.speed);
-            document.getElementById('skyScore').textContent = skyState.score;
-            
-            // Update player position
-            const player = document.getElementById('skyPlayer');
-            player.style.left = skyState.playerX + 'px';
-            player.style.top = skyState.playerY + 'px';
-            
-            // Player visual effects based on phase
-            if (skyState.chuteDeployed) {
-                player.style.background = '#ff6b35';
-                player.style.width = '16px';
-                player.style.height = '12px';
-                player.style.boxShadow = '0 0 15px rgba(255,107,53,0.8)';
-            } else if (skyState.speed > 100) {
-                player.style.background = '#ffff00';
-                player.style.boxShadow = '0 0 20px rgba(255,255,0,0.8)';
-            } else {
-                player.style.background = 'var(--primary-color)';
-                player.style.width = '12px';
-                player.style.height = '8px';
-                player.style.boxShadow = '0 0 8px rgba(0,255,162,0.8)';
-            }
-            
-            // Update HUD
-            if (skyState.isPlaying) {
-                const hud = document.getElementById('skyHUD');
-                const altimeter = document.getElementById('skyAltimeter');
-                
-                hud.style.display = 'block';
-                altimeter.style.display = 'flex';
-                
-                document.getElementById('skyPhase').textContent = skyState.phase.toUpperCase();
-                document.getElementById('skyTime').textContent = `Fall Time: ${skyState.fallTime.toFixed(1)}s`;
-                document.getElementById('skyChute').textContent = skyState.chuteDeployed ? 'DEPLOYED' : 'READY';
-                document.getElementById('skyStunts').textContent = `Stunts: ${skyState.stuntsPerformed}`;
-                
-                if (skyState.altitude < skyState.chuteMinAltitude && !skyState.chuteDeployed) {
-                    document.getElementById('skyTarget').textContent = 'DEPLOY CHUTE NOW!';
-                    document.getElementById('skyTarget').style.color = '#ff0000';
-                } else if (skyState.phase === 'landing') {
-                    document.getElementById('skyTarget').textContent = 'Aim for landing zone!';
-                    document.getElementById('skyTarget').style.color = '#ffff00';
-                } else {
-                    document.getElementById('skyTarget').textContent = 'Navigate through rings!';
-                    document.getElementById('skyTarget').style.color = '#ffff00';
-                }
-                
-                document.getElementById('altReading').textContent = Math.floor(skyState.altitude);
-                
-                // Critical altitude warning
-                if (skyState.altitude < 1000 && !skyState.chuteDeployed) {
-                    altimeter.style.backgroundColor = 'rgba(255,0,0,0.8)';
-                    altimeter.style.borderColor = '#ff0000';
-                } else {
-                    altimeter.style.backgroundColor = 'rgba(0,0,0,0.9)';
-                    altimeter.style.borderColor = '#ff6b35';
-                }
-            } else {
-                document.getElementById('skyHUD').style.display = 'none';
-                document.getElementById('skyAltimeter').style.display = 'none';
-            }
-        }
-
-        function drawSkyWorld() {
-            if (!skyState.ctx) return;
-            
-            const ctx = skyState.ctx;
-            ctx.clearRect(0, 0, skyState.worldWidth, skyState.worldHeight);
-            
-            // Apply screen shake
-            if (skyState.screenShake > 0) {
-                ctx.save();
-                ctx.translate(
-                    (Math.random() - 0.5) * skyState.screenShake,
-                    (Math.random() - 0.5) * skyState.screenShake
-                );
-                skyState.screenShake *= 0.9;
-            }
-            
-            // Draw sky gradient (changes with altitude)
-            drawSkyGradient();
-            
-            // Draw clouds
-            drawClouds();
-            
-            // Draw world elements based on scroll position
-            drawObstacles();
-            drawRings();
-            drawLandingZone();
-            
-            // Draw particle effects
-            drawTrailParticles();
-            drawParticles();
-            
-            // Draw parachute if deployed
-            if (skyState.chuteDeployed) {
-                drawParachute();
-            }
-            
-            // Apply visual effects
-            if (skyState.slowMotion) {
-                drawSlowMotionEffect();
-            }
-            
-            if (skyState.screenShake > 0) {
-                ctx.restore();
-            }
-        }
-
-        function drawSkyGradient() {
-            const ctx = skyState.ctx;
-            const altitudePercent = Math.max(0, skyState.altitude / 15000);
-            
-            const gradient = ctx.createLinearGradient(0, 0, 0, skyState.worldHeight);
-            
-            if (altitudePercent > 0.8) {
-                // High altitude - darker blue
-                gradient.addColorStop(0, '#001f3f');
-                gradient.addColorStop(1, '#0074D9');
-            } else if (altitudePercent > 0.4) {
-                // Mid altitude - normal sky
-                gradient.addColorStop(0, '#87CEEB');
-                gradient.addColorStop(1, '#E0F6FF');
-            } else {
-                // Low altitude - approaching ground
-                gradient.addColorStop(0, '#E0F6FF');
-                gradient.addColorStop(0.7, '#98FB98');
-                gradient.addColorStop(1, '#228B22');
-            }
-            
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, skyState.worldWidth, skyState.worldHeight);
-        }
-
-        function drawClouds() {
-            const ctx = skyState.ctx;
-            
-            skyState.clouds.forEach(cloud => {
-                ctx.fillStyle = `rgba(255, 255, 255, ${cloud.opacity})`;
-                ctx.beginPath();
-                ctx.arc(cloud.x, cloud.y + skyState.worldOffset, cloud.size, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Additional cloud puffs
-                ctx.beginPath();
-                ctx.arc(cloud.x - cloud.size * 0.3, cloud.y + skyState.worldOffset, cloud.size * 0.7, 0, Math.PI * 2);
-                ctx.arc(cloud.x + cloud.size * 0.3, cloud.y + skyState.worldOffset, cloud.size * 0.7, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Move clouds
-                cloud.x += cloud.speed;
-                if (cloud.x > skyState.worldWidth + cloud.size) {
-                    cloud.x = -cloud.size;
-                }
-            });
-        }
-
-        function drawObstacles() {
-            const ctx = skyState.ctx;
-            
-            skyState.obstacles.forEach(obstacle => {
-                const screenY = obstacle.y + skyState.worldOffset;
-                
-                // Only draw if on screen
-                if (screenY > -50 && screenY < skyState.worldHeight + 50) {
-                    if (obstacle.type === 'platform') {
-                        // Floating platform
-                        ctx.fillStyle = '#666666';
-                        ctx.fillRect(obstacle.x, screenY, obstacle.width, obstacle.height);
-                        
-                        // Platform shadow
-                        ctx.fillStyle = 'rgba(0,0,0,0.3)';
-                        ctx.fillRect(obstacle.x + 2, screenY + 2, obstacle.width, obstacle.height);
-                        
-                        // Platform details
-                        ctx.strokeStyle = '#444444';
-                        ctx.lineWidth = 2;
-                        ctx.strokeRect(obstacle.x, screenY, obstacle.width, obstacle.height);
-                    } else {
-                        // Hot air balloon
-                        ctx.fillStyle = '#ff6b35';
-                        ctx.beginPath();
-                        ctx.arc(obstacle.x + obstacle.width/2, screenY, obstacle.width/2, 0, Math.PI * 2);
-                        ctx.fill();
-                        
-                        // Balloon basket
-                        ctx.fillStyle = '#8B4513';
-                        ctx.fillRect(obstacle.x + obstacle.width/2 - 5, screenY + obstacle.width/2 + 5, 10, 8);
-                        
-                        // Balloon strings
-                        ctx.strokeStyle = '#333333';
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(obstacle.x + obstacle.width/2 - 3, screenY + obstacle.width/2);
-                        ctx.lineTo(obstacle.x + obstacle.width/2 - 5, screenY + obstacle.width/2 + 5);
-                        ctx.moveTo(obstacle.x + obstacle.width/2 + 3, screenY + obstacle.width/2);
-                        ctx.lineTo(obstacle.x + obstacle.width/2 + 5, screenY + obstacle.width/2 + 5);
-                        ctx.stroke();
-                    }
-                }
-            });
-        }
-
-        function drawRings() {
-            const ctx = skyState.ctx;
-            
-            skyState.rings.forEach(ring => {
-                if (ring.collected) return;
-                
-                const screenY = ring.y + skyState.worldOffset;
-                
-                // Only draw if on screen
-                if (screenY > -50 && screenY < skyState.worldHeight + 50) {
-                    // Animated ring with pulsing effect
-                    ring.pulse += 0.1;
-                    const pulseSize = Math.sin(ring.pulse) * 3;
-                    const currentRadius = ring.radius + pulseSize;
-                    
-                    // Ring glow effect
-                    const gradient = ctx.createRadialGradient(
-                        ring.x, screenY, 0,
-                        ring.x, screenY, currentRadius + 10
-                    );
-                    gradient.addColorStop(0, 'rgba(255,215,0,0.8)');
-                    gradient.addColorStop(0.7, 'rgba(255,215,0,0.4)');
-                    gradient.addColorStop(1, 'rgba(255,215,0,0)');
-                    
-                    ctx.fillStyle = gradient;
-                    ctx.beginPath();
-                    ctx.arc(ring.x, screenY, currentRadius + 10, 0, Math.PI * 2);
-                    ctx.fill();
-                    
-                    // Ring outline
-                    ctx.strokeStyle = '#FFD700';
-                    ctx.lineWidth = 4;
-                    ctx.beginPath();
-                    ctx.arc(ring.x, screenY, currentRadius, 0, Math.PI * 2);
-                    ctx.stroke();
-                    
-                    // Ring inner circle
-                    ctx.strokeStyle = '#FFA500';
-                    ctx.lineWidth = 2;
-                    ctx.beginPath();
-                    ctx.arc(ring.x, screenY, currentRadius - 8, 0, Math.PI * 2);
-                    ctx.stroke();
-                    
-                    // Points display
-                    ctx.fillStyle = '#ffffff';
-                    ctx.font = '12px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.fillText(ring.points.toString(), ring.x, screenY + 4);
-                }
-            });
-        }
-
-        function drawLandingZone() {
-            const ctx = skyState.ctx;
-            
-            if (skyState.altitude < 3000) {
-                const screenY = skyState.landingZone.y + skyState.worldOffset;
-                
-                if (screenY > -50 && screenY < skyState.worldHeight + 50) {
-                    // Landing zone target
-                    ctx.fillStyle = '#ff6b35';
-                    ctx.fillRect(skyState.landingZone.x, screenY, skyState.landingZone.width, skyState.landingZone.height);
-                    
-                    // Target pattern
-                    ctx.strokeStyle = '#ffffff';
-                    ctx.lineWidth = 2;
-                    for (let i = 0; i < 3; i++) {
-                        const radius = 8 + (i * 8);
-                        ctx.beginPath();
-                        ctx.arc(
-                            skyState.landingZone.x + skyState.landingZone.width/2,
-                            screenY + skyState.landingZone.height/2,
-                            radius, 0, Math.PI * 2
-                        );
-                        ctx.stroke();
-                    }
-                    
-                    // Landing zone label
-                    ctx.fillStyle = '#ffffff';
-                    ctx.font = '10px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.fillText(
-                        'LANDING ZONE',
-                        skyState.landingZone.x + skyState.landingZone.width/2,
-                        screenY - 10
-                    );
-                }
-            }
-        }
-
-        function drawTrailParticles() {
-            const ctx = skyState.ctx;
-            
-            // Create trail particles behind player when moving fast
-            if (skyState.speed > 60) {
-                skyState.trailParticles.push({
-                    x: skyState.playerX + (Math.random() - 0.5) * 8,
-                    y: skyState.playerY + (Math.random() - 0.5) * 4,
-                    vx: (Math.random() - 0.5) * 2,
-                    vy: -skyState.speed * 0.05,
-                    life: 1,
-                    color: skyState.speed > 100 ? '#ffff00' : '#00ffa2'
-                });
-            }
-            
-            // Draw and update trail particles
-            skyState.trailParticles.forEach((particle, index) => {
-                ctx.fillStyle = `rgba(${hexToRgb(particle.color)}, ${particle.life})`;
-                ctx.fillRect(particle.x - 1, particle.y - 1, 2, 2);
-                
-                particle.x += particle.vx;
-                particle.y += particle.vy;
-                particle.life -= 0.02;
-                
-                if (particle.life <= 0) {
-                    skyState.trailParticles.splice(index, 1);
-                }
-            });
-        }
-
-        function drawParticles() {
-            const ctx = skyState.ctx;
-            
-            skyState.particles.forEach((particle, index) => {
-                ctx.fillStyle = particle.color;
-                ctx.globalAlpha = particle.life;
-                ctx.fillRect(particle.x - 1, particle.y - 1, 2, 2);
-                
-                particle.x += particle.vx;
-                particle.y += particle.vy;
-                particle.life -= 0.02;
-                
-                if (particle.life <= 0) {
-                    skyState.particles.splice(index, 1);
-                }
-            });
-            
-            ctx.globalAlpha = 1;
-        }
-
-        function drawParachute() {
-            const ctx = skyState.ctx;
-            
-            // Parachute canopy
-            const chuteX = skyState.playerX;
-            const chuteY = skyState.playerY - 25;
-            
-            ctx.fillStyle = skyState.parachute === 'rainbow' ? '#ff6b35' : '#ffffff';
-            ctx.beginPath();
-            ctx.arc(chuteX, chuteY, 20, 0, Math.PI);
-            ctx.fill();
-            
-            // Parachute lines
-            ctx.strokeStyle = '#333333';
-            ctx.lineWidth = 1;
-            for (let i = -1; i <= 1; i++) {
-                ctx.beginPath();
-                ctx.moveTo(chuteX + (i * 15), chuteY);
-                ctx.lineTo(skyState.playerX + (i * 3), skyState.playerY);
-                ctx.stroke();
-            }
-            
-            // Parachute pattern
-            if (skyState.parachute === 'rainbow') {
-                const colors = ['#ff0000', '#ff6600', '#ffff00', '#00ff00', '#0066ff', '#6600ff'];
-                for (let i = 0; i < 6; i++) {
-                    ctx.fillStyle = colors[i];
-                    ctx.beginPath();
-                    ctx.arc(chuteX, chuteY, 18, (i * Math.PI / 3), ((i + 1) * Math.PI / 3));
-                    ctx.fill();
-                }
-            }
-        }
-
-        function drawSlowMotionEffect() {
-            const ctx = skyState.ctx;
-            
-            // Slow motion visual overlay
-            ctx.fillStyle = 'rgba(0,100,200,0.1)';
-            ctx.fillRect(0, 0, skyState.worldWidth, skyState.worldHeight);
-            
-            // Slow motion particles
-            for (let i = 0; i < 5; i++) {
-                skyState.particles.push({
-                    x: Math.random() * skyState.worldWidth,
-                    y: Math.random() * skyState.worldHeight,
-                    vx: (Math.random() - 0.5) * 2,
-                    vy: (Math.random() - 0.5) * 2,
-                    color: '#00ffff',
-                    life: 0.5
-                });
-            }
-        }
-
         body.night-mode {
             --text-color: #ffffff;
             --bg-color: #000000;
             --card-bg: #1a1a1a;
             --border-color: #333333;
             --shadow: 0 4px 25px rgba(255,255,255,0.1);
+            background-color: #000000 !important;
+            color: #ffffff !important;
         }
 
         body.night-mode .header {
-            background: linear-gradient(135deg, #333333 0%, #1a1a1a 100%);
+            background: linear-gradient(135deg, #333333 0%, #1a1a1a 100%) !important;
         }
 
         body.night-mode .game-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-        }
-
-        body.night-mode .game-title {
-            color: #00ffa2;
-        }
-
-        body.night-mode #targetRange,
-        body.night-mode #chaseTrack,
-        body.night-mode #raceTrack,
-        body.night-mode #heliTrack,
-        body.night-mode #stuntTrack,
-        body.night-mode #heistTrack,
-        body.night-mode #casinoTrack,
-        body.night-mode #neonTrack {
-            border-color: var(--border-color);
+            background: #1a1a1a !important;
+            border: 1px solid #333333 !important;
+            color: #ffffff !important;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1350,62 +132,6 @@
             position: fixed; top: 20px; right: 20px; background: var(--gradient-primary);
             color: white; padding: 1rem 1.5rem; border-radius: 12px; z-index: 1000; display: none;
         }
-
-        .target {
-            position: absolute; width: 30px; height: 30px; border-radius: 50%;
-            background: radial-gradient(circle, #ff0000 0%, #990000 100%);
-            border: 2px solid #fff; cursor: pointer;
-        }
-
-        .target::before {
-            content: ''; position: absolute; top: 50%; left: 50%;
-            width: 15px; height: 15px; background: #fff; border-radius: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .target::after {
-            content: ''; position: absolute; top: 50%; left: 50%;
-            width: 7px; height: 7px; background: #000; border-radius: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .hit-effect {
-            position: absolute; color: #ffff00; font-weight: bold;
-            pointer-events: none; animation: hitFade 1s ease-out forwards; z-index: 100;
-        }
-
-        @keyframes hitFade {
-            0% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(1.5) translateY(-20px); }
-        }
-
-        .police-car {
-            position: absolute; width: 25px; height: 18px; background: #0066cc;
-            border-radius: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .obstacle { position: absolute; width: 20px; height: 15px; background: #666; border-radius: 2px; }
-
-        .road-line {
-            position: absolute; width: 3px; height: 20px; background: #fff;
-            opacity: 0.7; animation: roadScroll 0.5s linear infinite;
-        }
-
-        @keyframes roadScroll {
-            0% { transform: translateY(-20px); }
-            100% { transform: translateY(170px); }
-        }
-
-        .explosion {
-            position: absolute; width: 40px; height: 40px;
-            background: radial-gradient(circle, #ff6600 0%, #ff0000 50%, transparent 100%);
-            border-radius: 50%; animation: explode 0.5s ease-out forwards;
-        }
-
-        @keyframes explode {
-            0% { transform: scale(0.1); opacity: 1; }
-            100% { transform: scale(2); opacity: 0; }
-        }
     </style>
 </head>
 <body>
@@ -1414,7 +140,7 @@
         <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">🌙</button>
         
         <h1>🎯 GTA6FastLane Mini-Games</h1>
-        <div style="font-size: 1.2rem; opacity: 0.9; margin-bottom: 1rem;">Ultimate Gaming Hub - 54 Games Coming Soon!</div>
+        <div style="font-size: 1.2rem; opacity: 0.9; margin-bottom: 1rem;">Ultimate Gaming Hub - 10 Games Available!</div>
         
         <div class="stats-grid">
             <div class="stat-card">
@@ -1458,258 +184,145 @@
             <div class="game-card">
                 <div class="game-title">🚗 Highway Chase</div>
                 <div class="game-stats">
-                    <span>Speed: <strong id="chaseSpeed">0</strong> mph</span>
-                    <span>Distance: <strong id="chaseDistance">0</strong>m</span>
-                    <span>Heat: <strong id="chaseHeat">0</strong></span>
+                    <span>Speed: <strong>0</strong> mph</span>
+                    <span>Distance: <strong>0</strong>m</span>
+                    <span>Heat: <strong>0</strong></span>
                 </div>
-                <div id="chaseTrack" style="height: 150px; background: linear-gradient(180deg, #2a4d3a 0%, #1e3a1e 50%, #333 100%); border-radius: 8px; position: relative; overflow: hidden; border: 2px solid var(--border-color);">
-                    <div id="playerCar" style="position: absolute; bottom: 10px; left: 50%; width: 30px; height: 20px; background: var(--primary-color); border-radius: 4px; transform: translateX(-50%); box-shadow: 0 2px 4px rgba(0,0,0,0.5);"></div>
-                    <div id="roadLines" style="position: absolute; width: 100%; height: 100%; pointer-events: none;"></div>
-                </div>
-                <div id="gameStatus" class="game-status">
-                    <strong style="color: var(--primary-color);">Game Over!</strong>
-                    <p id="gameResult" style="margin: 0.3rem 0; font-size: 0.9rem;"></p>
-                </div>
+                <div style="height: 150px; background: linear-gradient(180deg, #2a4d3a 0%, #1e3a1e 50%, #333 100%); border-radius: 8px; position: relative; overflow: hidden; border: 2px solid var(--border-color);"></div>
                 <div class="game-controls">
-                    <button id="leftBtn" class="control-btn" onclick="turnLeft()">◀ Left</button>
-                    <button id="gasBtn" class="control-btn gas" onclick="accelerate()">▲ Gas</button>
-                    <button id="rightBtn" class="control-btn" onclick="turnRight()">Right ▶</button>
+                    <button class="control-btn" onclick="demoMessage()">◀ Left</button>
+                    <button class="control-btn gas" onclick="demoMessage()">▲ Gas</button>
+                    <button class="control-btn" onclick="demoMessage()">Right ▶</button>
                 </div>
-                <button class="floating-btn" id="startChaseBtn" onclick="startChase()">🚗 Start Chase</button>
+                <button class="floating-btn" onclick="demoMessage()">🚗 Start Chase</button>
             </div>
 
             <div class="game-card">
                 <div class="game-title">🏆 Vice City Racing</div>
                 <div class="game-stats">
-                    <span>Speed: <strong id="raceSpeed">0</strong> mph</span>
-                    <span>Position: <strong id="racePosition">1st</strong></span>
-                    <span>Lap: <strong id="raceLap">1/3</strong></span>
+                    <span>Speed: <strong>0</strong> mph</span>
+                    <span>Position: <strong>1st</strong></span>
+                    <span>Lap: <strong>1/3</strong></span>
                 </div>
-                <div id="raceTrack" style="height: 300px; background: linear-gradient(45deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius: 8px; position: relative; overflow: hidden; border: 2px solid var(--border-color);">
-                    <div id="playerRacer" style="position: absolute; width: 20px; height: 12px; background: var(--primary-color); border-radius: 2px; transform: translate(-50%, -50%); box-shadow: 0 0 10px rgba(0,255,162,0.5); z-index: 10;"></div>
-                    <canvas id="raceCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-                </div>
-                <div id="raceStatus" class="game-status">
-                    <strong style="color: var(--primary-color);">Race Finished!</strong>
-                    <p id="raceResult" style="margin: 0.3rem 0; font-size: 0.9rem;"></p>
-                </div>
+                <div style="height: 300px; background: linear-gradient(45deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius: 8px; border: 2px solid var(--border-color);"></div>
                 <div class="game-controls">
-                    <button id="raceLeftBtn" class="control-btn" onclick="turnRacerLeft()">◀ Turn</button>
-                    <button id="raceGasBtn" class="control-btn gas" onclick="accelerateRacer()">▲ Boost</button>
-                    <button id="raceRightBtn" class="control-btn" onclick="turnRacerRight()">Turn ▶</button>
+                    <button class="control-btn" onclick="demoMessage()">◀ Turn</button>
+                    <button class="control-btn gas" onclick="demoMessage()">▲ Boost</button>
+                    <button class="control-btn" onclick="demoMessage()">Turn ▶</button>
                 </div>
-                <button class="floating-btn" id="startRaceBtn" onclick="startRace()">🏆 Start Race</button>
-                <div style="text-align: center; margin-top: 0.5rem; font-size: 0.7rem; opacity: 0.7;">Navigate the neon-lit streets - WASD controls</div>
+                <button class="floating-btn" onclick="demoMessage()">🏆 Start Race</button>
             </div>
 
             <div class="game-card">
                 <div class="game-title">🚁 Helicopter Escape</div>
                 <div class="game-stats">
-                    <span>Altitude: <strong id="heliAltitude">500</strong>ft</span>
-                    <span>Fuel: <strong id="heliFuel">100</strong>%</span>
-                    <span>Distance: <strong id="heliDistance">0</strong>m</span>
+                    <span>Altitude: <strong>500</strong>ft</span>
+                    <span>Fuel: <strong>100</strong>%</span>
+                    <span>Distance: <strong>0</strong>m</span>
                 </div>
-                <div id="heliTrack" style="height: 300px; background: linear-gradient(180deg, #87CEEB 0%, #B0C4DE 30%, #F0F8FF 60%, #DCDCDC 100%); border-radius: 8px; position: relative; overflow: hidden; border: 2px solid var(--border-color);">
-                    <div id="playerHeli" style="position: absolute; width: 25px; height: 15px; background: var(--primary-color); border-radius: 3px; transform: translate(-50%, -50%); box-shadow: 0 0 15px rgba(0,255,162,0.6); z-index: 20;"></div>
-                    <canvas id="heliCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-                </div>
-                <div id="heliStatus" class="game-status">
-                    <strong style="color: var(--primary-color);">Flight Complete!</strong>
-                    <p id="heliResult" style="margin: 0.3rem 0; font-size: 0.9rem;"></p>
-                </div>
+                <div style="height: 300px; background: linear-gradient(180deg, #87CEEB 0%, #B0C4DE 30%, #F0F8FF 60%, #DCDCDC 100%); border-radius: 8px; border: 2px solid var(--border-color);"></div>
                 <div class="game-controls">
-                    <button id="heliUpBtn" class="control-btn" onclick="heliUp()">▲ Up</button>
-                    <button id="heliBoostBtn" class="control-btn gas" onclick="heliBoost()">⚡ Boost</button>
-                    <button id="heliDownBtn" class="control-btn" onclick="heliDown()">▼ Down</button>
+                    <button class="control-btn" onclick="demoMessage()">▲ Up</button>
+                    <button class="control-btn gas" onclick="demoMessage()">⚡ Boost</button>
+                    <button class="control-btn" onclick="demoMessage()">▼ Down</button>
                 </div>
-                <button class="floating-btn" id="startHeliBtn" onclick="startHelicopter()">🚁 Take Flight</button>
-                <div style="text-align: center; margin-top: 0.5rem; font-size: 0.7rem; opacity: 0.7;">Navigate through the city skyline - WASD controls</div>
+                <button class="floating-btn" onclick="demoMessage()">🚁 Take Flight</button>
             </div>
 
             <div class="game-card">
                 <div class="game-title">🎪 Stunt Jump Challenge</div>
                 <div class="game-stats">
-                    <span>Speed: <strong id="stuntSpeed">0</strong> mph</span>
-                    <span>Distance: <strong id="stuntDistance">0</strong>ft</span>
-                    <span>Style: <strong id="stuntStyle">0</strong>pts</span>
+                    <span>Speed: <strong>0</strong> mph</span>
+                    <span>Distance: <strong>0</strong>ft</span>
+                    <span>Style: <strong>0</strong>pts</span>
                 </div>
-                <div id="stuntTrack" style="height: 300px; background: linear-gradient(180deg, #FFE4B5 0%, #DEB887 30%, #CD853F 60%, #8B4513 100%); border-radius: 8px; position: relative; overflow: hidden; border: 2px solid var(--border-color);">
-                    <div id="playerStuntCar" style="position: absolute; width: 24px; height: 14px; background: var(--primary-color); border-radius: 3px; transform: translate(-50%, -50%); box-shadow: 0 0 10px rgba(0,255,162,0.5); z-index: 15;"></div>
-                    <canvas id="stuntCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-                </div>
-                <div id="stuntStatus" class="game-status">
-                    <strong style="color: var(--primary-color);">Stunt Complete!</strong>
-                    <p id="stuntResult" style="margin: 0.3rem 0; font-size: 0.9rem;"></p>
-                </div>
+                <div style="height: 300px; background: linear-gradient(180deg, #FFE4B5 0%, #DEB887 30%, #CD853F 60%, #8B4513 100%); border-radius: 8px; border: 2px solid var(--border-color);"></div>
                 <div class="game-controls">
-                    <button id="stuntLeftBtn" class="control-btn" onclick="stuntLeft()">◀ Lean</button>
-                    <button id="stuntGasBtn" class="control-btn gas" onclick="stuntGas()">🔥 Boost</button>
-                    <button id="stuntRightBtn" class="control-btn" onclick="stuntRight()">Lean ▶</button>
+                    <button class="control-btn" onclick="demoMessage()">◀ Lean</button>
+                    <button class="control-btn gas" onclick="demoMessage()">🔥 Boost</button>
+                    <button class="control-btn" onclick="demoMessage()">Lean ▶</button>
                 </div>
-                <button class="floating-btn" id="startStuntBtn" onclick="startStunt()">🎪 Launch Stunt</button>
-                <div style="text-align: center; margin-top: 0.5rem; font-size: 0.7rem; opacity: 0.7;">Master impossible vehicle stunts - WASD controls</div>
+                <button class="floating-btn" onclick="demoMessage()">🎪 Launch Stunt</button>
             </div>
 
             <div class="game-card">
                 <div class="game-title">💰 Bank Heist Simulator</div>
                 <div class="game-stats">
-                    <span>Heat: <strong id="heistHeat">0</strong>%</span>
-                    <span>Team: <strong id="heistTeam">4/4</strong></span>
-                    <span>Loot: <strong id="heistLoot">$0</strong></span>
+                    <span>Heat: <strong>0</strong>%</span>
+                    <span>Team: <strong>4/4</strong></span>
+                    <span>Loot: <strong>$0</strong></span>
                 </div>
-                <div id="heistTrack" style="height: 350px; background: linear-gradient(45deg, #2C3E50 0%, #34495E 50%, #2C3E50 100%); border-radius: 8px; position: relative; overflow: hidden; border: 2px solid var(--border-color);">
-                    <div id="playerHeist" style="position: absolute; width: 12px; height: 12px; background: var(--primary-color); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 8px rgba(0,255,162,0.7); z-index: 25;"></div>
-                    <canvas id="heistCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-                    <div id="heistHUD" style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: white; padding: 8px; border-radius: 5px; font-size: 10px; display: none;">
-                        <div id="heistPhase">Phase: Planning</div>
-                        <div id="heistObjective">Objective: Enter the bank</div>
-                        <div id="heistTime">Time: 5:00</div>
-                    </div>
-                </div>
-                <div id="heistStatus" class="game-status">
-                    <strong style="color: var(--primary-color);">Heist Complete!</strong>
-                    <p id="heistResult" style="margin: 0.3rem 0; font-size: 0.9rem;"></p>
-                </div>
+                <div style="height: 350px; background: linear-gradient(45deg, #2C3E50 0%, #34495E 50%, #2C3E50 100%); border-radius: 8px; border: 2px solid var(--border-color);"></div>
                 <div class="game-controls">
-                    <button id="heistStealthBtn" class="control-btn" onclick="toggleStealth()">👤 Stealth</button>
-                    <button id="heistActionBtn" class="control-btn gas" onclick="executeAction()">⚡ Action</button>
-                    <button id="heistEscapeBtn" class="control-btn" onclick="triggerEscape()">🏃 Escape</button>
+                    <button class="control-btn" onclick="demoMessage()">👤 Stealth</button>
+                    <button class="control-btn gas" onclick="demoMessage()">⚡ Action</button>
+                    <button class="control-btn" onclick="demoMessage()">🏃 Escape</button>
                 </div>
-                <button class="floating-btn" id="startHeistBtn" onclick="startHeist()">💰 Plan Heist</button>
-                <div style="text-align: center; margin-top: 0.5rem; font-size: 0.7rem; opacity: 0.7;">Tactical planning and stealth execution - WASD movement</div>
+                <button class="floating-btn" onclick="demoMessage()">💰 Plan Heist</button>
             </div>
 
             <div class="game-card">
                 <div class="game-title">🎰 Casino Royale</div>
                 <div class="game-stats">
-                    <span>Chips: <strong id="casinoChips">$1000</strong></span>
-                    <span>Game: <strong id="casinoGame">Lobby</strong></span>
-                    <span>Streak: <strong id="casinoStreak">0</strong></span>
+                    <span>Chips: <strong>$1000</strong></span>
+                    <span>Game: <strong>Lobby</strong></span>
+                    <span>Streak: <strong>0</strong></span>
                 </div>
-                <div id="casinoTrack" style="height: 350px; background: linear-gradient(45deg, #8B0000 0%, #B22222 30%, #DC143C 60%, #8B0000 100%); border-radius: 8px; position: relative; overflow: hidden; border: 2px solid var(--border-color);">
-                    <canvas id="casinoCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-                    <div id="casinoUI" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                        <div id="casinoLobby" style="text-align: center; color: gold;">
-                            <div style="font-size: 2rem; margin-bottom: 1rem;">🎰</div>
-                            <div style="font-size: 1.2rem; margin-bottom: 1rem;">Welcome to Casino Royale</div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 200px;">
-                                <button onclick="startPoker()" style="background: #8B0000; color: gold; border: 1px solid gold; padding: 8px; border-radius: 5px; cursor: pointer;">♠️ Poker</button>
-                                <button onclick="startBlackjack()" style="background: #8B0000; color: gold; border: 1px solid gold; padding: 8px; border-radius: 5px; cursor: pointer;">♣️ Blackjack</button>
-                                <button onclick="startSlots()" style="background: #8B0000; color: gold; border: 1px solid gold; padding: 8px; border-radius: 5px; cursor: pointer;">🎰 Slots</button>
-                                <button onclick="startRoulette()" style="background: #8B0000; color: gold; border: 1px solid gold; padding: 8px; border-radius: 5px; cursor: pointer;">🎯 Roulette</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="casinoStatus" class="game-status">
-                    <strong style="color: var(--primary-color);">Game Complete!</strong>
-                    <p id="casinoResult" style="margin: 0.3rem 0; font-size: 0.9rem;"></p>
-                </div>
+                <div style="height: 350px; background: linear-gradient(45deg, #8B0000 0%, #B22222 30%, #DC143C 60%, #8B0000 100%); border-radius: 8px; border: 2px solid var(--border-color);"></div>
                 <div class="game-controls">
-                    <button id="casinoBetBtn" class="control-btn" onclick="adjustBet(-50)">💰 -$50</button>
-                    <button id="casinoPlayBtn" class="control-btn gas" onclick="casinoPlay()">🎮 Play</button>
-                    <button id="casinoBetUpBtn" class="control-btn" onclick="adjustBet(50)">💰 +$50</button>
+                    <button class="control-btn" onclick="demoMessage()">💰 -$50</button>
+                    <button class="control-btn gas" onclick="demoMessage()">🎮 Play</button>
+                    <button class="control-btn" onclick="demoMessage()">💰 +$50</button>
                 </div>
-                <button class="floating-btn" id="startCasinoBtn" onclick="resetCasino()">🎰 Enter Casino</button>
-                <div style="text-align: center; margin-top: 0.5rem; font-size: 0.7rem; opacity: 0.7;">Multiple casino games - Poker, Blackjack, Slots, Roulette</div>
+                <button class="floating-btn" onclick="demoMessage()">🎰 Enter Casino</button>
             </div>
 
             <div class="game-card">
                 <div class="game-title">🏁 Neon Street Racing</div>
                 <div class="game-stats">
-                    <span>Speed: <strong id="neonSpeed">0</strong> mph</span>
-                    <span>RPM: <strong id="neonRPM">0</strong></span>
-                    <span>Time: <strong id="neonTime">0.000</strong>s</span>
+                    <span>Speed: <strong>0</strong> mph</span>
+                    <span>RPM: <strong>0</strong></span>
+                    <span>Time: <strong>0.000</strong>s</span>
                 </div>
-                <div id="neonTrack" style="height: 350px; background: linear-gradient(180deg, #0a0a0a 0%, #1a0a2e 30%, #16213e 60%, #0f3460 100%); border-radius: 8px; position: relative; overflow: hidden; border: 2px solid var(--border-color);">
-                    <div id="playerNeonCar" style="position: absolute; width: 30px; height: 18px; background: var(--primary-color); border-radius: 4px; transform: translate(-50%, -50%); box-shadow: 0 0 20px rgba(0,255,162,0.8); z-index: 20; bottom: 50px; left: 100px;"></div>
-                    <canvas id="neonCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-                    <div id="neonHUD" style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: #00ffa2; padding: 10px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 12px; border: 1px solid #00ffa2; display: none;">
-                        <div id="neonGear">GEAR: 1</div>
-                        <div id="neonShiftZone" style="color: #ff007c;">SHIFT ZONE: READY</div>
-                        <div id="neonBoost">BOOST: 100%</div>
-                    </div>
-                    <div id="neonFinishLine" style="position: absolute; right: 50px; top: 0; width: 4px; height: 100%; background: repeating-linear-gradient(45deg, #fff 0px, #fff 20px, #000 20px, #000 40px); opacity: 0.8;"></div>
-                </div>
-                <div id="neonStatus" class="game-status">
-                    <strong style="color: var(--primary-color);">Race Complete!</strong>
-                    <p id="neonResult" style="margin: 0.3rem 0; font-size: 0.9rem;"></p>
-                </div>
+                <div style="height: 350px; background: linear-gradient(180deg, #0a0a0a 0%, #1a0a2e 30%, #16213e 60%, #0f3460 100%); border-radius: 8px; border: 2px solid var(--border-color);"></div>
                 <div class="game-controls">
-                    <button id="neonLaunchBtn" class="control-btn" onclick="neonLaunch()">🚀 Launch</button>
-                    <button id="neonShiftBtn" class="control-btn gas" onclick="neonShift()">⚡ SHIFT</button>
-                    <button id="neonNitroBtn" class="control-btn" onclick="neonNitro()">🔥 Nitro</button>
+                    <button class="control-btn" onclick="demoMessage()">🚀 Launch</button>
+                    <button class="control-btn gas" onclick="demoMessage()">⚡ SHIFT</button>
+                    <button class="control-btn" onclick="demoMessage()">🔥 Nitro</button>
                 </div>
-                <button class="floating-btn" id="startNeonBtn" onclick="startNeonRace()">🏁 Start Race</button>
-                <div style="text-align: center; margin-top: 0.5rem; font-size: 0.7rem; opacity: 0.7;">Perfect timing drag racing - Hit SHIFT in the green zone!</div>
+                <button class="floating-btn" onclick="demoMessage()">🏁 Start Race</button>
             </div>
 
             <div class="game-card">
                 <div class="game-title">🧟 Zombie Apocalypse Survival</div>
                 <div class="game-stats">
-                    <span>Day: <strong id="zombieDay">1</strong></span>
-                    <span>Survivors: <strong id="zombieSurvivors">1</strong></span>
-                    <span>Supplies: <strong id="zombieSupplies">50</strong></span>
+                    <span>Day: <strong>1</strong></span>
+                    <span>Survivors: <strong>1</strong></span>
+                    <span>Supplies: <strong>50</strong></span>
                 </div>
-                <div id="zombieWorld" style="height: 400px; background: linear-gradient(45deg, #2C5F41 0%, #1A3A2A 50%, #0D1F15 100%); border-radius: 8px; position: relative; overflow: hidden; border: 2px solid var(--border-color);">
-                    <div id="zombiePlayer" style="position: absolute; width: 8px; height: 8px; background: var(--primary-color); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 8px rgba(0,255,162,0.8); z-index: 50;"></div>
-                    <canvas id="zombieCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-                    <div id="zombieHUD" style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.9); color: #00ffa2; padding: 12px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 11px; border: 1px solid #00ffa2; min-width: 180px; display: none;">
-                        <div id="zombieWave" style="color: #ff6b35;">Wave: 1 - Next in 30s</div>
-                        <div id="zombieAmmo">Ammo: 30/30</div>
-                        <div id="zombieHealth">Health: 100%</div>
-                        <div id="zombieWeapon">Weapon: Pistol</div>
-                        <div id="zombieObjective" style="color: #ffff00; margin-top: 8px;">Find supplies and barricade doors</div>
-                    </div>
-                    <div id="zombieMinimap" style="position: absolute; top: 10px; right: 10px; width: 80px; height: 80px; background: rgba(0,0,0,0.8); border: 1px solid #00ffa2; border-radius: 4px; display: none;">
-                        <canvas id="minimapCanvas" width="78" height="78" style="display: block;"></canvas>
-                    </div>
-                </div>
-                <div id="zombieStatus" class="game-status">
-                    <strong style="color: var(--primary-color);">Survival Complete!</strong>
-                    <p id="zombieResult" style="margin: 0.3rem 0; font-size: 0.9rem;"></p>
-                </div>
+                <div style="height: 400px; background: linear-gradient(45deg, #2C5F41 0%, #1A3A2A 50%, #0D1F15 100%); border-radius: 8px; border: 2px solid var(--border-color);"></div>
                 <div class="game-controls">
-                    <button id="zombieShootBtn" class="control-btn" onclick="zombieShoot()">💥 Shoot</button>
-                    <button id="zombieReloadBtn" class="control-btn gas" onclick="zombieReload()">🔄 Reload</button>
-                    <button id="zombieBuildBtn" class="control-btn" onclick="zombieBuild()">🔨 Build</button>
+                    <button class="control-btn" onclick="demoMessage()">💥 Shoot</button>
+                    <button class="control-btn gas" onclick="demoMessage()">🔄 Reload</button>
+                    <button class="control-btn" onclick="demoMessage()">🔨 Build</button>
                 </div>
-                <button class="floating-btn" id="startZombieBtn" onclick="startZombieSurvival()">🧟 Start Survival</button>
-                <div style="text-align: center; margin-top: 0.5rem; font-size: 0.7rem; opacity: 0.7;">Top-down survival with base building - WASD to move, click to aim and shoot</div>
+                <button class="floating-btn" onclick="demoMessage()">🧟 Start Survival</button>
             </div>
 
             <div class="game-card">
                 <div class="game-title">🪂 Sky Diving Extreme</div>
                 <div class="game-stats">
-                    <span>Altitude: <strong id="skyAltitude">15000</strong>ft</span>
-                    <span>Speed: <strong id="skySpeed">0</strong> mph</span>
-                    <span>Score: <strong id="skyScore">0</strong>pts</span>
+                    <span>Altitude: <strong>15000</strong>ft</span>
+                    <span>Speed: <strong>0</strong> mph</span>
+                    <span>Score: <strong>0</strong>pts</span>
                 </div>
-                <div id="skyWorld" style="height: 400px; background: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 30%, #98FB98 70%, #228B22 100%); border-radius: 8px; position: relative; overflow: hidden; border: 2px solid var(--border-color);">
-                    <div id="skyPlayer" style="position: absolute; width: 12px; height: 8px; background: var(--primary-color); border-radius: 2px; transform: translate(-50%, -50%); box-shadow: 0 0 8px rgba(0,255,162,0.8); z-index: 100;"></div>
-                    <canvas id="skyCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-                    <div id="skyHUD" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: #00ffa2; padding: 12px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 11px; border: 1px solid #00ffa2; min-width: 140px; display: none;">
-                        <div id="skyPhase" style="color: #ff6b35;">FREEFALL</div>
-                        <div id="skyTime">Fall Time: 0.0s</div>
-                        <div id="skyChute">Chute: READY</div>
-                        <div id="skyStunts">Stunts: 0</div>
-                        <div id="skyTarget" style="color: #ffff00; margin-top: 8px;">Navigate through rings!</div>
-                    </div>
-                    <div id="skyAltimeter" style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.9); color: #ff6b35; padding: 8px; border-radius: 50%; border: 2px solid #ff6b35; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-family: 'Courier New', monospace; font-size: 10px; font-weight: bold; display: none;">
-                        <div id="altReading">15000</div>
-                    </div>
-                </div>
-                <div id="skyStatus" class="game-status">
-                    <strong style="color: var(--primary-color);">Jump Complete!</strong>
-                    <p id="skyResult" style="margin: 0.3rem 0; font-size: 0.9rem;"></p>
-                </div>
+                <div style="height: 400px; background: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 30%, #98FB98 70%, #228B22 100%); border-radius: 8px; border: 2px solid var(--border-color);"></div>
                 <div class="game-controls">
-                    <button id="skyLeftBtn" class="control-btn" onclick="skyLeft()">◀ Left</button>
-                    <button id="skyChuteBtn" class="control-btn gas" onclick="deployChuteBtn()">🪂 Chute</button>
-                    <button id="skyRightBtn" class="control-btn" onclick="skyRight()">Right ▶</button>
+                    <button class="control-btn" onclick="demoMessage()">◀ Left</button>
+                    <button class="control-btn gas" onclick="demoMessage()">🪂 Chute</button>
+                    <button class="control-btn" onclick="demoMessage()">Right ▶</button>
                 </div>
-                <button class="floating-btn" id="startSkyBtn" onclick="startSkyDiving()">🪂 Start Jump</button>
-                <div style="text-align: center; margin-top: 0.5rem; font-size: 0.7rem; opacity: 0.7;">Extreme skydiving with stunts - Arrow keys to steer, Space for chute</div>
+                <button class="floating-btn" onclick="demoMessage()">🪂 Start Jump</button>
             </div>
         </div>
     </div>
@@ -1717,7 +330,47 @@
     <div class="notification" id="notification"></div>
 
     <script>
-        // Game statistics and save system
+        // CORE FUNCTIONS - DEFINED FIRST
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            if (notification) {
+                notification.textContent = message;
+                notification.style.display = 'block';
+                setTimeout(() => notification.style.display = 'none', 3000);
+            }
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('night-mode');
+            const isNightMode = document.body.classList.contains('night-mode');
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.textContent = isNightMode ? '☀️' : '🌙';
+            }
+            localStorage.setItem('gtafl-theme', isNightMode ? 'night' : 'day');
+            showNotification(isNightMode ? 'Night mode activated!' : 'Day mode activated!');
+        }
+
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('gtafl-theme') || 'day';
+            if (savedTheme === 'night') {
+                document.body.classList.add('night-mode');
+                const themeToggle = document.getElementById('themeToggle');
+                if (themeToggle) {
+                    themeToggle.textContent = '☀️';
+                }
+            }
+        }
+
+        function demoMessage() {
+            showNotification('This is a demo - Target Practice is the only fully working game!');
+        }
+
+        // GAME STATS
         let gameStats = {
             gamesPlayed: parseInt(localStorage.getItem('gtafl-games-played') || '0'),
             totalScore: parseInt(localStorage.getItem('gtafl-total-score') || '0'),
@@ -1736,46 +389,7 @@
             localStorage.setItem('gtafl-high-score', gameStats.highScore);
         }
 
-        function showNotification(message) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.style.display = 'block';
-            setTimeout(() => notification.style.display = 'none', 3000);
-        }
-
-        function goBack() {
-            window.location.href = 'https://gta6fastlane.com/';
-        }
-
-        function toggleTheme() {
-            const body = document.body;
-            body.classList.toggle('night-mode');
-            const isNightMode = body.classList.contains('night-mode');
-            
-            const themeToggle = document.getElementById('themeToggle');
-            themeToggle.textContent = isNightMode ? '☀️' : '🌙';
-            
-            localStorage.setItem('gtafl-theme', isNightMode ? 'night' : 'day');
-            showNotification(isNightMode ? 'Night mode activated!' : 'Day mode activated!');
-            
-            // Force a repaint
-            body.style.display = 'none';
-            body.offsetHeight; // Trigger reflow
-            body.style.display = '';
-        }
-
-        function loadSavedTheme() {
-            const savedTheme = localStorage.getItem('gtafl-theme') || 'day';
-            if (savedTheme === 'night') {
-                document.body.classList.add('night-mode');
-                const themeToggle = document.getElementById('themeToggle');
-                if (themeToggle) {
-                    themeToggle.textContent = '☀️';
-                }
-            }
-        }
-
-        // TARGET PRACTICE GAME
+        // TARGET PRACTICE GAME (FULLY WORKING)
         let gameState = { score: 0, hits: 0, timeLeft: 30, isPlaying: false, timer: null, targetSpawner: null, targets: [] };
 
         function updateDisplay() {
@@ -1802,7 +416,7 @@
             
             const range = document.getElementById('targetRange');
             const target = document.createElement('div');
-            target.className = 'target';
+            target.style.cssText = 'position: absolute; width: 30px; height: 30px; border-radius: 50%; background: radial-gradient(circle, #ff0000 0%, #990000 100%); border: 2px solid #fff; cursor: pointer;';
             
             const x = Math.random() * (range.clientWidth - 30);
             const y = Math.random() * (range.clientHeight - 30);
@@ -1834,11 +448,10 @@
             gameState.hits++;
             
             const effect = document.createElement('div');
-            effect.className = 'hit-effect';
+            effect.style.cssText = 'position: absolute; color: #ffff00; font-weight: bold; pointer-events: none; z-index: 100; animation: hitFade 1s ease-out forwards;';
             effect.textContent = '+100';
             
             const rect = document.getElementById('targetRange').getBoundingClientRect();
-            effect.style.position = 'absolute';
             effect.style.left = (event.clientX - rect.left) + 'px';
             effect.style.top = (event.clientY - rect.top) + 'px';
             
@@ -1850,3 +463,63 @@
             if (gameState.hits >= 10) {
                 endGame(true);
             }
+        }
+
+        function startTargetPractice() {
+            resetGame();
+            gameState.isPlaying = true;
+            gameState.timeLeft = 30;
+            
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('startBtn').textContent = 'Game In Progress...';
+            
+            gameState.timer = setInterval(() => {
+                gameState.timeLeft--;
+                updateDisplay();
+                if (gameState.timeLeft <= 0) endGame(false);
+            }, 1000);
+            
+            gameState.targetSpawner = setInterval(() => {
+                if (gameState.targets.length < 3) createTarget();
+            }, 800);
+            
+            createTarget();
+        }
+
+        function endGame(won) {
+            gameState.isPlaying = false;
+            if (gameState.timer) clearInterval(gameState.timer);
+            if (gameState.targetSpawner) clearInterval(gameState.targetSpawner);
+            
+            document.getElementById('targetRange').innerHTML = '';
+            
+            gameStats.gamesPlayed++;
+            gameStats.totalScore += gameState.score;
+            if (gameState.score > gameStats.highScore) gameStats.highScore = gameState.score;
+            saveStats();
+            updateStats();
+            
+            const finalScoreP = document.getElementById('finalScore');
+            if (won) {
+                finalScoreP.innerHTML = `🏆 Victory! Score: ${gameState.score} - Perfect shooting!`;
+                showNotification('🎯 Perfect shooting! All targets eliminated!');
+            } else {
+                finalScoreP.innerHTML = `⏰ Time's Up! Score: ${gameState.score} - Targets: ${gameState.hits}/10`;
+                showNotification('⏰ Time ran out! Keep practicing your aim!');
+            }
+            
+            document.getElementById('gameOver').style.display = 'block';
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('startBtn').textContent = '🎯 Play Again';
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedTheme();
+            updateStats();
+            updateDisplay();
+            showNotification('Welcome to GTAFastLane Mini-Games! Target Practice is fully playable!');
+        });
+    </script>
+</body>
+</html>
