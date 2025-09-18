@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,6 +24,31 @@
             --card-bg: #1a1a1a;
             --border-color: #333333;
             --shadow: 0 4px 25px rgba(255,255,255,0.1);
+        }
+
+        body.night-mode .header {
+            background: linear-gradient(135deg, #333333 0%, #1a1a1a 100%);
+        }
+
+        body.night-mode .game-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+
+        body.night-mode .game-title {
+            color: #00ffa2;
+        }
+
+        body.night-mode #targetRange,
+        body.night-mode #chaseTrack,
+        body.night-mode #raceTrack,
+        body.night-mode #heliTrack,
+        body.night-mode #stuntTrack,
+        body.night-mode #heistTrack,
+        body.night-mode #casinoTrack,
+        body.night-mode #neonTrack {
+            border-color: var(--border-color);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -451,18 +475,30 @@
         }
 
         function toggleTheme() {
-            document.body.classList.toggle('night-mode');
-            const isNightMode = document.body.classList.contains('night-mode');
-            document.getElementById('themeToggle').textContent = isNightMode ? '☀️' : '🌙';
+            const body = document.body;
+            body.classList.toggle('night-mode');
+            const isNightMode = body.classList.contains('night-mode');
+            
+            const themeToggle = document.getElementById('themeToggle');
+            themeToggle.textContent = isNightMode ? '☀️' : '🌙';
+            
             localStorage.setItem('gtafl-theme', isNightMode ? 'night' : 'day');
             showNotification(isNightMode ? 'Night mode activated!' : 'Day mode activated!');
+            
+            // Force a repaint
+            body.style.display = 'none';
+            body.offsetHeight; // Trigger reflow
+            body.style.display = '';
         }
 
         function loadSavedTheme() {
             const savedTheme = localStorage.getItem('gtafl-theme') || 'day';
             if (savedTheme === 'night') {
                 document.body.classList.add('night-mode');
-                document.getElementById('themeToggle').textContent = '☀️';
+                const themeToggle = document.getElementById('themeToggle');
+                if (themeToggle) {
+                    themeToggle.textContent = '☀️';
+                }
             }
         }
 
