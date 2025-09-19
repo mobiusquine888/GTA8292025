@@ -365,14 +365,23 @@
         <!-- Games Container -->
         <div class="games-container">
             <div class="games-grid" id="gamesGrid">
-                <!-- Games will be added here as you build them -->
-                <div class="coming-soon">
-                    <h2>🚧 Games Coming Soon!</h2>
-                    <p>This is your foundation page. Each game you build will be a perfect 300x300px square that fits right into this grid. The day/night toggle is fully functional and ready to style your games!</p>
+                
+               <!-- Blackjack Game -->
+        <div class="game-card">
+            <div class="game-title">🃏 Blackjack 21</div>
+            <div style="margin-bottom: 1rem;">
+                <div style="margin-bottom: 0.5rem;">Chips: $<span id="blackjackChips">1000</span> | Wins: <span id="blackjackWins">0</span></div>
+                <div style="margin-bottom: 1rem;">
+                    <div style="margin-bottom: 0.5rem;"><strong>Your Hand (Total: <span id="playerTotal">0</span>):</strong></div>
+                    <div id="playerCards" style="min-height: 60px; margin-bottom: 1rem;"></div>
+                    <div style="margin-bottom: 0.5rem;"><strong>Dealer Hand (Total: <span id="dealerTotal">?</span>):</strong></div>
+                    <div id="dealerCards" style="min-height: 60px;"></div>
                 </div>
             </div>
+            <button class="floating-btn" onclick="dealCards()">Deal Cards</button>
+            <button class="btn-secondary floating-btn" onclick="hitCard()">Hit</button>
+            <button class="btn-secondary floating-btn" onclick="standCard()">Stand</button>
         </div>
-    </div>
 
     <script>
         // Game Statistics Management
