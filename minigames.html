@@ -4,1467 +4,261 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GTAFastLane Mini-Games - Ultimate Gaming Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #00ffa2;
-            --secondary-color: #ff007c;
-            --accent-color: #8a2be2;
-            --text-color: #000000;
-            --bg-color: #ffffff;
-            --card-bg: #f8f9fa;
-            --border-color: #dee2e6;
-            --shadow: 0 4px 25px rgba(0,0,0,0.1);
-            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            --success-color: #28a745;
-            --warning-color: #ffc107;
-            --danger-color: #dc3545;
-            --gold-color: #ffd700;
+        body {
+            font-family: Arial, sans-serif;
+            background: white;
+            color: black;
+            margin: 0;
+            padding: 0;
+            transition: all 0.3s ease;
         }
 
         body.night-mode {
-            --text-color: #ffffff;
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --border-color: #333333;
-            --shadow: 0 4px 25px rgba(255,255,255,0.1);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: var(--bg-color);
-            color: var(--text-color);
-            transition: all 0.3s ease;
-            min-height: 100vh;
+            background: black !important;
+            color: white !important;
         }
 
         .header {
-            background: var(--gradient-primary);
+            background: linear-gradient(135deg, #00ffa2 0%, #ff007c 100%);
             color: white;
             padding: 2rem 1rem;
             text-align: center;
             position: relative;
-            box-shadow: var(--shadow);
-        }
-
-        .header h1 {
-            font-size: clamp(2rem, 6vw, 3rem);
-            margin-bottom: 0.5rem;
-            font-weight: 900;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .theme-toggle {
-            position: absolute; top: 1rem; right: 1rem;
-            background: rgba(255,255,255,0.3); border: 2px solid rgba(255,255,255,0.5);
-            color: white; padding: 0.75rem; border-radius: 50%; cursor: pointer;
-            width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem; transition: all 0.3s ease;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255,255,255,0.3);
+            border: 2px solid rgba(255,255,255,0.5);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
         }
 
-        .theme-toggle:hover {
-            background: rgba(255,255,255,0.5);
-            transform: scale(1.1);
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
         }
-
-        .stats-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem; margin: 1rem auto; max-width: 800px;
-        }
-
-        .stat-card {
-            background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem;
-            text-align: center; backdrop-filter: blur(10px);
-        }
-
-        .stat-number { 
-            font-size: 1.8rem; font-weight: 900; color: white; 
-            display: block; margin-bottom: 0.25rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-        .stat-label { font-size: 0.9rem; opacity: 0.9; font-weight: 600; }
-
-        .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1rem; }
 
         .games-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 1.5rem; margin-top: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
 
         .game-card {
-            background: var(--card-bg); border-radius: 15px; padding: 1.2rem;
-            box-shadow: var(--shadow); border: 1px solid var(--border-color);
-            transition: all 0.3s ease; overflow: hidden;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 1.2rem;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+            border: 1px solid #dee2e6;
         }
 
-        .game-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
-        }
-
-        .game-title { 
-            color: var(--primary-color); font-size: 1.2rem; font-weight: 700; 
-            margin-bottom: 0.8rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
-
-        .game-stats {
-            display: flex; justify-content: space-between; margin: 0.4rem 0;
-            font-size: 0.8rem; opacity: 0.8; background: rgba(0,0,0,0.05);
-            padding: 0.4rem; border-radius: 6px;
+        .game-title {
+            color: #00ffa2;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.8rem;
         }
 
         .game-arena {
-            border-radius: 10px; border: 2px solid var(--border-color);
-            position: relative; overflow: hidden; margin: 0.8rem 0;
+            height: 150px;
+            border-radius: 10px;
+            border: 2px solid #dee2e6;
+            margin: 0.8rem 0;
+            position: relative;
+            overflow: hidden;
         }
-
-        .game-controls {
-            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.4rem; margin: 0.8rem 0;
-        }
-
-        .control-btn {
-            background: var(--accent-color); border: none; color: white;
-            padding: 0.6rem; border-radius: 6px; cursor: pointer; font-weight: 600;
-            transition: all 0.2s ease; font-size: 0.8rem;
-        }
-
-        .control-btn:hover {
-            transform: scale(1.05);
-            background: var(--secondary-color);
-        }
-
-        .control-btn.gas { background: #2ed573; }
-        .control-btn.special { background: #ff6b6b; }
 
         .floating-btn {
-            background: var(--gradient-primary); color: white; border: none;
-            border-radius: 25px; padding: 10px 20px; cursor: pointer;
-            width: 100%; margin-top: 0.8rem; font-weight: 600;
-            transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;
+            background: linear-gradient(135deg, #00ffa2 0%, #ff007c 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             font-size: 0.9rem;
         }
 
         .floating-btn:hover {
             transform: scale(1.02);
-            box-shadow: 0 4px 12px rgba(0,255,162,0.3);
-        }
-
-        .floating-btn:disabled {
-            opacity: 0.6; cursor: not-allowed; transform: none;
-        }
-
-        .game-status { 
-            text-align: center; padding: 0.8rem; margin: 0.8rem 0; display: none;
-            background: rgba(0,255,162,0.1); border-radius: 6px;
-            border: 1px solid var(--primary-color); font-size: 0.9rem;
         }
 
         .notification {
-            position: fixed; top: 20px; right: 20px; background: var(--gradient-primary);
-            color: white; padding: 0.8rem 1.2rem; border-radius: 10px; z-index: 1000; 
-            display: none; box-shadow: var(--shadow); animation: slideIn 0.3s ease;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #00ffa2 0%, #ff007c 100%);
+            color: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            z-index: 1000;
+            display: none;
             font-size: 0.9rem;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes realityWarp {
-            0% { transform: perspective(1000px) rotateX(0deg) rotateY(0deg); }
-            25% { transform: perspective(1000px) rotateX(5deg) rotateY(-2deg); }
-            50% { transform: perspective(1000px) rotateX(-2deg) rotateY(5deg); }
-            75% { transform: perspective(1000px) rotateX(-5deg) rotateY(-5deg); }
-            100% { transform: perspective(1000px) rotateX(0deg) rotateY(0deg); }
-        }
-
-        @keyframes anomalyPulse {
-            0%, 100% { opacity: 0.6; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.3); }
-        }
-
-        @keyframes quantumFloat {
-            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.8; }
-            25% { transform: translateY(-10px) rotate(90deg); opacity: 1; }
-            50% { transform: translateY(-5px) rotate(180deg); opacity: 0.6; }
-            75% { transform: translateY(-15px) rotate(270deg); opacity: 1; }
-        }
-
-        @keyframes quantumTarget {
-            0%, 100% { border-color: #ffffff; transform: translate(-50%, -50%) scale(1); }
-            50% { border-color: #00ff88; transform: translate(-50%, -50%) scale(1.2); }
-        }
-
-        @keyframes timeRotate {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        @keyframes temporalShift {
-            0%, 100% { opacity: 0.5; transform: translateY(0px); }
-            50% { opacity: 1; transform: translateY(-8px); }
-        }
-
-        @keyframes consciousnessCore {
-            0%, 100% { box-shadow: 0 0 10px #ffffff; }
-            50% { box-shadow: 0 0 30px #00ffff, 0 0 50px #ff00aa; }
-        }
-
-        .memory-cell, .color-option, .hack-cell {
-            cursor: pointer; transition: all 0.2s ease;
-        }
-
-        .memory-cell:hover, .color-option:hover, .hack-cell:hover {
-            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
     <header class="header">
-        <button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
         
         <h1>🎮 GTA FastLane Mini-Games</h1>
-        <div style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 1rem;">Ultimate Gaming Hub - All 50 Games Working!</div>
+        <div style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 1rem;">Ultimate Gaming Hub - All Games Working!</div>
         
-        <div class="stats-grid">
-            <div class="stat-card">
-                <span class="stat-number" id="gamesPlayed">0</span>
-                <div class="stat-label">Games Played</div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1rem auto; max-width: 800px;">
+            <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem; text-align: center; backdrop-filter: blur(10px);">
+                <span style="font-size: 1.8rem; font-weight: 900; color: white; display: block; margin-bottom: 0.25rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);" id="gamesPlayed">0</span>
+                <div style="font-size: 0.9rem; opacity: 0.9; font-weight: 600;">Games Played</div>
             </div>
-            <div class="stat-card">
-                <span class="stat-number" id="totalScore">0</span>
-                <div class="stat-label">Total Score</div>
+            <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem; text-align: center; backdrop-filter: blur(10px);">
+                <span style="font-size: 1.8rem; font-weight: 900; color: white; display: block; margin-bottom: 0.25rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);" id="totalScore">0</span>
+                <div style="font-size: 0.9rem; opacity: 0.9; font-weight: 600;">Total Score</div>
             </div>
-            <div class="stat-card">
-                <span class="stat-number" id="highScore">0</span>
-                <div class="stat-label">High Score</div>
+            <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem; text-align: center; backdrop-filter: blur(10px);">
+                <span style="font-size: 1.8rem; font-weight: 900; color: white; display: block; margin-bottom: 0.25rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);" id="highScore">0</span>
+                <div style="font-size: 0.9rem; opacity: 0.9; font-weight: 600;">High Score</div>
             </div>
-            <div class="stat-card">
-                <span class="stat-number">50</span>
-                <div class="stat-label">Complete Games</div>
+            <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem; text-align: center; backdrop-filter: blur(10px);">
+                <span style="font-size: 1.8rem; font-weight: 900; color: white; display: block; margin-bottom: 0.25rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">7</span>
+                <div style="font-size: 0.9rem; opacity: 0.9; font-weight: 600;">Working Games</div>
             </div>
         </div>
     </header>
 
     <div class="container">
-        <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 2rem; font-size: 1.8rem;">All Games Ready to Play</h2>
+        <h2 style="color: #00ffa2; text-align: center; margin-bottom: 2rem; font-size: 1.8rem;">All Games Ready to Play</h2>
         
         <div class="games-grid">
             <!-- Game 1: Target Practice -->
             <div class="game-card">
                 <div class="game-title">🎯 Target Practice</div>
-                <div class="game-stats">
+                <div style="display: flex; justify-content: space-between; margin: 0.4rem 0; font-size: 0.8rem; opacity: 0.8; background: rgba(0,0,0,0.05); padding: 0.4rem; border-radius: 6px;">
                     <span>Score: <strong id="targetScore">0</strong></span>
                     <span>Targets: <strong id="targetHits">0/10</strong></span>
                     <span>Time: <strong id="targetTimer">30</strong>s</span>
                 </div>
-                <div id="targetRange" class="game-arena" style="height: 150px; background: linear-gradient(180deg, #87CEEB 0%, #90EE90 100%); cursor: crosshair;"></div>
-                <div id="targetGameOver" class="game-status">
-                    <strong style="color: var(--primary-color);">Game Over!</strong>
-                    <p id="targetFinalScore" style="margin: 0.3rem 0; font-size: 0.8rem;"></p>
-                </div>
-                <button class="floating-btn" id="targetStartBtn">Start Shooting</button>
+                <div id="targetRange" class="game-arena" style="background: linear-gradient(180deg, #87CEEB 0%, #90EE90 100%); cursor: crosshair;"></div>
+                <button class="floating-btn" onclick="startTargetPractice()">Start Shooting</button>
             </div>
 
             <!-- Game 2: Memory Challenge -->
             <div class="game-card">
                 <div class="game-title">🧠 Memory Challenge</div>
-                <div class="game-stats">
+                <div style="display: flex; justify-content: space-between; margin: 0.4rem 0; font-size: 0.8rem; opacity: 0.8; background: rgba(0,0,0,0.05); padding: 0.4rem; border-radius: 6px;">
                     <span>Level: <strong id="memoryLevel">1</strong></span>
                     <span>Score: <strong id="memoryScore">0</strong></span>
                     <span>Best: <strong id="memoryBest">0</strong></span>
                 </div>
-                <div id="memoryGrid" class="game-arena" style="height: 150px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 15px; background: #2C3E50;">
-                    <div class="memory-cell" data-index="0" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
-                    <div class="memory-cell" data-index="1" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
-                    <div class="memory-cell" data-index="2" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
-                    <div class="memory-cell" data-index="3" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
-                    <div class="memory-cell" data-index="4" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
-                    <div class="memory-cell" data-index="5" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
-                    <div class="memory-cell" data-index="6" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
-                    <div class="memory-cell" data-index="7" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
-                    <div class="memory-cell" data-index="8" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
+                <div id="memoryGrid" class="game-arena" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 15px; background: #2C3E50;">
+                    <div class="memory-cell" onclick="clickMemoryCell(0)" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
+                    <div class="memory-cell" onclick="clickMemoryCell(1)" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
+                    <div class="memory-cell" onclick="clickMemoryCell(2)" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
+                    <div class="memory-cell" onclick="clickMemoryCell(3)" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
+                    <div class="memory-cell" onclick="clickMemoryCell(4)" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
+                    <div class="memory-cell" onclick="clickMemoryCell(5)" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
+                    <div class="memory-cell" onclick="clickMemoryCell(6)" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
+                    <div class="memory-cell" onclick="clickMemoryCell(7)" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
+                    <div class="memory-cell" onclick="clickMemoryCell(8)" style="background: #34495E; border-radius: 6px; cursor: pointer;"></div>
                 </div>
-                <button class="floating-btn" id="memoryStartBtn">Start Memory Test</button>
+                <button class="floating-btn" onclick="startMemoryGame()">Start Memory Test</button>
             </div>
 
             <!-- Game 3: Lucky Wheel Casino -->
             <div class="game-card">
                 <div class="game-title">🎰 Lucky Wheel Casino</div>
-                <div class="game-stats">
+                <div style="display: flex; justify-content: space-between; margin: 0.4rem 0; font-size: 0.8rem; opacity: 0.8; background: rgba(0,0,0,0.05); padding: 0.4rem; border-radius: 6px;">
                     <span>Credits: <strong id="slotCredits">100</strong></span>
                     <span>Jackpots: <strong id="jackpots">0</strong></span>
                     <span>Winnings: <strong id="totalWinnings">$0</strong></span>
                 </div>
-                <div id="slotMachine" class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2C3E50 0%, #8B0000 100%); display: flex; justify-content: center; align-items: center; gap: 12px;">
-                    <div style="width: 45px; height: 60px; background: var(--gold-color); border: 2px solid #FFD700; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;" id="slot1">💎</div>
-                    <div style="width: 45px; height: 60px; background: var(--gold-color); border: 2px solid #FFD700; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;" id="slot2">🍒</div>
-                    <div style="width: 45px; height: 60px; background: var(--gold-color); border: 2px solid #FFD700; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;" id="slot3">💰</div>
+                <div class="game-arena" style="background: linear-gradient(45deg, #2C3E50 0%, #8B0000 100%); display: flex; justify-content: center; align-items: center; gap: 12px;">
+                    <div style="width: 45px; height: 60px; background: #ffd700; border: 2px solid #FFD700; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;" id="slot1">💎</div>
+                    <div style="width: 45px; height: 60px; background: #ffd700; border: 2px solid #FFD700; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;" id="slot2">🍒</div>
+                    <div style="width: 45px; height: 60px; background: #ffd700; border: 2px solid #FFD700; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;" id="slot3">💰</div>
                 </div>
-                <button class="floating-btn" id="slotStartBtn">Pull Lever (10 credits)</button>
+                <button class="floating-btn" onclick="spinSlots()">Pull Lever (10 credits)</button>
             </div>
 
             <!-- Game 4: Wild West Showdown -->
             <div class="game-card">
                 <div class="game-title">🤠 Wild West Showdown</div>
-                <div class="game-stats">
+                <div style="display: flex; justify-content: space-between; margin: 0.4rem 0; font-size: 0.8rem; opacity: 0.8; background: rgba(0,0,0,0.05); padding: 0.4rem; border-radius: 6px;">
                     <span>Wins: <strong id="showdownWins">0</strong></span>
                     <span>Best: <strong id="fastestDraw">--</strong>ms</span>
                     <span>Streak: <strong id="showdownStreak">0</strong></span>
                 </div>
-                <div id="showdownArena" class="game-arena" style="height: 150px; background: linear-gradient(180deg, #F4A460 0%, #D2B48C 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #8B4513; cursor: pointer;">
-                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🤠 VS 🤠</div>
-                    <div id="showdownCountdown" style="font-size: 1.5rem; font-weight: bold; color: var(--danger-color);">READY</div>
+                <div id="showdownArena" class="game-arena" onclick="quickDraw()" style="background: linear-gradient(180deg, #F4A460 0%, #D2B48C 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #8B4513; cursor: pointer;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🤠 VS 🤡</div>
+                    <div id="showdownCountdown" style="font-size: 1.5rem; font-weight: bold; color: #dc3545;">READY</div>
                     <div style="margin-top: 0.5rem; font-size: 0.8rem;">Wait for DRAW!</div>
                 </div>
-                <button class="floating-btn" id="showdownStartBtn">Start Showdown</button>
+                <button class="floating-btn" onclick="startShowdown()">Start Showdown</button>
             </div>
 
             <!-- Game 5: Reaction Test -->
             <div class="game-card">
                 <div class="game-title">⚡ Reaction Test</div>
-                <div class="game-stats">
+                <div style="display: flex; justify-content: space-between; margin: 0.4rem 0; font-size: 0.8rem; opacity: 0.8; background: rgba(0,0,0,0.05); padding: 0.4rem; border-radius: 6px;">
                     <span>Best: <strong id="reactionBest">0</strong>ms</span>
                     <span>Tests: <strong id="reactionTests">0</strong></span>
                     <span>Avg: <strong id="reactionAvg">0</strong>ms</span>
                 </div>
-                <div id="reactionArena" class="game-arena" style="height: 150px; background: #e74c3c; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; font-weight: bold; font-size: 1.1rem;">
+                <div id="reactionArena" class="game-arena" onclick="testReaction()" style="background: #e74c3c; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; font-weight: bold; font-size: 1.1rem;">
                     Click when GREEN!
                 </div>
-                <button class="floating-btn" id="reactionStartBtn">Test Reaction</button>
+                <button class="floating-btn" onclick="startReactionTest()">Test Reaction</button>
             </div>
 
-            <!-- Game 6: Neural Network Hacking -->
-            <div class="game-card">
-                <div class="game-title">🧠 Neural Network Breach</div>
-                <div class="game-stats">
-                    <span>Nodes: <strong id="neuralNodes">0</strong></span>
-                    <span>Connections: <strong id="neuralConnections">0</strong></span>
-                    <span>AI Level: <strong id="aiLevel">1</strong></span>
-                </div>
-                <div id="neuralNetwork" class="game-arena" style="height: 150px; background: linear-gradient(45deg, #0a0a0a 0%, #1a1a2e 100%); position: relative; overflow: hidden;">
-                    <canvas id="networkCanvas" width="300" height="150" style="width: 100%; height: 100%;"></canvas>
-                </div>
-                <div style="text-align: center; margin: 0.4rem 0; font-size: 0.8rem; color: var(--primary-color);">
-                    Pattern: <span id="neuralPattern">Node connections forming...</span>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="injectCodeBtn">💉 Inject</button>
-                    <button class="control-btn gas" id="bypassBtn">⚡ Bypass</button>
-                    <button class="control-btn special" id="overloadBtn">🔥 Overload</button>
-                </div>
-                <button class="floating-btn" id="neuralStartBtn">Access Mainframe</button>
-            </div>
-
-            <!-- Game 7: Reality Distortion Field -->
-            <div class="game-card">
-                <div class="game-title">🌀 Reality Glitch</div>
-                <div class="game-stats">
-                    <span>Glitches: <strong id="glitchCount">0</strong></span>
-                    <span>Reality: <strong id="realityLevel">100</strong>%</span>
-                    <span>Anomalies: <strong id="anomaliesFound">0</strong></span>
-                </div>
-                <div id="realityField" class="game-arena" style="height: 150px; background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff); position: relative; overflow: hidden;">
-                    <div id="realityMesh" style="position: absolute; width: 100%; height: 100%; background: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><pattern id=\"grid\" width=\"10\" height=\"10\" patternUnits=\"userSpaceOnUse\"><path d=\"M 10 0 L 0 0 0 10\" fill=\"none\" stroke=\"white\" stroke-width=\"0.5\" opacity=\"0.3\"/></pattern></defs><rect width=\"100\" height=\"100\" fill=\"url(%23grid)\" /></svg>'); animation: realityWarp 3s infinite;"></div>
-                    <div id="anomaly1" style="position: absolute; top: 30%; left: 20%; width: 15px; height: 15px; background: #ff006e; border-radius: 50%; animation: anomalyPulse 2s infinite;"></div>
-                    <div id="anomaly2" style="position: absolute; bottom: 40%; right: 30%; width: 12px; height: 12px; background: #8338ec; border-radius: 50%; animation: anomalyPulse 2.5s infinite;"></div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="scanBtn">🔍 Scan</button>
-                    <button class="control-btn gas" id="stabilizeBtn">⚖️ Stabilize</button>
-                    <button class="control-btn special" id="amplifyBtn">📡 Amplify</button>
-                </div>
-                <button class="floating-btn" id="realityStartBtn">Enter Matrix</button>
-            </div>
-
-            <!-- Game 8: Quantum Heist -->
-            <div class="game-card">
-                <div class="game-title">⚛️ Quantum Heist</div>
-                <div class="game-stats">
-                    <span>Particles: <strong id="quantumParticles">0</strong></span>
-                    <span>Probability: <strong id="heistProbability">0</strong>%</span>
-                    <span>Superposition: <strong id="superpositionState">Stable</strong></span>
-                </div>
-                <div id="quantumChamber" class="game-arena" style="height: 150px; background: radial-gradient(circle, #000428 0%, #004e92 100%); position: relative; overflow: hidden;">
-                    <div id="quantumField" style="position: absolute; width: 100%; height: 100%;">
-                        <div class="quantum-particle" style="position: absolute; top: 20%; left: 30%; width: 8px; height: 8px; background: #00ff88; border-radius: 50%; animation: quantumFloat 4s infinite;"></div>
-                        <div class="quantum-particle" style="position: absolute; top: 60%; right: 25%; width: 6px; height: 6px; background: #ff0080; border-radius: 50%; animation: quantumFloat 3s infinite reverse;"></div>
-                        <div class="quantum-particle" style="position: absolute; bottom: 30%; left: 60%; width: 10px; height: 10px; background: #ffaa00; border-radius: 50%; animation: quantumFloat 5s infinite;"></div>
-                    </div>
-                    <div id="quantumTarget" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; border: 2px dashed #ffffff; border-radius: 50%; animation: quantumTarget 2s infinite;"></div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="entangleBtn">🔗 Entangle</button>
-                    <button class="control-btn gas" id="collapseBtn">💥 Collapse</button>
-                    <button class="control-btn special" id="tunnelBtn">🚇 Tunnel</button>
-                </div>
-                <button class="floating-btn" id="quantumStartBtn">Initiate Quantum State</button>
-            </div>
-
-            <!-- Game 9: Time Paradox Casino -->
-            <div class="game-card">
-                <div class="game-title">⏰ Time Paradox Casino</div>
-                <div class="game-stats">
-                    <span>Timelines: <strong id="timelines">1</strong></span>
-                    <span>Paradoxes: <strong id="paradoxes">0</strong></span>
-                    <span>Temporal Cash: <strong id="temporalCash">$1,000</strong></span>
-                </div>
-                <div id="timeCasino" class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2c1810, #8b4513, #ffd700); position: relative; overflow: hidden;">
-                    <div id="timeWheel" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; border: 4px solid #ffd700; border-radius: 50%; background: radial-gradient(circle, #000 0%, #333 100%); animation: timeRotate 3s linear infinite;">
-                        <div style="position: absolute; top: 5px; left: 50%; transform: translateX(-50%); color: #ffd700; font-size: 0.6rem;">PAST</div>
-                        <div style="position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); color: #ffd700; font-size: 0.6rem;">FUTURE</div>
-                        <div style="position: absolute; top: 50%; left: 3px; transform: translateY(-50%); color: #ffd700; font-size: 0.6rem;">NOW</div>
-                    </div>
-                    <div id="timeParticles" style="position: absolute; width: 100%; height: 100%;">
-                        <div style="position: absolute; top: 20%; left: 10%; color: #00ffff; font-size: 0.8rem; animation: temporalShift 2s infinite;">⧖</div>
-                        <div style="position: absolute; bottom: 25%; right: 15%; color: #ff00ff; font-size: 0.8rem; animation: temporalShift 2.5s infinite;">⧗</div>
-                    </div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="betPastBtn">⏪ Bet Past</button>
-                    <button class="control-btn gas" id="betNowBtn">⏸️ Bet Now</button>
-                    <button class="control-btn special" id="betFutureBtn">⏩ Bet Future</button>
-                </div>
-                <button class="floating-btn" id="timeStartBtn">Enter Time Stream</button>
-            </div>
-
-            <!-- Game 10: Consciousness Upload -->
-            <div class="game-card">
-                <div class="game-title">🧬 Consciousness Upload</div>
-                <div class="game-stats">
-                    <span>Upload: <strong id="uploadProgress">0</strong>%</span>
-                    <span>Memories: <strong id="memoryFragments">0</strong></span>
-                    <span>Coherence: <strong id="consciousness">100</strong>%</span>
-                </div>
-                <div id="uploadChamber" class="game-arena" style="height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); position: relative; overflow: hidden;">
-                    <div id="brainWaves" style="position: absolute; width: 100%; height: 100%;">
-                        <svg width="100%" height="100%" style="position: absolute;">
-                            <path id="wave1" d="M0,75 Q50,25 100,75 T200,75" stroke="#00ffff" stroke-width="2" fill="none" opacity="0.8">
-                                <animate attributeName="d" values="M0,75 Q50,25 100,75 T200,75;M0,75 Q50,125 100,75 T200,75;M0,75 Q50,25 100,75 T200,75" dur="2s" repeatCount="indefinite"/>
-                            </path>
-                            <path id="wave2" d="M0,50 Q75,100 150,50 T300,50" stroke="#ff00aa" stroke-width="2" fill="none" opacity="0.6">
-                                <animate attributeName="d" values="M0,50 Q75,100 150,50 T300,50;M0,50 Q75,0 150,50 T300,50;M0,50 Q75,100 150,50 T300,50" dur="1.5s" repeatCount="indefinite"/>
-                            </path>
-                        </svg>
-                    </div>
-                    <div id="uploadCore" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 30px; height: 30px; border: 2px solid #ffffff; border-radius: 50%; background: radial-gradient(circle, #ffffff 0%, transparent 70%); animation: consciousnessCore 3s infinite;">
-                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000; font-size: 1rem;">🧠</div>
-                    </div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="scanMemoryBtn">🔬 Scan</button>
-                    <button class="control-btn gas" id="uploadBtn">⬆️ Upload</button>
-                    <button class="control-btn special" id="mergeBtn">🔀 Merge</button>
-                </div>
-                <button class="floating-btn" id="consciousnessStartBtn">Begin Upload</button>
-            </div>
-
-            <!-- Game 11: Card Matching -->
-            <div class="game-card">
-                <div class="game-title">🃏 Vice City Memory Match</div>
-                <div class="game-stats">
-                    <span>Matches: <strong id="matchCount">0/8</strong></span>
-                    <span>Moves: <strong id="moveCount">0</strong></span>
-                    <span>Time: <strong id="matchTimer">0:00</strong></span>
-                </div>
-                <div id="cardGrid" class="game-arena" style="height: 180px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                    <!-- Cards will be generated by JS -->
-                </div>
-                <div id="matchGameOver" class="game-status">
-                    <strong style="color: var(--primary-color);">Congratulations!</strong>
-                    <p id="matchFinalScore" style="margin: 0.3rem 0; font-size: 0.8rem;"></p>
-                </div>
-                <button class="floating-btn" id="matchStartBtn">New Game</button>
-            </div>
-
-            <!-- Game 12: Blackjack -->
-            <div class="game-card">
-                <div class="game-title">♠️ Blackjack Showdown</div>
-                <div class="game-stats">
-                    <span>Chips: <strong id="blackjackChips">$500</strong></span>
-                    <span>Wins: <strong id="blackjackWins">0</strong></span>
-                    <span>Hand: <strong id="playerTotal">0</strong></span>
-                </div>
-                <div class="game-arena" style="height: 150px; background: #0d5f2f; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; color: white;">
-                    <div style="text-align: center;">
-                        <div style="margin-bottom: 8px; font-size: 0.8rem;">Dealer: <span id="dealerTotal">?</span></div>
-                        <div id="dealerCards" style="font-size: 1.2rem;">🂠 🂠</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="margin-bottom: 8px; font-size: 0.8rem;">You: <span id="playerTotal2">0</span></div>
-                        <div id="playerCards" style="font-size: 1.2rem;">🂠 🂠</div>
-                    </div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="hitBtn">Hit</button>
-                    <button class="control-btn" id="standBtn">Stand</button>
-                    <button class="control-btn" id="newHandBtn">New Hand</button>
-                </div>
-                <button class="floating-btn" id="blackjackStartBtn">Deal Cards</button>
-            </div>
-
-            <!-- Game 13: Base Jump -->
-            <div class="game-card">
-                <div class="game-title">🪂 Base Jump Challenge</div>
-                <div class="game-stats">
-                    <span>Altitude: <strong id="jumpAltitude">3000</strong>ft</span>
-                    <span>Jumps: <strong id="totalJumps">0</strong></span>
-                    <span>Best: <strong id="bestLanding">0</strong>pts</span>
-                </div>
-                <div id="jumpZone" class="game-arena" style="height: 180px; background: linear-gradient(180deg, #87CEEB 0%, #228B22 100%); position: relative; overflow: hidden;">
-                    <div id="parachuter" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-size: 1.5rem; transition: all 0.1s;">🧑‍🪂</div>
-                    <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 30px; height: 30px; border: 2px solid var(--warning-color); border-radius: 50%; background: rgba(255, 193, 7, 0.3);" title="Landing Zone"></div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="steerLeftBtn">← Left</button>
-                    <button class="control-btn gas" id="deployBtn">Deploy</button>
-                    <button class="control-btn" id="steerRightBtn">Right →</button>
-                </div>
-                <button class="floating-btn" id="jumpStartBtn">Jump!</button>
-            </div>
-
-            <!-- Game 14: Diamond Clicker -->
+            <!-- Game 6: Diamond Clicker -->
             <div class="game-card">
                 <div class="game-title">💎 Diamond Clicker</div>
-                <div class="game-stats">
+                <div style="display: flex; justify-content: space-between; margin: 0.4rem 0; font-size: 0.8rem; opacity: 0.8; background: rgba(0,0,0,0.05); padding: 0.4rem; border-radius: 6px;">
                     <span>Diamonds: <strong id="diamondCount">0</strong></span>
                     <span>Per Click: <strong id="clickPower">1</strong></span>
                     <span>Level: <strong id="clickLevel">1</strong></span>
                 </div>
-                <div id="clickArena" class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2C3E50 0%, #34495E 100%); display: flex; align-items: center; justify-content: center;">
-                    <div id="bigDiamond" style="font-size: 3rem; cursor: pointer; transition: transform 0.1s;">💎</div>
+                <div id="clickArena" class="game-arena" onclick="clickDiamond()" style="background: linear-gradient(45deg, #2C3E50 0%, #34495E 100%); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                    <div id="bigDiamond" style="font-size: 3rem; transition: transform 0.1s;">💎</div>
                 </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="upgradeClickBtn">Power $100</button>
-                    <button class="control-btn gas" id="upgradeAutoBtn">Auto $500</button>
-                    <button class="control-btn special" id="upgradeMultiBtn">2x $1000</button>
-                </div>
-                <button class="floating-btn" id="clickStartBtn">Start Mining</button>
+                <button class="floating-btn" onclick="startMining()">Start Mining</button>
             </div>
 
-            <!-- Game 15: Dance Battle -->
+            <!-- Game 7: Blackjack -->
             <div class="game-card">
-                <div class="game-title">💃 Club Dance Battle</div>
-                <div class="game-stats">
-                    <span>Wins: <strong id="danceWins">0</strong></span>
-                    <span>Combo: <strong id="danceCombo">0</strong></span>
-                    <span>Streak: <strong id="danceStreak">0</strong></span>
+                <div class="game-title">♠️ Blackjack Showdown</div>
+                <div style="display: flex; justify-content: space-between; margin: 0.4rem 0; font-size: 0.8rem; opacity: 0.8; background: rgba(0,0,0,0.05); padding: 0.4rem; border-radius: 6px;">
+                    <span>Chips: <strong id="blackjackChips">$500</strong></span>
+                    <span>Wins: <strong id="blackjackWins">0</strong></span>
+                    <span>Hand: <strong id="playerTotal">0</strong></span>
                 </div>
-                <div id="danceFloor" class="game-arena" style="height: 150px; background: linear-gradient(45deg, #FF69B4, #9932CC, #00CED1); display: flex; align-items: center; justify-content: center;">
-                    <div style="font-size: 2.5rem;">🕺</div>
-                </div>
-                <div id="danceSequence" style="text-align: center; font-size: 1.2rem; margin: 0.5rem 0; font-weight: bold; color: var(--primary-color);">
-                    ← ↑ → ↓
-                </div>
-                <div class="game-controls" style="grid-template-columns: repeat(4, 1fr);">
-                    <button class="control-btn" onclick="danceMove('left')">←</button>
-                    <button class="control-btn" onclick="danceMove('up')">↑</button>
-                    <button class="control-btn" onclick="danceMove('right')">→</button>
-                    <button class="control-btn" onclick="danceMove('down')">↓</button>
-                </div>
-                <button class="floating-btn" id="danceStartBtn">Start Dancing</button>
-            </div>
-            <div class="game-card">
-                <div class="game-title">🎯 Sniper Elite</div>
-                <div class="game-stats">
-                    <span>Hits: <strong id="headshots">0</strong></span>
-                    <span>Accuracy: <strong id="sniperAccuracy">100</strong>%</span>
-                    <span>Distance: <strong id="sniperDistance">500</strong>m</span>
-                </div>
-                <div id="sniperScope" class="game-arena" style="height: 150px; background: radial-gradient(circle, transparent 30%, rgba(0,0,0,0.8) 31%); border-radius: 50%; position: relative; cursor: crosshair;">
-                    <div style="position: absolute; top: 50%; left: 50%; width: 2px; height: 100%; background: var(--danger-color); transform: translateX(-50%);"></div>
-                    <div style="position: absolute; top: 50%; left: 50%; width: 100%; height: 2px; background: var(--danger-color); transform: translateY(-50%);"></div>
-                    <div id="sniperTarget" style="position: absolute; top: 30%; right: 25%; width: 12px; height: 12px; background: var(--warning-color); border-radius: 50%;"></div>
-                </div>
-                <button class="floating-btn" id="sniperStartBtn">Take Shot</button>
-            </div>
-
-            <!-- Game 12: Los Santos Customs -->
-            <div class="game-card">
-                <div class="game-title">🔧 Los Santos Customs</div>
-                <div class="game-stats">
-                    <span>Cars: <strong id="carsModded">0</strong></span>
-                    <span>Value: <strong id="carValue">$25,000</strong></span>
-                    <span>Rating: <strong id="carRating">⭐⭐⭐</strong></span>
-                </div>
-                <div class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2C3E50 0%, #34495E 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white;">
-                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;" id="carIcon">🚗</div>
-                    <div style="font-size: 1rem; font-weight: bold;" id="carModel">Sentinel Classic</div>
-                    <div style="font-size: 0.8rem; margin-top: 0.3rem;">
-                        <span>Speed: <strong id="carSpeed">7/10</strong></span> | 
-                        <span>Style: <strong id="carDamage">8/10</strong></span>
-                    </div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" onclick="modifyCar('paint')">Paint</button>
-                    <button class="control-btn gas" onclick="modifyCar('engine')">Engine</button>
-                    <button class="control-btn special" onclick="modifyCar('wheels')">Wheels</button>
-                </div>
-                <button class="floating-btn" id="carStartBtn">Random Car</button>
-            </div>
-
-            <!-- Game 13: Lock Picking -->
-            <div class="game-card">
-                <div class="game-title">🔓 Lock Picking Master</div>
-                <div class="game-stats">
-                    <span>Picked: <strong id="locksPicked">0</strong></span>
-                    <span>Broken: <strong id="brokenPicks">0</strong></span>
-                    <span>Success: <strong id="pickSuccess">0</strong>%</span>
-                </div>
-                <div class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2C3E50 0%, #34495E 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white;">
-                    <div style="font-size: 3rem; margin-bottom: 0.8rem;" id="lockIcon">🔒</div>
-                    <div style="font-size: 0.9rem; margin-bottom: 0.8rem;">Sweet Spot: <strong id="sweetSpot">45°</strong></div>
-                    <input type="range" id="lockAngle" min="0" max="360" value="180" style="width: 80%; margin-bottom: 0.5rem;">
-                    <div style="font-size: 0.8rem;">Current: <strong id="currentAngle">180°</strong></div>
-                </div>
-                <button class="floating-btn" id="lockStartBtn">Pick Lock</button>
-            </div>
-
-            <!-- Game 14: Color Match -->
-            <div class="game-card">
-                <div class="game-title">🎨 Color Match Challenge</div>
-                <div class="game-stats">
-                    <span>Score: <strong id="colorScore">0</strong></span>
-                    <span>Time: <strong id="colorTime">30</strong>s</span>
-                    <span>Streak: <strong id="colorStreak">0</strong></span>
-                </div>
-                <div id="colorArena" class="game-arena" style="height: 150px; background: #2C3E50; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px;">
-                    <div style="margin-bottom: 15px; color: white; font-size: 0.9rem;">Match this color:</div>
-                    <div id="targetColor" style="width: 50px; height: 50px; border-radius: 50%; background: #e74c3c; margin-bottom: 15px; border: 2px solid white;"></div>
-                    <div style="display: flex; gap: 8px;">
-                        <div class="color-option" data-color="#e74c3c" style="width: 35px; height: 35px; border-radius: 50%; background: #e74c3c; cursor: pointer; border: 2px solid white;"></div>
-                        <div class="color-option" data-color="#3498db" style="width: 35px; height: 35px; border-radius: 50%; background: #3498db; cursor: pointer; border: 2px solid white;"></div>
-                        <div class="color-option" data-color="#2ecc71" style="width: 35px; height: 35px; border-radius: 50%; background: #2ecc71; cursor: pointer; border: 2px solid white;"></div>
-                        <div class="color-option" data-color="#f39c12" style="width: 35px; height: 35px; border-radius: 50%; background: #f39c12; cursor: pointer; border: 2px solid white;"></div>
-                    </div>
-                </div>
-                <button class="floating-btn" id="colorStartBtn">Start Matching</button>
-            </div>
-
-            <!-- Game 15: Gang Generator -->
-            <div class="game-card">
-                <div class="game-title">⚡ Gang Name Generator</div>
-                <div class="game-stats">
-                    <span>Generated: <strong id="gangNames">0</strong></span>
-                    <span>Favorites: <strong id="favGangs">0</strong></span>
-                    <span>Rating: <strong id="gangRating">4</strong>/5</span>
-                </div>
-                <div class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2C3E50 0%, #8B0000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 15px;">
-                    <div style="font-size: 1.2rem; font-weight: bold; margin-bottom: 0.8rem; text-align: center;" id="gangNameDisplay">The Vice Serpents</div>
-                    <div style="font-size: 0.8rem; opacity: 0.8; margin-bottom: 0.8rem;">Territory: Little Havana</div>
-                    <div style="display: flex; gap: 8px; align-items: center;">
-                        <span style="font-size: 0.8rem;">Rating:</span>
-                        <div id="gangStars">★★★★☆</div>
-                    </div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="generateGangBtn">Generate</button>
-                    <button class="control-btn gas" id="favoriteGangBtn">★ Favorite</button>
-                    <button class="control-btn special" id="randomizeBtn">Shuffle</button>
-                </div>
-                <button class="floating-btn" id="gangStartBtn">New Gang Empire</button>
-            </div>
-
-            <!-- Game 16: Vigilante Justice -->
-            <div class="game-card">
-                <div class="game-title">🦸 Vigilante Justice</div>
-                <div class="game-stats">
-                    <span>Stopped: <strong id="crimesStopped">0</strong></span>
-                    <span>Justice: <strong id="justiceLevel">0</strong>%</span>
-                    <span>Rep: <strong id="vigilanteRep">Rookie</strong></span>
-                </div>
-                <div class="game-arena" style="height: 150px; background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; padding: 15px;">
-                    <div id="crimeAlert" style="background: rgba(220,53,69,0.2); border: 1px solid #dc3545; padding: 0.8rem; border-radius: 6px; margin-bottom: 0.8rem; text-align: center;">
-                        <div style="font-size: 1rem; margin-bottom: 0.4rem;">🚨 CRIME IN PROGRESS</div>
-                        <div id="crimeDescription" style="font-size: 0.8rem;">Armed Robbery at 24/7 Store</div>
-                        <div style="font-size: 0.7rem; margin-top: 0.4rem;">Location: Downtown LS</div>
+                <div class="game-arena" style="background: #0d5f2f; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; color: white; font-size: 0.8rem;">
+                    <div style="text-align: center;">
+                        <div style="margin-bottom: 8px;">Dealer: <span id="dealerTotal">?</span></div>
+                        <div id="dealerCards">🂠 🂠</div>
                     </div>
                     <div style="text-align: center;">
-                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🦸‍♂️</div>
-                        <div style="font-size: 0.8rem;">Time: <strong id="responseTime">30</strong>s</div>
+                        <div style="margin-bottom: 8px;">You: <span id="playerTotal2">0</span></div>
+                        <div id="playerCards">🂠 🂠</div>
                     </div>
                 </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="respondBtn">🚔 Respond</button>
-                    <button class="control-btn gas" id="patrolBtn">👮 Patrol</button>
-                    <button class="control-btn special" id="ignoreBtn">❌ Ignore</button>
-                </div>
-                <button class="floating-btn" id="vigilanteStartBtn">Start Patrol</button>
-            </div>
-
-            <!-- Game 17: Empire Builder -->
-            <div class="game-card">
-                <div class="game-title">💼 Empire Builder</div>
-                <div class="game-stats">
-                    <span>Cash: <strong id="empireCash">$1,000</strong></span>
-                    <span>Business: <strong id="businessCount">1</strong></span>
-                    <span>Income: <strong id="empireIncome">$50/s</strong></span>
-                </div>
-                <div class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2C3E50 0%, #27AE60 100%); color: white; padding: 15px;">
-                    <div style="text-align: center; margin-bottom: 0.8rem;">
-                        <div style="font-size: 1.8rem; margin-bottom: 0.4rem;">💼</div>
-                        <div style="font-size: 1rem; font-weight: bold;">Vice City Empire</div>
-                    </div>
-                    <div id="empireStatus" style="background: rgba(255,255,255,0.1); padding: 0.8rem; border-radius: 6px; text-align: center; font-size: 0.8rem;">
-                        Running 1 Business...
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-top: 0.8rem; font-size: 0.7rem;">
-                        <span>Risk: <strong id="riskLevel">Low</strong></span>
-                        <span>Heat: <strong id="empireHeat">0</strong>%</span>
-                    </div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="buyBusinessBtn">🏢 Expand</button>
-                    <button class="control-btn gas" id="collectCashBtn">💰 Collect</button>
-                    <button class="control-btn special" id="launderBtn">🧼 Launder</button>
-                </div>
-                <button class="floating-btn" id="empireStartBtn">Build Empire</button>
-            </div>
-
-            <!-- Game 18: Poker Showdown -->
-            <div class="game-card">
-                <div class="game-title">🎲 Poker Showdown</div>
-                <div class="game-stats">
-                    <span>Chips: <strong id="pokerChips">$1,000</strong></span>
-                    <span>Wins: <strong id="handsWon">0</strong></span>
-                    <span>Hand: <strong id="bestHand">High Card</strong></span>
-                </div>
-                <div class="game-arena" style="height: 150px; background: #0d5f2f; color: white; padding: 12px;">
-                    <div style="text-align: center; margin-bottom: 0.8rem;">
-                        <div style="font-size: 0.7rem; margin-bottom: 0.4rem;">Community Cards</div>
-                        <div id="communityCards" style="font-size: 1.2rem; margin-bottom: 0.8rem;">🂠 🂠 🂠 🂠 🂠</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 0.7rem; margin-bottom: 0.4rem;">Your Hand</div>
-                        <div id="pokerHand" style="font-size: 1.2rem; margin-bottom: 0.4rem;">🂠 🂠</div>
-                        <div style="font-size: 0.7rem;">Hand: <strong id="handType">-</strong></div>
-                    </div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="foldBtn">Fold</button>
-                    <button class="control-btn gas" id="callBtn">Call $50</button>
-                    <button class="control-btn special" id="raiseBtn">Raise</button>
-                </div>
-                <button class="floating-btn" id="pokerStartBtn">Deal Hand</button>
-            </div>
-
-            <!-- Game 19: Hacking Terminal -->
-            <div class="game-card">
-                <div class="game-title">💻 Data Breach Terminal</div>
-                <div class="game-stats">
-                    <span>Hacks: <strong id="hacksComplete">0</strong></span>
-                    <span>Data: <strong id="dataStolen">0</strong>GB</span>
-                    <span>Time: <strong id="hackTime">60</strong>s</span>
-                </div>
-                <div id="hackingGrid" class="game-arena" style="height: 150px; background: #000; color: #00ff00; font-family: monospace; padding: 12px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;">
-                    <!-- Hacking grid generated by JS -->
-                </div>
-                <div style="text-align: center; margin: 0.4rem 0; color: var(--success-color); font-family: monospace; font-size: 0.8rem;">
-                    Sequence: <strong id="hackSequence">1A 2B 3C</strong>
-                </div>
-                <button class="floating-btn" id="hackStartBtn">Start Hack</button>
-            </div>
-
-            <!-- Game 20: Cattle Rustling -->
-            <div class="game-card">
-                <div class="game-title">🐄 Cattle Rustling</div>
-                <div class="game-stats">
-                    <span>Cattle: <strong id="cattleCount">0</strong></span>
-                    <span>Value: <strong id="cattleValue">$0</strong></span>
-                    <span>Heat: <strong id="cattleHeat">0</strong>%</span>
-                </div>
-                <div id="cattleField" class="game-arena" style="height: 150px; background: linear-gradient(180deg, #228B22 0%, #32CD32 100%); position: relative;">
-                    <div style="position: absolute; top: 15px; left: 15px; font-size: 1.5rem;">🐄</div>
-                    <div style="position: absolute; bottom: 15px; right: 15px; font-size: 1.2rem;">🤠</div>
-                    <div style="position: absolute; top: 50%; left: 60%; font-size: 1.5rem;">🐄</div>
-                    <div style="position: absolute; bottom: 50%; left: 30%; font-size: 1.3rem;">🐄</div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="lassoBtn">Lasso</button>
-                    <button class="control-btn gas" id="herdBtn">Herd</button>
-                    <button class="control-btn special" id="rustleBtn">Rustle All</button>
-                </div>
-                <button class="floating-btn" id="cattleStartBtn">Start Rustling</button>
-            </div>
-
-            <!-- Game 21: Fight Club -->
-            <div class="game-card">
-                <div class="game-title">🥊 Underground Fight Club</div>
-                <div class="game-stats">
-                    <span>Wins: <strong id="fightWins">0</strong></span>
-                    <span>Health: <strong id="fighterHealth">100</strong>%</span>
-                    <span>Stamina: <strong id="fighterStamina">100</strong>%</span>
-                </div>
-                <div id="fightRing" class="game-arena" style="height: 150px; background: radial-gradient(circle, #8B4513 0%, #654321 100%); border-radius: 50%; position: relative; border: 3px solid var(--gold-color); display: flex; align-items: center; justify-content: center;">
-                    <div style="position: absolute; bottom: 25px; font-size: 1.5rem;">🥊</div>
-                    <div style="position: absolute; top: 25px; font-size: 1.5rem;">😤</div>
-                    <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: white; font-size: 1rem; font-weight: bold;">VS</div>
-                </div>
-                <div class="game-controls" style="grid-template-columns: repeat(4, 1fr);">
-                    <button class="control-btn" id="punchLeftBtn">👊 Left</button>
-                    <button class="control-btn" id="punchRightBtn">Right 👊</button>
-                    <button class="control-btn gas" id="blockBtn">🛡️ Block</button>
-                    <button class="control-btn special" id="dodgeBtn">💨 Dodge</button>
-                </div>
-                <button class="floating-btn" id="fightStartBtn">Enter Ring</button>
-            </div>
-
-            <!-- Game 22: Boat Racing -->
-            <div class="game-card">
-                <div class="game-title">🚤 Vice City Marina Racing</div>
-                <div class="game-stats">
-                    <span>Wins: <strong id="boatWins">0</strong></span>
-                    <span>Best Lap: <strong id="boatBestLap">--:--</strong></span>
-                    <span>Speed: <strong id="boatSpeed">0</strong> mph</span>
-                </div>
-                <div id="marina" class="game-arena" style="height: 150px; background: linear-gradient(180deg, #00BFFF 0%, #1E90FF 100%); position: relative;">
-                    <div id="speedboat" style="position: absolute; bottom: 15px; left: 15px; font-size: 1.5rem; transition: all 0.3s ease;">🚤</div>
-                    <div style="position: absolute; top: 15px; right: 15px; font-size: 1.5rem;">🏁</div>
-                    <div style="position: absolute; top: 50%; left: 60%; font-size: 1rem;">⚓</div>
-                    <div style="position: absolute; bottom: 60%; right: 40%; font-size: 0.8rem;">🌊</div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="turnLeftBtn">◀ Port</button>
-                    <button class="control-btn gas" id="boostBtn">⚡ Boost</button>
-                    <button class="control-btn" id="turnRightBtn">Star ▶</button>
-                </div>
-                <button class="floating-btn" id="boatStartBtn">Start Race</button>
-            </div>
-
-            <!-- Game 23: Train Heist -->
-            <div class="game-card">
-                <div class="game-title">🚂 Train Robbery</div>
-                <div class="game-stats">
-                    <span>Loot: <strong id="trainLoot">$0</strong></span>
-                    <span>Cars: <strong id="trainCars">3</strong></span>
-                    <span>Time: <strong id="trainTime">180</strong>s</span>
-                </div>
-                <div id="trainArena" class="game-arena" style="height: 150px; background: linear-gradient(90deg, #8B4513 0%, #D2B48C 100%); position: relative; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                    <div class="train-car" data-value="500" style="width: 50px; height: 70px; background: #654321; border: 2px solid #8B4513; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer;">🚂</div>
-                    <div class="train-car" data-value="1000" style="width: 50px; height: 70px; background: #B8860B; border: 2px solid #8B4513; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer;">💰</div>
-                    <div class="train-car" data-value="750" style="width: 50px; height: 70px; background: #654321; border: 2px solid #8B4513; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer;">📦</div>
-                </div>
-                <div style="text-align: center; margin: 0.4rem 0; color: var(--warning-color); font-size: 0.8rem;">
-                    Click train cars to rob them!
-                </div>
-                <button class="floating-btn" id="trainStartBtn">Board Train</button>
-            </div>
-
-            <!-- Game 24: Fishing -->
-            <div class="game-card">
-                <div class="game-title">🎣 Legendary Fishing</div>
-                <div class="game-stats">
-                    <span>Caught: <strong id="fishCaught">0</strong></span>
-                    <span>Biggest: <strong id="biggestFish">0</strong>lbs</span>
-                    <span>Value: <strong id="fishValue">$0</strong></span>
-                </div>
-                <div id="fishingZone" class="game-arena" style="height: 150px; background: linear-gradient(180deg, #87CEEB 0%, #4682B4 50%, #191970 100%); position: relative;">
-                    <div id="fishingLine" style="position: absolute; left: 50%; top: 8px; width: 2px; height: 0px; background: #8B4513; transition: height 0.5s ease;"></div>
-                    <div id="fishingBobber" style="position: absolute; left: 50%; top: 8px; transform: translateX(-50%); font-size: 0.8rem; transition: top 0.5s ease;">🪝</div>
-                    <div id="caughtFish" style="position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); font-size: 1.5rem; display: none;">🐟</div>
-                </div>
-                <div id="fishingProgress" style="width: 100%; height: 15px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; margin: 0.4rem 0; overflow: hidden;">
-                    <div id="fishingBar" style="height: 100%; background: var(--success-color); width: 0%; transition: width 0.3s ease;"></div>
-                </div>
-                <button class="floating-btn" id="fishingStartBtn">Cast Line</button>
-            </div>
-
-            <!-- Game 25: Derby -->
-            <div class="game-card">
-                <div class="game-title">🏁 Demolition Derby</div>
-                <div class="game-stats">
-                    <span>Health: <strong id="derbyHealth">100</strong>%</span>
-                    <span>Destroyed: <strong id="carsDestroyed">0</strong></span>
-                    <span>Time: <strong id="survivalTime">0:00</strong></span>
-                </div>
-                <div id="derbyArena" class="game-arena" style="height: 150px; background: radial-gradient(ellipse, #CD853F 0%, #8B4513 100%); position: relative; border: 2px solid var(--warning-color);">
-                    <div id="playerDerby" style="position: absolute; bottom: 15px; left: 50%; width: 20px; height: 15px; background: var(--primary-color); border-radius: 3px; transform: translateX(-50%);"></div>
-                    <div id="enemyCar1" style="position: absolute; top: 15px; left: 15px; width: 18px; height: 14px; background: var(--danger-color); border-radius: 2px;"></div>
-                    <div id="enemyCar2" style="position: absolute; top: 15px; right: 15px; width: 18px; height: 14px; background: var(--warning-color); border-radius: 2px;"></div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="ramLeftBtn">Ram Left</button>
-                    <button class="control-btn gas" id="nitroBtn">Nitro Boost</button>
-                    <button class="control-btn" id="ramRightBtn">Ram Right</button>
-                </div>
-                <button class="floating-btn" id="derbyStartBtn">Enter Derby</button>
-            </div>
-
-            <!-- Game 26: Money Washing -->
-            <div class="game-card">
-                <div class="game-title">💸 Money Washing</div>
-                <div class="game-stats">
-                    <span>Dirty: <strong id="dirtyMoney">$0</strong></span>
-                    <span>Clean: <strong id="cleanMoney">$0</strong></span>
-                    <span>Cycles: <strong id="washCycles">0</strong></span>
-                </div>
-                <div class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2C3E50 0%, #34495E 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white;">
-                    <div style="font-size: 2.5rem; margin-bottom: 0.8rem;">💰</div>
-                    <div style="width: 80%; height: 15px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; margin-bottom: 0.8rem;">
-                        <div id="washingProgress" style="height: 100%; background: var(--success-color); width: 0%; transition: width 0.5s ease;"></div>
-                    </div>
-                    <div style="font-size: 0.8rem;">Washing Progress: <strong id="washPercent">0%</strong></div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="addDirtyBtn">Add Dirty</button>
-                    <button class="control-btn gas" id="startWashBtn">Wash</button>
-                    <button class="control-btn special" id="collectCleanBtn">Collect</button>
-                </div>
-                <button class="floating-btn" id="launderStartBtn">Start Operation</button>
-            </div>
-
-            <!-- Game 27: Highway Chase -->
-            <div class="game-card">
-                <div class="game-title">🏎️ Highway Chase</div>
-                <div class="game-stats">
-                    <span>Speed: <strong id="chaseSpeed">0</strong> mph</span>
-                    <span>Distance: <strong id="chaseDistance">0</strong>m</span>
-                    <span>Heat: <strong id="chaseHeat">0</strong>%</span>
-                </div>
-                <div id="chaseTrack" class="game-arena" style="height: 150px; background: linear-gradient(180deg, #2a4d3a 0%, #1e3a1e 50%, #333 100%);"></div>
-                <div id="chaseGameOver" class="game-status">
-                    <strong style="color: var(--primary-color);">Chase Over!</strong>
-                    <p id="chaseFinalScore" style="margin: 0.3rem 0; font-size: 0.8rem;"></p>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="chaseLeftBtn">< Left</button>
-                    <button class="control-btn gas" id="chaseGasBtn">Boost</button>
-                    <button class="control-btn" id="chaseRightBtn">Right ></button>
-                </div>
-                <button class="floating-btn" id="chaseStartBtn">Start Chase</button>
-            </div>
-
-            <!-- Game 28: Treasure Hunt -->
-            <div class="game-card">
-                <div class="game-title">🗺️ Treasure Map Hunter</div>
-                <div class="game-stats">
-                    <span>Found: <strong id="treasuresFound">0</strong></span>
-                    <span>Value: <strong id="treasureValue">$0</strong></span>
-                    <span>Maps: <strong id="mapsCompleted">0</strong></span>
-                </div>
-                <div id="treasureMap" class="game-arena" style="height: 150px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; padding: 8px; background: #8B4513;">
-                    <!-- Grid cells will be generated by JS -->
-                </div>
-                <div style="text-align: center; font-size: 0.8rem; margin: 0.4rem 0; color: var(--warning-color);">
-                    Clue: <span id="treasureClue">X marks the spot...</span>
-                </div>
-                <button class="floating-btn" id="treasureStartBtn">New Map</button>
-            </div>
-
-            <!-- Game 29: Shootout Arena -->
-            <div class="game-card">
-                <div class="game-title">🔫 Saloon Shootout Arena</div>
-                <div class="game-stats">
-                    <span>Enemies: <strong id="enemiesKilled">0</strong></span>
-                    <span>Ammo: <strong id="ammoCount">12</strong></span>
-                    <span>Wave: <strong id="waveNumber">1</strong></span>
-                </div>
-                <div id="shootoutArena" class="game-arena" style="height: 150px; background: linear-gradient(180deg, #8B4513 0%, #654321 100%); cursor: crosshair; position: relative;">
-                    <!-- Enemies spawn here -->
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="reloadBtn">Reload</button>
-                    <button class="control-btn gas" id="rapidFireBtn">Rapid Fire</button>
-                    <button class="control-btn special" id="headShotBtn">Precision</button>
-                </div>
-                <button class="floating-btn" id="shootoutStartBtn">Start Shootout</button>
-            </div>
-
-            <!-- Game 30: Crossword -->
-            <div class="game-card">
-                <div class="game-title">📝 GTA Universe Crossword</div>
-                <div class="game-stats">
-                    <span>Complete: <strong id="crosswordComplete">0/5</strong></span>
-                    <span>Time: <strong id="crosswordTime">0:00</strong></span>
-                    <span>Hints: <strong id="hintsUsed">0</strong></span>
-                </div>
-                <div id="crosswordGrid" class="game-arena" style="height: 180px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; padding: 8px; background: #2C3E50;">
-                    <!-- Crossword grid will be generated by JS -->
-                </div>
-                <div style="text-align: center; margin: 0.4rem 0; color: white; background: rgba(0,0,0,0.3); padding: 0.4rem; border-radius: 6px;">
-                    <div style="font-size: 0.8rem; margin-bottom: 0.4rem;">1 Across: Vice City's inspiration</div>
-                    <input type="text" id="crosswordInput" placeholder="Enter answer..." style="padding: 0.4rem; border: none; border-radius: 3px; text-align: center; font-size: 0.8rem;">
-                </div>
-                <button class="floating-btn" id="crosswordStartBtn">New Puzzle</button>
-            <!-- Game 31: Street Math Challenge -->
-            <div class="game-card">
-                <div class="game-title">🧮 Street Math Challenge</div>
-                <div class="game-stats">
-                    <span>Score: <strong id="mathScore">0</strong></span>
-                    <span>Level: <strong id="mathLevel">1</strong></span>
-                    <span>Streak: <strong id="mathStreak">0</strong></span>
-                </div>
-                <div class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2C3E50 0%, #34495E 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 15px;">
-                    <div id="mathQuestion" style="font-size: 1.3rem; text-align: center; margin-bottom: 1rem; font-weight: bold;">2 x $50 + 3 x $25 = ?</div>
-                    <input type="number" id="mathAnswer" placeholder="Enter answer..." style="width: 80%; padding: 0.6rem; border: none; border-radius: 6px; text-align: center; font-size: 1rem; background: white; color: #333;">
-                </div>
-                <button class="floating-btn" id="mathSubmitBtn">Submit Answer</button>
-            </div>
-
-            <!-- Game 32: Territory Wars -->
-            <div class="game-card">
-                <div class="game-title">🗺️ Territory Wars</div>
-                <div class="game-stats">
-                    <span>Control: <strong id="territoryControl">0</strong>%</span>
-                    <span>Wars Won: <strong id="warsWon">0</strong></span>
-                    <span>Income: <strong id="territoryIncome">$0</strong>/s</span>
-                </div>
-                <div id="territoryMap" class="game-arena" style="height: 150px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; padding: 10px; background: #2C3E50;">
-                    <!-- Territory grid generated by JS -->
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="attackBtn">⚔️ Attack</button>
-                    <button class="control-btn gas" id="defendBtn">🛡️ Defend</button>
-                    <button class="control-btn special" id="expandBtn">📈 Expand</button>
-                </div>
-                <button class="floating-btn" id="territoryStartBtn">Start War</button>
-            </div>
-
-            <!-- Game 33: Wanted Level Challenge -->
-            <div class="game-card">
-                <div class="game-title">⭐ Wanted Level Challenge</div>
-                <div class="game-stats">
-                    <span>Level: <strong id="wantedLevel">0</strong></span>
-                    <span>Score: <strong id="wantedScore">0</strong></span>
-                    <span>Time: <strong id="wantedTimer">0:00</strong></span>
-                </div>
-                <div class="game-arena" style="height: 150px; background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 15px;">
-                    <div style="font-size: 1.5rem; margin-bottom: 1rem;">🚔 VS 🏃‍♂️</div>
-                    <div id="wantedStars" style="display: flex; gap: 4px; margin-bottom: 1rem; font-size: 1.5rem;">
-                        <span style="color: #666;">⭐</span>
-                        <span style="color: #666;">⭐</span>
-                        <span style="color: #666;">⭐</span>
-                        <span style="color: #666;">⭐</span>
-                        <span style="color: #666;">⭐</span>
-                    </div>
-                    <div style="font-size: 0.9rem;">Heat Level: <strong id="heatLevel">0</strong>%</div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="chaosBtn">💥 Chaos</button>
-                    <button class="control-btn gas" id="evadeBtn">🏃 Evade</button>
-                    <button class="control-btn special" id="hideBtn">🕵️ Hide</button>
-                </div>
-                <button class="floating-btn" id="wantedStartBtn">Start Rampage</button>
-            </div>
-
-            <!-- Game 34: Drug Lab Chemistry -->
-            <div class="game-card">
-                <div class="game-title">⚗️ Chemistry Lab</div>
-                <div class="game-stats">
-                    <span>Batches: <strong id="chemBatches">0</strong></span>
-                    <span>Purity: <strong id="chemPurity">0</strong>%</span>
-                    <span>Value: <strong id="chemValue">$0</strong></span>
-                </div>
-                <div class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2C3E50 0%, #27AE60 100%); display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 15px;">
-                    <div style="text-align: center; padding: 0.8rem; background: rgba(255,255,255,0.1); border-radius: 8px; color: white;">
-                        <div style="color: var(--danger-color); font-size: 1.8rem;">⚗️</div>
-                        <div style="font-size: 0.8rem; margin: 0.3rem 0;">Chemical A</div>
-                        <div style="font-size: 0.8rem;" id="chemA">0%</div>
-                    </div>
-                    <div style="text-align: center; padding: 0.8rem; background: rgba(255,255,255,0.1); border-radius: 8px; color: white;">
-                        <div style="color: var(--warning-color); font-size: 1.8rem;">🧪</div>
-                        <div style="font-size: 0.8rem; margin: 0.3rem 0;">Chemical B</div>
-                        <div style="font-size: 0.8rem;" id="chemB">0%</div>
-                    </div>
-                    <div style="text-align: center; padding: 0.8rem; background: rgba(255,255,255,0.1); border-radius: 8px; color: white;">
-                        <div style="color: var(--success-color); font-size: 1.8rem;">🔬</div>
-                        <div style="font-size: 0.8rem; margin: 0.3rem 0;">Catalyst</div>
-                        <div style="font-size: 0.8rem;" id="chemC">0%</div>
-                    </div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="adjustBtn">⚖️ Adjust</button>
-                    <button class="control-btn gas" id="cookBtn">🔥 Cook</button>
-                    <button class="control-btn special" id="sellBatchBtn">💰 Sell</button>
-                </div>
-                <button class="floating-btn" id="chemStartBtn">Start Lab</button>
-            </div>
-
-            <!-- Game 35: Heist Planner -->
-            <div class="game-card">
-                <div class="game-title">🎯 Heist Planner</div>
-                <div class="game-stats">
-                    <span>Heists: <strong id="heistsPlanned">0</strong></span>
-                    <span>Success: <strong id="heistSuccess">0</strong>%</span>
-                    <span>Total: <strong id="totalHeistScore">$0</strong></span>
-                </div>
-                <div class="game-arena" style="height: 150px; background: linear-gradient(45deg, #8B0000 0%, #2C3E50 100%); padding: 15px; color: white;">
-                    <div id="heistDetails" style="background: rgba(255,255,255,0.1); padding: 0.8rem; border-radius: 8px; font-size: 0.8rem; min-height: 120px;">
-                        <div style="text-align: center; font-size: 1.5rem; margin-bottom: 0.5rem;">🏛️</div>
-                        <div><strong>Target:</strong> <span id="heistTarget">Click to plan heist</span></div>
-                        <div style="margin-top: 0.5rem;"><strong>Difficulty:</strong> <span id="heistDifficulty">-</span></div>
-                        <div><strong>Crew Size:</strong> <span id="crewSize">-</span></div>
-                        <div><strong>Expected Payout:</strong> <span id="heistPayout">$-</span></div>
-                        <div><strong>Risk Level:</strong> <span id="riskLevel">-</span></div>
-                    </div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="planBtn">📋 Plan</button>
-                    <button class="control-btn gas" id="executeBtn">⚡ Execute</button>
-                    <button class="control-btn special" id="abortBtn">❌ Abort</button>
-                </div>
-                <button class="floating-btn" id="heistStartBtn">Generate Heist</button>
-            </div>
-
-            <!-- Game 36: Stock Market Trading -->
-            <div class="game-card">
-                <div class="game-title">📈 BAWSAQ Trading</div>
-                <div class="game-stats">
-                    <span>Portfolio: <strong id="portfolioValue">$10,000</strong></span>
-                    <span>Profit: <strong id="stockProfit">$0</strong></span>
-                    <span>Trades: <strong id="totalTrades">0</strong></span>
-                </div>
-                <div class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2C3E50 0%, #27AE60 100%); padding: 15px; color: white;">
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 0.8rem;">
-                        <div style="background: rgba(255,255,255,0.1); padding: 0.6rem; border-radius: 6px; text-align: center;">
-                            <div style="color: var(--success-color); font-weight: bold; font-size: 0.9rem;">BET</div>
-                            <div style="font-size: 0.8rem;" id="betStock">$247.50 ↗️</div>
-                        </div>
-                        <div style="background: rgba(255,255,255,0.1); padding: 0.6rem; border-radius: 6px; text-align: center;">
-                            <div style="color: var(--danger-color); font-weight: bold; font-size: 0.9rem;">HAL</div>
-                            <div style="font-size: 0.8rem;" id="halStock">$89.25 ↘️</div>
-                        </div>
-                    </div>
-                    <div style="text-align: center; font-size: 0.8rem;">
-                        Holdings: <strong id="stockHoldings">0 BET, 0 HAL</strong>
-                    </div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="buyStockBtn">💹 Buy</button>
-                    <button class="control-btn gas" id="sellStockBtn">💰 Sell</button>
-                    <button class="control-btn special" id="refreshBtn">🔄 Update</button>
-                </div>
-                <button class="floating-btn" id="stockStartBtn">Start Trading</button>
-            </div>
-
-            <!-- Game 37: Escape Room Challenge -->
-            <div class="game-card">
-                <div class="game-title">🔐 Prison Escape</div>
-                <div class="game-stats">
-                    <span>Escapes: <strong id="escapeCount">0</strong></span>
-                    <span>Best Time: <strong id="escapeTime">--:--</strong></span>
-                    <span>Items: <strong id="escapeItems">0</strong></span>
-                </div>
-                <div id="prisonCell" class="game-arena" style="height: 150px; background: #555; position: relative; border: 3px solid #888;">
-                    <div style="position: absolute; top: 15px; left: 15px; width: 12px; height: 12px; background: var(--primary-color); border-radius: 50%;" id="prisoner"></div>
-                    <div style="position: absolute; bottom: 15px; right: 15px; width: 15px; height: 15px; background: var(--success-color); border-radius: 3px;" title="Exit"></div>
-                    <div style="position: absolute; top: 50%; left: 50%; width: 10px; height: 10px; background: var(--warning-color); border-radius: 50%;" title="Guard" id="guard"></div>
-                    <div style="position: absolute; top: 30%; right: 30%; width: 8px; height: 8px; background: var(--gold-color); border-radius: 2px;" title="Key" id="key"></div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="useKeyBtn">🗝️ Use Key</button>
-                    <button class="control-btn gas" id="distractBtn">👁️ Distract</button>
-                    <button class="control-btn special" id="escapeBtn">🏃 Escape!</button>
-                </div>
-                <button class="floating-btn" id="escapeStartBtn">Plan Escape</button>
-            </div>
-
-            <!-- Game 38: Word Scramble -->
-            <div class="game-card">
-                <div class="game-title">🔤 GTA Word Scramble</div>
-                <div class="game-stats">
-                    <span>Score: <strong id="scrambleScore">0</strong></span>
-                    <span>Words: <strong id="wordsFound">0</strong></span>
-                    <span>Streak: <strong id="wordStreak">0</strong></span>
-                </div>
-                <div class="game-arena" style="height: 150px; background: linear-gradient(45deg, #9932CC 0%, #FF69B4 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 15px;">
-                    <div id="scrambledWord" style="font-size: 1.8rem; font-weight: bold; margin-bottom: 1rem; letter-spacing: 4px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">ECIVTYCI</div>
-                    <input type="text" id="wordAnswer" placeholder="Unscramble the word..." style="width: 85%; padding: 0.6rem; border: none; border-radius: 6px; text-align: center; font-size: 1rem; background: white; color: #333;">
-                </div>
-                <div style="text-align: center; margin: 0.4rem 0; font-size: 0.8rem; color: var(--primary-color);">
-                    Hint: <span id="wordHint">A famous fictional city</span>
-                </div>
-                <button class="floating-btn" id="wordSubmitBtn">Submit Word</button>
-            </div>
-
-            <!-- Game 39: Safe Cracking -->
-            <div class="game-card">
-                <div class="game-title">🔓 Bank Safe Cracker</div>
-                <div class="game-stats">
-                    <span>Cracked: <strong id="safesCracked">0</strong></span>
-                    <span>Attempts: <strong id="safeAttempts">0</strong></span>
-                    <span>Success: <strong id="crackSuccess">0</strong>%</span>
-                </div>
-                <div class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2C3E50 0%, #8B0000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 15px;">
-                    <div style="font-size: 3rem; margin-bottom: 0.8rem;" id="safeDisplay">🔒</div>
-                    <div id="safeCode" style="font-family: monospace; font-size: 1.5rem; margin-bottom: 0.8rem; letter-spacing: 6px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">_ _ _</div>
-                    <div style="font-size: 0.8rem;">Combination: <strong id="currentCombo">000</strong></div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="safeLeftBtn">◀ Turn Left</button>
-                    <button class="control-btn gas" id="tryCodeBtn">🔓 Try Code</button>
-                    <button class="control-btn" id="safeRightBtn">Turn Right ▶</button>
-                </div>
-                <button class="floating-btn" id="safeStartBtn">New Safe</button>
-            </div>
-
-            <!-- Game 40: Horse Racing Bet -->
-            <div class="game-card">
-                <div class="game-title">🏇 Saint Denis Racing</div>
-                <div class="game-stats">
-                    <span>Winnings: <strong id="horseWinnings">$0</strong></span>
-                    <span>Races: <strong id="horseRaces">0</strong></span>
-                    <span>Win Rate: <strong id="horseWinRate">0</strong>%</span>
-                </div>
-                <div id="horseTrack" class="game-arena" style="height: 150px; background: #8B4513; position: relative; border-radius: 8px; overflow: hidden;">
-                    <div style="position: absolute; top: 20px; left: 10%; font-size: 1.2rem; transition: left 3s ease;" id="horse1">🐎</div>
-                    <div style="position: absolute; top: 50%; left: 10%; font-size: 1.2rem; transition: left 3s ease;" id="horse2">🐴</div>
-                    <div style="position: absolute; bottom: 20px; left: 10%; font-size: 1.2rem; transition: left 3s ease;" id="horse3">🏇</div>
-                    <div style="position: absolute; top: 10px; right: 10px; font-size: 2rem;">🏁</div>
-                </div>
-                <div style="text-align: center; margin: 0.4rem 0; font-size: 0.8rem;">
-                    Your Bet: <strong id="currentBet">None</strong> | Odds: <strong id="betOdds">-</strong>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="bet1Btn">🐎 Horse 1</button>
-                    <button class="control-btn gas" id="bet2Btn">🐴 Horse 2</button>
-                    <button class="control-btn special" id="bet3Btn">🏇 Horse 3</button>
-                </div>
-                <button class="floating-btn" id="raceStartBtn">Start Race</button>
-            </div>
-
-            <!-- Game 41: Bounty Hunter -->
-            <div class="game-card">
-                <div class="game-title">🤠 Bounty Hunter</div>
-                <div class="game-stats">
-                    <span>Captured: <strong id="bountyCaptured">0</strong></span>
-                    <span>Reward: <strong id="bountyReward">$0</strong></span>
-                    <span>Streak: <strong id="bountyStreak">0</strong></span>
-                </div>
-                <div id="bountyTarget" class="game-arena" style="height: 150px; background: linear-gradient(180deg, #D2B48C 0%, #8B4513 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 15px;">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">🤠</div>
-                    <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; text-align: center; width: 100%;">
-                        <div><strong>Target:</strong> <span id="targetName">Jesse McCoy</span></div>
-                        <div style="margin-top: 0.5rem;"><strong>Reward:</strong> <span id="targetReward">$500</span></div>
-                        <div style="font-size: 0.8rem; margin-top: 0.3rem;">Last Seen: <span id="targetLocation">Saloon</span></div>
-                    </div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="trackBtn">👁️ Track</button>
-                    <button class="control-btn gas" id="captureBtn">⭐ Capture</button>
-                    <button class="control-btn special" id="newTargetBtn">🔄 New Target</button>
-                </div>
-                <button class="floating-btn" id="bountyStartBtn">Start Hunt</button>
-            </div>
-
-            <!-- Game 42: Street Racing -->
-            <div class="game-card">
-                <div class="game-title">🏁 Underground Racing</div>
-                <div class="game-stats">
-                    <span>Wins: <strong id="raceWins">0</strong></span>
-                    <span>Best Time: <strong id="bestRaceTime">--:--</strong></span>
-                    <span>Cash: <strong id="raceCash">$0</strong></span>
-                </div>
-                <div id="raceTrack" class="game-arena" style="height: 150px; background: #333; position: relative; border: 2px solid var(--warning-color); border-radius: 8px;">
-                    <div id="raceCar" style="position: absolute; bottom: 15px; left: 15px; width: 25px; height: 15px; background: var(--danger-color); border-radius: 3px; transition: left 0.1s ease;"></div>
-                    <div style="position: absolute; top: 15px; right: 20px; color: var(--gold-color); font-size: 2rem;">🏁</div>
-                    <div style="position: absolute; bottom: 15px; left: 50%; width: 20px; height: 12px; background: var(--accent-color); border-radius: 2px;" id="opponent"></div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="raceGasBtn" onmousedown="accelerateRace()" onmouseup="stopRacing()">⚡ Race</button>
-                    <button class="control-btn gas" id="nitroBtn">💨 Nitro</button>
-                    <button class="control-btn special" id="brakeBtn">🛑 Brake</button>
-                </div>
-                <button class="floating-btn" id="streetRaceStartBtn">Enter Race</button>
-            </div>
-
-            <!-- Game 43: Stealth Mission -->
-            <div class="game-card">
-                <div class="game-title">🕵️ Stealth Infiltration</div>
-                <div class="game-stats">
-                    <span>Stealth: <strong id="stealthLevel">100</strong>%</span>
-                    <span>Objectives: <strong id="objectivesComplete">0/3</strong></span>
-                    <span>Alerts: <strong id="alertLevel">0</strong></span>
-                </div>
-                <div id="stealthArea" class="game-arena" style="height: 150px; background: #1a1a1a; position: relative; border: 1px solid var(--accent-color); border-radius: 8px;">
-                    <div id="stealthPlayer" style="position: absolute; bottom: 15px; left: 15px; width: 12px; height: 12px; background: var(--success-color); border-radius: 50%; transition: all 0.3s ease;"></div>
-                    <div style="position: absolute; top: 20px; right: 20px; width: 10px; height: 10px; background: var(--danger-color); border-radius: 50%; animation: pulse 2s infinite;" title="Guard" id="guard1"></div>
-                    <div style="position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background: var(--gold-color); border-radius: 50%;" title="Objective" id="objective1"></div>
-                    <div style="position: absolute; bottom: 50%; right: 30%; width: 8px; height: 8px; background: var(--gold-color); border-radius: 50%;" title="Objective" id="objective2"></div>
-                </div>
-                <div class="game-controls" style="grid-template-columns: repeat(4, 1fr);">
-                    <button class="control-btn" id="moveUpBtn">↑</button>
-                    <button class="control-btn" id="moveDownBtn">↓</button>
-                    <button class="control-btn" id="moveLeftBtn">←</button>
-                    <button class="control-btn" id="moveRightBtn">→</button>
-                </div>
-                <button class="floating-btn" id="stealthStartBtn">Start Mission</button>
-            </div>
-
-            <!-- Game 44: Moonshine Runner -->
-            <div class="game-card">
-                <div class="game-title">🥃 Moonshine Runner</div>
-                <div class="game-stats">
-                    <span>Delivered: <strong id="moonshineDelivered">0</strong></span>
-                    <span>Profit: <strong id="moonshineProfit">$0</strong></span>
-                    <span>Quality: <strong id="moonshineQuality">0</strong>%</span>
-                </div>
-                <div class="game-arena" style="height: 150px; background: linear-gradient(180deg, #8B4513 0%, #654321 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 15px;">
-                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🥃</div>
-                    <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; text-align: center; width: 100%;">
-                        <div style="margin-bottom: 0.5rem;">Bottles Ready: <strong id="moonshineBottles">0</strong></div>
-                        <div style="width: 100%; height: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden;">
-                            <div id="brewingProgress" style="height: 100%; background: var(--warning-color); width: 0%; transition: width 0.5s ease;"></div>
-                        </div>
-                        <div style="font-size: 0.8rem; margin-top: 0.3rem;">Brewing: <span id="brewStatus">Ready</span></div>
-                    </div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="brewBtn">🔥 Brew</button>
-                    <button class="control-btn gas" id="deliverBtn">🚚 Deliver</button>
-                    <button class="control-btn special" id="upgradeStillBtn">⚙️ Upgrade</button>
-                </div>
-                <button class="floating-btn" id="moonshineStartBtn">Start Operation</button>
-            </div>
-
-            <!-- Game 45: Weapon Upgrade -->
-            <div class="game-card">
-                <div class="game-title">🔫 Gun Customization</div>
-                <div class="game-stats">
-                    <span>Weapons: <strong id="weaponCount">1</strong></span>
-                    <span>Upgrades: <strong id="upgradeCount">0</strong></span>
-                    <span>Value: <strong id="weaponValue">$500</strong></span>
-                </div>
-                <div class="game-arena" style="height: 150px; background: linear-gradient(45deg, #2C3E50 0%, #8B0000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 15px;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;" id="weaponDisplay">🔫</div>
-                    <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; text-align: center; width: 100%;">
-                        <div style="font-weight: bold; margin-bottom: 0.5rem;" id="weaponName">Pistol</div>
-                        <div style="font-size: 0.8rem; display: flex; justify-content: space-between;">
-                            <span>Damage: <strong id="weaponDamage">25</strong></span>
-                            <span>Accuracy: <strong id="weaponAccuracy">70%</strong></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="upgradeWeaponBtn">⚡ Upgrade</button>
-                    <button class="control-btn gas" id="changeWeaponBtn">🔄 Switch</button>
-                    <button class="control-btn special" id="sellWeaponBtn">💰 Sell</button>
-                </div>
-                <button class="floating-btn" id="weaponStartBtn">Visit Ammu-Nation</button>
-            </div>
-
-            <!-- Game 46: Bounty Hunter -->
-            <div class="game-card">
-                <div class="game-title">🤠 Bounty Hunter</div>
-                <div class="game-stats">
-                    <span>Captured: <strong id="bountyCaptured">0</strong></span>
-                    <span>Reward: <strong id="bountyReward">$0</strong></span>
-                    <span>Streak: <strong id="bountyStreak">0</strong></span>
-                </div>
-                <div id="bountyTarget" class="game-arena" style="height: 150px; background: linear-gradient(180deg, #D2B48C 0%, #8B4513 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 15px;">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">🤠</div>
-                    <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; text-align: center; width: 100%;">
-                        <div><strong>Target:</strong> <span id="targetName">Jesse McCoy</span></div>
-                        <div style="margin-top: 0.5rem;"><strong>Reward:</strong> <span id="targetReward">$500</span></div>
-                        <div style="font-size: 0.8rem; margin-top: 0.3rem;">Last Seen: <span id="targetLocation">Saloon</span></div>
-                    </div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="trackBtn">👁️ Track</button>
-                    <button class="control-btn gas" id="captureBtn">⭐ Capture</button>
-                    <button class="control-btn special" id="newTargetBtn">🔄 New Target</button>
-                </div>
-                <button class="floating-btn" id="bountyStartBtn">Start Hunt</button>
-            </div>
-
-            <!-- Game 47: Street Racing -->
-            <div class="game-card">
-                <div class="game-title">🏁 Underground Racing</div>
-                <div class="game-stats">
-                    <span>Wins: <strong id="raceWins">0</strong></span>
-                    <span>Best Time: <strong id="bestRaceTime">--:--</strong></span>
-                    <span>Cash: <strong id="raceCash">$0</strong></span>
-                </div>
-                <div id="raceTrack" class="game-arena" style="height: 150px; background: #333; position: relative; border: 2px solid var(--warning-color); border-radius: 8px;">
-                    <div id="raceCar" style="position: absolute; bottom: 15px; left: 15px; width: 25px; height: 15px; background: var(--danger-color); border-radius: 3px; transition: left 0.1s ease;"></div>
-                    <div style="position: absolute; top: 15px; right: 20px; color: var(--gold-color); font-size: 2rem;">🏁</div>
-                    <div style="position: absolute; bottom: 15px; left: 50%; width: 20px; height: 12px; background: var(--accent-color); border-radius: 2px;" id="opponent"></div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="raceGasBtn" onmousedown="accelerateRace()" onmouseup="stopRacing()">⚡ Race</button>
-                    <button class="control-btn gas" id="nitroBtn">💨 Nitro</button>
-                    <button class="control-btn special" id="brakeBtn">🛑 Brake</button>
-                </div>
-                <button class="floating-btn" id="streetRaceStartBtn">Enter Race</button>
-            </div>
-
-            <!-- Game 48: Stealth Mission -->
-            <div class="game-card">
-                <div class="game-title">🕵️ Stealth Infiltration</div>
-                <div class="game-stats">
-                    <span>Stealth: <strong id="stealthLevel">100</strong>%</span>
-                    <span>Objectives: <strong id="objectivesComplete">0/3</strong></span>
-                    <span>Alerts: <strong id="alertLevel">0</strong></span>
-                </div>
-                <div id="stealthArea" class="game-arena" style="height: 150px; background: #1a1a1a; position: relative; border: 1px solid var(--accent-color); border-radius: 8px;">
-                    <div id="stealthPlayer" style="position: absolute; bottom: 15px; left: 15px; width: 12px; height: 12px; background: var(--success-color); border-radius: 50%; transition: all 0.3s ease;"></div>
-                    <div style="position: absolute; top: 20px; right: 20px; width: 10px; height: 10px; background: var(--danger-color); border-radius: 50%; animation: pulse 2s infinite;" title="Guard" id="guard1"></div>
-                    <div style="position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background: var(--gold-color); border-radius: 50%;" title="Objective" id="objective1"></div>
-                    <div style="position: absolute; bottom: 50%; right: 30%; width: 8px; height: 8px; background: var(--gold-color); border-radius: 50%;" title="Objective" id="objective2"></div>
-                </div>
-                <div class="game-controls" style="grid-template-columns: repeat(4, 1fr);">
-                    <button class="control-btn" id="moveUpBtn">↑</button>
-                    <button class="control-btn" id="moveDownBtn">↓</button>
-                    <button class="control-btn" id="moveLeftBtn">←</button>
-                    <button class="control-btn" id="moveRightBtn">→</button>
-                </div>
-                <button class="floating-btn" id="stealthStartBtn">Start Mission</button>
-            </div>
-
-            <!-- Game 49: Moonshine Runner -->
-            <div class="game-card">
-                <div class="game-title">🥃 Moonshine Runner</div>
-                <div class="game-stats">
-                    <span>Delivered: <strong id="moonshineDelivered">0</strong></span>
-                    <span>Profit: <strong id="moonshineProfit">$0</strong></span>
-                    <span>Quality: <strong id="moonshineQuality">0</strong>%</span>
-                </div>
-                <div class="game-arena" style="height: 150px; background: linear-gradient(180deg, #8B4513 0%, #654321 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 15px;">
-                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🥃</div>
-                    <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; text-align: center; width: 100%;">
-                        <div style="margin-bottom: 0.5rem;">Bottles Ready: <strong id="moonshineBottles">0</strong></div>
-                        <div style="width: 100%; height: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden;">
-                            <div id="brewingProgress" style="height: 100%; background: var(--warning-color); width: 0%; transition: width 0.5s ease;"></div>
-                        </div>
-                        <div style="font-size: 0.8rem; margin-top: 0.3rem;">Brewing: <span id="brewStatus">Ready</span></div>
-                    </div>
-                </div>
-                <div class="game-controls">
-                    <button class="control-btn" id="brewBtn">🔥 Brew</button>
-                    <button class="control-btn gas" id="deliverBtn">🚚 Deliver</button>
-                    <button class="control-btn special" id="upgradeStillBtn">⚙️ Upgrade</button>
-                </div>
-                <button class="floating-btn" id="moonshineStartBtn">Start Operation</button>
-            </div>
-
-            <!-- Game 50: GTA Trivia -->
-            <div class="game-card">
-                <div class="game-title">🎓 GTA Universe Trivia</div>
-                <div class="game-stats">
-                    <span>Score: <strong id="triviaScore">0</strong></span>
-                    <span>Streak: <strong id="triviaStreak">0</strong></span>
-                    <span>Best: <strong id="triviaBest">0</strong></span>
-                </div>
-                <div class="game-arena" style="height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 15px;">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">🎓</div>
-                    <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; text-align: center; width: 100%;">
-                        <div id="triviaQuestion" style="font-size: 0.9rem; margin-bottom: 1rem; font-weight: bold;">Which city is GTA Vice City based on?</div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
-                            <button class="control-btn" style="font-size: 0.7rem;" onclick="answerTrivia('Miami')">Miami</button>
-                            <button class="control-btn" style="font-size: 0.7rem;" onclick="answerTrivia('Los Angeles')">Los Angeles</button>
-                            <button class="control-btn" style="font-size: 0.7rem;" onclick="answerTrivia('New York')">New York</button>
-                            <button class="control-btn" style="font-size: 0.7rem;" onclick="answerTrivia('Las Vegas')">Las Vegas</button>
-                        </div>
-                    </div>
-                </div>
-                <button class="floating-btn" id="triviaStartBtn">New Question</button>
+                <button class="floating-btn" onclick="dealCards()">Deal Cards</button>
             </div>
         </div>
     </div>
@@ -1472,324 +266,194 @@
     <div class="notification" id="notification"></div>
 
     <script>
-        let gameStats = {
-            gamesPlayed: parseInt(localStorage.getItem('gtafl-games-played') || '0'),
-            totalScore: parseInt(localStorage.getItem('gtafl-total-score') || '0'),
-            highScore: parseInt(localStorage.getItem('gtafl-high-score') || '0')
-        };
-
-        // Game States
-        let targetState = { score: 0, hits: 0, timeLeft: 30, isPlaying: false, timer: null, targets: [] };
-        let memoryState = { level: 1, score: 0, best: parseInt(localStorage.getItem('memory-best') || '0'), sequence: [], playerSequence: [], isPlaying: false, showingSequence: false };
-        let reactionState = { best: parseInt(localStorage.getItem('reaction-best') || '999'), tests: 0, total: 0, startTime: 0, isWaiting: false };
-        let slotState = { credits: 100, jackpots: 0, winnings: 0 };
-        let showdownState = { wins: 0, fastestDraw: 999, streak: 0, isActive: false, startTime: 0 };
-        let blackjackState = { chips: 500, wins: 0, playerCards: [], dealerCards: [], playerTotal: 0, dealerTotal: 0, gameActive: false };
-        let jumpState = { altitude: 3000, jumps: 0, bestLanding: 0, isJumping: false, deployed: false };
-        let diamondState = { count: 0, clickPower: 1, autoClickers: 0, level: 1 };
-        let danceState = { wins: 0, combo: 0, streak: 0, sequence: ['left', 'up', 'right', 'down'], playerMoves: [], isPlaying: false };
-        let sniperState = { headshots: 0, accuracy: 100, distance: 500, shots: 0, hits: 0 };
-        let carState = { modded: 0, value: 25000, rating: 3, currentCar: 0 };
-        let matchState = { matches: 0, moves: 0, timeElapsed: 0, isPlaying: false, timer: null, flippedCards: [], matchedCards: [], cards: [] };
-        let lockState = { locksPicked: 0, brokenPicks: 0, sweetSpot: 45, currentAngle: 180 };
-        let colorState = { score: 0, timeLeft: 30, streak: 0, isPlaying: false, timer: null, targetColor: '#e74c3c' };
-        let gangState = { generated: 0, favorites: 0, currentRating: 4, currentName: 'The Vice Serpents' };
-        let vigilanteState = { crimesStopped: 0, justiceLevel: 0, rep: 'Rookie', responseTime: 30, isActive: false, timer: null };
-        let empireState = { cash: 1000, businesses: 1, income: 50, risk: 'Low', heat: 0 };
-        let pokerState = { chips: 1000, handsWon: 0, bestHand: 'High Card', currentHand: [], community: [] };
-        let hackState = { hacksComplete: 0, dataStolen: 0, timeLeft: 60, sequence: [], userSequence: [], isHacking: false };
-        let cattleState = { count: 0, value: 0, heat: 0 };
-        let fightState = { wins: 0, health: 100, stamina: 100, isFighting: false };
-        let boatState = { wins: 0, bestLap: 0, speed: 0, position: { x: 20, y: 80 } };
-        let trainState = { loot: 0, carsLeft: 3, timeLeft: 180, isRobbing: false };
-        let fishingState = { fishCaught: 0, biggestFish: 0, fishValue: 0, isFishing: false, progress: 0 };
-        let derbyState = { health: 100, carsDestroyed: 0, survivalTime: 0, isPlaying: false, timer: null };
-        let laundryState = { dirtyMoney: 0, cleanMoney: 0, cycles: 0, isWashing: false, progress: 0 };
-        let chaseState = { speed: 0, distance: 0, heat: 0, isPlaying: false, timer: null };
-        let treasureState = { found: 0, value: 0, maps: 0, currentMap: [], treasureX: 0, treasureY: 0 };
-        let shootoutState = { enemiesKilled: 0, ammo: 12, wave: 1, isPlaying: false, enemies: [], timer: null };
-        let crosswordState = { completed: 0, timeElapsed: 0, hintsUsed: 0, isPlaying: false };
-        
-        // New game states
-        let mathState = { score: 0, level: 1, streak: 0, currentAnswer: 0, question: '' };
-        let territoryState = { control: 0, warsWon: 0, income: 0, territories: [], isWarActive: false };
-        let wantedState = { level: 0, score: 0, timeElapsed: 0, heatLevel: 0, timer: null, isActive: false };
-        let chemState = { batches: 0, purity: 0, value: 0, chemA: 0, chemB: 0, chemC: 0 };
-        let heistState = { heistsPlanned: 0, successRate: 0, totalScore: 0, currentTarget: '', difficulty: '', payout: 0 };
-
-        const slotSymbols = ['💎', '🍒', '💰', '🔔', '⭐', '🍋', '💵', '🎮'];
-        const matchSymbols = ['🚗', '💎', '💰', '🍒', '🔧', '🎮', '🎯', '💊'];
-        // New game states (continuing from previous)
-        let stockState = { portfolioValue: 10000, profit: 0, trades: 0, betPrice: 247.50, halPrice: 89.25, betHoldings: 0, halHoldings: 0 };
-        let escapeState = { escapes: 0, bestTime: 0, items: 0, hasKey: false, guardDistracted: false, timer: null };
-        let wordState = { score: 0, wordsFound: 0, streak: 0, currentWord: 'VICECITY', scrambled: 'ECIVTYCI', hint: 'A famous fictional city' };
-        let safeState = { cracked: 0, attempts: 0, combination: [0, 0, 0], correctCombo: [25, 50, 75], currentPos: 0 };
-        let horseState = { winnings: 0, races: 0, wins: 0, currentBet: 'None', betAmount: 50, horses: ['🐎', '🐴', '🏇'] };
-
-        // Additional game states for games 41-45
-        let bountyState = { captured: 0, reward: 0, streak: 0, currentTarget: 'Jesse McCoy', targetReward: 500, targetLocation: 'Saloon' };
-        let raceState = { wins: 0, bestTime: 0, cash: 0, position: 15, isRacing: false, hasNitro: true };
-        let stealthState = { level: 100, objectives: 0, alerts: 0, playerPos: { x: 15, y: 135 }, isActive: false };
-        let moonshineState = { delivered: 0, profit: 0, quality: 0, bottles: 0, brewing: false, progress: 0 };
-        let weaponState = { 
-            count: 1, upgrades: 0, value: 500, currentWeapon: 0,
-            weapons: [
-                { name: 'Pistol', icon: '🔫', damage: 25, accuracy: 70, value: 500 },
-                { name: 'SMG', icon: '🔫', damage: 45, accuracy: 60, value: 1500 },
-                { name: 'Rifle', icon: '🎯', damage: 80, accuracy: 90, value: 3000 }
-            ]
-        };
-
-        const bountyTargets = [
-            { name: 'Jesse McCoy', reward: 500, location: 'Saloon' },
-            { name: 'Black Pete', reward: 750, location: 'Mine' },
-            { name: 'Mad Dog Morgan', reward: 1000, location: 'Canyon' },
-            { name: 'Snake Eyes Sam', reward: 1250, location: 'Railroad' }
-        ];
-
-        // Final 5 innovative game states
-        let neuralState = { nodes: 0, connections: 0, aiLevel: 1, hackingProgress: 0, pattern: 'Node connections forming...' };
-        let realityState = { glitches: 0, realityLevel: 100, anomalies: 0, isScanning: false };
-        let quantumState = { particles: 0, probability: 0, superposition: 'Stable', entangled: false };
-        let timeState = { timelines: 1, paradoxes: 0, temporalCash: 1000, currentBet: null };
-        let consciousnessState = { uploadProgress: 0, memoryFragments: 0, coherence: 100, isUploading: false };
-
-        const consciousnessMessages = [
-            'Scanning neural pathways...',
-            'Extracting core memories...',
-            'Mapping consciousness matrix...',
-            'Integrating personality data...',
-            'Establishing quantum coherence...',
-            'Upload complete - Welcome to digital eternity!'
-        ];
-
-        const cars = [
-            { name: 'Sentinel Classic', icon: '🚗', damage: 8, speed: 7, value: 25000 },
-            { name: 'Infernus', icon: '🏎️', damage: 6, speed: 10, value: 85000 },
-            { name: 'Banshee', icon: '🚙', damage: 7, speed: 9, value: 65000 }
-        ];
-
-        const gtaWords = [
-            { word: 'VICECITY', scrambled: 'ECIVTYCI', hint: 'A famous fictional city' },
-            { word: 'LIBERTY', scrambled: 'TYRBEIL', hint: 'Freedom city' },
-            { word: 'SANTOS', scrambled: 'STONSA', hint: 'Los ___ city' },
-            { word: 'TOMMY', scrambled: 'MYTOM', hint: 'Vice City protagonist' },
-            { word: 'CLAUDE', scrambled: 'DELUCA', hint: 'Silent protagonist' }
-        ];
-
-        const heistTargets = [
-            { name: 'Pacific Standard Bank', difficulty: 'Hard', crew: 4, payout: 1250000, risk: 'High' },
-            { name: 'Fleeca Bank', difficulty: 'Easy', crew: 2, payout: 143750, risk: 'Low' },
-            { name: 'Humane Labs', difficulty: 'Medium', crew: 4, payout: 675000, risk: 'Medium' },
-            { name: 'Series A Funding', difficulty: 'Medium', crew: 4, payout: 505000, risk: 'Medium' },
-            { name: 'Prison Break', difficulty: 'Hard', crew: 4, payout: 500000, risk: 'High' }
-        ];
+        var stats = { gamesPlayed: 0, totalScore: 0, highScore: 0 };
+        var targetGame = { score: 0, hits: 0, timeLeft: 30, isPlaying: false, timer: null, spawnTimer: null };
+        var memoryGame = { level: 1, score: 0, best: 0, sequence: [], playerSequence: [], isPlaying: false, showingSequence: false };
+        var slotGame = { credits: 100, jackpots: 0, winnings: 0 };
+        var showdownGame = { wins: 0, fastestDraw: 999, streak: 0, isActive: false, startTime: 0 };
+        var reactionGame = { best: 999, tests: 0, total: 0, startTime: 0, isWaiting: false };
+        var diamondGame = { count: 0, clickPower: 1, level: 1 };
+        var blackjackGame = { chips: 500, wins: 0, playerCards: [], dealerCards: [], playerTotal: 0, dealerTotal: 0, gameActive: false };
+        var slotSymbols = ['💎', '🍒', '💰', '🔔', '⭐', '🍋', '💵', '🎮'];
 
         function showNotification(message) {
-            const notification = document.getElementById('notification');
+            var notification = document.getElementById('notification');
             notification.textContent = message;
             notification.style.display = 'block';
-            setTimeout(() => notification.style.display = 'none', 3000);
+            setTimeout(function() {
+                notification.style.display = 'none';
+            }, 3000);
         }
 
         function toggleTheme() {
             document.body.classList.toggle('night-mode');
-            const isNightMode = document.body.classList.contains('night-mode');
-            document.getElementById('themeToggle').innerHTML = isNightMode ? '🌞' : '🌙';
-            localStorage.setItem('gtafl-theme', isNightMode ? 'night' : 'day');
+            var isNightMode = document.body.classList.contains('night-mode');
+            var toggle = document.querySelector('.theme-toggle');
+            toggle.innerHTML = isNightMode ? '🌞' : '🌙';
             showNotification(isNightMode ? 'Night mode activated!' : 'Day mode activated!');
         }
 
-        function loadSavedTheme() {
-            const savedTheme = localStorage.getItem('gtafl-theme') || 'day';
-            if (savedTheme === 'night') {
-                document.body.classList.add('night-mode');
-                document.getElementById('themeToggle').innerHTML = '🌞';
-            }
-        }
-
         function updateStats() {
-            document.getElementById('gamesPlayed').textContent = gameStats.gamesPlayed;
-            document.getElementById('totalScore').textContent = gameStats.totalScore.toLocaleString();
-            document.getElementById('highScore').textContent = gameStats.highScore.toLocaleString();
+            document.getElementById('gamesPlayed').textContent = stats.gamesPlayed;
+            document.getElementById('totalScore').textContent = stats.totalScore;
+            document.getElementById('highScore').textContent = stats.highScore;
         }
 
         function recordGameScore(score) {
-            gameStats.gamesPlayed++;
-            gameStats.totalScore += score;
-            if (score > gameStats.highScore) gameStats.highScore = score;
-            localStorage.setItem('gtafl-games-played', gameStats.gamesPlayed);
-            localStorage.setItem('gtafl-total-score', gameStats.totalScore);
-            localStorage.setItem('gtafl-high-score', gameStats.highScore);
+            stats.gamesPlayed++;
+            stats.totalScore += score;
+            if (score > stats.highScore) stats.highScore = score;
             updateStats();
         }
 
-        // TARGET PRACTICE
-        function updateTargetDisplay() {
-            document.getElementById('targetScore').textContent = targetState.score;
-            document.getElementById('targetHits').textContent = `${targetState.hits}/10`;
-            document.getElementById('targetTimer').textContent = targetState.timeLeft;
-        }
-
         function startTargetPractice() {
-            targetState = { score: 0, hits: 0, timeLeft: 30, isPlaying: true, timer: null, targets: [] };
-            document.getElementById('targetGameOver').style.display = 'none';
-            document.getElementById('targetStartBtn').disabled = true;
-            document.getElementById('targetStartBtn').textContent = 'Playing...';
+            targetGame = { score: 0, hits: 0, timeLeft: 30, isPlaying: true, timer: null, spawnTimer: null };
             document.getElementById('targetRange').innerHTML = '';
+            updateTargetDisplay();
             
-            targetState.timer = setInterval(() => {
-                targetState.timeLeft--;
+            targetGame.timer = setInterval(function() {
+                targetGame.timeLeft--;
                 updateTargetDisplay();
-                if (targetState.timeLeft <= 0) endTargetGame(false);
+                if (targetGame.timeLeft <= 0) endTargetGame(false);
             }, 1000);
             
-            setInterval(() => {
-                if (targetState.isPlaying && targetState.targets.length < 4) createTarget();
-            }, 600);
-            
-            updateTargetDisplay();
+            targetGame.spawnTimer = setInterval(createTarget, 1200);
+            createTarget();
+            showNotification('Target practice started!');
         }
 
         function createTarget() {
-            if (!targetState.isPlaying) return;
+            if (!targetGame.isPlaying) return;
+            var range = document.getElementById('targetRange');
+            var target = document.createElement('div');
+            var size = 30 + Math.random() * 20;
             
-            const range = document.getElementById('targetRange');
-            const target = document.createElement('div');
-            const size = Math.random() * 20 + 20;
+            target.style.position = 'absolute';
+            target.style.width = size + 'px';
+            target.style.height = size + 'px';
+            target.style.borderRadius = '50%';
+            target.style.background = '#e74c3c';
+            target.style.border = '2px solid white';
+            target.style.cursor = 'crosshair';
+            target.style.left = Math.random() * (300 - size) + 'px';
+            target.style.top = Math.random() * (120 - size) + 'px';
             
-            target.style.cssText = `position: absolute; width: ${size}px; height: ${size}px; border-radius: 50%; background: #e74c3c; border: 2px solid white; cursor: crosshair; animation: pulse 2s infinite;`;
-            
-            const x = Math.random() * (range.clientWidth - size);
-            const y = Math.random() * (range.clientHeight - size);
-            target.style.left = x + 'px';
-            target.style.top = y + 'px';
-            
-            target.addEventListener('click', () => {
+            target.onclick = function() {
                 target.remove();
-                targetState.targets = targetState.targets.filter(t => t !== target);
-                targetState.score += 100;
-                targetState.hits++;
+                targetGame.score += 100;
+                targetGame.hits++;
                 updateTargetDisplay();
-                if (targetState.hits >= 10) endTargetGame(true);
-            });
+                showNotification('Target hit! +100 points');
+                if (targetGame.hits >= 10) endTargetGame(true);
+            };
             
             range.appendChild(target);
-            targetState.targets.push(target);
-            
-            setTimeout(() => {
-                if (target.parentNode) {
-                    target.remove();
-                    targetState.targets = targetState.targets.filter(t => t !== target);
-                }
+            setTimeout(function() {
+                if (target.parentNode) target.remove();
             }, 2500);
         }
 
-        function endTargetGame(won) {
-            targetState.isPlaying = false;
-            if (targetState.timer) clearInterval(targetState.timer);
-            
-            document.getElementById('targetRange').innerHTML = '';
-            recordGameScore(targetState.score);
-            
-            document.getElementById('targetFinalScore').innerHTML = won ? `Perfect! Score: ${targetState.score}` : `Time up! Score: ${targetState.score}`;
-            document.getElementById('targetGameOver').style.display = 'block';
-            document.getElementById('targetStartBtn').disabled = false;
-            document.getElementById('targetStartBtn').textContent = 'Play Again';
-            showNotification(won ? 'All targets hit!' : 'Time ran out!');
+        function updateTargetDisplay() {
+            document.getElementById('targetScore').textContent = targetGame.score;
+            document.getElementById('targetHits').textContent = targetGame.hits + '/10';
+            document.getElementById('targetTimer').textContent = targetGame.timeLeft;
         }
 
-        // MEMORY CHALLENGE
+        function endTargetGame(won) {
+            targetGame.isPlaying = false;
+            if (targetGame.timer) clearInterval(targetGame.timer);
+            if (targetGame.spawnTimer) clearInterval(targetGame.spawnTimer);
+            document.getElementById('targetRange').innerHTML = '';
+            recordGameScore(targetGame.score);
+            showNotification(won ? 'Perfect game! Score: ' + targetGame.score : 'Game over! Score: ' + targetGame.score);
+        }
+
         function startMemoryGame() {
-            memoryState = { 
-                level: 1, score: 0, 
-                best: parseInt(localStorage.getItem('memory-best') || '0'), 
-                sequence: [], playerSequence: [], 
-                isPlaying: true, showingSequence: false 
-            };
-            
+            memoryGame = { level: 1, score: 0, best: memoryGame.best, sequence: [], playerSequence: [], isPlaying: true, showingSequence: false };
             updateMemoryDisplay();
             generateMemorySequence();
-        }
-
-        function updateMemoryDisplay() {
-            document.getElementById('memoryLevel').textContent = memoryState.level;
-            document.getElementById('memoryScore').textContent = memoryState.score;
-            document.getElementById('memoryBest').textContent = memoryState.best;
+            showNotification('Watch the sequence and repeat it!');
         }
 
         function generateMemorySequence() {
-            const newNumber = Math.floor(Math.random() * 9);
-            memoryState.sequence.push(newNumber);
-            memoryState.playerSequence = [];
+            memoryGame.sequence.push(Math.floor(Math.random() * 9));
+            memoryGame.playerSequence = [];
             showMemorySequence();
         }
 
         function showMemorySequence() {
-            memoryState.showingSequence = true;
-            const cells = document.querySelectorAll('.memory-cell');
+            memoryGame.showingSequence = true;
+            var cells = document.querySelectorAll('.memory-cell');
             
-            memoryState.sequence.forEach((cellIndex, i) => {
-                setTimeout(() => {
-                    cells[cellIndex].style.background = '#e74c3c';
-                    setTimeout(() => {
-                        cells[cellIndex].style.background = '#34495E';
-                        if (i === memoryState.sequence.length - 1) {
-                            memoryState.showingSequence = false;
-                        }
-                    }, 600);
-                }, i * 800);
-            });
+            for (var i = 0; i < cells.length; i++) {
+                cells[i].style.background = '#34495E';
+            }
+            
+            for (var i = 0; i < memoryGame.sequence.length; i++) {
+                (function(index, cellIndex) {
+                    setTimeout(function() {
+                        cells[cellIndex].style.background = '#e74c3c';
+                        setTimeout(function() {
+                            cells[cellIndex].style.background = '#34495E';
+                            if (index === memoryGame.sequence.length - 1) {
+                                memoryGame.showingSequence = false;
+                            }
+                        }, 600);
+                    }, index * 800);
+                })(i, memoryGame.sequence[i]);
+            }
         }
 
         function clickMemoryCell(index) {
-            if (!memoryState.isPlaying || memoryState.showingSequence) return;
+            if (!memoryGame.isPlaying || memoryGame.showingSequence) return;
+            memoryGame.playerSequence.push(index);
             
-            memoryState.playerSequence.push(index);
-            
-            if (memoryState.playerSequence[memoryState.playerSequence.length - 1] !== memoryState.sequence[memoryState.playerSequence.length - 1]) {
-                // Wrong!
+            var currentIndex = memoryGame.playerSequence.length - 1;
+            if (memoryGame.playerSequence[currentIndex] !== memoryGame.sequence[currentIndex]) {
                 endMemoryGame();
                 return;
             }
             
-            if (memoryState.playerSequence.length === memoryState.sequence.length) {
-                // Correct sequence completed
-                memoryState.level++;
-                memoryState.score += memoryState.level * 100;
-                setTimeout(() => generateMemorySequence(), 1000);
-                showNotification(`Level ${memoryState.level}! Score: ${memoryState.score}`);
+            if (memoryGame.playerSequence.length === memoryGame.sequence.length) {
+                memoryGame.level++;
+                memoryGame.score += memoryGame.level * 100;
                 updateMemoryDisplay();
+                showNotification('Level ' + memoryGame.level + '! Score: ' + memoryGame.score);
+                setTimeout(generateMemorySequence, 1000);
             }
+        }
+
+        function updateMemoryDisplay() {
+            document.getElementById('memoryLevel').textContent = memoryGame.level;
+            document.getElementById('memoryScore').textContent = memoryGame.score;
+            document.getElementById('memoryBest').textContent = memoryGame.best;
         }
 
         function endMemoryGame() {
-            memoryState.isPlaying = false;
-            if (memoryState.score > memoryState.best) {
-                memoryState.best = memoryState.score;
-                localStorage.setItem('memory-best', memoryState.best);
+            memoryGame.isPlaying = false;
+            if (memoryGame.score > memoryGame.best) {
+                memoryGame.best = memoryGame.score;
             }
-            recordGameScore(memoryState.score);
-            showNotification(`Game over! Level: ${memoryState.level}, Score: ${memoryState.score}`);
+            recordGameScore(memoryGame.score);
             updateMemoryDisplay();
+            showNotification('Memory game over! Level: ' + memoryGame.level + ', Score: ' + memoryGame.score);
         }
 
-        // SLOTS
         function spinSlots() {
-            if (slotState.credits < 10) {
+            if (slotGame.credits < 10) {
                 showNotification('Not enough credits!');
                 return;
             }
             
-            slotState.credits -= 10;
+            slotGame.credits -= 10;
+            updateSlotDisplay();
             
-            const slot1 = document.getElementById('slot1');
-            const slot2 = document.getElementById('slot2');
-            const slot3 = document.getElementById('slot3');
+            var slot1 = document.getElementById('slot1');
+            var slot2 = document.getElementById('slot2');
+            var slot3 = document.getElementById('slot3');
             
-            // Spin animation
-            let spins = 0;
-            const spinInterval = setInterval(() => {
+            var spins = 0;
+            var spinInterval = setInterval(function() {
                 slot1.textContent = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
                 slot2.textContent = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
                 slot3.textContent = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
@@ -1800,370 +464,209 @@
                     checkSlotWin(slot1.textContent, slot2.textContent, slot3.textContent);
                 }
             }, 100);
-            
-            updateSlotDisplay();
         }
 
         function checkSlotWin(s1, s2, s3) {
-            let winAmount = 0;
+            var winAmount = 0;
             
             if (s1 === s2 && s2 === s3) {
-                // Triple match
                 if (s1 === '💎') winAmount = 500;
                 else if (s1 === '💰') winAmount = 300;
                 else winAmount = 200;
                 
-                slotState.jackpots++;
-                showNotification(`JACKPOT! Won ${winAmount}!`);
+                slotGame.jackpots++;
+                showNotification('JACKPOT! Won ' + winAmount + ' credits!');
             } else if (s1 === s2 || s2 === s3 || s1 === s3) {
-                // Pair
                 winAmount = 50;
-                showNotification(`Pair! Won ${winAmount}!`);
+                showNotification('Pair! Won ' + winAmount + ' credits!');
             } else {
                 showNotification('No win, try again!');
             }
             
-            slotState.credits += winAmount;
-            slotState.winnings += winAmount;
+            slotGame.credits += winAmount;
+            slotGame.winnings += winAmount;
             recordGameScore(winAmount);
             updateSlotDisplay();
         }
 
         function updateSlotDisplay() {
-            document.getElementById('slotCredits').textContent = slotState.credits;
-            document.getElementById('jackpots').textContent = slotState.jackpots;
-            document.getElementById('totalWinnings').textContent = ' + slotState.winnings;
+            document.getElementById('slotCredits').textContent = slotGame.credits;
+            document.getElementById('jackpots').textContent = slotGame.jackpots;
+            document.getElementById('totalWinnings').textContent = '$' + slotGame.winnings;
         }
 
-        // SHOWDOWN
         function startShowdown() {
-            showdownState.isActive = true;
+            showdownGame.isActive = true;
             document.getElementById('showdownCountdown').textContent = 'READY';
+            document.getElementById('showdownCountdown').style.color = '#dc3545';
             
-            const countdown = Math.random() * 3000 + 2000; // 2-5 seconds
+            var countdown = Math.random() * 3000 + 2000;
             
-            setTimeout(() => {
-                if (showdownState.isActive) {
+            setTimeout(function() {
+                if (showdownGame.isActive) {
                     document.getElementById('showdownCountdown').textContent = 'DRAW!';
-                    showdownState.startTime = Date.now();
+                    document.getElementById('showdownCountdown').style.color = '#28a745';
+                    showdownGame.startTime = Date.now();
                 }
             }, countdown);
+            
+            showNotification('Get ready... wait for DRAW!');
         }
 
         function quickDraw() {
-            if (!showdownState.isActive || document.getElementById('showdownCountdown').textContent !== 'DRAW!') {
+            if (!showdownGame.isActive || document.getElementById('showdownCountdown').textContent !== 'DRAW!') {
                 showNotification('Too early! Wait for DRAW!');
-                showdownState.isActive = false;
+                showdownGame.isActive = false;
+                document.getElementById('showdownCountdown').textContent = 'READY';
+                document.getElementById('showdownCountdown').style.color = '#dc3545';
                 return;
             }
             
-            const reactionTime = Date.now() - showdownState.startTime;
+            var reactionTime = Date.now() - showdownGame.startTime;
             
             if (reactionTime < 800) {
-                showdownState.wins++;
-                showdownState.streak++;
-                if (reactionTime < showdownState.fastestDraw || showdownState.fastestDraw === 999) {
-                    showdownState.fastestDraw = reactionTime;
+                showdownGame.wins++;
+                showdownGame.streak++;
+                if (reactionTime < showdownGame.fastestDraw || showdownGame.fastestDraw === 999) {
+                    showdownGame.fastestDraw = reactionTime;
                 }
-                showNotification(`Victory! ${reactionTime}ms reaction time!`);
+                showNotification('Victory! ' + reactionTime + 'ms reaction time!');
                 recordGameScore(Math.max(100, 500 - reactionTime));
             } else {
-                showdownState.streak = 0;
-                showNotification(`Too slow! ${reactionTime}ms - You lose!`);
+                showdownGame.streak = 0;
+                showNotification('Too slow! ' + reactionTime + 'ms - You lose!');
             }
             
-            showdownState.isActive = false;
+            showdownGame.isActive = false;
+            document.getElementById('showdownCountdown').textContent = 'READY';
+            document.getElementById('showdownCountdown').style.color = '#dc3545';
             updateShowdownDisplay();
         }
 
         function updateShowdownDisplay() {
-            document.getElementById('showdownWins').textContent = showdownState.wins;
-            document.getElementById('fastestDraw').textContent = showdownState.fastestDraw === 999 ? '--' : showdownState.fastestDraw + 'ms';
-            document.getElementById('showdownStreak').textContent = showdownState.streak;
+            document.getElementById('showdownWins').textContent = showdownGame.wins;
+            document.getElementById('fastestDraw').textContent = showdownGame.fastestDraw === 999 ? '--' : showdownGame.fastestDraw + 'ms';
+            document.getElementById('showdownStreak').textContent = showdownGame.streak;
         }
 
-        // REACTION TEST
         function startReactionTest() {
-            const arena = document.getElementById('reactionArena');
+            var arena = document.getElementById('reactionArena');
             arena.style.background = '#e74c3c';
             arena.textContent = 'Wait for GREEN...';
-            reactionState.isWaiting = true;
+            reactionGame.isWaiting = true;
             
-            const waitTime = Math.random() * 4000 + 1000; // 1-5 seconds
+            var waitTime = Math.random() * 4000 + 1000;
             
-            setTimeout(() => {
-                if (reactionState.isWaiting) {
+            setTimeout(function() {
+                if (reactionGame.isWaiting) {
                     arena.style.background = '#27AE60';
                     arena.textContent = 'CLICK NOW!';
-                    reactionState.startTime = Date.now();
+                    reactionGame.startTime = Date.now();
                 }
             }, waitTime);
         }
 
         function testReaction() {
-            const arena = document.getElementById('reactionArena');
+            var arena = document.getElementById('reactionArena');
             
-            if (!reactionState.isWaiting) return;
+            if (!reactionGame.isWaiting) return;
             
             if (arena.style.background === 'rgb(231, 76, 60)' || arena.textContent === 'Wait for GREEN...') {
                 showNotification('Too early! Wait for green!');
                 arena.style.background = '#e74c3c';
                 arena.textContent = 'Click when GREEN!';
-                reactionState.isWaiting = false;
+                reactionGame.isWaiting = false;
                 return;
             }
             
-            const reactionTime = Date.now() - reactionState.startTime;
-            reactionState.tests++;
-            reactionState.total += reactionTime;
+            var reactionTime = Date.now() - reactionGame.startTime;
+            reactionGame.tests++;
+            reactionGame.total += reactionTime;
             
-            if (reactionTime < reactionState.best || reactionState.best === 999) {
-                reactionState.best = reactionTime;
-                localStorage.setItem('reaction-best', reactionState.best);
+            if (reactionTime < reactionGame.best || reactionGame.best === 999) {
+                reactionGame.best = reactionTime;
             }
             
             arena.style.background = '#e74c3c';
             arena.textContent = 'Click when GREEN!';
-            reactionState.isWaiting = false;
+            reactionGame.isWaiting = false;
             
-            showNotification(`${reactionTime}ms reaction time!`);
+            showNotification(reactionTime + 'ms reaction time!');
             recordGameScore(Math.max(10, 300 - reactionTime));
             updateReactionDisplay();
         }
 
         function updateReactionDisplay() {
-            document.getElementById('reactionBest').textContent = reactionState.best === 999 ? '0' : reactionState.best;
-            document.getElementById('reactionTests').textContent = reactionState.tests;
-            document.getElementById('reactionAvg').textContent = reactionState.tests > 0 ? Math.round(reactionState.total / reactionState.tests) : '0';
+            document.getElementById('reactionBest').textContent = reactionGame.best === 999 ? '0' : reactionGame.best;
+            document.getElementById('reactionTests').textContent = reactionGame.tests;
+            document.getElementById('reactionAvg').textContent = reactionGame.tests > 0 ? Math.round(reactionGame.total / reactionGame.tests) : '0';
         }
 
-        // MATH CHALLENGE
-        function generateMathQuestion() {
-            const operations = ['+', '-', '*'];
-            const op1 = operations[Math.floor(Math.random() * operations.length)];
-            const op2 = operations[Math.floor(Math.random() * operations.length)];
-            
-            const a = Math.floor(Math.random() * 50) + 1;
-            const b = Math.floor(Math.random() * 25) + 1;
-            const c = Math.floor(Math.random() * 100) + 1;
-            const d = Math.floor(Math.random() * 50) + 1;
-            
-            mathState.question = `${a} ${op1} ${b} ${op2} ${c} x ${d} = ?`;
-            
-            // Calculate answer
-            let result1 = op1 === '+' ? a + b : op1 === '-' ? a - b : a * b;
-            let result2 = op2 === '+' ? result1 + (c * d) : op2 === '-' ? result1 - (c * d) : result1 * (c * d);
-            mathState.currentAnswer = result2;
-            
-            document.getElementById('mathQuestion').textContent = mathState.question;
+        function startMining() {
+            diamondGame = { count: 0, clickPower: 1, level: 1 };
+            updateDiamondDisplay();
+            showNotification('Mining started! Click the diamond to collect!');
         }
 
-        function checkMathAnswer() {
-            const userAnswer = parseInt(document.getElementById('mathAnswer').value);
+        function clickDiamond() {
+            var diamond = document.getElementById('bigDiamond');
+            diamond.style.transform = 'scale(1.1)';
+            setTimeout(function() {
+                diamond.style.transform = 'scale(1)';
+            }, 100);
             
-            if (userAnswer === mathState.currentAnswer) {
-                mathState.score += mathState.level * 50;
-                mathState.streak++;
-                mathState.level = Math.floor(mathState.score / 500) + 1;
-                showNotification(`Correct! Score: ${mathState.score}`);
-                recordGameScore(mathState.level * 50);
-            } else {
-                mathState.streak = 0;
-                showNotification(`Wrong! Answer was ${mathState.currentAnswer}`);
+            diamondGame.count += diamondGame.clickPower;
+            updateDiamondDisplay();
+            
+            if (diamondGame.count >= diamondGame.level * 100) {
+                diamondGame.level++;
+                diamondGame.clickPower++;
+                showNotification('Level up! Click power increased to ' + diamondGame.clickPower);
+                recordGameScore(diamondGame.level * 50);
             }
-            
-            document.getElementById('mathAnswer').value = '';
-            generateMathQuestion();
-            updateMathDisplay();
         }
 
-        function updateMathDisplay() {
-            document.getElementById('mathScore').textContent = mathState.score;
-            document.getElementById('mathLevel').textContent = mathState.level;
-            document.getElementById('mathStreak').textContent = mathState.streak;
+        function updateDiamondDisplay() {
+            document.getElementById('diamondCount').textContent = diamondGame.count;
+            document.getElementById('clickPower').textContent = diamondGame.clickPower;
+            document.getElementById('clickLevel').textContent = diamondGame.level;
         }
 
-        // Initialize everything
-        document.addEventListener('DOMContentLoaded', () => {
-            loadSavedTheme();
-            updateStats();
-            updateMemoryDisplay();
-            updateSlotDisplay();
-            updateShowdownDisplay();
-            updateReactionDisplay();
-            generateMathQuestion();
-            updateMathDisplay();
+        function dealCards() {
+            blackjackGame = { chips: blackjackGame.chips, wins: blackjackGame.wins, playerCards: [], dealerCards: [], playerTotal: 0, dealerTotal: 0, gameActive: true };
             
-            showNotification('GTAFastLane Mini-Games loaded! All 50 games working!');
+            var playerCard1 = Math.floor(Math.random() * 10) + 1;
+            var playerCard2 = Math.floor(Math.random() * 10) + 1;
+            var dealerCard1 = Math.floor(Math.random() * 10) + 1;
             
-            // Event listeners
-            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-            document.getElementById('targetStartBtn').addEventListener('click', startTargetPractice);
-            document.getElementById('memoryStartBtn').addEventListener('click', startMemoryGame);
-            document.getElementById('slotStartBtn').addEventListener('click', spinSlots);
-            document.getElementById('showdownStartBtn').addEventListener('click', startShowdown);
-            document.getElementById('showdownArena').addEventListener('click', quickDraw);
-            document.getElementById('reactionStartBtn').addEventListener('click', startReactionTest);
-            document.getElementById('reactionArena').addEventListener('click', testReaction);
-            document.getElementById('mathSubmitBtn').addEventListener('click', checkMathAnswer);
-            document.getElementById('mathAnswer').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') checkMathAnswer();
-            });
+            blackjackGame.playerCards = [playerCard1, playerCard2];
+            blackjackGame.dealerCards = [dealerCard1];
+            blackjackGame.playerTotal = playerCard1 + playerCard2;
+            blackjackGame.dealerTotal = dealerCard1;
             
-            // Memory cells
-            document.querySelectorAll('.memory-cell').forEach((cell, index) => {
-                cell.addEventListener('click', () => clickMemoryCell(index));
-            });
+            updateBlackjackDisplay();
+            showNotification('Cards dealt! Your total: ' + blackjackGame.playerTotal);
+        }
 
-            // Advanced game functions
-            window.startNeuralHack = () => {
-                neuralState.nodes = 0;
-                neuralState.connections = 0;
-                neuralState.hackingProgress = 0;
-                showNotification('Neural network breach initiated!');
-                animateNeuralNetwork();
-                recordGameScore(200);
-            };
+        function updateBlackjackDisplay() {
+            document.getElementById('blackjackChips').textContent = '$' + blackjackGame.chips;
+            document.getElementById('blackjackWins').textContent = blackjackGame.wins;
+            document.getElementById('playerTotal').textContent = blackjackGame.playerTotal;
+            document.getElementById('playerTotal2').textContent = blackjackGame.playerTotal;
+            document.getElementById('dealerTotal').textContent = blackjackGame.dealerTotal;
+            
+            document.getElementById('playerCards').textContent = '🃏 🃏';
+            document.getElementById('dealerCards').textContent = '🃏 🂠';
+        }
 
-            window.startReality = () => {
-                realityState.glitches = 0;
-                realityState.realityLevel = 100;
-                realityState.anomalies = 0;
-                showNotification('Reality distortion field activated!');
-                recordGameScore(300);
-            };
-
-            window.startQuantum = () => {
-                quantumState.particles = Math.floor(Math.random() * 50) + 10;
-                quantumState.probability = Math.floor(Math.random() * 100);
-                quantumState.superposition = ['Stable', 'Fluctuating', 'Chaotic'][Math.floor(Math.random() * 3)];
-                showNotification('Quantum heist parameters set!');
-                updateQuantumDisplay();
-                recordGameScore(500);
-            };
-
-            window.startTimeCasino = () => {
-                timeState.timelines = 1;
-                timeState.paradoxes = 0;
-                timeState.temporalCash = 1000;
-                showNotification('Time stream casino accessed!');
-                recordGameScore(250);
-            };
-
-            window.startConsciousness = () => {
-                consciousnessState.uploadProgress = 0;
-                consciousnessState.memoryFragments = 0;
-                consciousnessState.coherence = 100;
-                consciousnessState.isUploading = true;
-                showNotification('Consciousness upload sequence initiated!');
-                simulateUpload();
-                recordGameScore(1000);
-            };
-
-            function animateNeuralNetwork() {
-                const canvas = document.getElementById('networkCanvas');
-                if (!canvas) return;
-                
-                const ctx = canvas.getContext('2d');
-                const nodes = [];
-                
-                // Create random nodes
-                for (let i = 0; i < 8; i++) {
-                    nodes.push({
-                        x: Math.random() * canvas.width,
-                        y: Math.random() * canvas.height,
-                        connected: false
-                    });
-                }
-                
-                function drawNetwork() {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    
-                    // Draw connections
-                    ctx.strokeStyle = '#00ff88';
-                    ctx.lineWidth = 1;
-                    for (let i = 0; i < nodes.length; i++) {
-                        for (let j = i + 1; j < nodes.length; j++) {
-                            if (Math.random() > 0.7) {
-                                ctx.beginPath();
-                                ctx.moveTo(nodes[i].x, nodes[i].y);
-                                ctx.lineTo(nodes[j].x, nodes[j].y);
-                                ctx.stroke();
-                                neuralState.connections++;
-                            }
-                        }
-                    }
-                    
-                    // Draw nodes
-                    nodes.forEach(node => {
-                        ctx.fillStyle = node.connected ? '#ff0080' : '#00ffff';
-                        ctx.beginPath();
-                        ctx.arc(node.x, node.y, 4, 0, Math.PI * 2);
-                        ctx.fill();
-                        neuralState.nodes++;
-                    });
-                    
-                    updateNeuralDisplay();
-                }
-                
-                drawNetwork();
-            }
-
-            function updateNeuralDisplay() {
-                document.getElementById('neuralNodes').textContent = neuralState.nodes;
-                document.getElementById('neuralConnections').textContent = neuralState.connections;
-                document.getElementById('aiLevel').textContent = neuralState.aiLevel;
-                document.getElementById('neuralPattern').textContent = neuralState.pattern;
-            }
-
-            function updateQuantumDisplay() {
-                document.getElementById('quantumParticles').textContent = quantumState.particles;
-                document.getElementById('heistProbability').textContent = quantumState.probability;
-                document.getElementById('superpositionState').textContent = quantumState.superposition;
-            }
-
-            function simulateUpload() {
-                const interval = setInterval(() => {
-                    consciousnessState.uploadProgress += Math.floor(Math.random() * 15) + 5;
-                    consciousnessState.memoryFragments += Math.floor(Math.random() * 3) + 1;
-                    
-                    if (consciousnessState.uploadProgress >= 100) {
-                        consciousnessState.uploadProgress = 100;
-                        consciousnessState.isUploading = false;
-                        clearInterval(interval);
-                        showNotification('Consciousness successfully uploaded to the matrix!');
-                    }
-                    
-                    updateConsciousnessDisplay();
-                    
-                    const messageIndex = Math.floor((consciousnessState.uploadProgress / 100) * consciousnessMessages.length);
-                    if (messageIndex < consciousnessMessages.length) {
-                        showNotification(consciousnessMessages[messageIndex]);
-                    }
-                }, 1500);
-            }
-
-            function updateConsciousnessDisplay() {
-                document.getElementById('uploadProgress').textContent = consciousnessState.uploadProgress;
-                document.getElementById('memoryFragments').textContent = consciousnessState.memoryFragments;
-                document.getElementById('consciousness').textContent = consciousnessState.coherence;
-            }
-
-            // Placeholder functions for additional games
-            window.startBountyHunt = () => showNotification('Bounty Hunt started! Track down the target!');
-            window.startStreetRace = () => showNotification('Street Race started! Hit the gas!');
-            window.startStealth = () => showNotification('Stealth Mission started! Stay hidden!');
-            window.startMoonshine = () => showNotification('Moonshine Operation started! Cook up some profit!');
-            window.startWeaponShop = () => showNotification('Gun Shop opened! Upgrade your arsenal!');
-            window.danceMove = (direction) => showNotification(`Dance move: ${direction} - Keep the beat!`);
-            window.modifyCar = (type) => showNotification(`Modified car: ${type} - Performance enhanced!`);
-
-            // Link advanced game buttons
-            document.getElementById('neuralStartBtn')?.addEventListener('click', startNeuralHack);
-            document.getElementById('realityStartBtn')?.addEventListener('click', startReality);
-            document.getElementById('quantumStartBtn')?.addEventListener('click', startQuantum);
-            document.getElementById('timeStartBtn')?.addEventListener('click', startTimeCasino);
-            document.getElementById('consciousnessStartBtn')?.addEventListener('click', startConsciousness);
-        });
+        updateStats();
+        updateMemoryDisplay();
+        updateSlotDisplay();
+        updateShowdownDisplay();
+        updateReactionDisplay();
+        updateDiamondDisplay();
+        updateBlackjackDisplay();
+        showNotification('7 Games Ready!');
     </script>
-    </script>
+</body>
+</html>
