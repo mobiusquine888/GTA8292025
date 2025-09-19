@@ -3,523 +3,1036 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini Games Collection</title>
+    <title>GTA 6 FastLane Gaming Hub</title>
     <style>
-        :root {
-            --primary-color: #00ffaa;
-            --secondary-color: #ff0055;
-            --accent-color: #ffcc00;
-            --success-color: #51cf66;
-            --warning-color: #ffd43b;
-            --bg-color: #ffffff;
-            --surface-color: #ffffff;
-            --text-primary: #2c3e50;
-            --text-secondary: #7f8c8d;
-            --border-color: #e9ecef;
-            --shadow: rgba(0, 0, 0, 0.1);
-        }
-
-        [data-theme="dark"] {
-            --bg-color: #000000;
-            --surface-color: #000000;
-            --text-primary: #ffffff;
-            --text-secondary: #bdc3c7;
-            --border-color: #333333;
-            --shadow: rgba(255, 255, 255, 0.1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg-color);
-            color: var(--text-primary);
-            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background: #ffffff;
+            color: #000000;
             transition: all 0.3s ease;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+            min-height: 100vh;
             padding: 20px;
         }
 
-        /* Header Section */
+        body.night-mode {
+            background: #000000;
+            color: #ffffff;
+        }
+
         .header {
+            background: linear-gradient(135deg, #00ffaa 0%, #ff0055 100%);
+            color: #ffffff;
+            padding: 2rem 1rem;
             text-align: center;
-            margin-bottom: 40px;
-            background: var(--surface-color);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px var(--shadow);
-            border: 1px solid var(--border-color);
             position: relative;
-            overflow: hidden;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.2);
         }
 
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #00ffaa, #ff0055);
-        }
-
-        .banner {
-            background: linear-gradient(135deg, #00ffaa, #ff0055);
-            color: white;
-            font-size: 3rem;
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
             font-weight: bold;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            -webkit-background-clip: unset;
-            -webkit-text-fill-color: white;
-            background-clip: unset;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .stat-card {
-            background: var(--surface-color);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px var(--shadow);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px var(--shadow);
-            border-color: var(--primary-color);
-        }
-
-        .stat-card.premium {
-            background: linear-gradient(135deg, #00ffaa, #ff0055);
-            border-color: #00ffaa;
-            color: white;
-        }
-
-        .stat-number {
-            display: block;
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 5px;
-        }
-
-        .stat-card.premium .stat-number {
-            color: white;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            animation: pulse 2s infinite;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .stat-card.premium .stat-label {
-            color: white;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        /* Day/Night Toggle */
         .theme-toggle {
             position: absolute;
             top: 20px;
             right: 20px;
-            background: var(--surface-color);
-            border: 2px solid var(--border-color);
-            border-radius: 50px;
-            padding: 8px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 25px;
             cursor: pointer;
+            font-size: 1.2rem;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 15px var(--shadow);
         }
 
         .theme-toggle:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px var(--shadow);
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
         }
 
-        .toggle-button {
-            width: 60px;
-            height: 30px;
-            background: var(--border-color);
-            border-radius: 15px;
-            position: relative;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .toggle-slider {
-            width: 26px;
-            height: 26px;
-            background: var(--surface-color);
-            border-radius: 50%;
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 10px var(--shadow);
+        .stats {
             display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 12px;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
         }
 
-        [data-theme="dark"] .toggle-button {
-            background: var(--primary-color);
+        .stat {
+            text-align: center;
+            background: rgba(255,255,255,0.2);
+            padding: 15px 20px;
+            border-radius: 15px;
+            min-width: 150px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
         }
 
-        [data-theme="dark"] .toggle-slider {
-            transform: translateX(30px);
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+            color: white;
         }
 
-        .theme-icon {
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        /* Games Grid Container */
-        .games-container {
-            background: var(--surface-color);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px var(--shadow);
-            border: 1px solid var(--border-color);
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-            justify-items: center;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        /* Game Slot Placeholders (for reference) */
-        .game-slot {
-            width: 300px;
-            height: 300px;
-            background: var(--surface-color);
-            border: 2px dashed var(--border-color);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            font-size: 1.1rem;
+        .game-card {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 25px;
+            border: 2px solid #dee2e6;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.1);
         }
 
-        .game-slot:hover {
-            border-color: var(--primary-color);
-            background: linear-gradient(135deg, var(--primary-color)10, var(--secondary-color)10);
+        body.night-mode .game-card {
+            background: #1e1e1e;
+            border-color: #444444;
+            box-shadow: 0 4px 25px rgba(255,255,255,0.1);
         }
 
-        /* Coming Soon Message */
-        .coming-soon {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-secondary);
+        .game-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.2);
         }
 
-        .coming-soon h2 {
-            font-size: 2rem;
+        body.night-mode .game-card:hover {
+            box-shadow: 0 8px 40px rgba(255,255,255,0.2);
+        }
+
+        .game-title {
+            font-size: 1.5rem;
+            font-weight: bold;
             margin-bottom: 15px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg, #00ffaa 0%, #ff0055 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .coming-soon p {
-            font-size: 1.1rem;
-            line-height: 1.6;
+        .game-arena {
+            height: 300px;
+            background: #ffffff;
+            border: 2px solid #dee2e6;
+            border-radius: 15px;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
         }
 
-        /* Responsive Design */
+        body.night-mode .game-arena {
+            background: #000000;
+            border-color: #444444;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .game-btn {
+            background: linear-gradient(135deg, #00ffaa 0%, #ff0055 100%);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .game-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #00ffaa 0%, #ff0055 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            display: none;
+            z-index: 1000;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Neural Network Game Styles */
+        .neural-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: radial-gradient(circle at center, #001100 0%, #000000 100%);
+            overflow: hidden;
+        }
+
+        .neural-hud {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff00;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #00ff00;
+            z-index: 10;
+        }
+
+        .brain-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #ff0000 0%, #990000 100%);
+            border: 2px solid #ff0000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            animation: brainPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes brainPulse {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(255, 0, 0, 0.8);
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+        }
+
+        .neural-node {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #00ff00;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: nodePulse 1.5s ease-in-out infinite;
+        }
+
+        .neural-node.infected {
+            background: #ff0000;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+            animation: infectedPulse 0.8s ease-in-out infinite;
+        }
+
+        @keyframes nodePulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        @keyframes infectedPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+        }
+
+        .virus-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ff0000;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
+            animation: virusFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes virusFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .neural-controls {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+        }
+
+        .neural-btn {
+            background: #003300;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+        }
+
+        .neural-btn:hover {
+            background: #006600;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        /* Target Practice Game Styles */
+        .target-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: linear-gradient(135deg, #001122 0%, #003366 100%);
+            overflow: hidden;
+            cursor: crosshair;
+        }
+
+        .target-hud {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff00;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #00ff00;
+            z-index: 10;
+        }
+
+        .crosshair {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ff0000;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 5;
+            display: none;
+        }
+
+        .crosshair::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 2px;
+            height: 2px;
+            background: #ff0000;
+            border-radius: 50%;
+        }
+
+        .target {
+            position: absolute;
+            border-radius: 50%;
+            cursor: crosshair;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            font-size: 0.8rem;
+        }
+
+        .target.standard {
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, #ff4444 0%, #cc0000 70%, #990000 100%);
+            border: 3px solid #ffff00;
+            animation: targetFloat 2s ease-in-out infinite;
+        }
+
+        .target.moving {
+            width: 35px;
+            height: 35px;
+            background: radial-gradient(circle, #ff8800 0%, #dd4400 70%, #bb2200 100%);
+            border: 3px solid #ffff00;
+            animation: targetMove 3s linear infinite;
+        }
+
+        .target.bonus {
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, #ffaa00 0%, #ff6600 70%, #cc4400 100%);
+            border: 3px solid #ffff00;
+            animation: targetBounce 1.5s ease-in-out infinite;
+        }
+
+        @keyframes targetFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes targetMove {
+            0%, 100% { transform: translateX(-15px); }
+            50% { transform: translateX(15px); }
+        }
+
+        @keyframes targetBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .hit-effect {
+            position: absolute;
+            pointer-events: none;
+            color: #ffff00;
+            font-weight: bold;
+            font-size: 1.2rem;
+            animation: hitScore 1s ease-out forwards;
+            z-index: 10;
+        }
+
+        @keyframes hitScore {
+            0% { transform: scale(0.5) translateY(0); opacity: 1; }
+            100% { transform: scale(1) translateY(-30px); opacity: 0; }
+        }
+
+        .start-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            z-index: 15;
+        }
+
         @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-
-            .banner {
-                font-size: 2rem;
-            }
-
-            .theme-toggle {
-                position: static;
-                margin: 20px auto 0;
-            }
-
             .games-grid {
                 grid-template-columns: 1fr;
                 gap: 20px;
             }
-
-            .game-slot {
-                width: 280px;
-                height: 280px;
+            
+            .stats {
+                gap: 15px;
             }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
+            
+            .stat {
+                min-width: 120px;
+                padding: 12px 15px;
             }
-
-            .stat-card {
-                padding: 12px;
-            }
-
-            .stat-number {
-                font-size: 1.5rem;
-            }
-
-            .stat-label {
-                font-size: 0.8rem;
-            }
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .header, .games-container {
-            animation: fadeIn 0.6s ease-out;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header with Banner and Toggle -->
-        <div class="header">
-            <div class="theme-toggle" onclick="toggleTheme()">
-                <div class="toggle-button">
-                    <div class="toggle-slider">
-                        <span class="theme-icon">☀️</span>
+    <div class="header">
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">🌙</button>
+        <h1>🎮 GTA 6 FastLane Gaming Hub</h1>
+        <p>Revolutionary Gaming Experience</p>
+        
+        <div class="stats">
+            <div class="stat">
+                <span class="stat-number" id="totalGames">2</span>
+                <span class="stat-label">Total Games</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" id="gamesPlayed">0</span>
+                <span class="stat-label">Games Played</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" id="totalScore">0</span>
+                <span class="stat-label">Total Score</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="games-grid">
+        <!-- Neural Network Zombie Game -->
+        <div class="game-card">
+            <div class="game-title">🧠 Neural Network Defense</div>
+            <div class="game-stats">
+                <span>Status: <strong id="neuralStatus">Ready</strong></span>
+                <span>High Score: <strong id="neuralHighScore">0</strong></span>
+                <span>Difficulty: <strong>Hard</strong></span>
+            </div>
+            <div class="game-arena">
+                <div class="neural-container" id="neuralContainer">
+                    <div class="neural-hud">
+                        <div>Health: <span id="neuralHealth">100</span>%</div>
+                        <div>Score: <span id="neuralScore">0</span></div>
+                        <div>Wave: <span id="neuralWave">1</span></div>
+                        <div>Infected: <span id="infectedCount">0</span></div>
+                    </div>
+                    <div class="brain-center">🧠</div>
+                    <div class="neural-controls">
+                        <button class="neural-btn" onclick="startNeuralGame()">START</button>
+                        <button class="neural-btn" onclick="healNodes()">HEAL</button>
+                        <button class="neural-btn" onclick="resetNeuralGame()">RESET</button>
+                    </div>
+                    <div class="start-screen" id="neuralStartScreen">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">🧠</div>
+                        <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">Neural Network Defense</div>
+                        <div style="margin-bottom: 1.5rem; text-align: center;">Protect the brain from virus attacks!</div>
+                        <button class="game-btn" onclick="startNeuralGame()">🧠 Start Defense</button>
                     </div>
                 </div>
             </div>
-            
-            <h1 class="banner">🎮 MINI GAMES</h1>
-            <p class="subtitle">A Collection of Fun Interactive Games</p>
-            
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-number" id="totalGames">0</span>
-                    <div class="stat-label">Working Games</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="gamesPlayed">0</span>
-                    <div class="stat-label">Games Played</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="totalScore">0</span>
-                    <div class="stat-label">Total Score</div>
-                </div>
-                <div class="stat-card premium">
-                    <span class="stat-number">LIVE</span>
-                    <div class="stat-label">Status</div>
-                </div>
-            </div>
+            <button class="game-btn" onclick="startNeuralGame()">🧠 Start Neural Defense</button>
         </div>
 
-        <!-- Games Container -->
-        <div class="games-container">
-            <div class="games-grid" id="gamesGrid">
-                
-               <!-- Blackjack Game -->
+        <!-- Target Practice Game -->
         <div class="game-card">
-            <div class="game-title">🃏 Blackjack 21</div>
-            <div style="margin-bottom: 1rem;">
-                <div style="margin-bottom: 0.5rem;">Chips: $<span id="blackjackChips">1000</span> | Wins: <span id="blackjackWins">0</span></div>
-                <div style="margin-bottom: 1rem;">
-                    <div style="margin-bottom: 0.5rem;"><strong>Your Hand (Total: <span id="playerTotal">0</span>):</strong></div>
-                    <div id="playerCards" style="min-height: 60px; margin-bottom: 1rem;"></div>
-                    <div style="margin-bottom: 0.5rem;"><strong>Dealer Hand (Total: <span id="dealerTotal">?</span>):</strong></div>
-                    <div id="dealerCards" style="min-height: 60px;"></div>
+            <div class="game-title">🎯 Target Practice Elite</div>
+            <div class="game-stats">
+                <span>Best: <strong id="targetBest">0</strong></span>
+                <span>Played: <strong id="targetPlayed">0</strong></span>
+                <span>Difficulty: <strong>Medium</strong></span>
+            </div>
+            <div class="game-arena">
+                <div class="target-container" id="targetContainer">
+                    <div class="target-hud">
+                        <div>Score: <span id="targetScore">0</span></div>
+                        <div>Time: <span id="targetTime">30</span>s</div>
+                        <div>Hits: <span id="targetHits">0</span></div>
+                        <div>Streak: <span id="targetStreak">0</span></div>
+                    </div>
+                    <div class="crosshair" id="crosshair"></div>
+                    <div class="start-screen" id="targetStartScreen">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">🎯</div>
+                        <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">Target Practice Elite</div>
+                        <div style="margin-bottom: 1.5rem; text-align: center;">Hit targets to score points!</div>
+                        <button class="game-btn" onclick="startTargetGame()">🎯 Start Shooting</button>
+                    </div>
                 </div>
             </div>
-            <button class="floating-btn" onclick="dealCards()">Deal Cards</button>
-            <button class="btn-secondary floating-btn" onclick="hitCard()">Hit</button>
-            <button class="btn-secondary floating-btn" onclick="standCard()">Stand</button>
+            <button class="game-btn" onclick="startTargetGame()">🎯 Start Shooting</button>
         </div>
+
+    <div class="notification" id="notification"></div>
 
     <script>
-        // Game Statistics Management
+        // Global Stats
         let gameStats = {
-            totalGames: 0,
-            gamesPlayed: parseInt(localStorage.getItem('gamesPlayed')) || 0,
-            totalScore: parseInt(localStorage.getItem('totalScore')) || 0
+            totalGames: 2,
+            gamesPlayed: parseInt(localStorage.getItem('gta-games-played') || '0'),
+            totalScore: parseInt(localStorage.getItem('gta-total-score') || '0')
         };
 
-        // Update stats display
-        function updateStatsDisplay() {
+        // Neural Game State
+        let neuralGame = {
+            active: false,
+            health: 100,
+            score: 0,
+            wave: 1,
+            nodes: [],
+            viruses: [],
+            timer: null,
+            highScore: parseInt(localStorage.getItem('neural-high-score') || '0'),
+            gamesPlayed: parseInt(localStorage.getItem('neural-games-played') || '0')
+        };
+
+        // Target Game State
+        let targetGame = {
+            active: false,
+            score: 0,
+            timeLeft: 30,
+            hits: 0,
+            streak: 0,
+            targets: [],
+            timer: null,
+            spawnTimer: null,
+            highScore: parseInt(localStorage.getItem('target-high-score') || '0'),
+            gamesPlayed: parseInt(localStorage.getItem('target-games-played') || '0')
+        };
+
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const toggle = document.getElementById('themeToggle');
+            
+            body.classList.toggle('night-mode');
+            const isNight = body.classList.contains('night-mode');
+            
+            toggle.textContent = isNight ? '☀️' : '🌙';
+            localStorage.setItem('gta-theme', isNight ? 'night' : 'day');
+            
+            showNotification(isNight ? 'Night mode activated!' : 'Day mode activated!');
+        }
+
+        // Load Theme
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('gta-theme');
+            if (savedTheme === 'night') {
+                document.body.classList.add('night-mode');
+                document.getElementById('themeToggle').textContent = '☀️';
+            }
+        }
+
+        // Show Notification
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // Update Stats
+        function updateStats() {
             document.getElementById('totalGames').textContent = gameStats.totalGames;
             document.getElementById('gamesPlayed').textContent = gameStats.gamesPlayed;
-            document.getElementById('totalScore').textContent = gameStats.totalScore;
+            document.getElementById('totalScore').textContent = gameStats.totalScore.toLocaleString();
         }
 
-        // Increment games played counter
-        function incrementGamesPlayed() {
-            gameStats.gamesPlayed++;
-            localStorage.setItem('gamesPlayed', gameStats.gamesPlayed);
-            updateStatsDisplay();
+        function saveStats() {
+            localStorage.setItem('gta-games-played', gameStats.gamesPlayed);
+            localStorage.setItem('gta-total-score', gameStats.totalScore);
         }
 
-        // Add to total score
-        function addToTotalScore(score) {
-            gameStats.totalScore += score;
-            localStorage.setItem('totalScore', gameStats.totalScore);
-            updateStatsDisplay();
-        }
-
-        // Reset all stats (for testing/admin purposes)
-        function resetAllStats() {
-            gameStats.gamesPlayed = 0;
-            gameStats.totalScore = 0;
-            localStorage.removeItem('gamesPlayed');
-            localStorage.removeItem('totalScore');
-            updateStatsDisplay();
-        }
-
-        // Theme Toggle Functionality
-        function toggleTheme() {
-            const html = document.documentElement;
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        // NEURAL NETWORK GAME
+        function startNeuralGame() {
+            if (neuralGame.active) return;
             
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+            neuralGame.active = true;
+            neuralGame.health = 100;
+            neuralGame.score = 0;
+            neuralGame.wave = 1;
+            neuralGame.nodes = [];
+            neuralGame.viruses = [];
             
-            // Update toggle icon
-            const themeIcon = document.querySelector('.theme-icon');
-            themeIcon.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+            document.getElementById('neuralStartScreen').style.display = 'none';
+            document.getElementById('neuralStatus').textContent = 'Active';
             
-            // Add a subtle animation to the toggle
-            const toggleSlider = document.querySelector('.toggle-slider');
-            toggleSlider.style.transform = 'scale(0.9)';
+            createNeuralNodes();
+            updateNeuralDisplay();
+            spawnViruses();
+            
+            neuralGame.timer = setInterval(() => {
+                updateNeuralGame();
+            }, 200);
+            
+            showNotification('🧠 Neural Defense Started!');
+        }
+
+        function createNeuralNodes() {
+            const container = document.getElementById('neuralContainer');
+            
+            // Clear existing nodes
+            container.querySelectorAll('.neural-node').forEach(node => node.remove());
+            neuralGame.nodes = [];
+            
+            // Create 12 nodes in circle around brain
+            for (let i = 0; i < 12; i++) {
+                const angle = (i / 12) * Math.PI * 2;
+                const radius = 80;
+                const x = 175 + Math.cos(angle) * radius;
+                const y = 150 + Math.sin(angle) * radius;
+                
+                const node = document.createElement('div');
+                node.className = 'neural-node';
+                node.style.left = (x - 6) + 'px';
+                node.style.top = (y - 6) + 'px';
+                node.onclick = () => clickNode(i);
+                
+                container.appendChild(node);
+                
+                neuralGame.nodes.push({
+                    element: node,
+                    infected: false,
+                    x: x,
+                    y: y,
+                    id: i
+                });
+            }
+        }
+
+        function spawnViruses() {
+            if (!neuralGame.active) return;
+            
+            const container = document.getElementById('neuralContainer');
+            
+            for (let i = 0; i < 2 + neuralGame.wave; i++) {
+                setTimeout(() => {
+                    const virus = document.createElement('div');
+                    virus.className = 'virus-particle';
+                    
+                    // Random edge spawn
+                    const side = Math.floor(Math.random() * 4);
+                    let x, y;
+                    
+                    if (side === 0) { x = 0; y = Math.random() * 300; }
+                    else if (side === 1) { x = 350; y = Math.random() * 300; }
+                    else if (side === 2) { x = Math.random() * 350; y = 0; }
+                    else { x = Math.random() * 350; y = 300; }
+                    
+                    virus.style.left = x + 'px';
+                    virus.style.top = y + 'px';
+                    
+                    container.appendChild(virus);
+                    
+                    neuralGame.viruses.push({
+                        element: virus,
+                        x: x,
+                        y: y,
+                        speed: 0.5 + Math.random() * 0.5
+                    });
+                }, i * 1000);
+            }
+        }
+
+        function updateNeuralGame() {
+            if (!neuralGame.active) return;
+            
+            // Move viruses toward center
+            neuralGame.viruses = neuralGame.viruses.filter(virus => {
+                const dx = 175 - virus.x;
+                const dy = 150 - virus.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 30) {
+                    // Virus reached brain
+                    infectRandomNode();
+                    virus.element.remove();
+                    return false;
+                }
+                
+                virus.x += (dx / distance) * virus.speed;
+                virus.y += (dy / distance) * virus.speed;
+                virus.element.style.left = virus.x + 'px';
+                virus.element.style.top = virus.y + 'px';
+                
+                return true;
+            });
+            
+            // Check game state
+            const infectedCount = neuralGame.nodes.filter(n => n.infected).length;
+            document.getElementById('infectedCount').textContent = infectedCount;
+            
+            if (neuralGame.health <= 0 || infectedCount >= 8) {
+                endNeuralGame();
+            } else if (neuralGame.viruses.length === 0 && infectedCount < 3) {
+                // Next wave
+                neuralGame.wave++;
+                neuralGame.score += 100;
+                setTimeout(spawnViruses, 2000);
+            }
+            
+            updateNeuralDisplay();
+        }
+
+        function infectRandomNode() {
+            const healthyNodes = neuralGame.nodes.filter(n => !n.infected);
+            if (healthyNodes.length > 0) {
+                const randomNode = healthyNodes[Math.floor(Math.random() * healthyNodes.length)];
+                randomNode.infected = true;
+                randomNode.element.className = 'neural-node infected';
+                neuralGame.health -= 15;
+            }
+        }
+
+        function clickNode(nodeId) {
+            const node = neuralGame.nodes[nodeId];
+            if (node && node.infected) {
+                node.infected = false;
+                node.element.className = 'neural-node';
+                neuralGame.score += 50;
+                neuralGame.health = Math.min(100, neuralGame.health + 10);
+            }
+        }
+
+        function healNodes() {
+            if (!neuralGame.active) return;
+            
+            neuralGame.nodes.forEach(node => {
+                if (node.infected) {
+                    node.infected = false;
+                    node.element.className = 'neural-node';
+                    neuralGame.score += 25;
+                }
+            });
+            neuralGame.health = Math.min(100, neuralGame.health + 30);
+        }
+
+        function resetNeuralGame() {
+            endNeuralGame();
             setTimeout(() => {
-                toggleSlider.style.transform = 'scale(1)';
-            }, 150);
+                document.getElementById('neuralStartScreen').style.display = 'flex';
+            }, 500);
         }
 
-        // Load saved theme on page load
-        function loadTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            document.documentElement.setAttribute('data-theme', savedTheme);
+        function endNeuralGame() {
+            neuralGame.active = false;
             
-            const themeIcon = document.querySelector('.theme-icon');
-            themeIcon.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
-        }
-
-        // Function to add a game to the grid (you'll use this later)
-        function addGameToGrid(gameElement) {
-            const gamesGrid = document.getElementById('gamesGrid');
-            const comingSoon = document.querySelector('.coming-soon');
-            
-            // Remove coming soon message if it exists
-            if (comingSoon) {
-                comingSoon.remove();
+            if (neuralGame.timer) {
+                clearInterval(neuralGame.timer);
+                neuralGame.timer = null;
             }
             
-            // Add the game element
-            gamesGrid.appendChild(gameElement);
+            // Clear viruses
+            neuralGame.viruses.forEach(virus => virus.element.remove());
+            neuralGame.viruses = [];
             
-            // Update total games count
-            gameStats.totalGames++;
-            updateStatsDisplay();
-        }
-
-        // Helper function to create a game container with consistent styling
-        function createGameContainer(gameTitle, gameContent) {
-            const gameDiv = document.createElement('div');
-            gameDiv.className = 'game-container';
-            gameDiv.style.cssText = `
-                width: 300px;
-                height: 300px;
-                background: var(--surface-color);
-                border: 1px solid var(--border-color);
-                border-radius: 15px;
-                padding: 15px;
-                box-shadow: 0 5px 15px var(--shadow);
-                transition: all 0.3s ease;
-                display: flex;
-                flex-direction: column;
-            `;
+            // Update stats
+            neuralGame.gamesPlayed++;
+            gameStats.gamesPlayed++;
+            gameStats.totalScore += neuralGame.score;
             
-            // Add hover effect
-            gameDiv.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-5px)';
-                this.style.boxShadow = '0 10px 25px var(--shadow)';
-            });
-            
-            gameDiv.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-                this.style.boxShadow = '0 5px 15px var(--shadow)';
-            });
-            
-            if (gameTitle) {
-                const title = document.createElement('h3');
-                title.textContent = gameTitle;
-                title.style.cssText = `
-                    margin-bottom: 10px;
-                    color: var(--text-primary);
-                    text-align: center;
-                    font-size: 1.1rem;
-                `;
-                gameDiv.appendChild(title);
+            if (neuralGame.score > neuralGame.highScore) {
+                neuralGame.highScore = neuralGame.score;
+                localStorage.setItem('neural-high-score', neuralGame.highScore);
+                document.getElementById('neuralHighScore').textContent = neuralGame.highScore;
+                showNotification(`🧠 New High Score: ${neuralGame.score}!`);
+            } else {
+                showNotification(`🧠 Game Over! Score: ${neuralGame.score}`);
             }
             
-            if (gameContent) {
-                gameDiv.appendChild(gameContent);
-            }
+            localStorage.setItem('neural-games-played', neuralGame.gamesPlayed);
+            saveStats();
+            updateStats();
             
-            return gameDiv;
+            document.getElementById('neuralStatus').textContent = 'Ready';
         }
 
-        // Initialize stats display when page loads
-        document.addEventListener('DOMContentLoaded', function() {
+        function updateNeuralDisplay() {
+            document.getElementById('neuralHealth').textContent = neuralGame.health;
+            document.getElementById('neuralScore').textContent = neuralGame.score;
+            document.getElementById('neuralWave').textContent = neuralGame.wave;
+        }
+
+        // TARGET PRACTICE GAME
+        function startTargetGame() {
+            if (targetGame.active) return;
+            
+            targetGame.active = true;
+            targetGame.score = 0;
+            targetGame.timeLeft = 30;
+            targetGame.hits = 0;
+            targetGame.streak = 0;
+            targetGame.targets = [];
+            
+            const container = document.getElementById('targetContainer');
+            const startScreen = document.getElementById('targetStartScreen');
+            const crosshair = document.getElementById('crosshair');
+            
+            startScreen.style.display = 'none';
+            crosshair.style.display = 'block';
+            
+            // Add mouse tracking
+            container.addEventListener('mousemove', updateCrosshair);
+            container.addEventListener('click', shootTarget);
+            
+            updateTargetDisplay();
+            
+            // Start timers
+            targetGame.timer = setInterval(() => {
+                targetGame.timeLeft--;
+                updateTargetDisplay();
+                
+                if (targetGame.timeLeft <= 0) {
+                    endTargetGame();
+                }
+            }, 1000);
+            
+            targetGame.spawnTimer = setInterval(spawnTarget, 1500);
+            
+            // Initial targets
+            setTimeout(spawnTarget, 500);
+            setTimeout(spawnTarget, 1000);
+            
+            showNotification('🎯 Target Practice Started!');
+        }
+
+        function updateCrosshair(event) {
+            const container = document.getElementById('targetContainer');
+            const crosshair = document.getElementById('crosshair');
+            const rect = container.getBoundingClientRect();
+            
+            const x = event.clientX - rect.left - 10;
+            const y = event.clientY - rect.top - 10;
+            
+            crosshair.style.left = x + 'px';
+            crosshair.style.top = y + 'px';
+        }
+
+        function spawnTarget() {
+            if (!targetGame.active) return;
+            
+            const container = document.getElementById('targetContainer');
+            const target = document.createElement('div');
+            
+            const rand = Math.random();
+            let type, points, size;
+            
+            if (rand < 0.6) {
+                type = 'standard';
+                points = 10;
+                size = 40;
+                target.textContent = '10';
+            } else if (rand < 0.85) {
+                type = 'moving';
+                points = 25;
+                size = 35;
+                target.textContent = '25';
+            } else {
+                type = 'bonus';
+                points = 50;
+                size = 30;
+                target.textContent = '50';
+            }
+            
+            target.className = `target ${type}`;
+            target.style.width = size + 'px';
+            target.style.height = size + 'px';
+            
+            // Random position
+            const x = 30 + Math.random() * (320 - size);
+            const y = 60 + Math.random() * (200 - size);
+            
+            target.style.left = x + 'px';
+            target.style.top = y + 'px';
+            
+            target.onclick = (event) => {
+                event.stopPropagation();
+                hitTarget(target, points);
+            };
+            
+            container.appendChild(target);
+            targetGame.targets.push(target);
+            
+            // Auto remove
+            setTimeout(() => {
+                if (target.parentNode) {
+                    target.remove();
+                    targetGame.targets = targetGame.targets.filter(t => t !== target);
+                }
+            }, 3000);
+        }
+
+        function shootTarget(event) {
+            // Handled by target click events
+        }
+
+        function hitTarget(target, points) {
+            const streakBonus = Math.floor(targetGame.streak / 3) + 1;
+            const finalPoints = points * streakBonus;
+            
+            targetGame.score += finalPoints;
+            targetGame.hits++;
+            targetGame.streak++;
+            
+            // Show hit effect
+            const effect = document.createElement('div');
+            effect.className = 'hit-effect';
+            effect.textContent = `+${finalPoints}`;
+            effect.style.left = target.style.left;
+            effect.style.top = target.style.top;
+            
+            target.parentNode.appendChild(effect);
+            
+            setTimeout(() => effect.remove(), 1000);
+            
+            target.remove();
+            targetGame.targets = targetGame.targets.filter(t => t !== target);
+            
+            updateTargetDisplay();
+        }
+
+        function endTargetGame() {
+            targetGame.active = false;
+            
+            if (targetGame.timer) {
+                clearInterval(targetGame.timer);
+                targetGame.timer = null;
+            }
+            
+            if (targetGame.spawnTimer) {
+                clearInterval(targetGame.spawnTimer);
+                targetGame.spawnTimer = null;
+            }
+            
+            const container = document.getElementById('targetContainer');
+            container.removeEventListener('mousemove', updateCrosshair);
+            container.removeEventListener('click', shootTarget);
+            
+            document.getElementById('crosshair').style.display = 'none';
+            
+            // Clear targets
+            targetGame.targets.forEach(target => target.remove());
+            targetGame.targets = [];
+            
+            // Update stats
+            targetGame.gamesPlayed++;
+            gameStats.gamesPlayed++;
+            gameStats.totalScore += targetGame.score;
+            
+            if (targetGame.score > targetGame.highScore) {
+                targetGame.highScore = targetGame.score;
+                localStorage.setItem('target-high-score', targetGame.highScore);
+                document.getElementById('targetBest').textContent = targetGame.highScore;
+                showNotification(`🎯 New High Score: ${targetGame.score}!`);
+            } else {
+                showNotification(`🎯 Game Over! Score: ${targetGame.score}`);
+            }
+            
+            localStorage.setItem('target-games-played', targetGame.gamesPlayed);
+            document.getElementById('targetPlayed').textContent = targetGame.gamesPlayed;
+            
+            saveStats();
+            updateStats();
+            
+            setTimeout(() => {
+                document.getElementById('targetStartScreen').style.display = 'flex';
+            }, 1500);
+        }
+
+        function updateTargetDisplay() {
+            document.getElementById('targetScore').textContent = targetGame.score;
+            document.getElementById('targetTime').textContent = targetGame.timeLeft;
+            document.getElementById('targetHits').textContent = targetGame.hits;
+            document.getElementById('targetStreak').textContent = targetGame.streak;
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
             loadTheme();
-            updateStatsDisplay();
+            updateStats();
+            
+            // Load saved scores
+            document.getElementById('neuralHighScore').textContent = neuralGame.highScore;
+            document.getElementById('targetBest').textContent = targetGame.highScore;
+            document.getElementById('targetPlayed').textContent = targetGame.gamesPlayed;
         });
     </script>
 </body>
