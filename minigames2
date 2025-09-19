@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Games Collection</title>
+    <style>
+        :root {
+            --primary-color: #00ffaa;
+            --secondary-color: #ff0055;
+            --accent-color: #ffcc00;
+            --success-color: #51cf66;
+            --warning-color: #ffd43b;
+            --bg-color: #ffffff;
+            --surface-color: #ffffff;
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --border-color: #e9ecef;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #000000;
+            --surface-color: #000000;
+            --text-primary: #ffffff;
+            --text-secondary: #bdc3c7;
+            --border-color: #333333;
+            --shadow: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: var(--surface-color);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00ffaa, #ff0055);
+        }
+
+        .banner {
+            background: linear-gradient(135deg, #00ffaa, #ff0055);
+            color: white;
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            -webkit-background-clip: unset;
+            -webkit-text-fill-color: white;
+            background-clip: unset;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .stat-card {
+            background: var(--surface-color);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--shadow);
+            border-color: var(--primary-color);
+        }
+
+        .stat-card.premium {
+            background: linear-gradient(135deg, #00ffaa, #ff0055);
+            border-color: #00ffaa;
+            color: white;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .stat-card.premium .stat-number {
+            color: white;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .stat-card.premium .stat-label {
+            color: white;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Day/Night Toggle */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--surface-color);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow);
+        }
+
+        .toggle-button {
+            width: 60px;
+            height: 30px;
+            background: var(--border-color);
+            border-radius: 15px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .toggle-slider {
+            width: 26px;
+            height: 26px;
+            background: var(--surface-color);
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        [data-theme="dark"] .toggle-button {
+            background: var(--primary-color);
+        }
+
+        [data-theme="dark"] .toggle-slider {
+            transform: translateX(30px);
+        }
+
+        .theme-icon {
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        /* Games Grid Container */
+        .games-container {
+            background: var(--surface-color);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            justify-items: center;
+        }
+
+        /* Game Slot Placeholders (for reference) */
+        .game-slot {
+            width: 300px;
+            height: 300px;
+            background: var(--surface-color);
+            border: 2px dashed var(--border-color);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .game-slot:hover {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color)10, var(--secondary-color)10);
+        }
+
+        /* Coming Soon Message */
+        .coming-soon {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .coming-soon h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .coming-soon p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .banner {
+                font-size: 2rem;
+            }
+
+            .theme-toggle {
+                position: static;
+                margin: 20px auto 0;
+            }
+
+            .games-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .game-slot {
+                width: 280px;
+                height: 280px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 12px;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
+
+            .stat-label {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header, .games-container {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header with Banner and Toggle -->
+        <div class="header">
+            <div class="theme-toggle" onclick="toggleTheme()">
+                <div class="toggle-button">
+                    <div class="toggle-slider">
+                        <span class="theme-icon">☀️</span>
+                    </div>
+                </div>
+            </div>
+            
+            <h1 class="banner">🎮 MINI GAMES</h1>
+            <p class="subtitle">A Collection of Fun Interactive Games</p>
+            
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number" id="totalGames">0</span>
+                    <div class="stat-label">Working Games</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="gamesPlayed">0</span>
+                    <div class="stat-label">Games Played</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="totalScore">0</span>
+                    <div class="stat-label">Total Score</div>
+                </div>
+                <div class="stat-card premium">
+                    <span class="stat-number">LIVE</span>
+                    <div class="stat-label">Status</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Games Container -->
+        <div class="games-container">
+            <div class="games-grid" id="gamesGrid">
+                <!-- Games will be added here as you build them -->
+                <div class="coming-soon">
+                    <h2>🚧 Games Coming Soon!</h2>
+                    <p>This is your foundation page. Each game you build will be a perfect 300x300px square that fits right into this grid. The day/night toggle is fully functional and ready to style your games!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game Statistics Management
+        let gameStats = {
+            totalGames: 0,
+            gamesPlayed: parseInt(localStorage.getItem('gamesPlayed')) || 0,
+            totalScore: parseInt(localStorage.getItem('totalScore')) || 0
+        };
+
+        // Update stats display
+        function updateStatsDisplay() {
+            document.getElementById('totalGames').textContent = gameStats.totalGames;
+            document.getElementById('gamesPlayed').textContent = gameStats.gamesPlayed;
+            document.getElementById('totalScore').textContent = gameStats.totalScore;
+        }
+
+        // Increment games played counter
+        function incrementGamesPlayed() {
+            gameStats.gamesPlayed++;
+            localStorage.setItem('gamesPlayed', gameStats.gamesPlayed);
+            updateStatsDisplay();
+        }
+
+        // Add to total score
+        function addToTotalScore(score) {
+            gameStats.totalScore += score;
+            localStorage.setItem('totalScore', gameStats.totalScore);
+            updateStatsDisplay();
+        }
+
+        // Reset all stats (for testing/admin purposes)
+        function resetAllStats() {
+            gameStats.gamesPlayed = 0;
+            gameStats.totalScore = 0;
+            localStorage.removeItem('gamesPlayed');
+            localStorage.removeItem('totalScore');
+            updateStatsDisplay();
+        }
+
+        // Theme Toggle Functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Update toggle icon
+            const themeIcon = document.querySelector('.theme-icon');
+            themeIcon.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+            
+            // Add a subtle animation to the toggle
+            const toggleSlider = document.querySelector('.toggle-slider');
+            toggleSlider.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                toggleSlider.style.transform = 'scale(1)';
+            }, 150);
+        }
+
+        // Load saved theme on page load
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            const themeIcon = document.querySelector('.theme-icon');
+            themeIcon.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+        }
+
+        // Function to add a game to the grid (you'll use this later)
+        function addGameToGrid(gameElement) {
+            const gamesGrid = document.getElementById('gamesGrid');
+            const comingSoon = document.querySelector('.coming-soon');
+            
+            // Remove coming soon message if it exists
+            if (comingSoon) {
+                comingSoon.remove();
+            }
+            
+            // Add the game element
+            gamesGrid.appendChild(gameElement);
+            
+            // Update total games count
+            gameStats.totalGames++;
+            updateStatsDisplay();
+        }
+
+        // Helper function to create a game container with consistent styling
+        function createGameContainer(gameTitle, gameContent) {
+            const gameDiv = document.createElement('div');
+            gameDiv.className = 'game-container';
+            gameDiv.style.cssText = `
+                width: 300px;
+                height: 300px;
+                background: var(--surface-color);
+                border: 1px solid var(--border-color);
+                border-radius: 15px;
+                padding: 15px;
+                box-shadow: 0 5px 15px var(--shadow);
+                transition: all 0.3s ease;
+                display: flex;
+                flex-direction: column;
+            `;
+            
+            // Add hover effect
+            gameDiv.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+                this.style.boxShadow = '0 10px 25px var(--shadow)';
+            });
+            
+            gameDiv.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 5px 15px var(--shadow)';
+            });
+            
+            if (gameTitle) {
+                const title = document.createElement('h3');
+                title.textContent = gameTitle;
+                title.style.cssText = `
+                    margin-bottom: 10px;
+                    color: var(--text-primary);
+                    text-align: center;
+                    font-size: 1.1rem;
+                `;
+                gameDiv.appendChild(title);
+            }
+            
+            if (gameContent) {
+                gameDiv.appendChild(gameContent);
+            }
+            
+            return gameDiv;
+        }
+
+        // Initialize stats display when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTheme();
+            updateStatsDisplay();
+        });
+    </script>
+</body>
+</html>
