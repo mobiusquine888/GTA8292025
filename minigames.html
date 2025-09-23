@@ -136,7 +136,7 @@
                 <div style="font-size: 0.9rem; opacity: 0.9; font-weight: 600;">High Score</div>
             </div>
             <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem; text-align: center; backdrop-filter: blur(10px);">
-                <span style="font-size: 1.8rem; font-weight: 900; color: white; display: block; margin-bottom: 0.25rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">7</span>
+                <span style="font-size: 1.8rem; font-weight: 900; color: white; display: block; margin-bottom: 0.25rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">8</span>
                 <div style="font-size: 0.9rem; opacity: 0.9; font-weight: 600;">Working Games</div>
             </div>
         </div>
@@ -260,6 +260,37 @@
                 </div>
                 <button class="floating-btn" onclick="dealCards()">Deal Cards</button>
             </div>
+
+            <!-- Game 8: Neural Network Defense -->
+            <div class="game-card">
+                <div class="game-title">🧠 Neural Network Defense</div>
+                <div style="display: flex; justify-content: space-between; margin: 0.4rem 0; font-size: 0.8rem; opacity: 0.8; background: rgba(0,0,0,0.05); padding: 0.4rem; border-radius: 6px;">
+                    <span>Status: <strong id="neuralStatus">Ready</strong></span>
+                    <span>High Score: <strong id="neuralHighScore">0</strong></span>
+                    <span>Difficulty: <strong>Hard</strong></span>
+                </div>
+                <div class="game-arena" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); position: relative; overflow: hidden;">
+                    <div id="neuralContainer" style="width: 100%; height: 100%; position: relative;">
+                        <div style="position: absolute; top: 5px; left: 5px; right: 5px; display: flex; justify-content: space-between; font-size: 0.7rem; color: #00ff88; z-index: 10;">
+                            <div>Health: <span id="neuralHealth">100</span>%</div>
+                            <div>Score: <span id="neuralScore">0</span></div>
+                            <div>Wave: <span id="neuralWave">1</span></div>
+                            <div>Infected: <span id="infectedCount">0</span></div>
+                        </div>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; z-index: 5;" id="brainCenter">🧠</div>
+                        <div style="position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 10;">
+                            <button style="background: #00ff88; color: black; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; cursor: pointer;" onclick="healNodes()">HEAL</button>
+                            <button style="background: #ff4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; cursor: pointer;" onclick="resetNeuralGame()">RESET</button>
+                        </div>
+                        <div id="neuralStartScreen" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #00ff88; z-index: 20;">
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">🧠</div>
+                            <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">Neural Network Defense</div>
+                            <div style="margin-bottom: 1.5rem; text-align: center; font-size: 0.9rem;">Protect the brain from virus attacks!</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="floating-btn" onclick="startNeuralGame()">🧠 Start Neural Defense</button>
+            </div>
         </div>
     </div>
 
@@ -274,6 +305,18 @@
         var reactionGame = { best: 999, tests: 0, total: 0, startTime: 0, isWaiting: false };
         var diamondGame = { count: 0, clickPower: 1, level: 1 };
         var blackjackGame = { chips: 500, wins: 0, playerCards: [], dealerCards: [], playerTotal: 0, dealerTotal: 0, gameActive: false };
+        var neuralGame = { 
+            health: 100, 
+            score: 0, 
+            wave: 1, 
+            infected: 0, 
+            highScore: 0, 
+            isPlaying: false, 
+            viruses: [], 
+            nodes: [],
+            gameTimer: null,
+            spawnTimer: null
+        };
         var slotSymbols = ['💎', '🍒', '💰', '🔔', '⭐', '🍋', '💵', '🎮'];
 
         function showNotification(message) {
@@ -659,6 +702,274 @@
             document.getElementById('dealerCards').textContent = '🃏 🂠';
         }
 
+        // Neural Network Defense Game Functions
+        function startNeuralGame() {
+            document.getElementById('neuralStartScreen').style.display = 'none';
+            neuralGame = { 
+                health: 100, 
+                score: 0, 
+                wave: 1, 
+                infected: 0, 
+                highScore: neuralGame.highScore, 
+                isPlaying: true, 
+                viruses: [], 
+                nodes: [],
+                gameTimer: null,
+                spawnTimer: null
+            };
+            
+            updateNeuralDisplay();
+            createNeuralNodes();
+            startVirusWave();
+            showNotification('Neural defense activated! Protect the brain!');
+        }
+
+        function createNeuralNodes() {
+            var container = document.getElementById('neuralContainer');
+            var existingNodes = container.querySelectorAll('.neural-node');
+            existingNodes.forEach(function(node) { node.remove(); });
+            
+            neuralGame.nodes = [];
+            var nodeCount = 8 + neuralGame.wave * 2;
+            
+            for (var i = 0; i < nodeCount; i++) {
+                var node = document.createElement('div');
+                var angle = (i / nodeCount) * 2 * Math.PI;
+                var radius = 40 + Math.random() * 30;
+                var x = 50 + Math.cos(angle) * radius;
+                var y = 50 + Math.sin(angle) * radius;
+                
+                node.className = 'neural-node';
+                node.style.position = 'absolute';
+                node.style.left = x + '%';
+                node.style.top = y + '%';
+                node.style.width = '8px';
+                node.style.height = '8px';
+                node.style.background = '#00ff88';
+                node.style.borderRadius = '50%';
+                node.style.transform = 'translate(-50%, -50%)';
+                node.style.boxShadow = '0 0 4px #00ff88';
+                node.style.cursor = 'pointer';
+                node.style.zIndex = '8';
+                
+                node.onclick = function() {
+                    if (neuralGame.isPlaying) {
+                        this.style.background = '#ffff00';
+                        this.style.boxShadow = '0 0 8px #ffff00';
+                        neuralGame.score += 50;
+                        updateNeuralDisplay();
+                        var currentNode = this;
+                        setTimeout(function() {
+                            currentNode.style.background = '#00ff88';
+                            currentNode.style.boxShadow = '0 0 4px #00ff88';
+                        }, 200);
+                    }
+                };
+                
+                container.appendChild(node);
+                neuralGame.nodes.push({
+                    element: node,
+                    x: x,
+                    y: y,
+                    infected: false
+                });
+            }
+        }
+
+        function startVirusWave() {
+            if (!neuralGame.isPlaying) return;
+            
+            var virusCount = neuralGame.wave + 2;
+            var spawnDelay = Math.max(800, 2000 - neuralGame.wave * 100);
+            
+            for (var i = 0; i < virusCount; i++) {
+                setTimeout(function() {
+                    createVirus();
+                }, i * spawnDelay);
+            }
+            
+            setTimeout(function() {
+                if (neuralGame.isPlaying && neuralGame.health > 0) {
+                    neuralGame.wave++;
+                    updateNeuralDisplay();
+                    showNotification('Wave ' + neuralGame.wave + ' incoming!');
+                    startVirusWave();
+                }
+            }, virusCount * spawnDelay + 3000);
+        }
+
+        function createVirus() {
+            if (!neuralGame.isPlaying) return;
+            
+            var container = document.getElementById('neuralContainer');
+            var virus = document.createElement('div');
+            
+            var startSide = Math.floor(Math.random() * 4);
+            var x, y;
+            
+            switch(startSide) {
+                case 0: x = Math.random() * 100; y = -5; break;
+                case 1: x = 105; y = Math.random() * 100; break;
+                case 2: x = Math.random() * 100; y = 105; break;
+                case 3: x = -5; y = Math.random() * 100; break;
+            }
+            
+            virus.style.position = 'absolute';
+            virus.style.left = x + '%';
+            virus.style.top = y + '%';
+            virus.style.width = '12px';
+            virus.style.height = '12px';
+            virus.style.background = '#ff4444';
+            virus.style.borderRadius = '50%';
+            virus.style.transform = 'translate(-50%, -50%)';
+            virus.style.boxShadow = '0 0 6px #ff4444';
+            virus.style.cursor = 'pointer';
+            virus.style.zIndex = '9';
+            virus.innerHTML = '🦠';
+            virus.style.fontSize = '8px';
+            virus.style.textAlign = 'center';
+            virus.style.lineHeight = '12px';
+            
+            var virusData = {
+                element: virus,
+                x: x,
+                y: y,
+                targetX: 50,
+                targetY: 50,
+                speed: 0.3 + neuralGame.wave * 0.1
+            };
+            
+            virus.onclick = function() {
+                if (neuralGame.isPlaying) {
+                    virus.remove();
+                    neuralGame.score += 100;
+                    updateNeuralDisplay();
+                    showNotification('Virus eliminated! +100 points');
+                    
+                    var virusIndex = neuralGame.viruses.indexOf(virusData);
+                    if (virusIndex > -1) {
+                        neuralGame.viruses.splice(virusIndex, 1);
+                    }
+                }
+            };
+            
+            container.appendChild(virus);
+            neuralGame.viruses.push(virusData);
+            moveVirus(virusData);
+        }
+
+        function moveVirus(virusData) {
+            if (!neuralGame.isPlaying || !virusData.element.parentNode) return;
+            
+            var dx = virusData.targetX - virusData.x;
+            var dy = virusData.targetY - virusData.y;
+            var distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < 5) {
+                virusData.element.remove();
+                neuralGame.health -= 10;
+                neuralGame.infected++;
+                updateNeuralDisplay();
+                
+                if (neuralGame.health <= 0) {
+                    endNeuralGame();
+                    return;
+                }
+                
+                var brainCenter = document.getElementById('brainCenter');
+                brainCenter.style.color = '#ff4444';
+                setTimeout(function() {
+                    brainCenter.style.color = '';
+                }, 200);
+                
+                showNotification('Brain infected! Health: ' + neuralGame.health + '%');
+                return;
+            }
+            
+            virusData.x += (dx / distance) * virusData.speed;
+            virusData.y += (dy / distance) * virusData.speed;
+            
+            virusData.element.style.left = virusData.x + '%';
+            virusData.element.style.top = virusData.y + '%';
+            
+            setTimeout(function() {
+                moveVirus(virusData);
+            }, 50);
+        }
+
+        function healNodes() {
+            if (!neuralGame.isPlaying || neuralGame.score < 200) {
+                showNotification('Need 200 points to heal!');
+                return;
+            }
+            
+            neuralGame.score -= 200;
+            neuralGame.health = Math.min(100, neuralGame.health + 20);
+            updateNeuralDisplay();
+            showNotification('Neural network healed! +20 health');
+            
+            var brainCenter = document.getElementById('brainCenter');
+            brainCenter.style.color = '#00ff88';
+            setTimeout(function() {
+                brainCenter.style.color = '';
+            }, 500);
+        }
+
+        function resetNeuralGame() {
+            endNeuralGame();
+            document.getElementById('neuralStartScreen').style.display = 'flex';
+            neuralGame = { 
+                health: 100, 
+                score: 0, 
+                wave: 1, 
+                infected: 0, 
+                highScore: neuralGame.highScore, 
+                isPlaying: false, 
+                viruses: [], 
+                nodes: [],
+                gameTimer: null,
+                spawnTimer: null
+            };
+            updateNeuralDisplay();
+        }
+
+        function endNeuralGame() {
+            neuralGame.isPlaying = false;
+            
+            if (neuralGame.gameTimer) {
+                clearInterval(neuralGame.gameTimer);
+            }
+            if (neuralGame.spawnTimer) {
+                clearInterval(neuralGame.spawnTimer);
+            }
+            
+            var container = document.getElementById('neuralContainer');
+            var viruses = container.querySelectorAll('div[style*="ff4444"]');
+            viruses.forEach(function(virus) { virus.remove(); });
+            
+            if (neuralGame.score > neuralGame.highScore) {
+                neuralGame.highScore = neuralGame.score;
+            }
+            
+            recordGameScore(neuralGame.score);
+            updateNeuralDisplay();
+            
+            if (neuralGame.health <= 0) {
+                showNotification('Neural network compromised! Final Score: ' + neuralGame.score);
+            } else {
+                showNotification('Defense ended! Score: ' + neuralGame.score);
+            }
+        }
+
+        function updateNeuralDisplay() {
+            document.getElementById('neuralHealth').textContent = neuralGame.health;
+            document.getElementById('neuralScore').textContent = neuralGame.score;
+            document.getElementById('neuralWave').textContent = neuralGame.wave;
+            document.getElementById('infectedCount').textContent = neuralGame.infected;
+            document.getElementById('neuralHighScore').textContent = neuralGame.highScore;
+            document.getElementById('neuralStatus').textContent = neuralGame.isPlaying ? 'Active' : 'Ready';
+        }
+
         updateStats();
         updateMemoryDisplay();
         updateSlotDisplay();
@@ -666,7 +977,8 @@
         updateReactionDisplay();
         updateDiamondDisplay();
         updateBlackjackDisplay();
-        showNotification('7 Games Ready!');
+        updateNeuralDisplay();
+        showNotification('8 Games Ready!');
     </script>
 </body>
 </html>
