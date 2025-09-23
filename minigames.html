@@ -251,14 +251,18 @@
                 <div class="game-arena" style="background: #0d5f2f; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; color: white; font-size: 0.8rem;">
                     <div style="text-align: center;">
                         <div style="margin-bottom: 8px;">Dealer: <span id="dealerTotal">?</span></div>
-                        <div id="dealerCards">🂠 🂠</div>
+                        <div id="dealerCards" style="font-size: 3rem; line-height: 1.2;">🂠 🂠</div>
                     </div>
                     <div style="text-align: center;">
                         <div style="margin-bottom: 8px;">You: <span id="playerTotal2">0</span></div>
-                        <div id="playerCards">🂠 🂠</div>
+                        <div id="playerCards" style="font-size: 3rem; line-height: 1.2;">🂠 🂠</div>
                     </div>
                 </div>
-                <button class="floating-btn" onclick="dealCards()">Deal Cards</button>
+                <div style="display: flex; gap: 5px;">
+                    <button class="floating-btn" style="width: 48%;" onclick="dealCards()" id="dealBtn">Deal Cards</button>
+                    <button class="floating-btn" style="width: 24%; display: none;" onclick="hitCard()" id="hitBtn">Hit</button>
+                    <button class="floating-btn" style="width: 24%; display: none;" onclick="standCards()" id="standBtn">Stand</button>
+                </div>
             </div>
 
             <!-- Game 8: Neural Network Defense -->
@@ -318,6 +322,12 @@
             spawnTimer: null
         };
         var slotSymbols = ['💎', '🍒', '💰', '🔔', '⭐', '🍋', '💵', '🎮'];
+        var cardDeck = [
+            {name: 'A♠', value: 11, isAce: true}, {name: '2♠', value: 2}, {name: '3♠', value: 3}, {name: '4♠', value: 4}, {name: '5♠', value: 5}, {name: '6♠', value: 6}, {name: '7♠', value: 7}, {name: '8♠', value: 8}, {name: '9♠', value: 9}, {name: '10♠', value: 10}, {name: 'J♠', value: 10}, {name: 'Q♠', value: 10}, {name: 'K♠', value: 10},
+            {name: 'A♥', value: 11, isAce: true}, {name: '2♥', value: 2}, {name: '3♥', value: 3}, {name: '4♥', value: 4}, {name: '5♥', value: 5}, {name: '6♥', value: 6}, {name: '7♥', value: 7}, {name: '8♥', value: 8}, {name: '9♥', value: 9}, {name: '10♥', value: 10}, {name: 'J♥', value: 10}, {name: 'Q♥', value: 10}, {name: 'K♥', value: 10},
+            {name: 'A♦', value: 11, isAce: true}, {name: '2♦', value: 2}, {name: '3♦', value: 3}, {name: '4♦', value: 4}, {name: '5♦', value: 5}, {name: '6♦', value: 6}, {name: '7♦', value: 7}, {name: '8♦', value: 8}, {name: '9♦', value: 9}, {name: '10♦', value: 10}, {name: 'J♦', value: 10}, {name: 'Q♦', value: 10}, {name: 'K♦', value: 10},
+            {name: 'A♣', value: 11, isAce: true}, {name: '2♣', value: 2}, {name: '3♣', value: 3}, {name: '4♣', value: 4}, {name: '5♣', value: 5}, {name: '6♣', value: 6}, {name: '7♣', value: 7}, {name: '8♣', value: 8}, {name: '9♣', value: 9}, {name: '10♣', value: 10}, {name: 'J♣', value: 10}, {name: 'Q♣', value: 10}, {name: 'K♣', value: 10}
+        ];
 
         function showNotification(message) {
             var notification = document.getElementById('notification');
@@ -349,6 +359,7 @@
             updateStats();
         }
 
+        // Target Practice Game
         function startTargetPractice() {
             targetGame = { score: 0, hits: 0, timeLeft: 30, isPlaying: true, timer: null, spawnTimer: null };
             document.getElementById('targetRange').innerHTML = '';
@@ -411,6 +422,7 @@
             showNotification(won ? 'Perfect game! Score: ' + targetGame.score : 'Game over! Score: ' + targetGame.score);
         }
 
+        // Memory Game
         function startMemoryGame() {
             memoryGame = { level: 1, score: 0, best: memoryGame.best, sequence: [], playerSequence: [], isPlaying: true, showingSequence: false };
             updateMemoryDisplay();
@@ -482,6 +494,7 @@
             showNotification('Memory game over! Level: ' + memoryGame.level + ', Score: ' + memoryGame.score);
         }
 
+        // Slot Machine Game
         function spinSlots() {
             if (slotGame.credits < 10) {
                 showNotification('Not enough credits!');
@@ -538,6 +551,7 @@
             document.getElementById('totalWinnings').textContent = '$' + slotGame.winnings;
         }
 
+        // Showdown Game
         function startShowdown() {
             showdownGame.isActive = true;
             document.getElementById('showdownCountdown').textContent = 'READY';
@@ -592,6 +606,7 @@
             document.getElementById('showdownStreak').textContent = showdownGame.streak;
         }
 
+        // Reaction Test Game
         function startReactionTest() {
             var arena = document.getElementById('reactionArena');
             arena.style.background = '#e74c3c';
@@ -645,6 +660,7 @@
             document.getElementById('reactionAvg').textContent = reactionGame.tests > 0 ? Math.round(reactionGame.total / reactionGame.tests) : '0';
         }
 
+        // Diamond Clicker Game
         function startMining() {
             diamondGame = { count: 0, clickPower: 1, level: 1 };
             updateDiamondDisplay();
@@ -675,20 +691,141 @@
             document.getElementById('clickLevel').textContent = diamondGame.level;
         }
 
+        // Blackjack Game
+        function drawRandomCard() {
+            return cardDeck[Math.floor(Math.random() * cardDeck.length)];
+        }
+
+        function calculateHandValue(cards) {
+            var total = 0;
+            var aces = 0;
+            
+            for (var i = 0; i < cards.length; i++) {
+                if (cards[i].isAce) {
+                    aces++;
+                    total += 11;
+                } else {
+                    total += cards[i].value;
+                }
+            }
+            
+            while (total > 21 && aces > 0) {
+                total -= 10;
+                aces--;
+            }
+            
+            return total;
+        }
+
         function dealCards() {
-            blackjackGame = { chips: blackjackGame.chips, wins: blackjackGame.wins, playerCards: [], dealerCards: [], playerTotal: 0, dealerTotal: 0, gameActive: true };
+            if (blackjackGame.chips < 50) {
+                showNotification('Need at least $50 to play!');
+                return;
+            }
             
-            var playerCard1 = Math.floor(Math.random() * 10) + 1;
-            var playerCard2 = Math.floor(Math.random() * 10) + 1;
-            var dealerCard1 = Math.floor(Math.random() * 10) + 1;
+            blackjackGame.chips -= 50;
+            blackjackGame = { 
+                chips: blackjackGame.chips, 
+                wins: blackjackGame.wins, 
+                playerCards: [], 
+                dealerCards: [], 
+                playerTotal: 0, 
+                dealerTotal: 0, 
+                gameActive: true 
+            };
             
-            blackjackGame.playerCards = [playerCard1, playerCard2];
-            blackjackGame.dealerCards = [dealerCard1];
-            blackjackGame.playerTotal = playerCard1 + playerCard2;
-            blackjackGame.dealerTotal = dealerCard1;
+            blackjackGame.playerCards.push(drawRandomCard());
+            blackjackGame.dealerCards.push(drawRandomCard());
+            blackjackGame.playerCards.push(drawRandomCard());
+            blackjackGame.dealerCards.push(drawRandomCard());
+            
+            blackjackGame.playerTotal = calculateHandValue(blackjackGame.playerCards);
+            blackjackGame.dealerTotal = blackjackGame.dealerCards[0].value;
+            
+            document.getElementById('dealBtn').style.display = 'none';
+            document.getElementById('hitBtn').style.display = 'inline-block';
+            document.getElementById('standBtn').style.display = 'inline-block';
             
             updateBlackjackDisplay();
             showNotification('Cards dealt! Your total: ' + blackjackGame.playerTotal);
+            
+            if (blackjackGame.playerTotal === 21) {
+                showNotification('Blackjack! Checking dealer...');
+                setTimeout(standCards, 1000);
+            }
+        }
+
+        function hitCard() {
+            if (!blackjackGame.gameActive) return;
+            
+            blackjackGame.playerCards.push(drawRandomCard());
+            blackjackGame.playerTotal = calculateHandValue(blackjackGame.playerCards);
+            
+            updateBlackjackDisplay();
+            
+            if (blackjackGame.playerTotal > 21) {
+                showNotification('Bust! You lose $50');
+                endBlackjackGame(false);
+            } else if (blackjackGame.playerTotal === 21) {
+                showNotification('21! Standing automatically');
+                standCards();
+            } else {
+                showNotification('Hit! Total: ' + blackjackGame.playerTotal);
+            }
+        }
+
+        function standCards() {
+            if (!blackjackGame.gameActive) return;
+            
+            blackjackGame.dealerTotal = calculateHandValue(blackjackGame.dealerCards);
+            
+            while (blackjackGame.dealerTotal < 17) {
+                blackjackGame.dealerCards.push(drawRandomCard());
+                blackjackGame.dealerTotal = calculateHandValue(blackjackGame.dealerCards);
+            }
+            
+            updateBlackjackDisplay();
+            
+            var playerNatural = blackjackGame.playerCards.length === 2 && blackjackGame.playerTotal === 21;
+            var dealerNatural = blackjackGame.dealerCards.length === 2 && blackjackGame.dealerTotal === 21;
+            
+            if (playerNatural && !dealerNatural) {
+                showNotification('Natural Blackjack! You win $125!');
+                blackjackGame.chips += 125;
+                endBlackjackGame(true);
+            } else if (dealerNatural && !playerNatural) {
+                showNotification('Dealer has Blackjack! You lose.');
+                endBlackjackGame(false);
+            } else if (blackjackGame.dealerTotal > 21) {
+                showNotification('Dealer busts! You win $100!');
+                blackjackGame.chips += 100;
+                endBlackjackGame(true);
+            } else if (blackjackGame.dealerTotal > blackjackGame.playerTotal) {
+                showNotification('Dealer wins with ' + blackjackGame.dealerTotal);
+                endBlackjackGame(false);
+            } else if (blackjackGame.playerTotal > blackjackGame.dealerTotal) {
+                showNotification('You win with ' + blackjackGame.playerTotal + '! +$100');
+                blackjackGame.chips += 100;
+                endBlackjackGame(true);
+            } else {
+                showNotification('Push! Tie game, bet returned');
+                blackjackGame.chips += 50;
+                endBlackjackGame(false);
+            }
+        }
+
+        function endBlackjackGame(won) {
+            blackjackGame.gameActive = false;
+            if (won) {
+                blackjackGame.wins++;
+                recordGameScore(100);
+            }
+            
+            document.getElementById('dealBtn').style.display = 'inline-block';
+            document.getElementById('hitBtn').style.display = 'none';
+            document.getElementById('standBtn').style.display = 'none';
+            
+            updateBlackjackDisplay();
         }
 
         function updateBlackjackDisplay() {
@@ -696,13 +833,28 @@
             document.getElementById('blackjackWins').textContent = blackjackGame.wins;
             document.getElementById('playerTotal').textContent = blackjackGame.playerTotal;
             document.getElementById('playerTotal2').textContent = blackjackGame.playerTotal;
-            document.getElementById('dealerTotal').textContent = blackjackGame.dealerTotal;
             
-            document.getElementById('playerCards').textContent = '🃏 🃏';
-            document.getElementById('dealerCards').textContent = '🃏 🂠';
+            if (blackjackGame.gameActive && blackjackGame.dealerCards.length > 1) {
+                document.getElementById('dealerTotal').textContent = blackjackGame.dealerCards[0].value + ' + ?';
+                var dealerCardDisplay = blackjackGame.dealerCards[0].name + ' 🂠';
+                document.getElementById('dealerCards').textContent = dealerCardDisplay;
+            } else {
+                document.getElementById('dealerTotal').textContent = blackjackGame.dealerTotal;
+                var dealerCardDisplay = '';
+                for (var i = 0; i < blackjackGame.dealerCards.length; i++) {
+                    dealerCardDisplay += blackjackGame.dealerCards[i].name + ' ';
+                }
+                document.getElementById('dealerCards').textContent = dealerCardDisplay || '🂠 🂠';
+            }
+            
+            var playerCardDisplay = '';
+            for (var i = 0; i < blackjackGame.playerCards.length; i++) {
+                playerCardDisplay += blackjackGame.playerCards[i].name + ' ';
+            }
+            document.getElementById('playerCards').textContent = playerCardDisplay || '🂠 🂠';
         }
 
-        // Neural Network Defense Game Functions
+        // Neural Network Defense Game
         function startNeuralGame() {
             document.getElementById('neuralStartScreen').style.display = 'none';
             neuralGame = { 
@@ -918,13 +1070,13 @@
         function resetNeuralGame() {
             endNeuralGame();
             document.getElementById('neuralStartScreen').style.display = 'flex';
-            var currentHighScore = neuralGame.highScore; // Preserve high score
+            var currentHighScore = neuralGame.highScore;
             neuralGame = { 
                 health: 100, 
                 score: 0, 
                 wave: 1, 
                 infected: 0, 
-                highScore: currentHighScore, // Keep the high score
+                highScore: currentHighScore, 
                 isPlaying: false, 
                 viruses: [], 
                 nodes: [],
@@ -952,7 +1104,6 @@
                 neuralGame.highScore = neuralGame.score;
             }
             
-            // Only record the score if a game was actually played (score > 0)
             if (neuralGame.score > 0) {
                 recordGameScore(neuralGame.score);
             }
@@ -974,6 +1125,7 @@
             document.getElementById('neuralStatus').textContent = neuralGame.isPlaying ? 'Active' : 'Ready';
         }
 
+        // Initialize all games
         updateStats();
         updateMemoryDisplay();
         updateSlotDisplay();
