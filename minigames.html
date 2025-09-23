@@ -871,11 +871,6 @@
                 neuralGame.infected++;
                 updateNeuralDisplay();
                 
-                if (neuralGame.health <= 0) {
-                    endNeuralGame();
-                    return;
-                }
-                
                 var brainCenter = document.getElementById('brainCenter');
                 brainCenter.style.color = '#ff4444';
                 setTimeout(function() {
@@ -883,6 +878,11 @@
                 }, 200);
                 
                 showNotification('Brain infected! Health: ' + neuralGame.health + '%');
+                
+                if (neuralGame.health <= 0) {
+                    endNeuralGame();
+                    return;
+                }
                 return;
             }
             
@@ -918,12 +918,13 @@
         function resetNeuralGame() {
             endNeuralGame();
             document.getElementById('neuralStartScreen').style.display = 'flex';
+            var currentHighScore = neuralGame.highScore; // Preserve high score
             neuralGame = { 
                 health: 100, 
                 score: 0, 
                 wave: 1, 
                 infected: 0, 
-                highScore: neuralGame.highScore, 
+                highScore: currentHighScore, // Keep the high score
                 isPlaying: false, 
                 viruses: [], 
                 nodes: [],
@@ -951,7 +952,10 @@
                 neuralGame.highScore = neuralGame.score;
             }
             
-            recordGameScore(neuralGame.score);
+            // Only record the score if a game was actually played (score > 0)
+            if (neuralGame.score > 0) {
+                recordGameScore(neuralGame.score);
+            }
             updateNeuralDisplay();
             
             if (neuralGame.health <= 0) {
