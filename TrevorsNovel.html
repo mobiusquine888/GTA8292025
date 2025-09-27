@@ -5,20 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stream-of-Consciousness Narrator</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
             font-family: 'Courier New', monospace;
             background: #f5f5f5;
             color: #333;
-            min-height: 100vh;
+            margin: 0;
             padding: 20px;
         }
-        
         .container {
             max-width: 900px;
             margin: 0 auto;
@@ -26,7 +19,6 @@
             border: 2px solid #ccc;
             padding: 30px;
         }
-        
         h1 {
             text-align: center;
             font-size: 2em;
@@ -34,7 +26,6 @@
             border-bottom: 2px solid #333;
             padding-bottom: 10px;
         }
-        
         .controls {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -44,17 +35,14 @@
             border: 1px solid #ddd;
             background: #fafafa;
         }
-        
         .control-group {
             display: flex;
             flex-direction: column;
         }
-        
         label {
             font-weight: bold;
             margin-bottom: 8px;
         }
-        
         select, button {
             padding: 8px;
             border: 1px solid #666;
@@ -62,16 +50,13 @@
             font-family: inherit;
             cursor: pointer;
         }
-        
         button {
             background: #e0e0e0;
             margin: 5px 0;
         }
-        
         button:hover {
             background: #d0d0d0;
         }
-        
         .story-container {
             border: 2px solid #333;
             padding: 25px;
@@ -79,22 +64,12 @@
             min-height: 400px;
             background: #fefefe;
         }
-        
-        .story-header {
-            text-align: center;
-            font-size: 1.2em;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 10px;
-        }
-        
         .story-text {
             font-size: 1.1em;
             line-height: 1.6;
             white-space: pre-wrap;
             font-style: italic;
         }
-        
         .actions {
             display: flex;
             gap: 15px;
@@ -105,29 +80,17 @@
             border: 1px solid #ddd;
             background: #fafafa;
         }
-        
         .word-count {
             text-align: center;
             margin-top: 10px;
             font-size: 0.9em;
             color: #666;
         }
-        
         .entry-counter {
             text-align: center;
             font-size: 1.1em;
             margin-bottom: 15px;
             color: #555;
-        }
-        
-        @media (max-width: 768px) {
-            .controls {
-                grid-template-columns: 1fr;
-            }
-            
-            .container {
-                padding: 15px;
-            }
         }
     </style>
 </head>
@@ -170,17 +133,15 @@
         <div class="entry-counter" id="entryCounter">Entry #1</div>
         
         <div class="story-container">
-            <div class="story-header" id="storyHeader">Diary Entry - Awaiting First Transmission</div>
             <div class="story-text" id="storyText">Click "GENERATE ENTRY" to begin the endless novel... the mind is waiting to spill its thoughts...</div>
         </div>
         
-        <div class="word-count" id="wordCount">Words: 0 | Target: 200-400 words (30-60 seconds)</div>
+        <div class="word-count" id="wordCount">Words: 0 | Target: 180-220 words (60 seconds)</div>
         
         <div class="actions">
             <button onclick="copyText()">Copy Text</button>
             <button onclick="downloadEntry()">Download Entry</button>
-            <button onclick="downloadFullStory()">Download Complete Novel</button>
-            <button onclick="viewStoryMap()">View Story Map</button>
+            <button onclick="downloadFullStory()">Download Full Story</button>
             <button onclick="saveProgress()">Save Progress</button>
             <button onclick="loadProgress()">Load Progress</button>
             <button onclick="resetStory()">Reset All</button>
@@ -191,399 +152,266 @@
         let entryCount = 0;
         let allEntries = [];
         let pastObsessions = [];
-        let recurringThemes = [];
         
-        const modernConspiracies = {
+        const conspiracies = {
             tech: [
                 "5G towers are mind control devices",
-                "social media algorithms are designed to harvest emotional energy",
-                "smartphones are listening to our thoughts, not just conversations",
-                "AI chatbots are actually human operators in disguise",
-                "facial recognition software can read your soul through your eyes",
-                "TikTok is a Chinese government psychological operation",
-                "Google Earth images are 10 years old to hide secret construction",
-                "streaming services insert subliminal messages in pause screens",
-                "autocorrect is programmed to change our thoughts",
-                "dating apps are designed to keep people lonely and buying premium"
+                "social media algorithms harvest emotional energy",
+                "smartphones listen to our thoughts",
+                "AI chatbots are human operators in disguise",
+                "facial recognition reads souls through eyes"
             ],
             government: [
-                "bird surveillance drones replaced all real birds after 2001",
-                "weather modification programs control hurricanes and droughts",
-                "traffic lights are timed to increase stress and compliance",
-                "the IRS can see through your bank account into your intentions",
-                "street cameras can detect pre-crime through micro-expressions",
-                "voting machines are connected to the internet despite denials",
-                "public water fluoridation is mind control, not dental health",
-                "census data is used to target individuals for behavioral modification",
-                "license plate scanners build psychological profiles",
-                "postal service photographs every piece of mail for surveillance"
+                "bird surveillance drones replaced real birds after 2001",
+                "weather modification controls hurricanes and droughts", 
+                "traffic lights increase stress and compliance",
+                "voting machines connect to internet despite denials",
+                "water fluoridation is mind control not dental health"
             ],
             health: [
-                "big pharma suppresses natural cures to maintain profits",
-                "chemtrails contain aluminum and barium for population control",
-                "vaccines contain microchips for tracking and behavior modification",
-                "hospitals get paid more for certain diagnoses, influencing treatment",
-                "food additives are designed to create addiction and compliance",
-                "sunscreen causes cancer while blocking vitamin D production",
-                "mental health medications are chemical lobotomies",
-                "medical journals are bought and paid for by pharmaceutical companies",
-                "GMO foods alter human DNA to make us more docile",
-                "the opioid crisis was planned to create a dependent population"
+                "big pharma suppresses natural cures for profits",
+                "chemtrails contain aluminum for population control",
+                "vaccines contain tracking microchips",
+                "food additives create addiction and compliance",
+                "mental health meds are chemical lobotomies"
             ],
             financial: [
                 "cryptocurrency was created by intelligence agencies",
                 "inflation is manufactured to transfer wealth upward",
-                "student loans are designed to create permanent debt slavery",
+                "student loans create permanent debt slavery",
                 "credit scores are social control mechanisms",
-                "housing market crashes are engineered by investment firms",
-                "the stock market is completely rigged by algorithms",
-                "banks create money from nothing but charge real interest",
-                "cashless society is about total financial surveillance",
-                "retirement accounts are Ponzi schemes that will collapse",
-                "economic data is falsified to prevent panic and revolution"
+                "the stock market is rigged by algorithms"
             ],
             ufo: [
-                "UAP disclosure is a psyop to distract from real government crimes",
-                "aliens have been working with world governments since the 1940s",
-                "abduction experiences are military mind control experiments",
-                "crop circles are territorial markers left by interdimensional beings",
-                "the Pentagon UFO videos are deliberate leaks to prepare us for invasion",
-                "ancient astronauts built the pyramids and are returning now",
-                "cattle mutilations are alien genetic sampling for hybrid programs",
-                "Area 51 is a decoy while the real alien tech is at Dulce Base",
-                "grays are not aliens but time travelers from our dystopian future",
-                "the Tic Tac UFOs are reverse-engineered Nazi antigravity technology",
-                "alien implants are tracking devices for a coming harvest of humans",
-                "world leaders are reptilian shapeshifters from Alpha Draconis",
-                "disclosure timing coincides with Project Blue Beam holographic invasion",
-                "missing people in national parks are being taken for alien experiments",
-                "the moon is an artificial structure monitoring Earth for alien overseers"
+                "UAP disclosure distracts from government crimes",
+                "aliens work with world governments since 1940s",
+                "abductions are military mind control experiments",
+                "grays are time travelers from dystopian future",
+                "reptilian shapeshifters run world governments"
             ],
             social: [
-                "dating apps use AI to create fake profiles for psychological manipulation",
-                "influencer culture is designed to promote materialism and discontent",
+                "dating apps use AI for psychological manipulation",
+                "influencer culture promotes materialism and discontent",
                 "celebrity deaths are sacrifices for occult rituals",
-                "sports are rigged to influence betting and distract from real issues",
-                "fashion trends are psychological experiments in mass compliance",
                 "viral videos are manufactured in CIA facilities",
-                "online reviews are mostly fake to manipulate purchasing decisions",
-                "social movements are funded by billionaires to create division",
-                "reality TV shows are social engineering experiments",
-                "music industry uses specific frequencies to alter brain states"
+                "reality TV shows are social engineering experiments"
             ]
         };
+        
+        const worldSettings = {
             gta: {
-                settings: ["the streets", "back alleys", "corner stores", "abandoned lots", "rooftop", "subway tunnels", "the projects", "downtown"],
-                tone: "raw, street-smart, profane",
-                themes: ["survival", "hustle", "betrayal", "money", "respect", "territory", "the game"]
+                places: ["streets", "alleys", "corner stores", "rooftops", "subway tunnels"],
+                conspiracyTypes: ["government", "financial", "tech", "ufo"]
             },
             fortnite: {
-                settings: ["the storm", "building everywhere", "loot boxes", "battle bus", "tilted towers", "the map", "zone closing"],
-                tone: "manic, hyperactive, absurd",
-                themes: ["chaos", "building", "fighting", "randomness", "speed", "colors", "madness"]
+                places: ["the storm", "building sites", "loot areas", "battle zones", "the map"],
+                conspiracyTypes: ["tech", "social", "health", "ufo"]
             },
             rdr2: {
-                settings: ["the frontier", "dusty roads", "saloons", "campfire", "wilderness", "train tracks", "ghost towns"],
-                tone: "poetic, haunted, philosophical",
-                themes: ["redemption", "past sins", "honor", "loyalty", "nature", "time", "ghosts"]
-            }
-        };
-        
-        const intensityLevels = {
-            mild: {
-                violence: 2,
-                paranoia: 3,
-                humor: 7,
-                philosophy: 6,
-                coherence: 7
-            },
-            chaotic: {
-                violence: 6,
-                paranoia: 8,
-                humor: 5,
-                philosophy: 4,
-                coherence: 3
-            },
-            apocalypse: {
-                violence: 9,
-                paranoia: 10,
-                humor: 3,
-                philosophy: 8,
-                coherence: 2
+                places: ["frontier", "dusty roads", "saloons", "wilderness", "ghost towns"],
+                conspiracyTypes: ["government", "financial", "social", "ufo"]
             }
         };
         
         function generateEntry() {
-            entryCount++;
-            const world = document.getElementById('worldSelector').value;
-            const intensity = document.getElementById('intensitySelector').value;
-            const callbacks = document.getElementById('callbacksToggle').value === 'on';
-            
-            const template = worldTemplates[world];
-            const intensityData = intensityLevels[intensity];
-            
-            let entry = generateStreamOfConsciousness(template, intensityData, callbacks);
-            
-            // Add to collections for future callbacks
-            allEntries.push(entry);
-            extractObsessions(entry);
-            
-            updateDisplay(entry);
+            try {
+                entryCount++;
+                
+                const world = document.getElementById('worldSelector').value;
+                const intensity = document.getElementById('intensitySelector').value;
+                const useCallbacks = document.getElementById('callbacksToggle').value === 'on';
+                
+                let entry = createStreamEntry(world, intensity, useCallbacks);
+                
+                allEntries.push(entry);
+                updateDisplay(entry);
+                
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
         }
         
-        function generateStreamOfConsciousness(template, intensity, useCallbacks) {
-            let entry = "";
+        function createStreamEntry(world, intensity, useCallbacks) {
+            const setting = worldSettings[world];
             
-            // Opening thought
             const openings = [
                 "I swear to God, the",
-                "Nobody talks about how the",
-                "You know what's fucked up? The",
-                "Three days now I've been thinking about",
-                "They don't want you to know that",
+                "Nobody talks about how the", 
+                "You know what's messed up? The",
+                "Three days now thinking about",
+                "They don't want you to know the",
                 "Last night I realized the",
-                "Here's what they won't tell you:"
+                "Been walking around thinking how the",
+                "Something's not right about the"
             ];
             
-            let setting = template.settings[Math.floor(Math.random() * template.settings.length)];
-            let theme = template.themes[Math.floor(Math.random() * template.themes.length)];
+            const place = setting.places[Math.floor(Math.random() * setting.places.length)];
+            const opening = openings[Math.floor(Math.random() * openings.length)];
             
-            // Weave in modern conspiracy theory
-            let conspiracy = "";
-            if (Math.random() > 0.3) { // 70% chance of conspiracy content
-                const focusAreas = template.conspiracyFocus;
-                const randomArea = focusAreas[Math.floor(Math.random() * focusAreas.length)];
-                const conspiracyList = modernConspiracies[randomArea];
-                conspiracy = conspiracyList[Math.floor(Math.random() * conspiracyList.length)];
-            }
+            let entry = opening + " " + place + " ";
             
-            entry += openings[Math.floor(Math.random() * openings.length)] + " " + setting + " ";
-            
-            // Integrate conspiracy into opening thought
-            if (conspiracy) {
-                const conspiracyIntros = [
-                    "proves that " + conspiracy,
-                    "reminds me that " + conspiracy,
-                    "makes me think about how " + conspiracy,
-                    "is connected to the fact that " + conspiracy,
-                    "is evidence that " + conspiracy
-                ];
-                entry += conspiracyIntros[Math.floor(Math.random() * conspiracyIntros.length)] + ". ";
-            }
-            
-            // Add callback reference if enabled
-            if (useCallbacks && pastObsessions.length > 0 && Math.random() > 0.3) {
-                const recentObsessions = pastObsessions.filter(obs => obs.frequency > 1 || entryCount - obs.firstSeen < 5);
-                if (recentObsessions.length > 0) {
-                    const obsession = recentObsessions[Math.floor(Math.random() * recentObsessions.length)];
-                    const callbackTypes = [
-                        `reminds me of ${obsession.text}. Same feeling, same...`,
-                        `${obsession.text} again. It's following me.`,
-                        `been thinking about ${obsession.text} since entry #${obsession.firstSeen}.`,
-                        `like when I wrote about ${obsession.text} before. Patterns repeating.`,
-                        `${obsession.text} - why does it keep coming back?`
+            // Add MULTIPLE conspiracies for longer content
+            let conspiracyCount = 2 + Math.floor(Math.random() * 2); // 2-3 conspiracies
+            for (let c = 0; c < conspiracyCount; c++) {
+                if (Math.random() > 0.2) { // 80% chance each time
+                    const conspType = setting.conspiracyTypes[Math.floor(Math.random() * setting.conspiracyTypes.length)];
+                    const conspiracy = conspiracies[conspType][Math.floor(Math.random() * conspiracies[conspType].length)];
+                    
+                    const connectors = [
+                        "proves that ",
+                        "connects to how ",
+                        "makes me realize ",
+                        "shows that ",
+                        "confirms that "
                     ];
-                    entry += callbackTypes[Math.floor(Math.random() * callbackTypes.length)] + " ";
+                    
+                    entry += connectors[Math.floor(Math.random() * connectors.length)] + conspiracy + ". ";
+                    
+                    if (c < conspiracyCount - 1) {
+                        const transitions = [
+                            "And another thing - ",
+                            "But that's not all. ",
+                            "Here's what really gets me: ",
+                            "Then I started thinking about how "
+                        ];
+                        entry += transitions[Math.floor(Math.random() * transitions.length)];
+                    }
                 }
             }
             
-            // Reference previous entry themes occasionally
-            if (useCallbacks && allEntries.length > 0 && Math.random() > 0.6) {
-                const previousEntry = allEntries[allEntries.length - 1];
-                entry += "Yesterday I was writing about... what was it? ";
-            }
-            
-            // Build the rambling thoughts based on intensity
-            if (intensity.coherence < 4) {
-                entry += generateChaoticThoughts(template, intensity);
-            } else {
-                entry += generateCoherentThoughts(template, intensity);
-            }
-            
-            // Add philosophical moment
-            if (Math.random() < intensity.philosophy / 10) {
-                const philosophies = [
-                    "Maybe we're all just ghosts pretending to be alive.",
-                    "Reality's just consensus hallucination anyway.",
-                    "Time moves backwards when nobody's watching.",
-                    "Every choice we don't make creates a shadow universe.",
-                    "Consciousness is just the universe having an argument with itself."
+            // MUCH longer rambling section
+            if (intensity === 'chaotic' || intensity === 'apocalypse') {
+                const chaosThoughts = [
+                    "Everything's connected somehow. The way that homeless guy on Fifth Street always knows when it's gonna rain three days before the weather app does. ",
+                    "The patterns are everywhere if you actually look. License plates spelling out messages, phone numbers that add up to specific dates, the time on every clock I pass showing the same digits. ",
+                    "They're watching through every camera, every phone, every smart TV, every fucking Ring doorbell. Recording everything we say, think, dream about. ",
+                    "Can't trust anything anymore. Not the news telling us what to think, not the government promising protection, not even my own reflection in store windows. ",
+                    "The truth is right there hiding in plain sight like it always has been. Billboard messages, song lyrics played at specific times, the way certain people show up in multiple places. ",
+                    "Blood tastes like copper pennies and broken promises from politicians who sold us out decades ago. ",
+                    "Laughing until it hurts because what else can you do when the whole world's this fucked up and nobody else sees it? ",
+                    "Burning it all down would be so easy. One match, one decision, one moment of absolute clarity cutting through all the lies. ",
+                    "The voices in my head are getting louder and they're starting to make more sense than anything on the news. ",
+                    "Social media feeds us exactly what they want us to think. Algorithmic brainwashing designed to keep us angry at each other instead of them. ",
+                    "Every song on the radio has the same frequency designed to make us docile consumers instead of thinking human beings. ",
+                    "Dating apps keep us isolated and desperate so we're easier to control. Divide and conquer, oldest trick in the book. ",
+                    "The weather's not natural anymore. Rain exactly when they need distractions, sunshine when they want us shopping, storms during election cycles. ",
+                    "Financial markets crash right before major policy changes. Wealth transfers upward while we fight over crumbs. "
                 ];
-                entry += "\n\n" + philosophies[Math.floor(Math.random() * philosophies.length)] + " ";
+                
+                // Generate much longer chaotic rambling
+                for (let i = 0; i < 8 + Math.random() * 4; i++) {
+                    entry += chaosThoughts[Math.floor(Math.random() * chaosThoughts.length)];
+                    if (i % 3 === 0) entry += "\n\n";
+                }
+            } else {
+                entry += "keeps pulling at my brain like a splinter under my fingernail that I can't dig out. Can't shake this feeling that everything's connected - the way that guy looked at me outside the grocery store, the number on the bus that matched my birthday, the song that keeps playing on three different radio stations. It's all part of something bigger, something they definitely don't want us to see. ";
+                
+                // Add more coherent but lengthy thoughts for mild intensity
+                const moreThoughts = [
+                    "Been noticing things lately. Small things that don't make sense until you put them together. The way certain people appear in multiple places throughout my day, like they're following a script. The way conversations stop when I walk by, then resume in whispers. ",
+                    "The internet knows too much about us. Predicts what we'll buy before we know we want it, who we'll vote for before we decide, who we'll fall in love with before we meet them. That's not algorithms, that's something else entirely. ",
+                    "Weather's been strange lately. Too convenient. Rain exactly when they need distractions from the real news, sunshine when they want consumer confidence up, hurricanes timed perfectly with election cycles. Nature doesn't work on a schedule like that. ",
+                    "Financial markets move like someone's pulling invisible strings. Crashes happen right before major policy announcements, wealth transfers upward while everyone's distracted by social media drama. The timing's too perfect to be coincidence. ",
+                    "Food tastes different now. Processed stuff has this metallic aftertaste that wasn't there five years ago. Makes you wonder what they're adding that's not on the ingredient list. Population control through the food supply, slow and subtle. ",
+                    "Sleep patterns are off for everyone I know. People waking up at 3 AM for no reason, all having the same types of dreams. Electromagnetic frequency manipulation through cell towers, testing how much they can influence our subconscious minds. "
+                ];
+                
+                for (let i = 0; i < 3 + Math.random() * 2; i++) {
+                    entry += moreThoughts[Math.floor(Math.random() * moreThoughts.length)];
+                }
             }
             
-            // Ending - no resolution, leads to next
-            const endings = [
-                "Tomorrow I'm gonna...",
-                "But the real question is...",
-                "And that's when I heard it again.",
-                "The pattern's getting clearer.",
-                "Something's coming. I can feel it."
+            // Callback to previous entries (longer section)
+            if (useCallbacks && pastObsessions.length > 0 && Math.random() > 0.4) {
+                const obsession = pastObsessions[Math.floor(Math.random() * pastObsessions.length)];
+                const callbackIntros = [
+                    "Reminds me of that thing about " + obsession + " I was thinking about before. Same energy, same pattern repeating itself. ",
+                    "Just like when I was obsessing over " + obsession + " last week. It all comes back to the same central truth they're hiding. ",
+                    "Connected to " + obsession + " somehow. Everything's connected if you trace it back far enough to the source. "
+                ];
+                entry += callbackIntros[Math.floor(Math.random() * callbackIntros.length)];
+            }
+            
+            // Multiple philosophy endings for length
+            const philosophyBits = [
+                "Reality's just consensus hallucination anyway. We all agree the sky is blue so it becomes blue in our shared delusion. ",
+                "Time moves backwards when nobody's watching. Past keeps changing to match what they need the present to look like. ",
+                "Maybe we're all just ghosts pretending to be alive, going through the motions because we forgot we already died. ",
+                "The universe is having an argument with itself and we're caught in the crossfire of cosmic cognitive dissonance. "
             ];
             
-            entry += "\n\n" + endings[Math.floor(Math.random() * endings.length)];
+            entry += "\n\n" + philosophyBits[Math.floor(Math.random() * philosophyBits.length)];
+            
+            const endings = [
+                "Tomorrow I'm gonna dig deeper into this rabbit hole and see how far it really goes.",
+                "But the real question is: how many people know the truth and just stay quiet to protect themselves?",
+                "Something big is coming. I can feel it in the air, taste it in the water, see it in people's eyes.",
+                "The pattern's getting clearer every day. Soon I'll have enough pieces to see the whole picture.",
+                "They can't keep this hidden forever. Truth has a way of surfacing when you least expect it."
+            ];
+            
+            entry += " " + endings[Math.floor(Math.random() * endings.length)];
+            
+            // Track more obsessions for richer callbacks
+            const sentences = entry.split('.');
+            sentences.forEach(sentence => {
+                const words = sentence.toLowerCase().split(' ');
+                const importantWords = words.filter(word => word.length > 5 && !['because', 'through', 'before', 'always', 'people', 'really', 'something', 'nothing'].includes(word));
+                if (importantWords.length > 0) {
+                    const newObsession = importantWords[Math.floor(Math.random() * importantWords.length)];
+                    if (!pastObsessions.includes(newObsession)) {
+                        pastObsessions.push(newObsession);
+                        if (pastObsessions.length > 20) {
+                            pastObsessions.shift();
+                        }
+                    }
+                }
+            });
             
             return entry;
         }
         
-        function generateChaoticThoughts(template, intensity) {
-            // Mix regular chaotic thoughts with conspiracy fragments
-            const regularFragments = [
-                "makes me wanna break something",
-                "it's all connected somehow", 
-                "they're watching through the cameras",
-                "blood tastes like copper pennies",
-                "laughing until it hurts",
-                "everything's a lie except the pain",
-                "burning it all down would be so easy",
-                "the voices agree with me now",
-                "dancing on the edge of madness",
-                "sweet beautiful chaos"
-            ];
-            
-            const conspiracyFragments = [
-                "every phone call is recorded and analyzed",
-                "the algorithms know us better than we know ourselves",
-                "they're putting chemicals in everything we consume",
-                "facial recognition cameras on every corner now",
-                "cryptocurrency is the new form of population control",
-                "weather patterns aren't natural anymore",
-                "social media is rewiring our brains for compliance",
-                "the food supply is designed to make us sick and dependent",
-                "streaming services know exactly how to manipulate our emotions",
-                "dating apps are creating a generation of isolated, controllable people",
-                "those UAP videos are just the government preparing us for something worse",
-                "alien abductions are really military black projects testing mind control",
-                "the grays aren't aliens, they're time travelers from our fucked up future",
-                "cattle mutilations are genetic sampling for some kind of hybrid program",
-                "missing people in national parks are being taken for experiments"
-            ];
-            
-            let result = "";
-            for (let i = 0; i < 3 + Math.random() * 3; i++) {
-                const useConspiracy = Math.random() > 0.5;
-                const fragments = useConspiracy ? conspiracyFragments : regularFragments;
-                result += fragments[Math.floor(Math.random() * fragments.length)] + ". ";
-                if (Math.random() > 0.7) result += "\n\n";
-            }
-            return result;
-        }
-        
-        function generateCoherentThoughts(template, intensity) {
-            // Add conspiracy elements to coherent thoughts too
-            const conspiracyElements = [
-                "5G towers humming at frequencies that mess with our thoughts",
-                "every social media algorithm designed to keep us angry and divided",
-                "bird surveillance drones monitoring our daily routines", 
-                "streaming services inserting subliminal messages during buffer times",
-                "traffic lights timed to create maximum stress and compliance",
-                "dating app algorithms preventing real connections to keep us isolated",
-                "financial markets manipulated by AI systems beyond human control",
-                "weather modification programs disguised as climate change",
-                "UFO disclosure happening now because they need us distracted from economic collapse",
-                "alien implants being passed off as medical devices",
-                "the Tic Tac videos released precisely when they needed to change the news cycle",
-                "reptilian shapeshifters running world governments while we argue about pronouns"
-            ];
-            
-            const randomConspiracy = conspiracyElements[Math.floor(Math.random() * conspiracyElements.length)];
-            
-            return `keeps pulling at my brain like a splinter. Can't shake the feeling that everything's connected - the way that guy looked at me, the number on the bus, the song that keeps playing in my head. It's all part of something bigger, something they don't want us to see. Like how ${randomConspiracy}. But I'm starting to piece it together, one sleepless night at a time.`;
-        }
-        
-        function extractObsessions(entry) {
-            // Extract recurring characters, places, objects, and themes
-            const patterns = {
-                characters: /(?:that|the) (\w+(?:\s+\w+)?)\s+(?:guy|woman|man|person|bastard|bitch)/gi,
-                places: /(?:at|in|near|by) (?:the )?(\w+(?:\s+\w+)?)\s+(?:street|building|place|spot|corner|alley)/gi,
-                objects: /(?:the|that|my) (\w+(?:\s+\w+)?)\s+(?:keeps|always|still|never)/gi,
-                sounds: /(?:hear|hearing|sound of|noise of) (?:the )?(\w+(?:\s+\w+)?)/gi,
-                smells: /(?:smell|smells like|reeks of|scent of) (\w+(?:\s+\w+)?)/gi,
-                emotions: /(rage|anger|fear|sadness|joy|hatred|love|despair|hope)\s+(?:fills|consumes|overwhelms)/gi,
-                numbers: /(\d+)\s+(?:days|nights|hours|times|years)/gi
-            };
-            
-            Object.keys(patterns).forEach(category => {
-                let matches = [...entry.matchAll(patterns[category])];
-                matches.forEach(match => {
-                    let element = match[1].toLowerCase().trim();
-                    if (element.length > 2 && !pastObsessions.includes(element)) {
-                        pastObsessions.push({
-                            text: element,
-                            category: category,
-                            firstSeen: entryCount,
-                            frequency: 1
-                        });
-                    } else {
-                        // Increase frequency if already exists
-                        let existing = pastObsessions.find(obs => obs.text === element);
-                        if (existing) existing.frequency++;
-                    }
-                });
-            });
-            
-            // Keep last 25 obsessions for richer callbacks
-            if (pastObsessions.length > 25) {
-                pastObsessions = pastObsessions.slice(-25);
-            }
-        }
-        
         function updateDisplay(entry) {
-            document.getElementById('entryCounter').textContent = `Entry #${entryCount}`;
-            document.getElementById('storyHeader').textContent = `Diary Entry #${entryCount} - The Mind Unravels`;
+            document.getElementById('entryCounter').textContent = 'Entry #' + entryCount;
             document.getElementById('storyText').textContent = entry;
             
-            const words = entry.trim().split(/\s+/).length;
+            const words = entry.split(' ').length;
             const readTime = Math.ceil(words / 3.5);
-            document.getElementById('wordCount').textContent = `Words: ${words} | Read time: ~${readTime} seconds`;
+            document.getElementById('wordCount').textContent = 'Words: ' + words + ' | Read time: ~' + readTime + ' seconds';
         }
         
         function copyText() {
             const text = document.getElementById('storyText').textContent;
-            navigator.clipboard.writeText(text).then(() => alert('Entry copied to clipboard!'));
+            navigator.clipboard.writeText(text).then(() => alert('Copied!'));
         }
         
         function downloadEntry() {
             const text = document.getElementById('storyText').textContent;
-            downloadTextFile(text, `diary-entry-${entryCount}.txt`);
-        }
-        
-        function downloadFullStory() {
-            const fullText = allEntries.map((entry, i) => `ENTRY #${i + 1}\n${'-'.repeat(50)}\n${entry}\n\n`).join('');
-            const summary = generateStorySummary();
-            const completeNovel = `STREAM-OF-CONSCIOUSNESS NOVEL\nGenerated: ${new Date().toLocaleString()}\nTotal Entries: ${entryCount}\n\n${summary}\n\n${'='.repeat(80)}\n\n${fullText}`;
-            downloadTextFile(completeNovel, 'complete-novel.txt');
-        }
-        
-        function generateStorySummary() {
-            if (allEntries.length === 0) return "No entries yet.";
-            
-            const characterCount = pastObsessions.filter(obs => obs.category === 'characters').length;
-            const placeCount = pastObsessions.filter(obs => obs.category === 'places').length;
-            const majorObsessions = pastObsessions.filter(obs => obs.frequency > 2).map(obs => obs.text);
-            
-            return `STORY OVERVIEW:\n${'-'.repeat(20)}\nRecurring Characters: ${characterCount}\nImportant Locations: ${placeCount}\nMajor Obsessions: ${majorObsessions.join(', ') || 'None yet'}\nNarrative Arc: ${entryCount} entries chronicling the deteriorating mind of an unnamed narrator\nTotal Word Count: ~${allEntries.join(' ').split(' ').length} words`;
-        }
-        
-        function downloadTextFile(text, filename) {
             const blob = new Blob([text], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = filename;
+            a.download = 'diary-entry-' + entryCount + '.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function downloadFullStory() {
+            const fullText = allEntries.map((entry, i) => 'ENTRY #' + (i + 1) + '\n' + entry + '\n\n---\n\n').join('');
+            const blob = new Blob([fullText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'complete-novel.txt';
             a.click();
             URL.revokeObjectURL(url);
         }
         
         function saveProgress() {
             const saveData = {
-                entryCount,
-                allEntries,
-                pastObsessions,
-                recurringThemes,
-                worldSetting: document.getElementById('worldSelector').value,
-                intensity: document.getElementById('intensitySelector').value,
-                callbacks: document.getElementById('callbacksToggle').value
+                entryCount: entryCount,
+                allEntries: allEntries,
+                pastObsessions: pastObsessions
             };
             localStorage.setItem('narratorProgress', JSON.stringify(saveData));
             alert('Progress saved!');
@@ -596,11 +424,6 @@
                 entryCount = data.entryCount;
                 allEntries = data.allEntries;
                 pastObsessions = data.pastObsessions || [];
-                recurringThemes = data.recurringThemes || [];
-                
-                document.getElementById('worldSelector').value = data.worldSetting || 'gta';
-                document.getElementById('intensitySelector').value = data.intensity || 'chaotic';
-                document.getElementById('callbacksToggle').value = data.callbacks || 'on';
                 
                 if (allEntries.length > 0) {
                     updateDisplay(allEntries[allEntries.length - 1]);
@@ -611,33 +434,14 @@
             }
         }
         
-        function viewStoryMap() {
-            if (allEntries.length === 0) {
-                alert('No entries yet to map!');
-                return;
-            }
-            
-            const characters = pastObsessions.filter(obs => obs.category === 'characters');
-            const places = pastObsessions.filter(obs => obs.category === 'places');
-            const majorThemes = pastObsessions.filter(obs => obs.frequency > 1);
-            
-            const storyMap = `STORY MAP - NOVEL STRUCTURE\n${'='.repeat(50)}\n\nTOTAL ENTRIES: ${entryCount}\nWORD COUNT: ~${allEntries.join(' ').split(' ').length}\n\nRECURRING CHARACTERS:\n${characters.map(c => `• ${c.text} (first appears: entry #${c.firstSeen}, mentioned ${c.frequency} times)`).join('\n') || '• None established yet'}\n\nKEY LOCATIONS:\n${places.map(p => `• ${p.text} (first appears: entry #${p.firstSeen}, mentioned ${p.frequency} times)`).join('\n') || '• None established yet'}\n\nMAJOR OBSESSIONS/THEMES:\n${majorThemes.map(t => `• ${t.text} (${t.category}) - appears ${t.frequency} times`).join('\n') || '• None recurring yet'}\n\nNARRATIVE ARC:\n• Entries #1-${Math.ceil(entryCount/3)}: ${entryCount <= 3 ? 'Beginning phase' : 'Establishment of voice and initial obsessions'}\n• Entries #${Math.ceil(entryCount/3)+1}-${Math.ceil(entryCount*2/3)}: ${entryCount <= 6 ? 'Development phase' : 'Deepening paranoia and recurring themes'}\n• Entries #${Math.ceil(entryCount*2/3)+1}-${entryCount}: ${entryCount <= 9 ? 'Current phase' : 'Complex interconnected narrative web'}`;
-            
-            // Create popup window with story map
-            const mapWindow = window.open('', 'StoryMap', 'width=600,height=500,scrollbars=yes');
-            mapWindow.document.write(`<html><head><title>Story Map</title><style>body{font-family:monospace;padding:20px;white-space:pre-wrap;}</style></head><body>${storyMap}</body></html>`);
-        }
-        
         function resetStory() {
             if (confirm('Reset all progress? This cannot be undone.')) {
                 entryCount = 0;
                 allEntries = [];
                 pastObsessions = [];
-                recurringThemes = [];
                 document.getElementById('entryCounter').textContent = 'Entry #1';
-                document.getElementById('storyHeader').textContent = 'Diary Entry - Awaiting First Transmission';
                 document.getElementById('storyText').textContent = 'Click "GENERATE ENTRY" to begin the endless novel... the mind is waiting to spill its thoughts...';
-                document.getElementById('wordCount').textContent = 'Words: 0 | Target: 200-400 words (30-60 seconds)';
+                document.getElementById('wordCount').textContent = 'Words: 0 | Target: 200-250 words (60 seconds)';
             }
         }
     </script>
