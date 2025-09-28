@@ -1,105 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SurveillanceMap360 Demo</title>
-<style>
-  body { margin:0; font-family:sans-serif; background:#111; color:white; }
-  .header { background:#222; padding:10px; display:flex; justify-content:space-between; align-items:center; }
-  .header input { padding:5px; width:250px; }
-  .map { position:relative; height:80vh; background:linear-gradient(to bottom, #000080, #006400); }
-  .marker { position:absolute; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:bold; cursor:pointer; }
-  .info { background:#333; padding:10px; margin:10px; border-radius:8px; }
-  .search-results { position:absolute; background:#444; border:1px solid #666; max-height:150px; overflow-y:auto; width:250px; display:none; }
-  .search-results div { padding:5px; cursor:pointer; }
-  .search-results div:hover { background:#555; }
-</style>
+  <meta charset="utf-8" />
+  <title>U.S. Cities Privacy Map Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <!-- MarkerCluster CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+
+  <style>
+    body { margin:0; padding:0; }
+    #map { height: 100vh; width: 100%; }
+    .legend {
+      background: white;
+      padding: 10px;
+      line-height: 18px;
+      color: #555;
+    }
+    .legend span {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+    }
+  </style>
 </head>
 <body>
 
-<div class="header">
-  <div>SurveillanceMap360 DEMO</div>
-  <div>
-    <input id="searchInput" placeholder="Search location...">
-    <div id="searchResults" class="search-results"></div>
-  </div>
-</div>
+<div id="map"></div>
 
-<div class="map" id="map"></div>
-
-<div class="info" id="details">Select a location to see surveillance details.</div>
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<!-- MarkerCluster JS -->
+<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 
 <script>
-const locations = [
-  // Colorado locations
-  { name:'Denver International Airport', lat:39.8561, lng:-104.6737, score:8 },
-  { name:'Downtown Denver 16th Street', lat:39.7392, lng:-104.9903, score:22 },
-  { name:'Cherry Creek Mall', lat:39.7270, lng:-104.9570, score:18 },
-  { name:'University of Colorado Boulder', lat:40.0076, lng:-105.2659, score:58 },
-  { name:'Pearl Street Mall Boulder', lat:40.0180, lng:-105.2797, score:65 },
-  { name:'Westminster City Center', lat:39.8367, lng:-105.0372, score:52 },
-  { name:'Rocky Mountain National Park', lat:40.3428, lng:-105.6836, score:95 },
-  { name:'Golden Historic District', lat:39.7555, lng:-105.2211, score:82 },
-  
-  // Los Angeles
-  { name:'Los Angeles Downtown', lat:34.0522, lng:-118.2437, score:45 },
-  { name:'LAX Airport', lat:33.9416, lng:-118.4085, score:30 },
-  { name:'Hollywood Blvd', lat:34.1015, lng:-118.3269, score:38 },
-  
-  // New York
-  { name:'Times Square, NYC', lat:40.7580, lng:-73.9855, score:28 },
-  { name:'JFK Airport', lat:40.6413, lng:-73.7781, score:25 },
-  { name:'Wall Street, NYC', lat:40.7060, lng:-74.0086, score:32 }
-];
+  // Initialize map
+  var map = L.map('map').setView([39.8, -98.5], 4); // Center of the U.S.
 
-const mapEl = document.getElementById('map');
-const detailsEl = document.getElementById('details');
-const searchInput = document.getElementById('searchInput');
-const searchResults = document.getElementById('searchResults');
+  // Add OpenStreetMap tiles
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap'
+  }).addTo(map);
 
-function getColor(score) {
-  if(score>=80) return 'green';
-  if(score>=60) return 'yellow';
-  if(score>=40) return 'orange';
-  return 'red';
-}
+  // Create marker cluster group
+  var markers = L.markerClusterGroup();
 
-function renderMarkers() {
-  locations.forEach(loc => {
-    const marker = document.createElement('div');
-    marker.className = 'marker';
-    marker.style.backgroundColor = getColor(loc.score);
-    const left = ((loc.lng + 180) / 360 * 100) + '%';
-    const top = ((90 - loc.lat) / 180 * 100) + '%';
-    marker.style.left = left;
-    marker.style.top = top;
-    marker.textContent = loc.score;
-    marker.title = loc.name + ' Score: ' + loc.score;
-    marker.onclick = () => showDetails(loc);
-    mapEl.appendChild(marker);
+  // Demo dataset: U.S. cities with lat, lng, population
+  // (In a real version you can replace this array with the full dataset)
+  var cities = [
+    {name: "New York", lat: 40.7128, lng: -74.0060, population: 8419600},
+    {name: "Los Angeles", lat: 34.0522, lng: -118.2437, population: 3980400},
+    {name: "Chicago", lat: 41.8781, lng: -87.6298, population: 2716000},
+    {name: "Denver", lat: 39.7392, lng: -104.9903, population: 715000},
+    {name: "Austin", lat: 30.2672, lng: -97.7431, population: 978000},
+    {name: "Boulder", lat: 40.01499, lng: -105.27055, population: 108000},
+    // ... add all other cities here
+  ];
+
+  // Function to get marker color based on demo privacy score
+  function getColor(score) {
+    return score > 80 ? '#d73027' :
+           score > 60 ? '#fc8d59' :
+           score > 40 ? '#fee08b' :
+           score > 20 ? '#d9ef8b' :
+                        '#1a9850';
+  }
+
+  // Add markers
+  cities.forEach(function(city) {
+    var privacyScore = Math.floor(Math.random() * 100) + 1; // Random demo score
+    var marker = L.circleMarker([city.lat, city.lng], {
+      radius: Math.max(5, Math.log(city.population)/2),
+      fillColor: getColor(privacyScore),
+      color: '#555',
+      weight: 1,
+      opacity: 1,
+      fillOpacity: 0.8
+    }).bindPopup(
+      "<b>" + city.name + "</b><br>" +
+      "Population: " + city.population.toLocaleString() + "<br>" +
+      "Demo Privacy Score: " + privacyScore
+    );
+    markers.addLayer(marker);
   });
-}
 
-function showDetails(loc) {
-  detailsEl.textContent = `${loc.name} - Surveillance Score: ${loc.score}/100`;
-}
+  map.addLayer(markers);
 
-searchInput.addEventListener('input', () => {
-  const query = searchInput.value.toLowerCase();
-  searchResults.innerHTML = '';
-  if(!query) { searchResults.style.display='none'; return; }
-  const matches = locations.filter(l => l.name.toLowerCase().includes(query));
-  matches.forEach(l => {
-    const div = document.createElement('div');
-    div.textContent = l.name;
-    div.onclick = () => { showDetails(l); searchResults.style.display='none'; searchInput.value = l.name; };
-    searchResults.appendChild(div);
-  });
-  searchResults.style.display = matches.length ? 'block' : 'none';
-});
-
-renderMarkers();
+  // Add legend
+  var legend = L.control({position: 'bottomright'});
+  legend.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'legend');
+    div.innerHTML += "<b>Demo Privacy Score</b><br>";
+    div.innerHTML += '<span style="background:#d73027"></span> 81-100<br>';
+    div.innerHTML += '<span style="background:#fc8d59"></span> 61-80<br>';
+    div.innerHTML += '<span style="background:#fee08b"></span> 41-60<br>';
+    div.innerHTML += '<span style="background:#d9ef8b"></span> 21-40<br>';
+    div.innerHTML += '<span style="background:#1a9850"></span> 0-20<br>';
+    return div;
+  };
+  legend.addTo(map);
 </script>
 
 </body>
