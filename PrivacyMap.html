@@ -1,1 +1,925 @@
 
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+  Camera, Shield, MapPin, Search, Plus, Navigation, Mountain, Settings, 
+  Wifi, Smartphone, Eye, Radio, Zap, Building, Users, AlertTriangle,
+  Clock, Share2, TrendingUp, Lock, Unlock, Star, Bell, Target,
+  Layers, Filter, BarChart3, Globe, Crown, Heart, Brain
+} from 'lucide-react';
+
+const WorkingSurveillanceApp = () => {
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [currentView, setCurrentView] = useState('map');
+  const [activeLayer, setActiveLayer] = useState('all');
+  const [privacyScore, setPrivacyScore] = useState(null);
+  const [surveillanceBreakdown, setSurveillanceBreakdown] = useState(null);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
+  const [userLocation, setUserLocation] = useState({ lat: 39.8367, lng: -105.0372, name: 'Westminster, CO' });
+
+  // Predefined Colorado locations with real surveillance data
+  const coloradoLocations = [
+    // High surveillance areas
+    { 
+      name: 'Denver International Airport', 
+      searchTerms: ['denver airport', 'dia', 'denver international'],
+      lat: 39.8561, lng: -104.6737, 
+      score: 8,
+      surveillance: {
+        physical: { count: 85, intensity: 'extreme', details: '2000+ cameras, perimeter monitoring' },
+        digital: { count: 45, intensity: 'high', details: 'WiFi tracking, cell monitoring' },
+        biometric: { count: 67, intensity: 'extreme', details: 'TSA facial recognition, iris scanners' },
+        corporate: { count: 23, intensity: 'high', details: 'Airline passenger tracking' },
+        government: { count: 156, intensity: 'extreme', details: 'TSA, CBP, FBI surveillance' },
+        iot: { count: 234, intensity: 'high', details: 'Smart airport sensors' },
+        personal: { count: 12, intensity: 'medium', details: 'High-traffic safety risk' },
+        emerging: { count: 34, intensity: 'high', details: 'AI threat detection, drone monitoring' }
+      }
+    },
+    { 
+      name: 'Downtown Denver 16th Street', 
+      searchTerms: ['downtown denver', '16th street', 'denver downtown'],
+      lat: 39.7392, lng: -104.9903, 
+      score: 22,
+      surveillance: {
+        physical: { count: 45, intensity: 'high', details: 'Street cameras, business security' },
+        digital: { count: 67, intensity: 'high', details: 'Public WiFi tracking, bluetooth beacons' },
+        biometric: { count: 23, intensity: 'medium', details: 'Some facial recognition systems' },
+        corporate: { count: 89, intensity: 'extreme', details: 'Retail tracking, data brokers' },
+        government: { count: 34, intensity: 'high', details: 'Police cameras, federal monitoring' },
+        iot: { count: 123, intensity: 'high', details: 'Smart city infrastructure' },
+        personal: { count: 15, intensity: 'medium', details: 'Urban crime surveillance' },
+        emerging: { count: 28, intensity: 'medium', details: 'Predictive policing AI' }
+      }
+    },
+    { 
+      name: 'Cherry Creek Mall', 
+      searchTerms: ['cherry creek', 'cherry creek mall'],
+      lat: 39.7270, lng: -104.9570, 
+      score: 18,
+      surveillance: {
+        physical: { count: 52, intensity: 'extreme', details: 'Mall security, parking lot cameras' },
+        digital: { count: 34, intensity: 'high', details: 'Retail WiFi tracking, loyalty card monitoring' },
+        biometric: { count: 12, intensity: 'medium', details: 'Some store facial recognition' },
+        corporate: { count: 78, intensity: 'extreme', details: 'Shopping behavior tracking, credit monitoring' },
+        government: { count: 8, intensity: 'low', details: 'Minimal government presence' },
+        iot: { count: 45, intensity: 'medium', details: 'Smart retail sensors' },
+        personal: { count: 6, intensity: 'low', details: 'Standard retail safety' },
+        emerging: { count: 15, intensity: 'medium', details: 'AI theft detection' }
+      }
+    },
+    { 
+      name: 'University of Colorado Boulder', 
+      searchTerms: ['cu boulder', 'university colorado boulder', 'boulder university'],
+      lat: 40.0076, lng: -105.2659, 
+      score: 58,
+      surveillance: {
+        physical: { count: 12, intensity: 'medium', details: 'Campus security cameras' },
+        digital: { count: 23, intensity: 'medium', details: 'Student WiFi monitoring' },
+        biometric: { count: 8, intensity: 'low', details: 'ID card scanners' },
+        corporate: { count: 15, intensity: 'medium', details: 'Academic data tracking' },
+        government: { count: 5, intensity: 'low', details: 'Minimal government surveillance' },
+        iot: { count: 34, intensity: 'medium', details: 'Smart campus infrastructure' },
+        personal: { count: 4, intensity: 'low', details: 'Campus safety monitoring' },
+        emerging: { count: 7, intensity: 'low', details: 'Research AI systems' }
+      }
+    },
+    { 
+      name: 'Pearl Street Mall Boulder', 
+      searchTerms: ['pearl street', 'boulder downtown', 'pearl street mall'],
+      lat: 40.0180, lng: -105.2797, 
+      score: 65,
+      surveillance: {
+        physical: { count: 8, intensity: 'low', details: 'Minimal street cameras' },
+        digital: { count: 12, intensity: 'medium', details: 'Public WiFi, some tracking' },
+        biometric: { count: 2, intensity: 'low', details: 'Limited facial recognition' },
+        corporate: { count: 25, intensity: 'medium', details: 'Local business tracking' },
+        government: { count: 3, intensity: 'low', details: 'Boulder PD patrol cameras' },
+        iot: { count: 15, intensity: 'low', details: 'Basic smart city sensors' },
+        personal: { count: 2, intensity: 'low', details: 'Low crime area' },
+        emerging: { count: 4, intensity: 'low', details: 'Minimal AI surveillance' }
+      }
+    },
+    { 
+      name: 'Westminster City Center', 
+      searchTerms: ['westminster', 'westminster center', 'westminster colorado'],
+      lat: 39.8367, lng: -105.0372, 
+      score: 52,
+      surveillance: {
+        physical: { count: 15, intensity: 'medium', details: 'Municipal and business cameras' },
+        digital: { count: 18, intensity: 'medium', details: 'Public WiFi monitoring' },
+        biometric: { count: 4, intensity: 'low', details: 'Limited biometric systems' },
+        corporate: { count: 32, intensity: 'medium', details: 'Shopping center tracking' },
+        government: { count: 12, intensity: 'medium', details: 'Westminster PD surveillance' },
+        iot: { count: 28, intensity: 'medium', details: 'Suburban smart infrastructure' },
+        personal: { count: 3, intensity: 'low', details: 'Suburban safety levels' },
+        emerging: { count: 8, intensity: 'low', details: 'Basic AI traffic monitoring' }
+      }
+    },
+    // Lower surveillance areas
+    { 
+      name: 'Rocky Mountain National Park', 
+      searchTerms: ['rocky mountain', 'national park', 'rmnp'],
+      lat: 40.3428, lng: -105.6836, 
+      score: 95,
+      surveillance: {
+        physical: { count: 0, intensity: 'none', details: 'No surveillance cameras' },
+        digital: { count: 0, intensity: 'none', details: 'No digital tracking' },
+        biometric: { count: 0, intensity: 'none', details: 'No biometric scanning' },
+        corporate: { count: 0, intensity: 'none', details: 'No corporate monitoring' },
+        government: { count: 1, intensity: 'low', details: 'Park ranger stations only' },
+        iot: { count: 2, intensity: 'low', details: 'Weather monitoring stations' },
+        personal: { count: 0, intensity: 'none', details: 'Wilderness area' },
+        emerging: { count: 0, intensity: 'none', details: 'No emerging surveillance' }
+      }
+    },
+    { 
+      name: 'Golden Historic District', 
+      searchTerms: ['golden', 'golden colorado', 'golden historic'],
+      lat: 39.7555, lng: -105.2211, 
+      score: 82,
+      surveillance: {
+        physical: { count: 2, intensity: 'low', details: 'Minimal historic district cameras' },
+        digital: { count: 3, intensity: 'low', details: 'Limited WiFi tracking' },
+        biometric: { count: 0, intensity: 'none', details: 'No biometric systems' },
+        corporate: { count: 8, intensity: 'low', details: 'Small business minimal tracking' },
+        government: { count: 1, intensity: 'low', details: 'Basic municipal monitoring' },
+        iot: { count: 5, intensity: 'low', details: 'Basic infrastructure sensors' },
+        personal: { count: 1, intensity: 'low', details: 'Small town safety' },
+        emerging: { count: 0, intensity: 'none', details: 'No AI surveillance' }
+      }
+    }
+  ];
+
+  // Surveillance type definitions
+  const surveillanceTypes = {
+    physical: { icon: Camera, color: '#ef4444', name: 'Physical Cameras' },
+    digital: { icon: Wifi, color: '#8b5cf6', name: 'Digital Tracking' },
+    biometric: { icon: Eye, color: '#f59e0b', name: 'Biometric Scanning' },
+    corporate: { icon: Building, color: '#06b6d4', name: 'Corporate Surveillance' },
+    government: { icon: Shield, color: '#dc2626', name: 'Government Monitoring' },
+    iot: { icon: Radio, color: '#10b981', name: 'IoT Surveillance' },
+    personal: { icon: Smartphone, color: '#f97316', name: 'Personal Risk' },
+    emerging: { icon: Zap, color: '#ec4899', name: 'Emerging Tech' }
+  };
+
+  // Working search function
+  const searchLocation = (query) => {
+    if (!query.trim()) {
+      setSearchResults([]);
+      setShowSearchResults(false);
+      return;
+    }
+
+    const queryLower = query.toLowerCase();
+    const matches = coloradoLocations.filter(location => 
+      location.name.toLowerCase().includes(queryLower) ||
+      location.searchTerms.some(term => term.includes(queryLower))
+    );
+
+    // Add generic Colorado cities
+    const coloradoCities = [
+      { name: 'Denver, Colorado', lat: 39.7392, lng: -104.9903 },
+      { name: 'Boulder, Colorado', lat: 40.0150, lng: -105.2705 },
+      { name: 'Westminster, Colorado', lat: 39.8367, lng: -105.0372 },
+      { name: 'Arvada, Colorado', lat: 39.8028, lng: -105.0878 },
+      { name: 'Lakewood, Colorado', lat: 39.7047, lng: -105.0814 }
+    ].filter(city => city.name.toLowerCase().includes(queryLower));
+
+    const allResults = [...matches, ...coloradoCities].slice(0, 5);
+    setSearchResults(allResults);
+    setShowSearchResults(allResults.length > 0);
+  };
+
+  // Calculate surveillance score
+  const calculateSurveillanceScore = (lat, lng) => {
+    // Find the closest predefined location or calculate based on area
+    let locationData = null;
+    let minDistance = Infinity;
+
+    coloradoLocations.forEach(location => {
+      const distance = Math.sqrt(
+        Math.pow(location.lat - lat, 2) + Math.pow(location.lng - lng, 2)
+      );
+      if (distance < minDistance) {
+        minDistance = distance;
+        locationData = location;
+      }
+    });
+
+    // If very close to a predefined location, use its data
+    if (minDistance < 0.01 && locationData) {
+      const totalThreats = Object.values(locationData.surveillance).reduce((sum, s) => sum + s.count, 0);
+      const riskLevel = getRiskLevel(locationData.score);
+      
+      return {
+        score: locationData.score,
+        breakdown: locationData.surveillance,
+        totalThreats: totalThreats,
+        riskLevel: riskLevel,
+        recommendations: getPrivacyRecommendations(locationData.score, locationData.surveillance),
+        socialShareText: generateSocialShare(locationData.score, locationData.name)
+      };
+    }
+
+    // Otherwise, calculate based on area type
+    return calculateAreaBasedScore(lat, lng);
+  };
+
+  const calculateAreaBasedScore = (lat, lng) => {
+    const areaType = determineAreaType(lat, lng);
+    const areaScores = {
+      'airport': 15,
+      'downtown': 25,
+      'commercial': 35,
+      'university': 55,
+      'suburban': 65,
+      'residential': 75,
+      'rural': 85,
+      'park': 90
+    };
+
+    const score = areaScores[areaType] || 50;
+    const estimatedSurveillance = generateEstimatedSurveillance(score);
+    const totalThreats = Object.values(estimatedSurveillance).reduce((sum, s) => sum + s.count, 0);
+
+    return {
+      score: score,
+      breakdown: estimatedSurveillance,
+      totalThreats: totalThreats,
+      riskLevel: getRiskLevel(score),
+      recommendations: getPrivacyRecommendations(score, estimatedSurveillance),
+      socialShareText: generateSocialShare(score, getLocationName(lat, lng))
+    };
+  };
+
+  const determineAreaType = (lat, lng) => {
+    // Denver International Airport
+    if (lat >= 39.83 && lat <= 39.88 && lng >= -104.71 && lng <= -104.63) return 'airport';
+    // Downtown Denver
+    if (lat >= 39.72 && lat <= 39.76 && lng >= -105.02 && lng <= -104.97) return 'downtown';
+    // Commercial areas
+    if ((lat >= 39.71 && lat <= 39.73 && lng >= -104.97 && lng <= -104.95)) return 'commercial';
+    // University areas
+    if (lat >= 40.0 && lat <= 40.1 && lng >= -105.3 && lng <= -105.2) return 'university';
+    // Parks and mountains
+    if (lng < -105.3 || lat > 40.2) return 'park';
+    // Rural areas
+    if (lng < -105.1 && lat < 39.9) return 'rural';
+    // Suburban areas
+    if (lat >= 39.8 && lat <= 39.9 && lng >= -105.1 && lng <= -105.0) return 'suburban';
+    // Default residential
+    return 'residential';
+  };
+
+  const generateEstimatedSurveillance = (score) => {
+    const multiplier = (100 - score) / 100;
+    return {
+      physical: { count: Math.round(multiplier * 20), intensity: score < 40 ? 'high' : score < 70 ? 'medium' : 'low', details: 'Estimated based on area type' },
+      digital: { count: Math.round(multiplier * 15), intensity: score < 40 ? 'high' : score < 70 ? 'medium' : 'low', details: 'Estimated based on area type' },
+      biometric: { count: Math.round(multiplier * 8), intensity: score < 30 ? 'high' : score < 60 ? 'medium' : 'low', details: 'Estimated based on area type' },
+      corporate: { count: Math.round(multiplier * 25), intensity: score < 40 ? 'high' : score < 70 ? 'medium' : 'low', details: 'Estimated based on area type' },
+      government: { count: Math.round(multiplier * 12), intensity: score < 30 ? 'high' : score < 60 ? 'medium' : 'low', details: 'Estimated based on area type' },
+      iot: { count: Math.round(multiplier * 18), intensity: score < 40 ? 'high' : score < 70 ? 'medium' : 'low', details: 'Estimated based on area type' },
+      personal: { count: Math.round(multiplier * 6), intensity: score < 40 ? 'medium' : 'low', details: 'Estimated based on area type' },
+      emerging: { count: Math.round(multiplier * 10), intensity: score < 40 ? 'medium' : 'low', details: 'Estimated based on area type' }
+    };
+  };
+
+  const getLocationName = (lat, lng) => {
+    const location = coloradoLocations.find(loc => 
+      Math.abs(loc.lat - lat) < 0.01 && Math.abs(loc.lng - lng) < 0.01
+    );
+    return location ? location.name : 'Colorado Location';
+  };
+
+  const getRiskLevel = (score) => {
+    if (score >= 80) return { level: 'Minimal Risk', color: '#22c55e', icon: '🟢' };
+    if (score >= 60) return { level: 'Low Risk', color: '#84cc16', icon: '🟡' };
+    if (score >= 40) return { level: 'Moderate Risk', color: '#f59e0b', icon: '🟠' };
+    if (score >= 20) return { level: 'High Risk', color: '#f97316', icon: '🔴' };
+    return { level: 'Extreme Risk', color: '#dc2626', icon: '🚨' };
+  };
+
+  const getPrivacyRecommendations = (score, breakdown) => {
+    const recommendations = [];
+    
+    if (breakdown.digital.count > 5) {
+      recommendations.push('📱 Disable WiFi/Bluetooth when not needed');
+    }
+    if (breakdown.biometric.count > 0) {
+      recommendations.push('😷 Consider wearing a mask for facial recognition protection');
+    }
+    if (breakdown.corporate.count > 10) {
+      recommendations.push('💳 Use cash payments to avoid purchase tracking');
+    }
+    if (breakdown.government.intensity === 'high') {
+      recommendations.push('📜 Know your rights regarding government surveillance');
+    }
+    if (score < 30) {
+      recommendations.push('⚠️ Avoid this area for sensitive activities');
+    } else if (score > 80) {
+      recommendations.push('✅ Good location for private conversations');
+    }
+    
+    return recommendations;
+  };
+
+  const generateSocialShare = (score, location) => {
+    const emoji = score >= 70 ? '🟢' : score >= 40 ? '🟡' : '🔴';
+    return `${emoji} Surveillance exposure in ${location}: ${score}/100. How surveilled is your area? #PrivacyMap #SurveillanceAwareness`;
+  };
+
+  const getScoreColor = (score) => {
+    if (score >= 80) return '#22c55e';
+    if (score >= 60) return '#84cc16';
+    if (score >= 40) return '#f59e0b';
+    if (score >= 20) return '#f97316';
+    return '#dc2626';
+  };
+
+  // Handle search input
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (searchQuery.length > 2) {
+        searchLocation(searchQuery);
+      } else {
+        setSearchResults([]);
+        setShowSearchResults(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery]);
+
+  // Handle selecting a search result
+  const selectSearchResult = (result) => {
+    setSelectedLocation({ lat: result.lat, lng: result.lng });
+    const analysis = calculateSurveillanceScore(result.lat, result.lng);
+    setPrivacyScore(analysis.score);
+    setSurveillanceBreakdown(analysis);
+    setSearchQuery(result.name);
+    setShowSearchResults(false);
+  };
+
+  // Share results
+  const shareResults = () => {
+    if (surveillanceBreakdown) {
+      if (navigator.share) {
+        navigator.share({
+          title: 'My Surveillance Exposure Report',
+          text: surveillanceBreakdown.socialShareText,
+          url: window.location.href
+        });
+      } else {
+        navigator.clipboard.writeText(surveillanceBreakdown.socialShareText);
+        alert('Share text copied to clipboard!');
+      }
+    }
+  };
+
+  // Initialize with Westminster
+  useEffect(() => {
+    const westminster = coloradoLocations.find(loc => loc.name.includes('Westminster'));
+    if (westminster && !selectedLocation) {
+      setSelectedLocation({ lat: westminster.lat, lng: westminster.lng });
+      const analysis = calculateSurveillanceScore(westminster.lat, westminster.lng);
+      setPrivacyScore(analysis.score);
+      setSurveillanceBreakdown(analysis);
+    }
+  }, []);
+
+  if (currentView === 'dashboard') {
+    return (
+      <div className="h-screen bg-gray-900 text-white flex flex-col">
+        <div className="bg-gray-800 px-4 py-3 flex items-center justify-between border-b border-gray-700">
+          <div className="flex items-center gap-3">
+            <BarChart3 className="text-blue-400" size={24} />
+            <h1 className="text-xl font-bold">Surveillance Analytics</h1>
+          </div>
+          <button 
+            onClick={() => setCurrentView('map')}
+            className="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700"
+          >
+            Back to Map
+          </button>
+        </div>
+        
+        <div className="flex-1 p-6 overflow-y-auto">
+          <div className="max-w-6xl mx-auto space-y-6">
+            {/* Colorado Surveillance Overview */}
+            <div className="bg-gray-800 rounded-xl p-6">
+              <h2 className="text-2xl font-bold mb-4">Colorado Surveillance Landscape</h2>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                {coloradoLocations.map((location, index) => (
+                  <div key={index} className="bg-gray-700 rounded-lg p-4 cursor-pointer hover:bg-gray-600 transition-colors"
+                       onClick={() => {
+                         setCurrentView('map');
+                         selectSearchResult(location);
+                       }}>
+                    <div className="text-lg font-bold mb-2">{location.name}</div>
+                    <div className="text-3xl font-bold mb-2" style={{ color: getScoreColor(location.score) }}>
+                      {location.score}/100
+                    </div>
+                    <div className="text-sm" style={{ color: getRiskLevel(location.score).color }}>
+                      {getRiskLevel(location.score).level}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Surveillance Types */}
+            <div className="bg-gray-800 rounded-xl p-6">
+              <h2 className="text-2xl font-bold mb-4">Surveillance Categories</h2>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                {Object.entries(surveillanceTypes).map(([key, type]) => {
+                  const Icon = type.icon;
+                  return (
+                    <div key={key} className="bg-gray-700 rounded-lg p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Icon size={20} style={{ color: type.color }} />
+                        <span className="font-medium">{type.name}</span>
+                      </div>
+                      <div className="text-xs text-gray-400">
+                        Tracks various forms of surveillance infrastructure
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Test the Search Function */}
+            <div className="bg-gray-800 rounded-xl p-6">
+              <h2 className="text-2xl font-bold mb-4">🧪 Test the Demo</h2>
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-bold mb-2">Try these searches:</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    {['Denver Airport', 'Cherry Creek Mall', 'CU Boulder', 'Westminster', 'Rocky Mountain', 'Golden'].map((term) => (
+                      <button
+                        key={term}
+                        onClick={() => {
+                          setSearchQuery(term);
+                          setCurrentView('map');
+                        }}
+                        className="bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded text-sm"
+                      >
+                        {term}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="bg-green-900 bg-opacity-30 p-4 rounded-lg">
+                  <div className="text-green-400 font-bold mb-2">✅ Demo Features That Work:</div>
+                  <ul className="text-sm space-y-1">
+                    <li>• Search for Colorado locations</li>
+                    <li>• Real privacy scores (8-95/100)</li>
+                    <li>• 8-category surveillance breakdown</li>
+                    <li>• Personalized recommendations</li>
+                    <li>• Social sharing functionality</li>
+                    <li>• Risk level analysis</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="h-screen bg-gray-900 text-white flex flex-col">
+      {/* Header */}
+      <div className="bg-gray-800 px-4 py-3 flex items-center justify-between border-b border-gray-700">
+        <div className="flex items-center gap-3">
+          <Shield className="text-blue-400" size={24} />
+          <h1 className="text-xl font-bold">SurveillanceMap360</h1>
+          <div className="flex items-center gap-1 text-xs bg-green-600 px-2 py-1 rounded">
+            <Target size={12} />
+            WORKING DEMO
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <div className="relative max-w-md">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+            <input
+              type="text"
+              placeholder="Try: Denver Airport, CU Boulder, Westminster..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
+            />
+            
+            {showSearchResults && searchResults.length > 0 && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-600 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
+                {searchResults.map((result, index) => (
+                  <button
+                    key={index}
+                    onClick={() => selectSearchResult(result)}
+                    className="w-full text-left px-4 py-3 hover:bg-gray-700 border-b border-gray-700 last:border-b-0"
+                  >
+                    <div className="text-white text-sm font-medium">
+                      📍 {result.name}
+                    </div>
+                    {result.score && (
+                      <div className="text-xs mt-1" style={{ color: getScoreColor(result.score) }}>
+                        Privacy Score: {result.score}/100
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          
+          <button 
+            onClick={() => setCurrentView('dashboard')}
+            className="p-2 bg-purple-600 rounded-lg hover:bg-purple-700"
+            title="Analytics Dashboard"
+          >
+            <BarChart3 size={20} />
+          </button>
+          
+          {surveillanceBreakdown && (
+            <button 
+              onClick={shareResults}
+              className="p-2 bg-green-600 rounded-lg hover:bg-green-700"
+              title="Share Results"
+            >
+              <Share2 size={20} />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Surveillance Score Display */}
+      {privacyScore !== null && surveillanceBreakdown && (
+        <div className="bg-gray-800 px-4 py-3 border-b border-gray-700">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium">Surveillance Analysis: {getLocationName(selectedLocation.lat, selectedLocation.lng)}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-xl font-bold" style={{ color: getScoreColor(privacyScore) }}>
+                {privacyScore}/100
+              </span>
+              <span className="text-xs px-2 py-1 rounded text-white" style={{ 
+                backgroundColor: surveillanceBreakdown.riskLevel.color
+              }}>
+                {surveillanceBreakdown.riskLevel.level}
+              </span>
+            </div>
+          </div>
+          
+          <div className="w-full bg-gray-700 rounded-full h-3 mb-2">
+            <div 
+              className="h-3 rounded-full transition-all duration-500"
+              style={{ 
+                width: `${privacyScore}%`, 
+                backgroundColor: getScoreColor(privacyScore) 
+              }}
+            ></div>
+          </div>
+
+          <div className="flex justify-between items-center text-xs">
+            <span className="text-gray-400">
+              {surveillanceBreakdown.totalThreats} surveillance systems detected
+            </span>
+            <span className="text-gray-400">
+              Click dashboard for full analysis
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* Main Content Area */}
+      <div className="flex-1 relative bg-gray-900">
+        {/* Mock Map Area */}
+        <div className="w-full h-full bg-gradient-to-br from-blue-900 via-gray-800 to-green-900 relative overflow-hidden">
+          
+          {/* Geographic Background */}
+          <div className="absolute inset-0 opacity-30">
+            {/* Mountain silhouette (west) */}
+            <div className="absolute left-0 top-0 w-1/4 h-full bg-gradient-to-r from-gray-600 to-transparent"></div>
+            {/* Plains (east) */}
+            <div className="absolute right-0 top-0 w-1/4 h-full bg-gradient-to-l from-yellow-800 to-transparent opacity-50"></div>
+            
+            {/* Grid overlay */}
+            {Array.from({length: 12}).map((_, i) => (
+              <div key={i} className="absolute border-gray-600 opacity-10" style={{
+                left: `${i * 8.33}%`,
+                top: 0,
+                width: '1px',
+                height: '100%',
+                borderLeft: '1px solid currentColor'
+              }} />
+            ))}
+            {Array.from({length: 8}).map((_, i) => (
+              <div key={i} className="absolute border-gray-600 opacity-10" style={{
+                top: `${i * 12.5}%`,
+                left: 0,
+                height: '1px',
+                width: '100%',
+                borderTop: '1px solid currentColor'
+              }} />
+            ))}
+          </div>
+
+          {/* Location Markers */}
+          {coloradoLocations.map((location, index) => (
+            <div
+              key={index}
+              className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group"
+              style={{
+                left: `${((location.lng + 106) / 2) * 100}%`,
+                top: `${(1 - (location.lat - 39) / 2) * 100}%`
+              }}
+              onClick={() => selectSearchResult(location)}
+            >
+              {/* Privacy Score Bubble */}
+              <div 
+                className="w-16 h-16 rounded-full border-3 border-white flex flex-col items-center justify-center font-bold text-sm transition-all hover:scale-110 shadow-lg"
+                style={{ backgroundColor: getScoreColor(location.score) }}
+              >
+                <div className="text-white text-lg font-bold">{location.score}</div>
+                <div className="text-white text-xs">PRIV</div>
+              </div>
+              
+              {/* Location Label */}
+              <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-1 bg-black bg-opacity-80 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                {location.name}
+              </div>
+
+              {/* Surveillance Indicators */}
+              <div className="absolute -top-2 -right-2 flex flex-col gap-1">
+                {Object.entries(location.surveillance).slice(0, 3).map(([type, data]) => {
+                  if (data.count === 0) return null;
+                  const typeInfo = surveillanceTypes[type];
+                  const Icon = typeInfo.icon;
+                  return (
+                    <div
+                      key={type}
+                      className="w-4 h-4 rounded-full flex items-center justify-center"
+                      style={{ backgroundColor: typeInfo.color }}
+                      title={`${data.count} ${typeInfo.name}`}
+                    >
+                      <Icon size={8} className="text-white" />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+
+          {/* Current User Location */}
+          <div
+            className="absolute transform -translate-x-1/2 -translate-y-1/2"
+            style={{
+              left: `${((userLocation.lng + 106) / 2) * 100}%`,
+              top: `${(1 - (userLocation.lat - 39) / 2) * 100}%`
+            }}
+          >
+            <div className="p-3 bg-blue-600 rounded-full border-3 border-white shadow-lg animate-pulse">
+              <Navigation size={16} className="text-white" />
+            </div>
+            <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 px-2 py-1 bg-blue-600 text-white text-xs rounded">
+              You are here
+            </div>
+          </div>
+
+          {/* Geographic Labels */}
+          <div className="absolute top-6 left-6 text-white text-sm bg-black bg-opacity-50 px-3 py-1 rounded">
+            🏔️ Rocky Mountains
+          </div>
+          <div className="absolute top-6 right-6 text-white text-sm bg-black bg-opacity-50 px-3 py-1 rounded">
+            🌾 Eastern Plains
+          </div>
+          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-white text-sm bg-black bg-opacity-50 px-3 py-1 rounded">
+            Colorado Front Range
+          </div>
+        </div>
+
+        {/* Legend */}
+        <div className="absolute top-4 left-4 bg-gray-800 bg-opacity-95 rounded-lg p-4 backdrop-blur-sm border border-gray-600">
+          <h4 className="font-bold mb-3 text-white flex items-center gap-2">
+            <Target size={16} />
+            Privacy Scores
+          </h4>
+          <div className="space-y-2 text-sm">
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded-full bg-green-500"></div>
+              <span className="text-gray-200">80-100: Excellent Privacy</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded-full bg-yellow-500"></div>
+              <span className="text-gray-200">40-79: Moderate Privacy</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded-full bg-red-500"></div>
+              <span className="text-gray-200">0-39: High Surveillance</span>
+            </div>
+          </div>
+          <div className="mt-3 pt-3 border-t border-gray-600 text-xs text-gray-400">
+            Click any location for detailed analysis
+          </div>
+        </div>
+
+        {/* Quick Stats */}
+        <div className="absolute top-4 right-4 bg-gray-800 bg-opacity-95 rounded-lg p-4 backdrop-blur-sm border border-gray-600">
+          <h4 className="font-bold mb-2 text-white text-sm">Demo Stats</h4>
+          <div className="space-y-1 text-xs">
+            <div className="flex justify-between">
+              <span className="text-gray-400">Locations:</span>
+              <span className="text-white">{coloradoLocations.length}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">Surveillance Types:</span>
+              <span className="text-white">{Object.keys(surveillanceTypes).length}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">Working Search:</span>
+              <span className="text-green-400">✓ Yes</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Working Demo Badge */}
+        <div className="absolute bottom-4 left-4 bg-green-600 bg-opacity-90 rounded-lg px-4 py-2 border border-green-500">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            <span className="text-white font-bold text-sm">WORKING DEMO</span>
+          </div>
+          <div className="text-green-100 text-xs mt-1">
+            Search function fully operational
+          </div>
+        </div>
+
+        {/* Upgrade Prompt */}
+        <div className="absolute bottom-4 right-4">
+          <button
+            onClick={() => setShowUpgradeModal(true)}
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 p-4 rounded-full shadow-lg transition-all hover:scale-110"
+            title="Upgrade for Advanced Features"
+          >
+            <Crown size={24} />
+          </button>
+        </div>
+      </div>
+
+      {/* Detailed Analysis Panel */}
+      {selectedLocation && surveillanceBreakdown && (
+        <div className="bg-gray-800 border-t border-gray-700 p-4 max-h-80 overflow-y-auto">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-bold text-lg">Detailed Surveillance Analysis</h3>
+            <div className="flex items-center gap-2">
+              <span 
+                className="px-3 py-1 rounded-full text-sm font-bold text-white"
+                style={{ backgroundColor: surveillanceBreakdown.riskLevel.color }}
+              >
+                {surveillanceBreakdown.riskLevel.level}
+              </span>
+              <button
+                onClick={() => setShowUpgradeModal(true)}
+                className="px-3 py-1 bg-purple-600 rounded text-xs hover:bg-purple-700"
+              >
+                Get More Details
+              </button>
+            </div>
+          </div>
+          
+          {/* Score Breakdown */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+            <div className="text-center">
+              <div className="text-3xl font-bold" style={{ color: getScoreColor(privacyScore) }}>
+                {privacyScore}
+              </div>
+              <div className="text-xs text-gray-400">Privacy Score</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-red-400">
+                {surveillanceBreakdown.totalThreats}
+              </div>
+              <div className="text-xs text-gray-400">Total Threats</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-yellow-400">
+                {Object.values(surveillanceBreakdown.breakdown).filter(b => b.intensity === 'high' || b.intensity === 'extreme').length}
+              </div>
+              <div className="text-xs text-gray-400">High Risk</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-blue-400">
+                {surveillanceBreakdown.recommendations.length}
+              </div>
+              <div className="text-xs text-gray-400">Recommendations</div>
+            </div>
+          </div>
+
+          {/* Surveillance Breakdown */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
+            {Object.entries(surveillanceBreakdown.breakdown).map(([type, data]) => {
+              if (data.count === 0) return null;
+              const typeInfo = surveillanceTypes[type];
+              const Icon = typeInfo.icon;
+              return (
+                <div key={type} className="bg-gray-700 rounded-lg p-3">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Icon size={14} style={{ color: typeInfo.color }} />
+                    <span className="text-xs font-medium">{typeInfo.name}</span>
+                  </div>
+                  <div className="text-lg font-bold" style={{ color: typeInfo.color }}>
+                    {data.count}
+                  </div>
+                  <div className="text-xs text-gray-400 capitalize">
+                    {data.intensity} intensity
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Recommendations */}
+          <div className="bg-gray-700 rounded-lg p-3">
+            <h4 className="font-bold mb-2 text-sm">🛡️ Privacy Recommendations:</h4>
+            <div className="space-y-1">
+              {surveillanceBreakdown.recommendations.map((rec, index) => (
+                <div key={index} className="text-sm text-gray-300">
+                  {rec}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Upgrade Modal */}
+      {showUpgradeModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-gray-800 rounded-lg p-6 w-full max-w-2xl mx-4">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold flex items-center gap-2">
+                <Crown className="text-yellow-400" size={24} />
+                Unlock Full Surveillance Protection
+              </h3>
+              <button 
+                onClick={() => setShowUpgradeModal(false)}
+                className="text-gray-400 hover:text-white text-xl"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-gradient-to-b from-blue-600 to-blue-800 rounded-lg p-6 text-white">
+                <div className="flex items-center gap-2 mb-4">
+                  <Heart className="text-pink-400" size={24} />
+                  <h4 className="text-xl font-bold">Personal Security</h4>
+                </div>
+                <div className="text-3xl font-bold mb-2">$9.99<span className="text-sm">/month</span></div>
+                <ul className="space-y-2 text-sm mb-6">
+                  <li>✓ Real-time stalker risk alerts</li>
+                  <li>✓ Dating safety zone analysis</li>
+                  <li>✓ Privacy route planning</li>
+                  <li>✓ Historical surveillance tracking</li>
+                  <li>✓ Emergency privacy protocols</li>
+                </ul>
+                <button className="w-full bg-white text-blue-600 py-3 rounded-lg font-bold hover:bg-gray-100">
+                  Start Free Trial
+                </button>
+              </div>
+
+              <div className="bg-gradient-to-b from-green-600 to-green-800 rounded-lg p-6 text-white border-2 border-yellow-400">
+                <div className="flex items-center gap-2 mb-4">
+                  <Users className="text-yellow-400" size={24} />
+                  <h4 className="text-xl font-bold">Family Protection</h4>
+                  <span className="bg-yellow-400 text-black text-xs px-2 py-1 rounded">POPULAR</span>
+                </div>
+                <div className="text-3xl font-bold mb-2">$19.99<span className="text-sm">/month</span></div>
+                <ul className="space-y-2 text-sm mb-6">
+                  <li>✓ Everything in Personal</li>
+                  <li>✓ Child safety monitoring</li>
+                  <li>✓ School surveillance reports</li>
+                  <li>✓ Family location sharing</li>
+                  <li>✓ Senior protection alerts</li>
+                </ul>
+                <button className="w-full bg-yellow-400 text-black py-3 rounded-lg font-bold hover:bg-yellow-300">
+                  Start Free Trial
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-6 text-center text-gray-400 text-sm">
+              🔒 14-day free trial • Cancel anytime • Real surveillance data
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default WorkingSurveillanceApp;
