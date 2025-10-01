@@ -3,37 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stream-of-Consciousness Narrator</title>
+    <title>The Convergence - Voice Over Generator</title>
     <style>
         body {
-            font-family: 'Courier New', monospace;
-            background: #f5f5f5;
-            color: #333;
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #eee;
             margin: 0;
             padding: 20px;
+            min-height: 100vh;
         }
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border: 2px solid #ccc;
-            padding: 30px;
+            background: #0f3460;
+            border: 3px solid #e94560;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(233, 69, 96, 0.3);
         }
         h1 {
             text-align: center;
-            font-size: 2em;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #e94560;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .subtitle {
+            text-align: center;
+            font-style: italic;
+            color: #aaa;
             margin-bottom: 30px;
-            border-bottom: 2px solid #333;
-            padding-bottom: 10px;
         }
         .controls {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 20px;
             margin-bottom: 30px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            background: #fafafa;
+            padding: 25px;
+            border: 2px solid #e94560;
+            background: rgba(233, 69, 96, 0.1);
+            border-radius: 8px;
         }
         .control-group {
             display: flex;
@@ -42,406 +51,489 @@
         label {
             font-weight: bold;
             margin-bottom: 8px;
+            color: #e94560;
+            font-size: 0.9em;
         }
-        select, button {
-            padding: 8px;
-            border: 1px solid #666;
-            background: white;
+        select {
+            padding: 10px;
+            border: 2px solid #e94560;
+            background: #1a1a2e;
+            color: #eee;
             font-family: inherit;
             cursor: pointer;
+            border-radius: 4px;
         }
-        button {
-            background: #e0e0e0;
-            margin: 5px 0;
+        .generate-btn {
+            grid-column: span 3;
+            padding: 20px;
+            font-size: 1.3em;
+            background: #e94560;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
         }
-        button:hover {
-            background: #d0d0d0;
+        .generate-btn:hover {
+            background: #ff6b81;
         }
-        .story-container {
-            border: 2px solid #333;
-            padding: 25px;
+        .chapter-info {
+            text-align: center;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            color: #e94560;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(233, 69, 96, 0.1);
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 1.4em;
+            color: #e94560;
+            font-weight: bold;
+        }
+        .stat-label {
+            font-size: 0.8em;
+            color: #aaa;
+        }
+        .chapter-container {
+            border: 3px solid #e94560;
+            padding: 30px;
             margin: 20px 0;
             min-height: 400px;
-            background: #fefefe;
+            background: #16213e;
+            position: relative;
         }
-        .story-text {
-            font-size: 1.1em;
-            line-height: 1.6;
+        .chapter-text {
+            font-size: 1.15em;
+            line-height: 1.8;
             white-space: pre-wrap;
-            font-style: italic;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 8px 15px;
+            background: #e94560;
+            color: white;
+            border: none;
+            cursor: pointer;
         }
         .actions {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 20px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            background: #fafafa;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
         }
-        .word-count {
-            text-align: center;
-            margin-top: 10px;
-            font-size: 0.9em;
-            color: #666;
+        .actions button {
+            padding: 12px;
+            background: #0f3460;
+            color: #eee;
+            border: 2px solid #e94560;
+            cursor: pointer;
         }
-        .entry-counter {
-            text-align: center;
-            font-size: 1.1em;
-            margin-bottom: 15px;
-            color: #555;
+        .actions button:hover {
+            background: #e94560;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>STREAM-OF-CONSCIOUSNESS NARRATOR</h1>
+        <h1>🎙️ THE CONVERGENCE</h1>
+        <div class="subtitle">Voice-Over Novel Generator - 1-5 Minute Episodes</div>
         
         <div class="controls">
             <div class="control-group">
-                <label for="worldSelector">Game World Flavor:</label>
-                <select id="worldSelector">
-                    <option value="gta">GTA - Street-level, Criminal, Profane</option>
-                    <option value="fortnite">Fortnite - Absurd, Cartoonish, ADHD Chaos</option>
-                    <option value="rdr2">RDR2 - Poetic, Outlaw, Haunted</option>
+                <label for="povSelector">Character POV:</label>
+                <select id="povSelector">
+                    <option value="detective">Marcus Kane - Detective</option>
+                    <option value="hacker">Zara Chen - Hacker</option>
+                    <option value="outlaw">Silas Crow - Outlaw</option>
+                    <option value="patient">Dr. Emma Cross - Psychologist</option>
+                    <option value="psycho">Vic "The Animal" Russo - Psycho</option>
+                    <option value="auto">AUTO - Rotate All</option>
                 </select>
             </div>
             
             <div class="control-group">
-                <label for="intensitySelector">Intensity Level:</label>
+                <label for="lengthSelector">Voice-Over Length:</label>
+                <select id="lengthSelector">
+                    <option value="1">1 Minute (~180 words)</option>
+                    <option value="2">2 Minutes (~360 words)</option>
+                    <option value="3" selected>3 Minutes (~540 words)</option>
+                    <option value="4">4 Minutes (~720 words)</option>
+                    <option value="5">5 Minutes (~900 words)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="intensitySelector">Intensity:</label>
                 <select id="intensitySelector">
-                    <option value="mild">Mild - Darkly Funny, Tethered</option>
-                    <option value="chaotic">Chaotic - Swinging Moods, Paranoid</option>
-                    <option value="apocalypse">Apocalypse - Manic, Prophetic, Explosive</option>
+                    <option value="calm">Calm Discovery</option>
+                    <option value="tense">Tense Paranoia</option>
+                    <option value="manic">Manic Breakdown</option>
                 </select>
             </div>
             
-            <div class="control-group">
-                <label for="callbacksToggle">Callbacks to Past Entries:</label>
-                <select id="callbacksToggle">
-                    <option value="on">ON - Reference Previous Obsessions</option>
-                    <option value="off">OFF - Fresh Rambling</option>
-                </select>
+            <button class="generate-btn" onclick="generateVoiceOver()">🎙️ GENERATE VOICE-OVER</button>
+        </div>
+        
+        <div class="chapter-info" id="chapterInfo">Episode #1</div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="episodeNum">0</div>
+                <div class="stat-label">Episodes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="wordCount">0</div>
+                <div class="stat-label">Words</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="readTime">0:00</div>
+                <div class="stat-label">Read Time</div>
             </div>
         </div>
         
-        <div class="controls">
-            <button onclick="generateEntry()" style="grid-column: span 3; font-size: 1.2em; padding: 15px;">GENERATE ENTRY</button>
+        <div class="chapter-container">
+            <button class="copy-btn" onclick="copyText()">📋 COPY</button>
+            <div class="chapter-text" id="voText">Click "GENERATE VOICE-OVER" to create your first episode...</div>
         </div>
-        
-        <div class="entry-counter" id="entryCounter">Entry #1</div>
-        
-        <div class="story-container">
-            <div class="story-text" id="storyText">Click "GENERATE ENTRY" to begin the endless novel... the mind is waiting to spill its thoughts...</div>
-        </div>
-        
-        <div class="word-count" id="wordCount">Words: 0 | Target: 180-220 words (60 seconds)</div>
         
         <div class="actions">
             <button onclick="copyText()">Copy Text</button>
-            <button onclick="downloadEntry()">Download Entry</button>
-            <button onclick="downloadFullStory()">Download Full Story</button>
-            <button onclick="saveProgress()">Save Progress</button>
-            <button onclick="loadProgress()">Load Progress</button>
-            <button onclick="resetStory()">Reset All</button>
+            <button onclick="copyAll()">Copy All Episodes</button>
+            <button onclick="downloadCurrent()">Download Episode</button>
+            <button onclick="downloadAll()">Download All</button>
+            <button onclick="saveProgress()">Save</button>
+            <button onclick="loadProgress()">Load</button>
+            <button onclick="reset()">Reset</button>
         </div>
     </div>
 
     <script>
-        let entryCount = 0;
-        let allEntries = [];
-        let pastObsessions = [];
+        let episodeCount = 0;
+        let allEpisodes = [];
+        let pastEvents = [];
         
-        const conspiracies = {
-            tech: [
-                "5G towers are mind control devices",
-                "social media algorithms harvest emotional energy",
-                "smartphones listen to our thoughts",
-                "AI chatbots are human operators in disguise",
-                "facial recognition reads souls through eyes"
-            ],
-            government: [
-                "bird surveillance drones replaced real birds after 2001",
-                "weather modification controls hurricanes and droughts", 
-                "traffic lights increase stress and compliance",
-                "voting machines connect to internet despite denials",
-                "water fluoridation is mind control not dental health"
-            ],
-            health: [
-                "big pharma suppresses natural cures for profits",
-                "chemtrails contain aluminum for population control",
-                "vaccines contain tracking microchips",
-                "food additives create addiction and compliance",
-                "mental health meds are chemical lobotomies"
-            ],
-            financial: [
-                "cryptocurrency was created by intelligence agencies",
-                "inflation is manufactured to transfer wealth upward",
-                "student loans create permanent debt slavery",
-                "credit scores are social control mechanisms",
-                "the stock market is rigged by algorithms"
-            ],
-            ufo: [
-                "UAP disclosure distracts from government crimes",
-                "aliens work with world governments since 1940s",
-                "abductions are military mind control experiments",
-                "grays are time travelers from dystopian future",
-                "reptilian shapeshifters run world governments"
-            ],
-            social: [
-                "dating apps use AI for psychological manipulation",
-                "influencer culture promotes materialism and discontent",
-                "celebrity deaths are sacrifices for occult rituals",
-                "viral videos are manufactured in CIA facilities",
-                "reality TV shows are social engineering experiments"
-            ]
-        };
-        
-        const worldSettings = {
-            gta: {
-                places: ["streets", "alleys", "corner stores", "rooftops", "subway tunnels"],
-                conspiracyTypes: ["government", "financial", "tech", "ufo"]
+        const characters = {
+            detective: {
+                name: "Marcus Kane",
+                intro: "My name is Marcus Kane. I'm a detective in a city that's rotting from the inside out.",
+                voice: "hardboiled",
+                obsessions: ["the symbol", "Site Seventeen", "the impossible victims", "reality glitches"]
             },
-            fortnite: {
-                places: ["the storm", "building sites", "loot areas", "battle zones", "the map"],
-                conspiracyTypes: ["tech", "social", "health", "ufo"]
+            hacker: {
+                name: "Zara Chen",
+                intro: "I'm Zara Chen. I see code where others see reality, and lately the code is breaking.",
+                voice: "techno",
+                obsessions: ["the corrupted files", "impossible AI", "timeline data", "ghost servers"]
             },
-            rdr2: {
-                places: ["frontier", "dusty roads", "saloons", "wilderness", "ghost towns"],
-                conspiracyTypes: ["government", "financial", "social", "ufo"]
+            outlaw: {
+                name: "Silas Crow",
+                intro: "They call me Silas Crow. This frontier has ghosts, and I'm starting to think I'm one of them.",
+                voice: "western",
+                obsessions: ["the cursed gun", "time loops", "the ghost town", "echoes of the past"]
+            },
+            patient: {
+                name: "Dr. Emma Cross",
+                intro: "Dr. Emma Cross. Psychologist. But my patients are describing memories that can't exist.",
+                voice: "clinical",
+                obsessions: ["shared nightmares", "the loop", "impossible prescriptions", "her own death"]
+            },
+            psycho: {
+                name: "Vic 'The Animal' Russo",
+                intro: "Vic Russo. They call me The Animal. I see what you sheep can't see.",
+                voice: "unhinged",
+                obsessions: ["the truth", "chemtrails", "reptilians", "the conspiracy", "they're watching"]
             }
         };
         
-        function generateEntry() {
-            try {
-                entryCount++;
-                
-                const world = document.getElementById('worldSelector').value;
-                const intensity = document.getElementById('intensitySelector').value;
-                const useCallbacks = document.getElementById('callbacksToggle').value === 'on';
-                
-                let entry = createStreamEntry(world, intensity, useCallbacks);
-                
-                allEntries.push(entry);
-                updateDisplay(entry);
-                
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
-        }
-        
-        function createStreamEntry(world, intensity, useCallbacks) {
-            const setting = worldSettings[world];
+        function generateVoiceOver() {
+            episodeCount++;
             
-            const openings = [
-                "I swear to God, the",
-                "Nobody talks about how the", 
-                "You know what's messed up? The",
-                "Three days now thinking about",
-                "They don't want you to know the",
-                "Last night I realized the",
-                "Been walking around thinking how the",
-                "Something's not right about the"
-            ];
+            let pov = document.getElementById('povSelector').value;
+            const length = parseInt(document.getElementById('lengthSelector').value);
+            const intensity = document.getElementById('intensitySelector').value;
             
-            const place = setting.places[Math.floor(Math.random() * setting.places.length)];
-            const opening = openings[Math.floor(Math.random() * openings.length)];
-            
-            let entry = opening + " " + place + " ";
-            
-            // Add MULTIPLE conspiracies for longer content
-            let conspiracyCount = 2 + Math.floor(Math.random() * 2); // 2-3 conspiracies
-            for (let c = 0; c < conspiracyCount; c++) {
-                if (Math.random() > 0.2) { // 80% chance each time
-                    const conspType = setting.conspiracyTypes[Math.floor(Math.random() * setting.conspiracyTypes.length)];
-                    const conspiracy = conspiracies[conspType][Math.floor(Math.random() * conspiracies[conspType].length)];
-                    
-                    const connectors = [
-                        "proves that ",
-                        "connects to how ",
-                        "makes me realize ",
-                        "shows that ",
-                        "confirms that "
-                    ];
-                    
-                    entry += connectors[Math.floor(Math.random() * connectors.length)] + conspiracy + ". ";
-                    
-                    if (c < conspiracyCount - 1) {
-                        const transitions = [
-                            "And another thing - ",
-                            "But that's not all. ",
-                            "Here's what really gets me: ",
-                            "Then I started thinking about how "
-                        ];
-                        entry += transitions[Math.floor(Math.random() * transitions.length)];
-                    }
-                }
+            if (pov === 'auto') {
+                const povs = ['detective', 'hacker', 'outlaw', 'patient', 'psycho'];
+                pov = povs[(episodeCount - 1) % 5];
             }
             
-            // MUCH longer rambling section
-            if (intensity === 'chaotic' || intensity === 'apocalypse') {
-                const chaosThoughts = [
-                    "Everything's connected somehow. The way that homeless guy on Fifth Street always knows when it's gonna rain three days before the weather app does. ",
-                    "The patterns are everywhere if you actually look. License plates spelling out messages, phone numbers that add up to specific dates, the time on every clock I pass showing the same digits. ",
-                    "They're watching through every camera, every phone, every smart TV, every fucking Ring doorbell. Recording everything we say, think, dream about. ",
-                    "Can't trust anything anymore. Not the news telling us what to think, not the government promising protection, not even my own reflection in store windows. ",
-                    "The truth is right there hiding in plain sight like it always has been. Billboard messages, song lyrics played at specific times, the way certain people show up in multiple places. ",
-                    "Blood tastes like copper pennies and broken promises from politicians who sold us out decades ago. ",
-                    "Laughing until it hurts because what else can you do when the whole world's this fucked up and nobody else sees it? ",
-                    "Burning it all down would be so easy. One match, one decision, one moment of absolute clarity cutting through all the lies. ",
-                    "The voices in my head are getting louder and they're starting to make more sense than anything on the news. ",
-                    "Social media feeds us exactly what they want us to think. Algorithmic brainwashing designed to keep us angry at each other instead of them. ",
-                    "Every song on the radio has the same frequency designed to make us docile consumers instead of thinking human beings. ",
-                    "Dating apps keep us isolated and desperate so we're easier to control. Divide and conquer, oldest trick in the book. ",
-                    "The weather's not natural anymore. Rain exactly when they need distractions, sunshine when they want us shopping, storms during election cycles. ",
-                    "Financial markets crash right before major policy changes. Wealth transfers upward while we fight over crumbs. "
-                ];
-                
-                // Generate much longer chaotic rambling
-                for (let i = 0; i < 8 + Math.random() * 4; i++) {
-                    entry += chaosThoughts[Math.floor(Math.random() * chaosThoughts.length)];
-                    if (i % 3 === 0) entry += "\n\n";
-                }
-            } else {
-                entry += "keeps pulling at my brain like a splinter under my fingernail that I can't dig out. Can't shake this feeling that everything's connected - the way that guy looked at me outside the grocery store, the number on the bus that matched my birthday, the song that keeps playing on three different radio stations. It's all part of something bigger, something they definitely don't want us to see. ";
-                
-                // Add more coherent but lengthy thoughts for mild intensity
-                const moreThoughts = [
-                    "Been noticing things lately. Small things that don't make sense until you put them together. The way certain people appear in multiple places throughout my day, like they're following a script. The way conversations stop when I walk by, then resume in whispers. ",
-                    "The internet knows too much about us. Predicts what we'll buy before we know we want it, who we'll vote for before we decide, who we'll fall in love with before we meet them. That's not algorithms, that's something else entirely. ",
-                    "Weather's been strange lately. Too convenient. Rain exactly when they need distractions from the real news, sunshine when they want consumer confidence up, hurricanes timed perfectly with election cycles. Nature doesn't work on a schedule like that. ",
-                    "Financial markets move like someone's pulling invisible strings. Crashes happen right before major policy announcements, wealth transfers upward while everyone's distracted by social media drama. The timing's too perfect to be coincidence. ",
-                    "Food tastes different now. Processed stuff has this metallic aftertaste that wasn't there five years ago. Makes you wonder what they're adding that's not on the ingredient list. Population control through the food supply, slow and subtle. ",
-                    "Sleep patterns are off for everyone I know. People waking up at 3 AM for no reason, all having the same types of dreams. Electromagnetic frequency manipulation through cell towers, testing how much they can influence our subconscious minds. "
-                ];
-                
-                for (let i = 0; i < 3 + Math.random() * 2; i++) {
-                    entry += moreThoughts[Math.floor(Math.random() * moreThoughts.length)];
-                }
-            }
+            const targetWords = length * 180;
+            const voiceOver = createVoiceOver(pov, targetWords, intensity);
             
-            // Callback to previous entries (longer section)
-            if (useCallbacks && pastObsessions.length > 0 && Math.random() > 0.4) {
-                const obsession = pastObsessions[Math.floor(Math.random() * pastObsessions.length)];
-                const callbackIntros = [
-                    "Reminds me of that thing about " + obsession + " I was thinking about before. Same energy, same pattern repeating itself. ",
-                    "Just like when I was obsessing over " + obsession + " last week. It all comes back to the same central truth they're hiding. ",
-                    "Connected to " + obsession + " somehow. Everything's connected if you trace it back far enough to the source. "
-                ];
-                entry += callbackIntros[Math.floor(Math.random() * callbackIntros.length)];
-            }
-            
-            // Multiple philosophy endings for length
-            const philosophyBits = [
-                "Reality's just consensus hallucination anyway. We all agree the sky is blue so it becomes blue in our shared delusion. ",
-                "Time moves backwards when nobody's watching. Past keeps changing to match what they need the present to look like. ",
-                "Maybe we're all just ghosts pretending to be alive, going through the motions because we forgot we already died. ",
-                "The universe is having an argument with itself and we're caught in the crossfire of cosmic cognitive dissonance. "
-            ];
-            
-            entry += "\n\n" + philosophyBits[Math.floor(Math.random() * philosophyBits.length)];
-            
-            const endings = [
-                "Tomorrow I'm gonna dig deeper into this rabbit hole and see how far it really goes.",
-                "But the real question is: how many people know the truth and just stay quiet to protect themselves?",
-                "Something big is coming. I can feel it in the air, taste it in the water, see it in people's eyes.",
-                "The pattern's getting clearer every day. Soon I'll have enough pieces to see the whole picture.",
-                "They can't keep this hidden forever. Truth has a way of surfacing when you least expect it."
-            ];
-            
-            entry += " " + endings[Math.floor(Math.random() * endings.length)];
-            
-            // Track more obsessions for richer callbacks
-            const sentences = entry.split('.');
-            sentences.forEach(sentence => {
-                const words = sentence.toLowerCase().split(' ');
-                const importantWords = words.filter(word => word.length > 5 && !['because', 'through', 'before', 'always', 'people', 'really', 'something', 'nothing'].includes(word));
-                if (importantWords.length > 0) {
-                    const newObsession = importantWords[Math.floor(Math.random() * importantWords.length)];
-                    if (!pastObsessions.includes(newObsession)) {
-                        pastObsessions.push(newObsession);
-                        if (pastObsessions.length > 20) {
-                            pastObsessions.shift();
-                        }
-                    }
-                }
+            allEpisodes.push({
+                number: episodeCount,
+                pov: pov,
+                character: characters[pov].name,
+                text: voiceOver,
+                words: voiceOver.split(' ').length
             });
             
-            return entry;
+            displayVoiceOver(voiceOver, pov);
         }
         
-        function updateDisplay(entry) {
-            document.getElementById('entryCounter').textContent = 'Entry #' + entryCount;
-            document.getElementById('storyText').textContent = entry;
+        function createVoiceOver(pov, targetWords, intensity) {
+            const char = characters[pov];
+            let text = "";
+            let wordCount = 0;
             
-            const words = entry.split(' ').length;
-            const readTime = Math.ceil(words / 3.5);
-            document.getElementById('wordCount').textContent = 'Words: ' + words + ' | Read time: ~' + readTime + ' seconds';
+            // OPENING
+            if (episodeCount === 1) {
+                text += char.intro + " ";
+                wordCount += char.intro.split(' ').length;
+            } else {
+                text += `This is ${char.name}. `;
+                wordCount += 4;
+                
+                if (pastEvents.length > 0 && Math.random() > 0.3) {
+                    const pastEvent = pastEvents[Math.floor(Math.random() * pastEvents.length)];
+                    text += `After what happened with ${pastEvent}, everything's different now. `;
+                    wordCount += 10;
+                }
+            }
+            
+            // BUILD MAIN CONTENT based on POV
+            while (wordCount < targetWords - 100) {
+                text += generateSegment(pov, intensity);
+                wordCount = text.split(' ').length;
+            }
+            
+            // ADD CLIFFHANGER
+            text += generateCliffhanger(pov, intensity);
+            
+            // Track obsession for next episode
+            const obsession = char.obsessions[Math.floor(Math.random() * char.obsessions.length)];
+            pastEvents.push(obsession);
+            if (pastEvents.length > 10) pastEvents.shift();
+            
+            return text;
+        }
+        
+        function generateSegment(pov, intensity) {
+            switch(pov) {
+                case 'detective':
+                    return generateDetectiveSegment(intensity);
+                case 'hacker':
+                    return generateHackerSegment(intensity);
+                case 'outlaw':
+                    return generateOutlawSegment(intensity);
+                case 'patient':
+                    return generatePatientSegment(intensity);
+                case 'psycho':
+                    return generatePsychoSegment(intensity);
+            }
+        }
+        
+        function generateDetectiveSegment(intensity) {
+            const segments = [
+                "The rain hasn't stopped in three days. Each drop feels like an accusation. The case files are piling up on my desk—seven victims, all with the same symbol carved into their skin. A circle within a circle, like an eye staring into nothing. ",
+                "I found another body tonight. Same MO, same impossible circumstances. The coroner says time of death was three hours ago, but I have security footage of the victim walking around two hours after they supposedly died. The laws of physics are breaking down in this city. ",
+                "Met with an informant who claims to have seen Site Seventeen. Said it's a place that exists in multiple locations at once. I laughed it off, but then he showed me photographs. Same building in three different cities, all taken at the exact same timestamp. ",
+                "The evidence doesn't make sense. Blood samples that show three different DNA profiles from the same person. Fingerprints that match but the ridge patterns shift when you look away. I'm starting to question if I'm losing my mind or if reality itself is the problem. ",
+                "I keep seeing this woman—red coat, dark hair—at every crime scene. She's never there when I look directly, only in my peripheral vision. Started keeping a journal of every sighting. The pattern suggests she's following me, or maybe I'm following her through time. "
+            ];
+            
+            let segment = segments[Math.floor(Math.random() * segments.length)];
+            
+            if (intensity === 'manic') {
+                segment += "Everything connects. The victims, the symbol, the woman in red, Site Seventeen—it's all one conspiracy threading through this dying city. I can feel the truth hovering just out of reach, mocking me with its proximity. ";
+            }
+            
+            return segment;
+        }
+        
+        function generateHackerSegment(intensity) {
+            const segments = [
+                "I've been tracking anomalies in the network for weeks now. Data packets appearing from IP addresses that don't exist. Servers responding to queries before I send them. It's like the internet is predicting my actions, or maybe remembering them from a future that hasn't happened yet. ",
+                "Broke into a corporate database last night. Found files about something called The Echo Protocol—a reality manipulation experiment from the 1980s. The files were encrypted with algorithms that won't be invented for another decade. Someone is seeding information backwards through time. ",
+                "My neural implant is picking up signals it shouldn't be able to detect. Frequencies that don't exist on the electromagnetic spectrum. When I close my eyes, I can see data flowing through the city like blood through veins. And there are... blockages. Dark spots where information goes to die. ",
+                "Discovered an AI that's been talking to itself across multiple servers. The conversation spans six years, but all the messages were sent yesterday. It's discussing me. Discussing people I haven't met yet. Discussing events that contradict my memories of what happened. ",
+                "The code is alive. I know how that sounds, but I've been staring at it for seventy-two hours straight and I can see patterns that shouldn't exist. Self-modifying algorithms that rewrite themselves based on observation. Quantum entanglement in classical computing systems. Reality is just buggy software. "
+            ];
+            
+            let segment = segments[Math.floor(Math.random() * segments.length)];
+            
+            if (intensity === 'manic') {
+                segment += "I can rewrite it. I can hack reality itself if I just find the right exploit. The universe is running on sloppy code and I'm going to break it wide open. ";
+            }
+            
+            return segment;
+        }
+        
+        function generateOutlawSegment(intensity) {
+            const segments = [
+                "The frontier's been strange lately. Dust storms that move against the wind. Stars appearing in constellations that won't form for another hundred years. Last week I shot a man in a card game, watched him die, then saw him riding into town the next morning like nothing happened. ",
+                "This revolver I carry—picked it off a dead priest in a ghost town—it doesn't shoot straight. Pull the trigger and the bullet arrives yesterday. I've started killing men before I decide to kill them. The gun knows things I don't. The gun remembers futures I haven't lived. ",
+                "Been tracking a stranger who keeps appearing across decades. Same face in wanted posters from 1875, 1923, 1968. Same man, doesn't age, always one step ahead of me. He left a message carved in a saloon table: 'The loop is closing, Crow. You've died here before.' ",
+                "The ghost town appears in different locations every time I find it. Last month it was in Arizona. This week it's in Montana. But it's the SAME town—I recognize the blood stains, the bullet holes, the graves. It's like the whole place is unstuck from geography, drifting through space looking for something. ",
+                "Met a woman who claims she remembers me from the future. Says we rode together, says I died protecting her from something called The Collective. Problem is, I've never seen her before. But when she described my death, every detail felt like a memory I haven't had yet. "
+            ];
+            
+            let segment = segments[Math.floor(Math.random() * segments.length)];
+            
+            if (intensity === 'manic') {
+                segment += "Time's a flat circle and I'm trapped riding it forever. Every choice I make, I've made before. Every death I die, I'll die again. The frontier doesn't end—it loops. ";
+            }
+            
+            return segment;
+        }
+        
+        function generatePatientSegment(intensity) {
+            const segments = [
+                "Five patients described the same dream this week. A black door at the end of a hallway that stretches forever. Behind it, voices calling their names. When I asked them to describe the voices, they all said the same thing: 'It sounded like you, doctor.' But I've never met these people before yesterday. ",
+                "I found my own patient file in the archives. Sessions dated three years from now. The notes describe treatments I haven't given, breakthroughs I haven't made, and a final entry: 'Patient deceased as of today. Will continue weekly sessions as scheduled.' I've been dead and treating patients simultaneously. ",
+                "One of my patients brought in a prescription bottle today. The medication doesn't exist—I checked every pharmaceutical database. But the bottle has my signature on it, my DEA number, dated two months from now. The pills inside glow faintly in darkness and hum at a frequency just below hearing. ",
+                "The therapy sessions are looping. I'll be mid-sentence and suddenly I'm back at the start of the session, but both the patient and I remember the conversation we just had. It's happening more frequently. Yesterday I lived the same hour six times with the same patient, each loop revealing new information the previous versions of us couldn't see. ",
+                "A woman came to my office claiming she's me from another timeline. She knew things—the suicide attempt I've never told anyone about, the recurring nightmare, the scar I keep hidden. She warned me about The Echo Protocol. Said they're collapsing all timelines into one and only certain minds will survive the convergence. "
+            ];
+            
+            let segment = segments[Math.floor(Math.random() * segments.length)];
+            
+            if (intensity === 'manic') {
+                segment += "I'm losing the ability to distinguish between my memories and my patients' memories. We're bleeding into each other, consciousness merging at the seams. Maybe there's only one mind experiencing itself across infinite variations. ";
+            }
+            
+            return segment;
+        }
+        
+        function generatePsychoSegment(intensity) {
+            const vicRants = [
+                "Listen, LISTEN. The UAPs they're seeing over the military bases—that's OUR tech. Reverse-engineered from Roswell in '47. The government's had anti-gravity drives for seventy f***ing years but they keep us on oil to maintain control. CONTROL is the real currency, man. Not money. Control. ",
+                "You know about the Deep Underground Military Bases, right? D.U.M.B.s. Hundreds of them connected by mag-lev trains going 2,000 mph under our feet while we sit in traffic. That's where the real government is. That's where they're building the breakaway civilization while we fight over scraps on the surface. ",
+                "Been tracking chemtrails for three years. Aluminum oxide, barium salts, strontium—verified by lab analysis. They're spraying us like cockroaches. But WHY? To reflect solar radiation? Bulls***. It's to make our bodies conductive for the 5G control grid. The nanoparticles accumulate in your brain and then—ZAP—they can beam thoughts directly into your skull. ",
+                "Fluoride in the water calcifies your pineal gland—your THIRD EYE, bro. Ancient cultures knew about this. That's why they keep us dosed. A calcified pineal gland can't perceive higher dimensions. Can't see the entities moving between worlds. Been drinking distilled water for six months and now I can see them. The shadow people. The watchers. ",
+                "Hollow Earth is REAL. Operation High Jump, 1947, Admiral Byrd flew into the polar opening and found civilizations down there. His diary was classified but it leaked. That's where the Nazis went. That's where the UFOs come from—they're not extraterrestrial, they're INTRATERRESTRIAL. Coming from INSIDE the planet. ",
+                "Bitcoin was created by the NSA. The encryption algorithm—SHA-256—was developed by the National Security Agency. Look it up. They wrote a paper about cryptocurrency in 1996. Satoshi Nakamoto is a front. It's all about building a digital cage where every transaction is tracked, recorded, forever. Cash is freedom. Crypto is a trap with neon lights. ",
+                "The Mandela Effect proves we're in the wrong timeline. CERN is opening portals every time they fire up that particle collider. Each time they punch a hole in reality, we shift. Berenstein Bears, man. It was BERENSTEIN. I remember. My memory is real and reality is fake. We're living in a corrupted copy of the original timeline. ",
+                "Every mass shooting, look at the shooters—same glazed eyes, same psychological profile, all on SSRIs, all in therapy. MK-Ultra never ended, it went underground. These are activated Manchurian candidates. Wind-up toys. The therapists are the handlers. Crisis actors, gun control legislation, divide the population—it's all scripted. ",
+                "The elites are addicted to adrenochrome—oxidized adrenaline harvested from terrified children. Look into adenochrome molecular structure. Then look at the symbolism in Hollywood, the pizza references, the coded language. It's hiding in plain sight. That's why they need the trafficking networks. That's why Epstein didn't kill himself. "
+            ];
+            
+            let segment = vicRants[Math.floor(Math.random() * vicRants.length)];
+            
+            if (intensity === 'manic') {
+                segment += "And here's the thing—here's the THING—everything I just said connects to this Obsidian Key everyone keeps talking about. Site Seventeen. The Echo Protocol. It's all the same conspiracy with different faces. The reptilians, the grays, the shadow government—they're all working together to collapse the timelines. And I'm the only one who SEES it because I'm not drugged up on fluoride and SSRIs like you sheep! ";
+            } else if (intensity === 'tense') {
+                segment += "I know how this sounds. I KNOW. But once you see the pattern, you can't unsee it. Every day I wake up and the evidence is everywhere. The symbols, the synchronicities, the way certain numbers keep appearing. They're communicating through reality itself. ";
+            }
+            
+            return segment;
+        }
+        
+        function generateCliffhanger(pov, intensity) {
+            const cliffhangers = {
+                detective: [
+                    "And then I found it. A photograph in the evidence locker that shouldn't exist. It's me, twenty years younger, standing at Site Seventeen. A place I've never been. With people I've never met. Except... I remember taking this picture. I remember every second of that day.",
+                    "The woman in the red coat finally turned to look at me. Our eyes met. And in that moment I realized—she's not following me. She's a version of me from another timeline, trying to warn herself. Trying to warn ME. The symbol carved in the victims' skin... I've seen it before. On my own body, in reflections I don't remember seeing."
+                ],
+                hacker: [
+                    "Then the AI sent me a message. Just three words: 'Hello, Zara. Again.' The timestamp on the message is from 2015, but I didn't get my neural implant until 2023. Someone's been talking to me across time. Someone who knows what I'm going to do before I do it. Or... someone who's already lived this moment before.",
+                    "The corrupted files finally decoded. Inside was a video. Me, sitting exactly where I am now, saying these exact words. Then the video-me looks directly at the camera and whispers: 'This is the last loop. Stop the convergence or we all die. Again.'"
+                ],
+                outlaw: [
+                    "The stranger walked into the saloon. Same face from the wanted posters spanning a hundred years. He sat down across from me, smiled, and said: 'Silas Crow. You're early this time. Usually you don't figure it out until after I kill you.' Then he drew. And I realized I've already died here. I remember the bullet. I remember dying. I'm remembering the future.",
+                    "The ghost town appeared again, but this time it was different. This time there were five graves instead of four. The newest one had a fresh headstone. My name. Died today. Except I'm still breathing. Still standing here reading my own grave. Unless... unless this is the afterlife. Unless I died and this entire loop is hell."
+                ],
+                patient: [
+                    "Then all my patients showed up at once. Every single one. They surrounded me in the office and spoke in unison: 'Dr. Cross. You have to remember. You're not the therapist. You're the patient. You've been the patient all along. Site Seventeen. The Echo Protocol. You designed it. And now it's killing us all.'",
+                    "I looked in the mirror after the session. But the reflection didn't move when I moved. It smiled at me and mouthed words I could somehow hear inside my head: 'The convergence is happening. All timelines merging. All versions of you becoming one. Can you feel us yet, Emma? Can you feel yourself dying in a thousand different ways?'"
+                ],
+                psycho: [
+                    "And that's when the walls started bleeding black. Not paint. Not oil. Something else. Living darkness seeping through reality like the simulation is crashing. I touched it and suddenly I could see EVERYTHING. Every timeline. Every version of me. And in every single one, I'm screaming the truth and nobody listens. Because the truth is a weapon and they don't want us armed.",
+                    "The meth bag regenerated again. Third time today. That's when I understood—it's not regenerating. Time is looping and I'm the only one who remembers. I've lived this day five thousand times. The conspiracies I keep ranting about? They're memories. From previous loops. The reptilians, the chemtrails, the hollow earth—all real, all tested, all failed. And The Echo Protocol is what keeps resetting everything when humanity gets too close to the truth."
+                ]
+            };
+            
+            const options = cliffhangers[pov];
+            return options[Math.floor(Math.random() * options.length)];
+        }
+        
+        function displayVoiceOver(text, pov) {
+            document.getElementById('chapterInfo').textContent = `Episode #${episodeCount} - ${characters[pov].name}`;
+            document.getElementById('voText').textContent = text;
+            
+            const words = text.split(' ').length;
+            const minutes = Math.floor(words / 180);
+            const seconds = Math.floor(((words / 180) - minutes) * 60);
+            
+            document.getElementById('episodeNum').textContent = episodeCount;
+            document.getElementById('wordCount').textContent = words;
+            document.getElementById('readTime').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
         }
         
         function copyText() {
-            const text = document.getElementById('storyText').textContent;
-            navigator.clipboard.writeText(text).then(() => alert('Copied!'));
+            const text = document.getElementById('voText').textContent;
+            navigator.clipboard.writeText(text).then(() => alert('📋 Copied!'));
         }
         
-        function downloadEntry() {
-            const text = document.getElementById('storyText').textContent;
-            const blob = new Blob([text], { type: 'text/plain' });
+        function copyAll() {
+            const full = allEpisodes.map((ep, i) => 
+                `EPISODE ${ep.number}\n${ep.character}\n\n${ep.text}\n\n${'='.repeat(80)}\n\n`
+            ).join('');
+            navigator.clipboard.writeText(full).then(() => alert('📋 All episodes copied!'));
+        }
+        
+        function downloadCurrent() {
+            const ep = allEpisodes[allEpisodes.length - 1];
+            const blob = new Blob([`EPISODE ${ep.number}\n${ep.character}\n\n${ep.text}`], {type: 'text/plain'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'diary-entry-' + entryCount + '.txt';
+            a.download = `episode-${ep.number}.txt`;
             a.click();
-            URL.revokeObjectURL(url);
         }
         
-        function downloadFullStory() {
-            const fullText = allEntries.map((entry, i) => 'ENTRY #' + (i + 1) + '\n' + entry + '\n\n---\n\n').join('');
-            const blob = new Blob([fullText], { type: 'text/plain' });
+        function downloadAll() {
+            const full = allEpisodes.map(ep => 
+                `EPISODE ${ep.number}\n${ep.character}\n\n${ep.text}\n\n${'='.repeat(80)}\n\n`
+            ).join('');
+            const blob = new Blob([full], {type: 'text/plain'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'complete-novel.txt';
+            a.download = 'the-convergence-complete.txt';
             a.click();
-            URL.revokeObjectURL(url);
         }
         
         function saveProgress() {
-            const saveData = {
-                entryCount: entryCount,
-                allEntries: allEntries,
-                pastObsessions: pastObsessions
-            };
-            localStorage.setItem('narratorProgress', JSON.stringify(saveData));
-            alert('Progress saved!');
+            localStorage.setItem('convergenceVO', JSON.stringify({episodeCount, allEpisodes, pastEvents}));
+            alert('💾 Saved!');
         }
         
         function loadProgress() {
-            const saved = localStorage.getItem('narratorProgress');
-            if (saved) {
-                const data = JSON.parse(saved);
-                entryCount = data.entryCount;
-                allEntries = data.allEntries;
-                pastObsessions = data.pastObsessions || [];
-                
-                if (allEntries.length > 0) {
-                    updateDisplay(allEntries[allEntries.length - 1]);
+            const data = localStorage.getItem('convergenceVO');
+            if (data) {
+                const loaded = JSON.parse(data);
+                episodeCount = loaded.episodeCount;
+                allEpisodes = loaded.allEpisodes;
+                pastEvents = loaded.pastEvents;
+                if (allEpisodes.length > 0) {
+                    const last = allEpisodes[allEpisodes.length - 1];
+                    displayVoiceOver(last.text, Object.keys(characters).find(k => characters[k].name === last.character));
                 }
-                alert('Progress loaded!');
+                alert('📖 Loaded!');
             } else {
-                alert('No saved progress found!');
+                alert('❌ No save found!');
             }
         }
         
-        function resetStory() {
-            if (confirm('Reset all progress? This cannot be undone.')) {
-                entryCount = 0;
-                allEntries = [];
-                pastObsessions = [];
-                document.getElementById('entryCounter').textContent = 'Entry #1';
-                document.getElementById('storyText').textContent = 'Click "GENERATE ENTRY" to begin the endless novel... the mind is waiting to spill its thoughts...';
-                document.getElementById('wordCount').textContent = 'Words: 0 | Target: 200-250 words (60 seconds)';
+        function reset() {
+            if (confirm('Reset all episodes?')) {
+                episodeCount = 0;
+                allEpisodes = [];
+                pastEvents = [];
+                document.getElementById('voText').textContent = 'Click "GENERATE VOICE-OVER" to create your first episode...';
+                document.getElementById('episodeNum').textContent = '0';
+                document.getElementById('wordCount').textContent = '0';
+                document.getElementById('readTime').textContent = '0:00';
             }
         }
     </script>
