@@ -356,6 +356,7 @@
             const char = characters[pov];
             let text = "";
             let wordCount = 0;
+            let usedTemplatesThisEpisode = []; // Track templates used in THIS episode
             
             // OPENING
             if (allEpisodes.filter(ep => ep.pov === pov).length === 0) {
@@ -381,7 +382,8 @@
             
             // BUILD MAIN CONTENT with unique segments - keep going until we're very close to target
             while (wordCount < targetWords - 50) {
-                text += generateUniqueSegment(pov, intensity);
+                const segment = generateUniqueSegment(pov, intensity, usedTemplatesThisEpisode);
+                text += segment;
                 wordCount = text.split(' ').length;
             }
             
@@ -391,14 +393,14 @@
             
             // If still short, add one more segment
             if (wordCount < targetWords) {
-                text += " " + generateUniqueSegment(pov, intensity);
+                text += " " + generateUniqueSegment(pov, intensity, usedTemplatesThisEpisode);
             }
             
             return text;
         }
         
-        function generateUniqueSegment(pov, intensity) {
-            let segment = generateSegmentContent(pov, intensity);
+        function generateUniqueSegment(pov, intensity, usedTemplatesThisEpisode = []) {
+            let segment = generateSegmentContent(pov, intensity, usedTemplatesThisEpisode);
             
             // Track used segments to avoid immediate repeats
             if (!usedSegments[pov]) usedSegments[pov] = [];
@@ -408,7 +410,7 @@
             return segment;
         }
         
-        function generateSegmentContent(pov, intensity) {
+        function generateSegmentContent(pov, intensity, usedTemplatesThisEpisode = []) {
             const variations = {
                 names: ["John", "Sarah", "Michael", "Elena", "David", "Rachel", "Thomas"],
                 places: ["the warehouse district", "downtown", "the old factory", "the pier", "the subway station"],
@@ -432,7 +434,7 @@
                     `The murder weapon from the first case reappeared at a new crime scene. Impossible—it's been in evidence for weeks. Yet here it is again, fresh blood on the blade, used in a killing that just happened. `,
                     `Every victim had the same final words, according to witnesses: "Tell Kane it's already too late." But how did they know my name? I never met any of them. Never spoke to them. Never existed in their lives until they died. `
                 ];
-                return rand(templates);
+                return pickUniqueTemplate(templates, usedTemplatesThisEpisode);
             }
             
             if (pov === 'hacker') {
@@ -448,7 +450,7 @@
                     `Intercepted encrypted traffic from ${rand(v.places)}. When I decoded it, it was a video feed. Security cameras showing me, right now, typing these exact words. The timestamp on the video is from last year. `,
                     `My neural implant glitched and I saw everything. The entire city rendered as pure data. And underneath it all, there are errors. Corrupted files. Reality itself is running on buggy code and nobody else can see it. `
                 ];
-                return rand(templates);
+                return pickUniqueTemplate(templates, usedTemplatesThisEpisode);
             }
             
             if (pov === 'outlaw') {
@@ -464,7 +466,7 @@
                     `Shot a man in self-defense ${rand(v.times)}. Watched him die. Buried him proper. Then ${rand(v.numbers)} days later, he rode into town like nothing happened. Same man. Same face. No scar from where my bullet entered his chest. `,
                     `The gun whispers to me now. Not in words, but in feelings. It knows things—futures that haven't happened, deaths that need dying. Like it's been passed through so many timelines it's learned to see them all. `
                 ];
-                return rand(templates);
+                return pickUniqueTemplate(templates, usedTemplatesThisEpisode);
             }
             
             if (pov === 'patient') {
@@ -480,7 +482,7 @@
                     `${rand(v.names)} described a recurring dream where all my patients gather in one room and speak in unison. They tell me I'm not the therapist. I'm the patient. I've been the patient all along. `,
                     `My reflection in the office mirror doesn't always match my movements. Sometimes it smiles when I'm not smiling. Sometimes it mouths words I can hear inside my head: "The convergence is coming. All versions become one." `
                 ];
-                return rand(templates);
+                return pickUniqueTemplate(templates, usedTemplatesThisEpisode);
             }
             
             if (pov === 'psycho') {
@@ -496,10 +498,32 @@
                     `The symbols are everywhere once you know how to look. Hidden in corporate logos, government seals, architectural designs. All pointing to the same thing: Site Seventeen. The convergence point. Where all timelines collapse into one. `,
                     `My meth supply regenerated again ${rand(v.times)}. Fourth time this month. That's when I realized—time is looping. I'm living the same days over and over. The only one who remembers. The only one who can see the pattern. `
                 ];
-                return rand(templates);
+                return pickUniqueTemplate(templates, usedTemplatesThisEpisode);
             }
             
             return "Something strange is happening and I can't explain it yet. ";
+        }
+        
+        function pickUniqueTemplate(templates, usedTemplatesThisEpisode) {
+            // Get available template indices
+            let availableIndices = [];
+            for (let i = 0; i < templates.length; i++) {
+                if (!usedTemplatesThisEpisode.includes(i)) {
+                    availableIndices.push(i);
+                }
+            }
+            
+            // If all templates used, reset for this episode
+            if (availableIndices.length === 0) {
+                availableIndices = Array.from({length: templates.length}, (_, i) => i);
+                usedTemplatesThisEpisode.length = 0; // Clear the array
+            }
+            
+            // Pick random available template
+            const chosenIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+            usedTemplatesThisEpisode.push(chosenIndex);
+            
+            return templates[chosenIndex];
         }
         
         function generateCliffhanger(pov, intensity) {
