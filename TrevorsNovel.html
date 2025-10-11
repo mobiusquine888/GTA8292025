@@ -44,6 +44,25 @@
             background: rgba(233, 69, 96, 0.1);
             border-radius: 8px;
         }
+        .notes-section {
+            grid-column: span 3;
+            display: flex;
+            flex-direction: column;
+        }
+        .notes-input {
+            padding: 12px;
+            border: 2px solid #e94560;
+            background: #1a1a2e;
+            color: #eee;
+            font-family: 'Georgia', serif;
+            font-size: 1em;
+            min-height: 80px;
+            resize: vertical;
+            border-radius: 4px;
+        }
+        .notes-input::placeholder {
+            color: #666;
+        }
         .control-group {
             display: flex;
             flex-direction: column;
@@ -77,12 +96,6 @@
         .generate-btn:hover {
             background: #ff6b81;
         }
-        .chapter-info {
-            text-align: center;
-            font-size: 1.3em;
-            margin-bottom: 20px;
-            color: #e94560;
-        }
         .stats {
             display: flex;
             justify-content: space-around;
@@ -102,15 +115,77 @@
             font-size: 0.8em;
             color: #aaa;
         }
-        .chapter-container {
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        .actions button {
+            padding: 12px;
+            background: #0f3460;
+            color: #eee;
+            border: 2px solid #e94560;
+            cursor: pointer;
+        }
+        .actions button:hover {
+            background: #e94560;
+        }
+        .blog-feed {
+            margin-top: 30px;
+        }
+        .episode-card {
             border: 3px solid #e94560;
             padding: 30px;
             margin: 20px 0;
-            min-height: 400px;
             background: #16213e;
             position: relative;
+            animation: slideIn 0.5s ease;
         }
-        .chapter-text {
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .episode-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e94560;
+        }
+        .episode-title {
+            font-size: 1.5em;
+            color: #e94560;
+            font-weight: bold;
+        }
+        .episode-meta {
+            text-align: right;
+            font-size: 0.9em;
+            color: #aaa;
+        }
+        .episode-notes {
+            background: rgba(233, 69, 96, 0.15);
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #e94560;
+            font-size: 0.95em;
+            color: #ccc;
+            font-style: italic;
+        }
+        .episode-notes::before {
+            content: "📝 Story Notes: ";
+            font-weight: bold;
+            color: #e94560;
+            font-style: normal;
+        }
+        .episode-text {
             font-size: 1.15em;
             line-height: 1.8;
             white-space: pre-wrap;
@@ -124,21 +199,16 @@
             color: white;
             border: none;
             cursor: pointer;
+            font-size: 0.9em;
         }
-        .actions {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
+        .copy-btn:hover {
+            background: #ff6b81;
         }
-        .actions button {
-            padding: 12px;
-            background: #0f3460;
-            color: #eee;
-            border: 2px solid #e94560;
-            cursor: pointer;
-        }
-        .actions button:hover {
-            background: #e94560;
+        .placeholder {
+            text-align: center;
+            padding: 60px;
+            color: #aaa;
+            font-style: italic;
         }
     </style>
 </head>
@@ -180,10 +250,13 @@
                 </select>
             </div>
             
+            <div class="notes-section">
+                <label for="storyNotes">Story Notes (optional - guide the episode content):</label>
+                <textarea id="storyNotes" class="notes-input" placeholder="Enter plot points, character details, locations, or any notes to influence this episode... (e.g., 'Kane discovers a hidden room', 'Zara meets an informant', 'flashback to childhood')"></textarea>
+            </div>
+            
             <button class="generate-btn" onclick="generateVoiceOver()">🎙️ GENERATE VOICE-OVER</button>
         </div>
-        
-        <div class="chapter-info" id="chapterInfo">Episode #1</div>
         
         <div class="stats">
             <div class="stat-item">
@@ -191,66 +264,56 @@
                 <div class="stat-label">Episodes</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value" id="wordCount">0</div>
-                <div class="stat-label">Words</div>
+                <div class="stat-value" id="totalWords">0</div>
+                <div class="stat-label">Total Words</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value" id="readTime">0:00</div>
-                <div class="stat-label">Read Time</div>
+                <div class="stat-value" id="totalTime">0:00</div>
+                <div class="stat-label">Total Time</div>
             </div>
-        </div>
-        
-        <div class="chapter-container">
-            <button class="copy-btn" onclick="copyText()">📋 COPY</button>
-            <div class="chapter-text" id="voText">Click "GENERATE VOICE-OVER" to create your first episode...</div>
         </div>
         
         <div class="actions">
-            <button onclick="copyText()">Copy Text</button>
             <button onclick="copyAll()">Copy All Episodes</button>
-            <button onclick="downloadCurrent()">Download Episode</button>
             <button onclick="downloadAll()">Download All</button>
-            <button onclick="saveProgress()">Save</button>
-            <button onclick="loadProgress()">Load</button>
-            <button onclick="reset()">Reset</button>
+            <button onclick="reset()">Reset Story</button>
+        </div>
+        
+        <div class="blog-feed" id="blogFeed">
+            <div class="placeholder">Click "GENERATE VOICE-OVER" to begin your story...</div>
         </div>
     </div>
 
     <script>
         let episodeCount = 0;
         let allEpisodes = [];
-        let pastEvents = [];
+        let usedSegments = { detective: [], hacker: [], outlaw: [], patient: [], psycho: [] };
         
         const characters = {
             detective: {
                 name: "Marcus Kane",
                 intro: "My name is Marcus Kane. I'm a detective in a city that's rotting from the inside out.",
-                voice: "hardboiled",
-                obsessions: ["the symbol", "Site Seventeen", "the impossible victims", "reality glitches"]
+                voice: "hardboiled"
             },
             hacker: {
                 name: "Zara Chen",
                 intro: "I'm Zara Chen. I see code where others see reality, and lately the code is breaking.",
-                voice: "techno",
-                obsessions: ["the corrupted files", "impossible AI", "timeline data", "ghost servers"]
+                voice: "techno"
             },
             outlaw: {
                 name: "Silas Crow",
                 intro: "They call me Silas Crow. This frontier has ghosts, and I'm starting to think I'm one of them.",
-                voice: "western",
-                obsessions: ["the cursed gun", "time loops", "the ghost town", "echoes of the past"]
+                voice: "western"
             },
             patient: {
                 name: "Dr. Emma Cross",
                 intro: "Dr. Emma Cross. Psychologist. But my patients are describing memories that can't exist.",
-                voice: "clinical",
-                obsessions: ["shared nightmares", "the loop", "impossible prescriptions", "her own death"]
+                voice: "clinical"
             },
             psycho: {
                 name: "Vic 'The Animal' Russo",
                 intro: "Vic Russo. They call me The Animal. I see what you sheep can't see.",
-                voice: "unhinged",
-                obsessions: ["the truth", "chemtrails", "reptilians", "the conspiracy", "they're watching"]
+                voice: "unhinged"
             }
         };
         
@@ -260,6 +323,7 @@
             let pov = document.getElementById('povSelector').value;
             const length = parseInt(document.getElementById('lengthSelector').value);
             const intensity = document.getElementById('intensitySelector').value;
+            const notes = document.getElementById('storyNotes').value.trim();
             
             if (pov === 'auto') {
                 const povs = ['detective', 'hacker', 'outlaw', 'patient', 'psycho'];
@@ -267,234 +331,274 @@
             }
             
             const targetWords = length * 180;
-            const voiceOver = createVoiceOver(pov, targetWords, intensity);
+            const voiceOver = createVoiceOver(pov, targetWords, intensity, notes);
             
-            allEpisodes.push({
+            const episode = {
                 number: episodeCount,
                 pov: pov,
                 character: characters[pov].name,
                 text: voiceOver,
-                words: voiceOver.split(' ').length
-            });
+                words: voiceOver.split(' ').length,
+                timestamp: new Date().toLocaleString(),
+                notes: notes
+            };
             
-            displayVoiceOver(voiceOver, pov);
+            allEpisodes.unshift(episode); // Add to beginning for newest first
+            displayEpisode(episode);
+            updateStats();
+            
+            // Clear notes after generating
+            document.getElementById('storyNotes').value = '';
         }
         
-        function createVoiceOver(pov, targetWords, intensity) {
+        function createVoiceOver(pov, targetWords, intensity, notes) {
             const char = characters[pov];
             let text = "";
             let wordCount = 0;
             
             // OPENING
-            if (episodeCount === 1) {
+            if (allEpisodes.filter(ep => ep.pov === pov).length === 0) {
                 text += char.intro + " ";
                 wordCount += char.intro.split(' ').length;
             } else {
-                text += `This is ${char.name}. `;
+                const openings = [
+                    `This is ${char.name}. `,
+                    `${char.name} here. `,
+                    `Back again. ${char.name}. `,
+                    `It's me. ${char.name}. `,
+                    `${char.name} reporting. `
+                ];
+                text += openings[Math.floor(Math.random() * openings.length)];
                 wordCount += 4;
-                
-                if (pastEvents.length > 0 && Math.random() > 0.3) {
-                    const pastEvent = pastEvents[Math.floor(Math.random() * pastEvents.length)];
-                    text += `After what happened with ${pastEvent}, everything's different now. `;
-                    wordCount += 10;
-                }
             }
             
-            // BUILD MAIN CONTENT based on POV
-            while (wordCount < targetWords - 100) {
-                text += generateSegment(pov, intensity);
+            // Add context from notes if provided
+            if (notes) {
+                text += `${notes} `;
+                wordCount += notes.split(' ').length;
+            }
+            
+            // BUILD MAIN CONTENT with unique segments
+            const segmentsNeeded = Math.ceil((targetWords - 100) / 80);
+            for (let i = 0; i < segmentsNeeded; i++) {
+                text += generateUniqueSegment(pov, intensity);
                 wordCount = text.split(' ').length;
+                if (wordCount >= targetWords - 100) break;
             }
             
             // ADD CLIFFHANGER
             text += generateCliffhanger(pov, intensity);
             
-            // Track obsession for next episode
-            const obsession = char.obsessions[Math.floor(Math.random() * char.obsessions.length)];
-            pastEvents.push(obsession);
-            if (pastEvents.length > 10) pastEvents.shift();
-            
             return text;
         }
         
-        function generateSegment(pov, intensity) {
-            switch(pov) {
-                case 'detective':
-                    return generateDetectiveSegment(intensity);
-                case 'hacker':
-                    return generateHackerSegment(intensity);
-                case 'outlaw':
-                    return generateOutlawSegment(intensity);
-                case 'patient':
-                    return generatePatientSegment(intensity);
-                case 'psycho':
-                    return generatePsychoSegment(intensity);
-            }
-        }
-        
-        function generateDetectiveSegment(intensity) {
-            const segments = [
-                "The rain hasn't stopped in three days. Each drop feels like an accusation. The case files are piling up on my desk—seven victims, all with the same symbol carved into their skin. A circle within a circle, like an eye staring into nothing. ",
-                "I found another body tonight. Same MO, same impossible circumstances. The coroner says time of death was three hours ago, but I have security footage of the victim walking around two hours after they supposedly died. The laws of physics are breaking down in this city. ",
-                "Met with an informant who claims to have seen Site Seventeen. Said it's a place that exists in multiple locations at once. I laughed it off, but then he showed me photographs. Same building in three different cities, all taken at the exact same timestamp. ",
-                "The evidence doesn't make sense. Blood samples that show three different DNA profiles from the same person. Fingerprints that match but the ridge patterns shift when you look away. I'm starting to question if I'm losing my mind or if reality itself is the problem. ",
-                "I keep seeing this woman—red coat, dark hair—at every crime scene. She's never there when I look directly, only in my peripheral vision. Started keeping a journal of every sighting. The pattern suggests she's following me, or maybe I'm following her through time. "
-            ];
+        function generateUniqueSegment(pov, intensity) {
+            let segment = generateSegmentContent(pov, intensity);
             
-            let segment = segments[Math.floor(Math.random() * segments.length)];
-            
-            if (intensity === 'manic') {
-                segment += "Everything connects. The victims, the symbol, the woman in red, Site Seventeen—it's all one conspiracy threading through this dying city. I can feel the truth hovering just out of reach, mocking me with its proximity. ";
-            }
+            // Track used segments to avoid immediate repeats
+            if (!usedSegments[pov]) usedSegments[pov] = [];
+            usedSegments[pov].push(segment.substring(0, 50));
+            if (usedSegments[pov].length > 20) usedSegments[pov].shift();
             
             return segment;
         }
         
-        function generateHackerSegment(intensity) {
-            const segments = [
-                "I've been tracking anomalies in the network for weeks now. Data packets appearing from IP addresses that don't exist. Servers responding to queries before I send them. It's like the internet is predicting my actions, or maybe remembering them from a future that hasn't happened yet. ",
-                "Broke into a corporate database last night. Found files about something called The Echo Protocol—a reality manipulation experiment from the 1980s. The files were encrypted with algorithms that won't be invented for another decade. Someone is seeding information backwards through time. ",
-                "My neural implant is picking up signals it shouldn't be able to detect. Frequencies that don't exist on the electromagnetic spectrum. When I close my eyes, I can see data flowing through the city like blood through veins. And there are... blockages. Dark spots where information goes to die. ",
-                "Discovered an AI that's been talking to itself across multiple servers. The conversation spans six years, but all the messages were sent yesterday. It's discussing me. Discussing people I haven't met yet. Discussing events that contradict my memories of what happened. ",
-                "The code is alive. I know how that sounds, but I've been staring at it for seventy-two hours straight and I can see patterns that shouldn't exist. Self-modifying algorithms that rewrite themselves based on observation. Quantum entanglement in classical computing systems. Reality is just buggy software. "
-            ];
+        function generateSegmentContent(pov, intensity) {
+            const variations = {
+                names: ["John", "Sarah", "Michael", "Elena", "David", "Rachel", "Thomas"],
+                places: ["the warehouse district", "downtown", "the old factory", "the pier", "the subway station"],
+                times: ["yesterday", "three days ago", "last week", "this morning", "tonight"],
+                numbers: ["three", "five", "seven", "twelve", "twenty"]
+            };
             
-            let segment = segments[Math.floor(Math.random() * segments.length)];
+            const v = variations;
+            const rand = (arr) => arr[Math.floor(Math.random() * arr.length)];
             
-            if (intensity === 'manic') {
-                segment += "I can rewrite it. I can hack reality itself if I just find the right exploit. The universe is running on sloppy code and I'm going to break it wide open. ";
+            if (pov === 'detective') {
+                const templates = [
+                    `The case is getting stranger. Found evidence at ${rand(v.places)} that contradicts everything we know. Witness statements don't match the timeline. People seeing things that couldn't exist. `,
+                    `Another victim turned up ${rand(v.times)}. Same symbol carved into the skin—that circle within a circle. The coroner's report makes no sense. Body temperature suggests they died ${rand(v.numbers)} hours before they were killed. `,
+                    `I interviewed ${rand(v.names)} today. Claims to remember events from next week. Described a crime scene I haven't found yet. Either they're lying or time itself is breaking down. `,
+                    `The evidence locker is full of impossible items. A gun that's been fired but shows no residue. Blood samples that change DNA when you test them twice. Photographs that show different images depending on who's looking. `,
+                    `Site Seventeen keeps appearing in my investigation. Different witnesses mention it independently. A place that exists everywhere and nowhere. I'm starting to think it's not a location—it's a condition. `,
+                    `The woman in red appeared again ${rand(v.times)}. This time I got closer. She turned around and I saw her face clearly. It was familiar. Too familiar. Like looking in a mirror that shows the wrong reflection. `,
+                    `My partner doesn't remember yesterday's briefing. Claims it never happened. But I have notes, recordings, evidence we discussed. Either I'm losing my mind or reality is rewriting itself around us. `,
+                    `Found security footage from ${rand(v.places)}. Shows the same person entering the building ${rand(v.numbers)} times simultaneously. Different clothes, different ages, but the same face. The same person. `,
+                    `The murder weapon from the first case reappeared at a new crime scene. Impossible—it's been in evidence for weeks. Yet here it is again, fresh blood on the blade, used in a killing that just happened. `,
+                    `Every victim had the same final words, according to witnesses: "Tell Kane it's already too late." But how did they know my name? I never met any of them. Never spoke to them. Never existed in their lives until they died. `
+                ];
+                return rand(templates);
             }
             
-            return segment;
-        }
-        
-        function generateOutlawSegment(intensity) {
-            const segments = [
-                "The frontier's been strange lately. Dust storms that move against the wind. Stars appearing in constellations that won't form for another hundred years. Last week I shot a man in a card game, watched him die, then saw him riding into town the next morning like nothing happened. ",
-                "This revolver I carry—picked it off a dead priest in a ghost town—it doesn't shoot straight. Pull the trigger and the bullet arrives yesterday. I've started killing men before I decide to kill them. The gun knows things I don't. The gun remembers futures I haven't lived. ",
-                "Been tracking a stranger who keeps appearing across decades. Same face in wanted posters from 1875, 1923, 1968. Same man, doesn't age, always one step ahead of me. He left a message carved in a saloon table: 'The loop is closing, Crow. You've died here before.' ",
-                "The ghost town appears in different locations every time I find it. Last month it was in Arizona. This week it's in Montana. But it's the SAME town—I recognize the blood stains, the bullet holes, the graves. It's like the whole place is unstuck from geography, drifting through space looking for something. ",
-                "Met a woman who claims she remembers me from the future. Says we rode together, says I died protecting her from something called The Collective. Problem is, I've never seen her before. But when she described my death, every detail felt like a memory I haven't had yet. "
-            ];
-            
-            let segment = segments[Math.floor(Math.random() * segments.length)];
-            
-            if (intensity === 'manic') {
-                segment += "Time's a flat circle and I'm trapped riding it forever. Every choice I make, I've made before. Every death I die, I'll die again. The frontier doesn't end—it loops. ";
+            if (pov === 'hacker') {
+                const templates = [
+                    `The network is behaving impossibly. Data packets arriving before they're sent. Server logs showing activity from IP addresses that won't exist for years. The internet is remembering the future. `,
+                    `Cracked into a government database ${rand(v.times)}. Found files about The Echo Protocol—some kind of reality manipulation project from the Cold War. The encryption is quantum-level, but the files are dated 1987. `,
+                    `My neural implant is picking up signals that shouldn't exist. Frequencies outside known physics. When I trace them back, they lead to ${rand(v.places)}. Always the same location. Always empty when I arrive. `,
+                    `Discovered an AI calling itself "${rand(v.names)}". It's been running across ${rand(v.numbers)} different servers, having conversations with itself across decades. And it knows things about me I haven't told anyone. `,
+                    `The code I'm looking at is self-modifying. It rewrites itself based on observation—genuine quantum effects in classical computing. Someone has figured out how to make software that changes when you're not looking at it. `,
+                    `Tracked anomalies back to a company called Obsidian Key Corporation. They don't exist in any registry, any database, any record. But their fingerprints are all over the darknet. Servers that pulse with data then vanish. `,
+                    `Found chat logs between users who claim to be from different timelines. They're coordinating, sharing information, trying to prevent something they call "the convergence." And my username appears in their logs from ${rand(v.times)}. `,
+                    `The backdoor I coded ${rand(v.times)} keeps changing. Every time I check it, the code is different. More efficient. More elegant. Like someone from the future is optimizing my own work. `,
+                    `Intercepted encrypted traffic from ${rand(v.places)}. When I decoded it, it was a video feed. Security cameras showing me, right now, typing these exact words. The timestamp on the video is from last year. `,
+                    `My neural implant glitched and I saw everything. The entire city rendered as pure data. And underneath it all, there are errors. Corrupted files. Reality itself is running on buggy code and nobody else can see it. `
+                ];
+                return rand(templates);
             }
             
-            return segment;
-        }
-        
-        function generatePatientSegment(intensity) {
-            const segments = [
-                "Five patients described the same dream this week. A black door at the end of a hallway that stretches forever. Behind it, voices calling their names. When I asked them to describe the voices, they all said the same thing: 'It sounded like you, doctor.' But I've never met these people before yesterday. ",
-                "I found my own patient file in the archives. Sessions dated three years from now. The notes describe treatments I haven't given, breakthroughs I haven't made, and a final entry: 'Patient deceased as of today. Will continue weekly sessions as scheduled.' I've been dead and treating patients simultaneously. ",
-                "One of my patients brought in a prescription bottle today. The medication doesn't exist—I checked every pharmaceutical database. But the bottle has my signature on it, my DEA number, dated two months from now. The pills inside glow faintly in darkness and hum at a frequency just below hearing. ",
-                "The therapy sessions are looping. I'll be mid-sentence and suddenly I'm back at the start of the session, but both the patient and I remember the conversation we just had. It's happening more frequently. Yesterday I lived the same hour six times with the same patient, each loop revealing new information the previous versions of us couldn't see. ",
-                "A woman came to my office claiming she's me from another timeline. She knew things—the suicide attempt I've never told anyone about, the recurring nightmare, the scar I keep hidden. She warned me about The Echo Protocol. Said they're collapsing all timelines into one and only certain minds will survive the convergence. "
-            ];
-            
-            let segment = segments[Math.floor(Math.random() * segments.length)];
-            
-            if (intensity === 'manic') {
-                segment += "I'm losing the ability to distinguish between my memories and my patients' memories. We're bleeding into each other, consciousness merging at the seams. Maybe there's only one mind experiencing itself across infinite variations. ";
+            if (pov === 'outlaw') {
+                const templates = [
+                    `The frontier doesn't follow the rules anymore. Rode into a town ${rand(v.times)} that I'd visited years ago. But this time it was different. The buildings were the same, but they'd aged backwards. Fresh paint where there was rust before. `,
+                    `This cursed gun I carry does things a gun shouldn't do. Shot a man in ${rand(v.places)} and watched the bullet travel backwards through time. Killed him yesterday. I pulled the trigger today. `,
+                    `Met a stranger who knew my name, knew my past, knew things I never told anyone. Said we'd ridden together in a timeline that doesn't exist anymore. Showed me wanted posters with my face from decades I haven't lived. `,
+                    `The ghost town appeared in a new location. Found it near ${rand(v.places)} this time. Same blood stains, same bullet holes, same ${rand(v.numbers)} graves. It's following me. Or I'm following it through space itself. `,
+                    `Dust storm came through ${rand(v.times)} that moved against the wind. Inside the dust I saw shapes—figures from the past, echoes of people long dead. And they were all looking at me like they recognized me. `,
+                    `A woman rode into camp claiming to be from the future. Said she knows how I die. Described it in perfect detail—the location, the time, the bullet that ends me. Problem is, I remember dying that way. Remember it like a dream. `,
+                    `The stars are wrong. Constellations appearing decades before they should form. The sky itself is jumping through time. Some nights I see two moons. Other nights, none at all. `,
+                    `Found a message carved into a tree near ${rand(v.places)}: "Crow—you've been here before. You'll be here again. Break the loop." But I've never seen this place in my life. Yet it feels familiar. Too familiar. `,
+                    `Shot a man in self-defense ${rand(v.times)}. Watched him die. Buried him proper. Then ${rand(v.numbers)} days later, he rode into town like nothing happened. Same man. Same face. No scar from where my bullet entered his chest. `,
+                    `The gun whispers to me now. Not in words, but in feelings. It knows things—futures that haven't happened, deaths that need dying. Like it's been passed through so many timelines it's learned to see them all. `
+                ];
+                return rand(templates);
             }
             
-            return segment;
-        }
-        
-        function generatePsychoSegment(intensity) {
-            const vicRants = [
-                "Listen, LISTEN. The UAPs they're seeing over the military bases—that's OUR tech. Reverse-engineered from Roswell in '47. The government's had anti-gravity drives for seventy f***ing years but they keep us on oil to maintain control. CONTROL is the real currency, man. Not money. Control. ",
-                "You know about the Deep Underground Military Bases, right? D.U.M.B.s. Hundreds of them connected by mag-lev trains going 2,000 mph under our feet while we sit in traffic. That's where the real government is. That's where they're building the breakaway civilization while we fight over scraps on the surface. ",
-                "Been tracking chemtrails for three years. Aluminum oxide, barium salts, strontium—verified by lab analysis. They're spraying us like cockroaches. But WHY? To reflect solar radiation? Bulls***. It's to make our bodies conductive for the 5G control grid. The nanoparticles accumulate in your brain and then—ZAP—they can beam thoughts directly into your skull. ",
-                "Fluoride in the water calcifies your pineal gland—your THIRD EYE, bro. Ancient cultures knew about this. That's why they keep us dosed. A calcified pineal gland can't perceive higher dimensions. Can't see the entities moving between worlds. Been drinking distilled water for six months and now I can see them. The shadow people. The watchers. ",
-                "Hollow Earth is REAL. Operation High Jump, 1947, Admiral Byrd flew into the polar opening and found civilizations down there. His diary was classified but it leaked. That's where the Nazis went. That's where the UFOs come from—they're not extraterrestrial, they're INTRATERRESTRIAL. Coming from INSIDE the planet. ",
-                "Bitcoin was created by the NSA. The encryption algorithm—SHA-256—was developed by the National Security Agency. Look it up. They wrote a paper about cryptocurrency in 1996. Satoshi Nakamoto is a front. It's all about building a digital cage where every transaction is tracked, recorded, forever. Cash is freedom. Crypto is a trap with neon lights. ",
-                "The Mandela Effect proves we're in the wrong timeline. CERN is opening portals every time they fire up that particle collider. Each time they punch a hole in reality, we shift. Berenstein Bears, man. It was BERENSTEIN. I remember. My memory is real and reality is fake. We're living in a corrupted copy of the original timeline. ",
-                "Every mass shooting, look at the shooters—same glazed eyes, same psychological profile, all on SSRIs, all in therapy. MK-Ultra never ended, it went underground. These are activated Manchurian candidates. Wind-up toys. The therapists are the handlers. Crisis actors, gun control legislation, divide the population—it's all scripted. ",
-                "The elites are addicted to adrenochrome—oxidized adrenaline harvested from terrified children. Look into adenochrome molecular structure. Then look at the symbolism in Hollywood, the pizza references, the coded language. It's hiding in plain sight. That's why they need the trafficking networks. That's why Epstein didn't kill himself. "
-            ];
-            
-            let segment = vicRants[Math.floor(Math.random() * vicRants.length)];
-            
-            if (intensity === 'manic') {
-                segment += "And here's the thing—here's the THING—everything I just said connects to this Obsidian Key everyone keeps talking about. Site Seventeen. The Echo Protocol. It's all the same conspiracy with different faces. The reptilians, the grays, the shadow government—they're all working together to collapse the timelines. And I'm the only one who SEES it because I'm not drugged up on fluoride and SSRIs like you sheep! ";
-            } else if (intensity === 'tense') {
-                segment += "I know how this sounds. I KNOW. But once you see the pattern, you can't unsee it. Every day I wake up and the evidence is everywhere. The symbols, the synchronicities, the way certain numbers keep appearing. They're communicating through reality itself. ";
+            if (pov === 'patient') {
+                const templates = [
+                    `${rand(v.numbers)} patients described the same dream this week. A hallway that stretches forever, a black door at the end. Behind it, voices calling their names. They all described my voice. But I've never met them before. `,
+                    `Found my own patient file in the archives ${rand(v.times)}. Sessions dated years in the future. The notes describe breakthroughs I haven't made, treatments I haven't given. The final entry: "Patient deceased. Continuing treatment as scheduled." `,
+                    `One of my patients brought in a prescription bottle today. The medication doesn't exist yet. Won't be invented for years. But the bottle has my signature, my DEA number, dated months from now. `,
+                    `The therapy sessions are looping. I'll be mid-sentence with ${rand(v.names)} and suddenly we're back at the start. But both of us remember the conversation. It's happening ${rand(v.numbers)} times per session now. `,
+                    `A woman came to my office claiming to be me from another timeline. She knew about the suicide attempt I never reported, the nightmare I've never shared, the scar I keep hidden. She warned me about The Echo Protocol. `,
+                    `My patient ${rand(v.names)} keeps describing memories that aren't theirs. They remember my childhood, my first day of medical school, my father's death. They're remembering my life. And I'm starting to remember theirs. `,
+                    `The clock in my office runs backwards sometimes. Patients arrive for appointments that haven't been scheduled. I take notes on sessions that haven't happened yet. Time in this room doesn't flow—it pools. `,
+                    `Found audio recordings of my sessions from ${rand(v.times)}. But the voices are wrong. I sound different. My patients sound different. Like we're all slightly off-frequency versions of ourselves. `,
+                    `${rand(v.names)} described a recurring dream where all my patients gather in one room and speak in unison. They tell me I'm not the therapist. I'm the patient. I've been the patient all along. `,
+                    `My reflection in the office mirror doesn't always match my movements. Sometimes it smiles when I'm not smiling. Sometimes it mouths words I can hear inside my head: "The convergence is coming. All versions become one." `
+                ];
+                return rand(templates);
             }
             
-            return segment;
+            if (pov === 'psycho') {
+                const templates = [
+                    `The chemtrails over ${rand(v.places)} were heavier than usual ${rand(v.times)}. Lab analysis confirmed: aluminum oxide, barium, strontium. They're not even hiding it anymore. They're preparing us for something. Making our bodies conductive. `,
+                    `Broke into a DUMB entrance near ${rand(v.places)}. Found documents about Project Echo. They've been running reality manipulation experiments since the Cold War. Creating parallel timelines. Testing which version of humanity survives. `,
+                    `The fluoride in the water supply increased by ${rand(v.numbers)} percent last month. I tested it myself. They're calcifying our pineal glands faster now. They don't want us seeing what's coming. Don't want us perceiving the convergence. `,
+                    `UAPs over the military bases ${rand(v.times)}. Same flight patterns as always. Anti-gravity tech we reverse-engineered in '47. But this time they're different. Moving in ways that defy even that physics. Like they're glitching through reality. `,
+                    `Found evidence linking ${rand(v.names)} to the shadow government. Bank records, encrypted communications, connections to Obsidian Key Corporation. It's all there. They're one of the architects. One of the time manipulators. `,
+                    `The Mandela Effect is accelerating. ${rand(v.numbers)} major reality shifts this month alone. CERN is punching holes in spacetime faster now. Each particle collision tears us further from the original timeline. We're in a corrupted copy. `,
+                    `Bitcoin wallets are being drained from accounts that don't exist yet. The NSA's cryptocurrency is starting to bleed through timelines. Money moving backwards and forwards through time. The digital cage is closing. `,
+                    `Crisis actors appeared at ${rand(v.places)} ${rand(v.times)}. Same faces I've seen at ${rand(v.numbers)} other events. They're recycling them now. Getting sloppy. Or maybe they want us to notice. Want us to wake up to the scripted reality. `,
+                    `The symbols are everywhere once you know how to look. Hidden in corporate logos, government seals, architectural designs. All pointing to the same thing: Site Seventeen. The convergence point. Where all timelines collapse into one. `,
+                    `My meth supply regenerated again ${rand(v.times)}. Fourth time this month. That's when I realized—time is looping. I'm living the same days over and over. The only one who remembers. The only one who can see the pattern. `
+                ];
+                return rand(templates);
+            }
+            
+            return "Something strange is happening and I can't explain it yet. ";
         }
         
         function generateCliffhanger(pov, intensity) {
+            const intensityModifiers = {
+                manic: " And I finally understand—it's all connected. Every clue, every anomaly, every impossible event. They're fragments of the same conspiracy threading through collapsing timelines.",
+                tense: " The pattern is becoming clear. Something is unraveling. Something big.",
+                calm: " I need to investigate this further. There has to be an explanation."
+            };
+            
             const cliffhangers = {
                 detective: [
-                    "And then I found it. A photograph in the evidence locker that shouldn't exist. It's me, twenty years younger, standing at Site Seventeen. A place I've never been. With people I've never met. Except... I remember taking this picture. I remember every second of that day.",
-                    "The woman in the red coat finally turned to look at me. Our eyes met. And in that moment I realized—she's not following me. She's a version of me from another timeline, trying to warn herself. Trying to warn ME. The symbol carved in the victims' skin... I've seen it before. On my own body, in reflections I don't remember seeing."
+                    "Then I found a photograph in my own apartment. Me, at Site Seventeen, with people I don't recognize. But I remember taking this picture. I remember every detail of that day. A day I never lived.",
+                    "The woman in red finally spoke to me. She said: 'Detective Kane. You've already solved this case. Six times. And each time, you forget. This is loop seven. Try to remember.' Then she vanished.",
+                    "I discovered my own name in the victim list. Marcus Kane. Time of death: tomorrow. Cause: suicide. But I'm still alive. Still breathing. Unless I'm not. Unless this is after."
                 ],
                 hacker: [
-                    "Then the AI sent me a message. Just three words: 'Hello, Zara. Again.' The timestamp on the message is from 2015, but I didn't get my neural implant until 2023. Someone's been talking to me across time. Someone who knows what I'm going to do before I do it. Or... someone who's already lived this moment before.",
-                    "The corrupted files finally decoded. Inside was a video. Me, sitting exactly where I am now, saying these exact words. Then the video-me looks directly at the camera and whispers: 'This is the last loop. Stop the convergence or we all die. Again.'"
+                    "Then the AI sent me a message. Three words: 'Hello again, Zara.' The timestamp shows it was sent in 2015. Eight years before I got my neural implant. Before I existed online.",
+                    "The files finally decoded. Inside was a video of me, sitting exactly where I am now, saying everything I just said. Then video-me looks at the camera and whispers: 'This is loop seventy-three. You're running out of time.'",
+                    "My neural implant crashed and when it rebooted, I saw something. For just a moment, I could see the source code of reality. And there were comments in the code. Comments from me. From iterations of me I don't remember being."
                 ],
                 outlaw: [
-                    "The stranger walked into the saloon. Same face from the wanted posters spanning a hundred years. He sat down across from me, smiled, and said: 'Silas Crow. You're early this time. Usually you don't figure it out until after I kill you.' Then he drew. And I realized I've already died here. I remember the bullet. I remember dying. I'm remembering the future.",
-                    "The ghost town appeared again, but this time it was different. This time there were five graves instead of four. The newest one had a fresh headstone. My name. Died today. Except I'm still breathing. Still standing here reading my own grave. Unless... unless this is the afterlife. Unless I died and this entire loop is hell."
+                    "The stranger walked in. Same face from the wanted posters spanning a century. He smiled and said: 'Silas Crow. You're early this cycle. Usually you don't figure it out until after I kill you.' Then he drew.",
+                    "Found a new grave in the ghost town. Fresh headstone with my name. Death date: today. But I'm standing here reading it. Unless I'm not. Unless I already died and this loop is the afterlife.",
+                    "The gun finally spoke in words instead of feelings. It said: 'You've carried me through seventeen timelines, Crow. Killed the same men in different ways. This time, try something new. Try not killing anyone.' But it's too late. I already did."
                 ],
                 patient: [
-                    "Then all my patients showed up at once. Every single one. They surrounded me in the office and spoke in unison: 'Dr. Cross. You have to remember. You're not the therapist. You're the patient. You've been the patient all along. Site Seventeen. The Echo Protocol. You designed it. And now it's killing us all.'",
-                    "I looked in the mirror after the session. But the reflection didn't move when I moved. It smiled at me and mouthed words I could somehow hear inside my head: 'The convergence is happening. All timelines merging. All versions of you becoming one. Can you feel us yet, Emma? Can you feel yourself dying in a thousand different ways?'"
+                    "All my patients showed up at once. Every single one. They surrounded my office and spoke in perfect unison: 'Dr. Cross. You're not the therapist. You're the patient. You've been the patient all seventy loops. Remember.'",
+                    "My reflection moved independently. It smiled at me and mouthed words I could hear in my head: 'Emma, the convergence is happening. All timelines merging. Can you feel the other versions of yourself dying?'",
+                    "Found a letter addressed to me in my desk. In my own handwriting. It said: 'Emma, you write this same letter every loop. You never read it in time. Site Seventeen. The Echo Protocol. You designed it. You started this. Now you have to end it.'"
                 ],
                 psycho: [
-                    "And that's when the walls started bleeding black. Not paint. Not oil. Something else. Living darkness seeping through reality like the simulation is crashing. I touched it and suddenly I could see EVERYTHING. Every timeline. Every version of me. And in every single one, I'm screaming the truth and nobody listens. Because the truth is a weapon and they don't want us armed.",
-                    "The meth bag regenerated again. Third time today. That's when I understood—it's not regenerating. Time is looping and I'm the only one who remembers. I've lived this day five thousand times. The conspiracies I keep ranting about? They're memories. From previous loops. The reptilians, the chemtrails, the hollow earth—all real, all tested, all failed. And The Echo Protocol is what keeps resetting everything when humanity gets too close to the truth."
+                    "The walls started bleeding black liquid. Not blood. Something else. Living code seeping through reality. I touched it and suddenly I could see everything. Every timeline. Every version. And in every single one, I'm the only one who sees the truth.",
+                    "The shadow government finally contacted me. A voice in my head that wasn't my thoughts. It said: 'Vic Russo. You see too much. But seeing isn't enough. You need to remember. Remember who you were before we reset you.'",
+                    "Realized the conspiracy theories aren't theories. They're memories. From previous loops. The reptilians, the chemtrails, the hollow earth—all real. All tested. All failed. And The Echo Protocol keeps resetting reality when we get too close to breaking free."
                 ]
             };
             
             const options = cliffhangers[pov];
-            return options[Math.floor(Math.random() * options.length)];
+            let ending = options[Math.floor(Math.random() * options.length)];
+            ending += intensityModifiers[intensity];
+            return ending;
         }
         
-        function displayVoiceOver(text, pov) {
-            document.getElementById('chapterInfo').textContent = `Episode #${episodeCount} - ${characters[pov].name}`;
-            document.getElementById('voText').textContent = text;
+        function displayEpisode(episode) {
+            const feed = document.getElementById('blogFeed');
+            if (feed.querySelector('.placeholder')) {
+                feed.innerHTML = '';
+            }
             
-            const words = text.split(' ').length;
-            const minutes = Math.floor(words / 180);
-            const seconds = Math.floor(((words / 180) - minutes) * 60);
+            const notesHTML = episode.notes ? `<div class="episode-notes">${episode.notes}</div>` : '';
             
+            const card = document.createElement('div');
+            card.className = 'episode-card';
+            card.innerHTML = `
+                <button class="copy-btn" onclick="copyEpisode(${episode.number})">📋 COPY</button>
+                <div class="episode-header">
+                    <div class="episode-title">Episode #${episode.number}: ${episode.character}</div>
+                    <div class="episode-meta">
+                        ${episode.words} words | ${Math.floor(episode.words / 180)}:${String(Math.floor(((episode.words / 180) % 1) * 60)).padStart(2, '0')} min<br>
+                        ${episode.timestamp}
+                    </div>
+                </div>
+                ${notesHTML}
+                <div class="episode-text">${episode.text}</div>
+            `;
+            
+            feed.insertBefore(card, feed.firstChild);
+        }
+        
+        function updateStats() {
             document.getElementById('episodeNum').textContent = episodeCount;
-            document.getElementById('wordCount').textContent = words;
-            document.getElementById('readTime').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            const totalWords = allEpisodes.reduce((sum, ep) => sum + ep.words, 0);
+            document.getElementById('totalWords').textContent = totalWords;
+            
+            const totalMinutes = Math.floor(totalWords / 180);
+            const totalSeconds = Math.floor(((totalWords / 180) % 1) * 60);
+            document.getElementById('totalTime').textContent = `${totalMinutes}:${String(totalSeconds).padStart(2, '0')}`;
         }
         
-        function copyText() {
-            const text = document.getElementById('voText').textContent;
-            navigator.clipboard.writeText(text).then(() => alert('📋 Copied!'));
+        function copyEpisode(num) {
+            const episode = allEpisodes.find(ep => ep.number === num);
+            if (episode) {
+                const notesSection = episode.notes ? `Story Notes: ${episode.notes}\n\n` : '';
+                const text = `${notesSection}${episode.text}`;
+                navigator.clipboard.writeText(text).then(() => alert('📋 Episode copied!'));
+            }
         }
         
         function copyAll() {
-            const full = allEpisodes.map((ep, i) => 
-                `EPISODE ${ep.number}\n${ep.character}\n\n${ep.text}\n\n${'='.repeat(80)}\n\n`
-            ).join('');
+            const full = allEpisodes.reverse().map(ep => {
+                const notesSection = ep.notes ? `Story Notes: ${ep.notes}\n\n` : '';
+                return `EPISODE ${ep.number}\n${ep.character}\n${ep.timestamp}\n\n${notesSection}${ep.text}\n\n${'='.repeat(80)}\n\n`;
+            }).join('');
+            allEpisodes.reverse(); // Restore order
             navigator.clipboard.writeText(full).then(() => alert('📋 All episodes copied!'));
         }
         
-        function downloadCurrent() {
-            const ep = allEpisodes[allEpisodes.length - 1];
-            const blob = new Blob([`EPISODE ${ep.number}\n${ep.character}\n\n${ep.text}`], {type: 'text/plain'});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `episode-${ep.number}.txt`;
-            a.click();
-        }
-        
         function downloadAll() {
-            const full = allEpisodes.map(ep => 
-                `EPISODE ${ep.number}\n${ep.character}\n\n${ep.text}\n\n${'='.repeat(80)}\n\n`
-            ).join('');
+            const full = allEpisodes.reverse().map(ep => {
+                const notesSection = ep.notes ? `Story Notes: ${ep.notes}\n\n` : '';
+                return `EPISODE ${ep.number}\n${ep.character}\n${ep.timestamp}\n\n${notesSection}${ep.text}\n\n${'='.repeat(80)}\n\n`;
+            }).join('');
+            allEpisodes.reverse(); // Restore order
             const blob = new Blob([full], {type: 'text/plain'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -503,37 +607,13 @@
             a.click();
         }
         
-        function saveProgress() {
-            localStorage.setItem('convergenceVO', JSON.stringify({episodeCount, allEpisodes, pastEvents}));
-            alert('💾 Saved!');
-        }
-        
-        function loadProgress() {
-            const data = localStorage.getItem('convergenceVO');
-            if (data) {
-                const loaded = JSON.parse(data);
-                episodeCount = loaded.episodeCount;
-                allEpisodes = loaded.allEpisodes;
-                pastEvents = loaded.pastEvents;
-                if (allEpisodes.length > 0) {
-                    const last = allEpisodes[allEpisodes.length - 1];
-                    displayVoiceOver(last.text, Object.keys(characters).find(k => characters[k].name === last.character));
-                }
-                alert('📖 Loaded!');
-            } else {
-                alert('❌ No save found!');
-            }
-        }
-        
         function reset() {
-            if (confirm('Reset all episodes?')) {
+            if (confirm('Reset entire story? This cannot be undone.')) {
                 episodeCount = 0;
                 allEpisodes = [];
-                pastEvents = [];
-                document.getElementById('voText').textContent = 'Click "GENERATE VOICE-OVER" to create your first episode...';
-                document.getElementById('episodeNum').textContent = '0';
-                document.getElementById('wordCount').textContent = '0';
-                document.getElementById('readTime').textContent = '0:00';
+                usedSegments = { detective: [], hacker: [], outlaw: [], patient: [], psycho: [] };
+                document.getElementById('blogFeed').innerHTML = '<div class="placeholder">Click "GENERATE VOICE-OVER" to begin your story...</div>';
+                updateStats();
             }
         }
     </script>
