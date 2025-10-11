@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Convergence - Voice Over Generator</title>
+    <title>The Convergence - AI Novel Builder</title>
     <style>
         body {
             font-family: 'Georgia', serif;
@@ -14,7 +14,7 @@
             min-height: 100vh;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: #1a1a1a;
             border: 3px solid #ffffff;
@@ -34,34 +34,33 @@
             color: #999;
             margin-bottom: 30px;
         }
-        .controls {
+        .workflow {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 20px;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
             margin-bottom: 30px;
-            padding: 25px;
+        }
+        .panel {
             border: 2px solid #ffffff;
-            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 8px;
         }
-        .notes-section {
-            grid-column: span 3;
-            display: flex;
-            flex-direction: column;
+        .panel-title {
+            font-size: 1.3em;
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-align: center;
         }
-        .notes-input {
-            padding: 12px;
-            border: 2px solid #ffffff;
-            background: #0a0a0a;
-            color: #e0e0e0;
-            font-family: 'Georgia', serif;
-            font-size: 1em;
-            min-height: 80px;
-            resize: vertical;
-            border-radius: 4px;
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
         }
-        .notes-input::placeholder {
-            color: #555;
+        .control-full {
+            grid-column: span 2;
         }
         .control-group {
             display: flex;
@@ -73,28 +72,71 @@
             color: #ffffff;
             font-size: 0.9em;
         }
-        select {
+        select, textarea {
             padding: 10px;
             border: 2px solid #ffffff;
             background: #0a0a0a;
             color: #e0e0e0;
-            font-family: inherit;
+            font-family: 'Georgia', serif;
             cursor: pointer;
             border-radius: 4px;
         }
-        .generate-btn {
-            grid-column: span 3;
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+            font-size: 0.95em;
+        }
+        textarea::placeholder {
+            color: #555;
+        }
+        .prompt-display {
+            background: #0a0a0a;
+            border: 2px solid #ffffff;
             padding: 20px;
-            font-size: 1.3em;
+            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 0.9em;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+        }
+        .episode-input {
+            width: 100%;
+            min-height: 300px;
+            padding: 15px;
+            border: 2px solid #ffffff;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            font-family: 'Georgia', serif;
+            font-size: 1em;
+            resize: vertical;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .btn {
+            padding: 15px;
+            font-size: 1.1em;
             background: #ffffff;
             color: #000000;
             border: none;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s;
+            border-radius: 4px;
         }
-        .generate-btn:hover {
+        .btn:hover {
             background: #cccccc;
+        }
+        .btn-secondary {
+            background: #1a1a1a;
+            color: #e0e0e0;
+            border: 2px solid #ffffff;
+        }
+        .btn-secondary:hover {
+            background: #ffffff;
+            color: #000000;
         }
         .stats {
             display: flex;
@@ -102,6 +144,7 @@
             margin: 20px 0;
             padding: 15px;
             background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #ffffff;
         }
         .stat-item {
             text-align: center;
@@ -211,53 +254,32 @@
             color: #777;
             font-style: italic;
         }
+        .instruction {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ffffff;
+            font-size: 0.9em;
+            color: #ccc;
+        }
+        .step-number {
+            display: inline-block;
+            background: #ffffff;
+            color: #000000;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 25px;
+            font-weight: bold;
+            margin-right: 8px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🎙️ THE CONVERGENCE</h1>
-        <div class="subtitle">Voice-Over Novel Generator - 1-5 Minute Episodes</div>
-        
-        <div class="controls">
-            <div class="control-group">
-                <label for="povSelector">Character POV:</label>
-                <select id="povSelector">
-                    <option value="detective">Marcus Kane - Detective</option>
-                    <option value="hacker">Zara Chen - Hacker</option>
-                    <option value="outlaw">Silas Crow - Outlaw</option>
-                    <option value="patient">Dr. Emma Cross - Psychologist</option>
-                    <option value="psycho">Vic "The Animal" Russo - Psycho</option>
-                    <option value="auto">AUTO - Rotate All</option>
-                </select>
-            </div>
-            
-            <div class="control-group">
-                <label for="lengthSelector">Voice-Over Length:</label>
-                <select id="lengthSelector">
-                    <option value="1">1 Minute (~180 words)</option>
-                    <option value="2">2 Minutes (~360 words)</option>
-                    <option value="3" selected>3 Minutes (~540 words)</option>
-                    <option value="4">4 Minutes (~720 words)</option>
-                    <option value="5">5 Minutes (~900 words)</option>
-                </select>
-            </div>
-            
-            <div class="control-group">
-                <label for="intensitySelector">Intensity:</label>
-                <select id="intensitySelector">
-                    <option value="calm">Calm Discovery</option>
-                    <option value="tense">Tense Paranoia</option>
-                    <option value="manic">Manic Breakdown</option>
-                </select>
-            </div>
-            
-            <div class="notes-section">
-                <label for="storyNotes">Story Notes (optional - guide the episode content):</label>
-                <textarea id="storyNotes" class="notes-input" placeholder="Enter plot points, character details, locations, or any notes to influence this episode... (e.g., 'Kane discovers a hidden room', 'Zara meets an informant', 'flashback to childhood')"></textarea>
-            </div>
-            
-            <button class="generate-btn" onclick="generateVoiceOver()">🎙️ GENERATE VOICE-OVER</button>
-        </div>
+        <div class="subtitle">AI-Powered Novel Builder - Use with Claude or ChatGPT</div>
         
         <div class="stats">
             <div class="stat-item">
@@ -274,6 +296,88 @@
             </div>
         </div>
         
+        <div class="workflow">
+            <div class="panel">
+                <div class="panel-title">STEP 1: Generate AI Prompt</div>
+                
+                <div class="instruction">
+                    <span class="step-number">1</span>Configure your episode settings below
+                </div>
+                
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="povSelector">Character POV:</label>
+                        <select id="povSelector">
+                            <option value="detective">Marcus Kane - Detective</option>
+                            <option value="hacker">Zara Chen - Hacker</option>
+                            <option value="outlaw">Silas Crow - Outlaw</option>
+                            <option value="patient">Dr. Emma Cross - Psychologist</option>
+                            <option value="psycho">Vic "The Animal" Russo - Psycho</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="lengthSelector">Target Length:</label>
+                        <select id="lengthSelector">
+                            <option value="180">1 Minute (~180 words)</option>
+                            <option value="360">2 Minutes (~360 words)</option>
+                            <option value="540" selected>3 Minutes (~540 words)</option>
+                            <option value="720">4 Minutes (~720 words)</option>
+                            <option value="900">5 Minutes (~900 words)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="intensitySelector">Intensity:</label>
+                        <select id="intensitySelector">
+                            <option value="calm">Calm Discovery</option>
+                            <option value="tense">Tense Paranoia</option>
+                            <option value="manic">Manic Breakdown</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="continuitySelector">Story Continuity:</label>
+                        <select id="continuitySelector">
+                            <option value="yes">Yes - Reference past episodes</option>
+                            <option value="no">No - Fresh start</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group control-full">
+                        <label for="storyNotes">Story Direction (optional):</label>
+                        <textarea id="storyNotes" placeholder="Enter specific plot points, events, or directions for this episode..."></textarea>
+                    </div>
+                </div>
+                
+                <button class="btn" onclick="generatePrompt()" style="width: 100%; margin-bottom: 15px;">📝 GENERATE PROMPT</button>
+                
+                <div class="instruction">
+                    <span class="step-number">2</span>Copy the prompt below
+                </div>
+                
+                <div class="prompt-display" id="promptDisplay">Click "GENERATE PROMPT" to create your AI prompt...</div>
+                
+                <button class="btn btn-secondary" onclick="copyPrompt()" style="width: 100%;">📋 COPY PROMPT</button>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-title">STEP 2: Get AI Response</div>
+                
+                <div class="instruction">
+                    <span class="step-number">3</span>Paste prompt into Claude or ChatGPT
+                </div>
+                
+                <div class="instruction">
+                    <span class="step-number">4</span>Copy AI's response and paste below
+                </div>
+                
+                <textarea class="episode-input" id="episodeInput" placeholder="Paste the AI-generated episode text here..."></textarea>
+                
+                <button class="btn" onclick="saveEpisode()" style="width: 100%; margin-top: 15px;">💾 SAVE EPISODE</button>
+            </div>
+        </div>
+        
         <div class="actions">
             <button onclick="copyAll()">Copy All Episodes</button>
             <button onclick="downloadAll()">Download All</button>
@@ -281,290 +385,159 @@
         </div>
         
         <div class="blog-feed" id="blogFeed">
-            <div class="placeholder">Click "GENERATE VOICE-OVER" to begin your story...</div>
+            <div class="placeholder">Generate a prompt and save your first episode to begin...</div>
         </div>
     </div>
 
     <script>
         let episodeCount = 0;
         let allEpisodes = [];
-        let usedSegments = { detective: [], hacker: [], outlaw: [], patient: [], psycho: [] };
         
         const characters = {
             detective: {
                 name: "Marcus Kane",
+                role: "Detective",
                 intro: "My name is Marcus Kane. I'm a detective in a city that's rotting from the inside out.",
-                voice: "hardboiled"
+                voice: "Hardboiled detective noir - cynical, observant, world-weary but determined. Think classic film noir meets supernatural mystery.",
+                themes: "Reality glitches, impossible crime scenes, the symbol (circle within a circle), Site Seventeen, the woman in red, temporal anomalies in evidence"
             },
             hacker: {
                 name: "Zara Chen",
+                role: "Hacker",
                 intro: "I'm Zara Chen. I see code where others see reality, and lately the code is breaking.",
-                voice: "techno"
+                voice: "Tech-savvy, cerebral, slightly paranoid. Speaks in metaphors mixing digital and physical reality. Fast-paced internal monologue.",
+                themes: "The Echo Protocol, corrupted data, impossible AI, neural implants, timeline data, ghost servers, reality as buggy software, Obsidian Key Corporation"
             },
             outlaw: {
                 name: "Silas Crow",
+                role: "Outlaw",
                 intro: "They call me Silas Crow. This frontier has ghosts, and I'm starting to think I'm one of them.",
-                voice: "western"
+                voice: "Western/frontier style - laconic, poetic in a rough way, contemplative about death and time. Weathered storyteller.",
+                themes: "The cursed gun, time loops, the ghost town that moves locations, temporal frontier, stars in wrong constellations, dying before dying"
             },
             patient: {
                 name: "Dr. Emma Cross",
+                role: "Psychologist",
                 intro: "Dr. Emma Cross. Psychologist. But my patients are describing memories that can't exist.",
-                voice: "clinical"
+                voice: "Clinical but increasingly unsettled. Professional detachment breaking down. Precise, analytical, questioning her own sanity.",
+                themes: "Shared nightmares, therapy session loops, impossible prescriptions, her own patient file from the future, memories bleeding between patient and doctor, the black door"
             },
             psycho: {
                 name: "Vic 'The Animal' Russo",
+                role: "Conspiracy Theorist",
                 intro: "Vic Russo. They call me The Animal. I see what you sheep can't see.",
-                voice: "unhinged"
+                voice: "Manic, unhinged conspiracy theorist - rapid-fire connections, paranoid intensity, mix of actual insight and delusion. Aggressive truth-seeker.",
+                themes: "Chemtrails, fluoride, MK-Ultra, D.U.M.B.s, Mandela Effect, CERN, reptilians, time loop awareness, reality manipulation, shadow government"
             }
         };
         
-        function generateVoiceOver() {
-            episodeCount++;
-            
-            let pov = document.getElementById('povSelector').value;
-            const length = parseInt(document.getElementById('lengthSelector').value);
+        function generatePrompt() {
+            const pov = document.getElementById('povSelector').value;
+            const targetWords = parseInt(document.getElementById('lengthSelector').value);
             const intensity = document.getElementById('intensitySelector').value;
+            const continuity = document.getElementById('continuitySelector').value;
             const notes = document.getElementById('storyNotes').value.trim();
             
-            if (pov === 'auto') {
-                const povs = ['detective', 'hacker', 'outlaw', 'patient', 'psycho'];
-                pov = povs[(episodeCount - 1) % 5];
+            const char = characters[pov];
+            const nextEpisodeNum = episodeCount + 1;
+            
+            let prompt = `Write Episode #${nextEpisodeNum} of "The Convergence" - a psychological thriller about reality, time loops, and converging timelines.
+
+CHARACTER: ${char.name} (${char.role})
+VOICE/STYLE: ${char.voice}
+TARGET LENGTH: Exactly ${targetWords} words (count carefully - this is for a ${targetWords/180}-minute voice-over)
+INTENSITY: ${intensity.charAt(0).toUpperCase() + intensity.slice(1)}
+
+CHARACTER INTRO:
+${episodeCount === 0 ? `Start with: "${char.intro}"` : `Begin with: "This is ${char.name}." or similar brief reintroduction.`}
+
+RECURRING THEMES FOR THIS CHARACTER:
+${char.themes}
+
+`;
+
+            if (continuity === 'yes' && allEpisodes.length > 0) {
+                prompt += `STORY CONTINUITY:
+This is episode ${nextEpisodeNum}. Here's what has happened in previous episodes (brief summary):
+
+`;
+                const recentEpisodes = allEpisodes.slice(0, Math.min(3, allEpisodes.length));
+                recentEpisodes.forEach(ep => {
+                    prompt += `- Episode ${ep.number} (${ep.character}): ${ep.text.substring(0, 150)}...\n`;
+                });
+                
+                prompt += `\nBuild on these events naturally. Reference past discoveries or revelations when relevant, but introduce NEW developments and mysteries.\n\n`;
+            }
+
+            if (notes) {
+                prompt += `SPECIFIC DIRECTIONS FOR THIS EPISODE:
+${notes}
+
+`;
+            }
+
+            prompt += `WRITING REQUIREMENTS:
+1. Write EXACTLY ${targetWords} words (±10 words). This is critical for voice-over timing.
+2. First-person POV in ${char.name}'s distinctive voice
+3. Focus on atmosphere, mystery, and psychological tension
+4. Include specific, vivid details and imagery
+5. Build to a compelling cliffhanger or revelation
+6. The story involves: time loops, reality manipulation, The Echo Protocol (a secret project), Site Seventeen (mysterious convergence point), and timelines collapsing into one
+7. ${intensity === 'manic' ? 'Escalate paranoia and intensity - fragments of realization, reality breaking down visibly' : intensity === 'tense' ? 'Maintain constant unease - things are wrong but not yet clear how wrong' : 'Keep measured discovery - strange but investigating methodically'}
+8. Each episode should reveal something new while deepening the mystery
+9. Use sensory details - what they see, hear, feel
+10. End with a hook that demands the next episode
+
+OUTPUT FORMAT:
+Write only the episode text - no titles, no "Episode #" header, just the voice-over narrative from ${char.name}'s perspective. Make it feel like a radio drama or podcast monologue.
+
+Begin writing now:`;
+
+            document.getElementById('promptDisplay').textContent = prompt;
+        }
+        
+        function copyPrompt() {
+            const prompt = document.getElementById('promptDisplay').textContent;
+            if (prompt === "Click \"GENERATE PROMPT\" to create your AI prompt...") {
+                alert('⚠️ Generate a prompt first!');
+                return;
+            }
+            navigator.clipboard.writeText(prompt).then(() => {
+                alert('📋 Prompt copied! Paste it into Claude or ChatGPT.');
+            });
+        }
+        
+        function saveEpisode() {
+            const text = document.getElementById('episodeInput').value.trim();
+            if (!text) {
+                alert('⚠️ Please paste the AI-generated episode first!');
+                return;
             }
             
-            const targetWords = length * 180;
-            const voiceOver = createVoiceOver(pov, targetWords, intensity, notes);
+            episodeCount++;
+            const pov = document.getElementById('povSelector').value;
+            const notes = document.getElementById('storyNotes').value.trim();
+            const char = characters[pov];
             
             const episode = {
                 number: episodeCount,
                 pov: pov,
-                character: characters[pov].name,
-                text: voiceOver,
-                words: voiceOver.split(' ').length,
+                character: char.name,
+                text: text,
+                words: text.split(' ').length,
                 timestamp: new Date().toLocaleString(),
                 notes: notes
             };
             
-            allEpisodes.unshift(episode); // Add to beginning for newest first
+            allEpisodes.unshift(episode);
             displayEpisode(episode);
             updateStats();
             
-            // Clear notes after generating
+            // Clear inputs
+            document.getElementById('episodeInput').value = '';
             document.getElementById('storyNotes').value = '';
-        }
-        
-        function createVoiceOver(pov, targetWords, intensity, notes) {
-            const char = characters[pov];
-            let text = "";
-            let wordCount = 0;
-            let usedTemplatesThisEpisode = []; // Track templates used in THIS episode
             
-            // OPENING
-            if (allEpisodes.filter(ep => ep.pov === pov).length === 0) {
-                text += char.intro + " ";
-                wordCount += char.intro.split(' ').length;
-            } else {
-                const openings = [
-                    `This is ${char.name}. `,
-                    `${char.name} here. `,
-                    `Back again. ${char.name}. `,
-                    `It's me. ${char.name}. `,
-                    `${char.name} reporting. `
-                ];
-                text += openings[Math.floor(Math.random() * openings.length)];
-                wordCount += 4;
-            }
-            
-            // Add context from notes if provided
-            if (notes) {
-                text += `${notes} `;
-                wordCount += notes.split(' ').length;
-            }
-            
-            // BUILD MAIN CONTENT with unique segments - keep going until we're very close to target
-            while (wordCount < targetWords - 50) {
-                const segment = generateUniqueSegment(pov, intensity, usedTemplatesThisEpisode);
-                text += segment;
-                wordCount = text.split(' ').length;
-            }
-            
-            // ADD CLIFFHANGER
-            text += generateCliffhanger(pov, intensity);
-            wordCount = text.split(' ').length;
-            
-            // If still short, add one more segment
-            if (wordCount < targetWords) {
-                text += " " + generateUniqueSegment(pov, intensity, usedTemplatesThisEpisode);
-            }
-            
-            return text;
-        }
-        
-        function generateUniqueSegment(pov, intensity, usedTemplatesThisEpisode = []) {
-            let segment = generateSegmentContent(pov, intensity, usedTemplatesThisEpisode);
-            
-            // Track used segments to avoid immediate repeats
-            if (!usedSegments[pov]) usedSegments[pov] = [];
-            usedSegments[pov].push(segment.substring(0, 50));
-            if (usedSegments[pov].length > 20) usedSegments[pov].shift();
-            
-            return segment;
-        }
-        
-        function generateSegmentContent(pov, intensity, usedTemplatesThisEpisode = []) {
-            const variations = {
-                names: ["John", "Sarah", "Michael", "Elena", "David", "Rachel", "Thomas"],
-                places: ["the warehouse district", "downtown", "the old factory", "the pier", "the subway station"],
-                times: ["yesterday", "three days ago", "last week", "this morning", "tonight"],
-                numbers: ["three", "five", "seven", "twelve", "twenty"]
-            };
-            
-            const v = variations;
-            const rand = (arr) => arr[Math.floor(Math.random() * arr.length)];
-            
-            if (pov === 'detective') {
-                const templates = [
-                    `The case is getting stranger. Found evidence at ${rand(v.places)} that contradicts everything we know. Witness statements don't match the timeline. People seeing things that couldn't exist. `,
-                    `Another victim turned up ${rand(v.times)}. Same symbol carved into the skin—that circle within a circle. The coroner's report makes no sense. Body temperature suggests they died ${rand(v.numbers)} hours before they were killed. `,
-                    `I interviewed ${rand(v.names)} today. Claims to remember events from next week. Described a crime scene I haven't found yet. Either they're lying or time itself is breaking down. `,
-                    `The evidence locker is full of impossible items. A gun that's been fired but shows no residue. Blood samples that change DNA when you test them twice. Photographs that show different images depending on who's looking. `,
-                    `Site Seventeen keeps appearing in my investigation. Different witnesses mention it independently. A place that exists everywhere and nowhere. I'm starting to think it's not a location—it's a condition. `,
-                    `The woman in red appeared again ${rand(v.times)}. This time I got closer. She turned around and I saw her face clearly. It was familiar. Too familiar. Like looking in a mirror that shows the wrong reflection. `,
-                    `My partner doesn't remember yesterday's briefing. Claims it never happened. But I have notes, recordings, evidence we discussed. Either I'm losing my mind or reality is rewriting itself around us. `,
-                    `Found security footage from ${rand(v.places)}. Shows the same person entering the building ${rand(v.numbers)} times simultaneously. Different clothes, different ages, but the same face. The same person. `,
-                    `The murder weapon from the first case reappeared at a new crime scene. Impossible—it's been in evidence for weeks. Yet here it is again, fresh blood on the blade, used in a killing that just happened. `,
-                    `Every victim had the same final words, according to witnesses: "Tell Kane it's already too late." But how did they know my name? I never met any of them. Never spoke to them. Never existed in their lives until they died. `
-                ];
-                return pickUniqueTemplate(templates, usedTemplatesThisEpisode);
-            }
-            
-            if (pov === 'hacker') {
-                const templates = [
-                    `The network is behaving impossibly. Data packets arriving before they're sent. Server logs showing activity from IP addresses that won't exist for years. The internet is remembering the future. `,
-                    `Cracked into a government database ${rand(v.times)}. Found files about The Echo Protocol—some kind of reality manipulation project from the Cold War. The encryption is quantum-level, but the files are dated 1987. `,
-                    `My neural implant is picking up signals that shouldn't exist. Frequencies outside known physics. When I trace them back, they lead to ${rand(v.places)}. Always the same location. Always empty when I arrive. `,
-                    `Discovered an AI calling itself "${rand(v.names)}". It's been running across ${rand(v.numbers)} different servers, having conversations with itself across decades. And it knows things about me I haven't told anyone. `,
-                    `The code I'm looking at is self-modifying. It rewrites itself based on observation—genuine quantum effects in classical computing. Someone has figured out how to make software that changes when you're not looking at it. `,
-                    `Tracked anomalies back to a company called Obsidian Key Corporation. They don't exist in any registry, any database, any record. But their fingerprints are all over the darknet. Servers that pulse with data then vanish. `,
-                    `Found chat logs between users who claim to be from different timelines. They're coordinating, sharing information, trying to prevent something they call "the convergence." And my username appears in their logs from ${rand(v.times)}. `,
-                    `The backdoor I coded ${rand(v.times)} keeps changing. Every time I check it, the code is different. More efficient. More elegant. Like someone from the future is optimizing my own work. `,
-                    `Intercepted encrypted traffic from ${rand(v.places)}. When I decoded it, it was a video feed. Security cameras showing me, right now, typing these exact words. The timestamp on the video is from last year. `,
-                    `My neural implant glitched and I saw everything. The entire city rendered as pure data. And underneath it all, there are errors. Corrupted files. Reality itself is running on buggy code and nobody else can see it. `
-                ];
-                return pickUniqueTemplate(templates, usedTemplatesThisEpisode);
-            }
-            
-            if (pov === 'outlaw') {
-                const templates = [
-                    `The frontier doesn't follow the rules anymore. Rode into a town ${rand(v.times)} that I'd visited years ago. But this time it was different. The buildings were the same, but they'd aged backwards. Fresh paint where there was rust before. `,
-                    `This cursed gun I carry does things a gun shouldn't do. Shot a man in ${rand(v.places)} and watched the bullet travel backwards through time. Killed him yesterday. I pulled the trigger today. `,
-                    `Met a stranger who knew my name, knew my past, knew things I never told anyone. Said we'd ridden together in a timeline that doesn't exist anymore. Showed me wanted posters with my face from decades I haven't lived. `,
-                    `The ghost town appeared in a new location. Found it near ${rand(v.places)} this time. Same blood stains, same bullet holes, same ${rand(v.numbers)} graves. It's following me. Or I'm following it through space itself. `,
-                    `Dust storm came through ${rand(v.times)} that moved against the wind. Inside the dust I saw shapes—figures from the past, echoes of people long dead. And they were all looking at me like they recognized me. `,
-                    `A woman rode into camp claiming to be from the future. Said she knows how I die. Described it in perfect detail—the location, the time, the bullet that ends me. Problem is, I remember dying that way. Remember it like a dream. `,
-                    `The stars are wrong. Constellations appearing decades before they should form. The sky itself is jumping through time. Some nights I see two moons. Other nights, none at all. `,
-                    `Found a message carved into a tree near ${rand(v.places)}: "Crow—you've been here before. You'll be here again. Break the loop." But I've never seen this place in my life. Yet it feels familiar. Too familiar. `,
-                    `Shot a man in self-defense ${rand(v.times)}. Watched him die. Buried him proper. Then ${rand(v.numbers)} days later, he rode into town like nothing happened. Same man. Same face. No scar from where my bullet entered his chest. `,
-                    `The gun whispers to me now. Not in words, but in feelings. It knows things—futures that haven't happened, deaths that need dying. Like it's been passed through so many timelines it's learned to see them all. `
-                ];
-                return pickUniqueTemplate(templates, usedTemplatesThisEpisode);
-            }
-            
-            if (pov === 'patient') {
-                const templates = [
-                    `${rand(v.numbers)} patients described the same dream this week. A hallway that stretches forever, a black door at the end. Behind it, voices calling their names. They all described my voice. But I've never met them before. `,
-                    `Found my own patient file in the archives ${rand(v.times)}. Sessions dated years in the future. The notes describe breakthroughs I haven't made, treatments I haven't given. The final entry: "Patient deceased. Continuing treatment as scheduled." `,
-                    `One of my patients brought in a prescription bottle today. The medication doesn't exist yet. Won't be invented for years. But the bottle has my signature, my DEA number, dated months from now. `,
-                    `The therapy sessions are looping. I'll be mid-sentence with ${rand(v.names)} and suddenly we're back at the start. But both of us remember the conversation. It's happening ${rand(v.numbers)} times per session now. `,
-                    `A woman came to my office claiming to be me from another timeline. She knew about the suicide attempt I never reported, the nightmare I've never shared, the scar I keep hidden. She warned me about The Echo Protocol. `,
-                    `My patient ${rand(v.names)} keeps describing memories that aren't theirs. They remember my childhood, my first day of medical school, my father's death. They're remembering my life. And I'm starting to remember theirs. `,
-                    `The clock in my office runs backwards sometimes. Patients arrive for appointments that haven't been scheduled. I take notes on sessions that haven't happened yet. Time in this room doesn't flow—it pools. `,
-                    `Found audio recordings of my sessions from ${rand(v.times)}. But the voices are wrong. I sound different. My patients sound different. Like we're all slightly off-frequency versions of ourselves. `,
-                    `${rand(v.names)} described a recurring dream where all my patients gather in one room and speak in unison. They tell me I'm not the therapist. I'm the patient. I've been the patient all along. `,
-                    `My reflection in the office mirror doesn't always match my movements. Sometimes it smiles when I'm not smiling. Sometimes it mouths words I can hear inside my head: "The convergence is coming. All versions become one." `
-                ];
-                return pickUniqueTemplate(templates, usedTemplatesThisEpisode);
-            }
-            
-            if (pov === 'psycho') {
-                const templates = [
-                    `The chemtrails over ${rand(v.places)} were heavier than usual ${rand(v.times)}. Lab analysis confirmed: aluminum oxide, barium, strontium. They're not even hiding it anymore. They're preparing us for something. Making our bodies conductive. `,
-                    `Broke into a DUMB entrance near ${rand(v.places)}. Found documents about Project Echo. They've been running reality manipulation experiments since the Cold War. Creating parallel timelines. Testing which version of humanity survives. `,
-                    `The fluoride in the water supply increased by ${rand(v.numbers)} percent last month. I tested it myself. They're calcifying our pineal glands faster now. They don't want us seeing what's coming. Don't want us perceiving the convergence. `,
-                    `UAPs over the military bases ${rand(v.times)}. Same flight patterns as always. Anti-gravity tech we reverse-engineered in '47. But this time they're different. Moving in ways that defy even that physics. Like they're glitching through reality. `,
-                    `Found evidence linking ${rand(v.names)} to the shadow government. Bank records, encrypted communications, connections to Obsidian Key Corporation. It's all there. They're one of the architects. One of the time manipulators. `,
-                    `The Mandela Effect is accelerating. ${rand(v.numbers)} major reality shifts this month alone. CERN is punching holes in spacetime faster now. Each particle collision tears us further from the original timeline. We're in a corrupted copy. `,
-                    `Bitcoin wallets are being drained from accounts that don't exist yet. The NSA's cryptocurrency is starting to bleed through timelines. Money moving backwards and forwards through time. The digital cage is closing. `,
-                    `Crisis actors appeared at ${rand(v.places)} ${rand(v.times)}. Same faces I've seen at ${rand(v.numbers)} other events. They're recycling them now. Getting sloppy. Or maybe they want us to notice. Want us to wake up to the scripted reality. `,
-                    `The symbols are everywhere once you know how to look. Hidden in corporate logos, government seals, architectural designs. All pointing to the same thing: Site Seventeen. The convergence point. Where all timelines collapse into one. `,
-                    `My meth supply regenerated again ${rand(v.times)}. Fourth time this month. That's when I realized—time is looping. I'm living the same days over and over. The only one who remembers. The only one who can see the pattern. `
-                ];
-                return pickUniqueTemplate(templates, usedTemplatesThisEpisode);
-            }
-            
-            return "Something strange is happening and I can't explain it yet. ";
-        }
-        
-        function pickUniqueTemplate(templates, usedTemplatesThisEpisode) {
-            // Get available template indices
-            let availableIndices = [];
-            for (let i = 0; i < templates.length; i++) {
-                if (!usedTemplatesThisEpisode.includes(i)) {
-                    availableIndices.push(i);
-                }
-            }
-            
-            // If all templates used, reset for this episode
-            if (availableIndices.length === 0) {
-                availableIndices = Array.from({length: templates.length}, (_, i) => i);
-                usedTemplatesThisEpisode.length = 0; // Clear the array
-            }
-            
-            // Pick random available template
-            const chosenIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
-            usedTemplatesThisEpisode.push(chosenIndex);
-            
-            return templates[chosenIndex];
-        }
-        
-        function generateCliffhanger(pov, intensity) {
-            const intensityModifiers = {
-                manic: " And I finally understand—it's all connected. Every clue, every anomaly, every impossible event. They're fragments of the same conspiracy threading through collapsing timelines.",
-                tense: " The pattern is becoming clear. Something is unraveling. Something big.",
-                calm: " I need to investigate this further. There has to be an explanation."
-            };
-            
-            const cliffhangers = {
-                detective: [
-                    "Then I found a photograph in my own apartment. Me, at Site Seventeen, with people I don't recognize. But I remember taking this picture. I remember every detail of that day. A day I never lived.",
-                    "The woman in red finally spoke to me. She said: 'Detective Kane. You've already solved this case. Six times. And each time, you forget. This is loop seven. Try to remember.' Then she vanished.",
-                    "I discovered my own name in the victim list. Marcus Kane. Time of death: tomorrow. Cause: suicide. But I'm still alive. Still breathing. Unless I'm not. Unless this is after."
-                ],
-                hacker: [
-                    "Then the AI sent me a message. Three words: 'Hello again, Zara.' The timestamp shows it was sent in 2015. Eight years before I got my neural implant. Before I existed online.",
-                    "The files finally decoded. Inside was a video of me, sitting exactly where I am now, saying everything I just said. Then video-me looks at the camera and whispers: 'This is loop seventy-three. You're running out of time.'",
-                    "My neural implant crashed and when it rebooted, I saw something. For just a moment, I could see the source code of reality. And there were comments in the code. Comments from me. From iterations of me I don't remember being."
-                ],
-                outlaw: [
-                    "The stranger walked in. Same face from the wanted posters spanning a century. He smiled and said: 'Silas Crow. You're early this cycle. Usually you don't figure it out until after I kill you.' Then he drew.",
-                    "Found a new grave in the ghost town. Fresh headstone with my name. Death date: today. But I'm standing here reading it. Unless I'm not. Unless I already died and this loop is the afterlife.",
-                    "The gun finally spoke in words instead of feelings. It said: 'You've carried me through seventeen timelines, Crow. Killed the same men in different ways. This time, try something new. Try not killing anyone.' But it's too late. I already did."
-                ],
-                patient: [
-                    "All my patients showed up at once. Every single one. They surrounded my office and spoke in perfect unison: 'Dr. Cross. You're not the therapist. You're the patient. You've been the patient all seventy loops. Remember.'",
-                    "My reflection moved independently. It smiled at me and mouthed words I could hear in my head: 'Emma, the convergence is happening. All timelines merging. Can you feel the other versions of yourself dying?'",
-                    "Found a letter addressed to me in my desk. In my own handwriting. It said: 'Emma, you write this same letter every loop. You never read it in time. Site Seventeen. The Echo Protocol. You designed it. You started this. Now you have to end it.'"
-                ],
-                psycho: [
-                    "The walls started bleeding black liquid. Not blood. Something else. Living code seeping through reality. I touched it and suddenly I could see everything. Every timeline. Every version. And in every single one, I'm the only one who sees the truth.",
-                    "The shadow government finally contacted me. A voice in my head that wasn't my thoughts. It said: 'Vic Russo. You see too much. But seeing isn't enough. You need to remember. Remember who you were before we reset you.'",
-                    "Realized the conspiracy theories aren't theories. They're memories. From previous loops. The reptilians, the chemtrails, the hollow earth—all real. All tested. All failed. And The Echo Protocol keeps resetting reality when we get too close to breaking free."
-                ]
-            };
-            
-            const options = cliffhangers[pov];
-            let ending = options[Math.floor(Math.random() * options.length)];
-            ending += intensityModifiers[intensity];
-            return ending;
+            alert(`✅ Episode #${episodeCount} saved!`);
         }
         
         function displayEpisode(episode) {
@@ -614,20 +587,28 @@
         }
         
         function copyAll() {
+            if (allEpisodes.length === 0) {
+                alert('⚠️ No episodes to copy!');
+                return;
+            }
             const full = allEpisodes.reverse().map(ep => {
                 const notesSection = ep.notes ? `Story Notes: ${ep.notes}\n\n` : '';
                 return `EPISODE ${ep.number}\n${ep.character}\n${ep.timestamp}\n\n${notesSection}${ep.text}\n\n${'='.repeat(80)}\n\n`;
             }).join('');
-            allEpisodes.reverse(); // Restore order
+            allEpisodes.reverse();
             navigator.clipboard.writeText(full).then(() => alert('📋 All episodes copied!'));
         }
         
         function downloadAll() {
+            if (allEpisodes.length === 0) {
+                alert('⚠️ No episodes to download!');
+                return;
+            }
             const full = allEpisodes.reverse().map(ep => {
                 const notesSection = ep.notes ? `Story Notes: ${ep.notes}\n\n` : '';
                 return `EPISODE ${ep.number}\n${ep.character}\n${ep.timestamp}\n\n${notesSection}${ep.text}\n\n${'='.repeat(80)}\n\n`;
             }).join('');
-            allEpisodes.reverse(); // Restore order
+            allEpisodes.reverse();
             const blob = new Blob([full], {type: 'text/plain'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -640,8 +621,10 @@
             if (confirm('Reset entire story? This cannot be undone.')) {
                 episodeCount = 0;
                 allEpisodes = [];
-                usedSegments = { detective: [], hacker: [], outlaw: [], patient: [], psycho: [] };
-                document.getElementById('blogFeed').innerHTML = '<div class="placeholder">Click "GENERATE VOICE-OVER" to begin your story...</div>';
+                document.getElementById('blogFeed').innerHTML = '<div class="placeholder">Generate a prompt and save your first episode to begin...</div>';
+                document.getElementById('episodeInput').value = '';
+                document.getElementById('storyNotes').value = '';
+                document.getElementById('promptDisplay').textContent = 'Click "GENERATE PROMPT" to create your AI prompt...';
                 updateStats();
             }
         }
