@@ -459,6 +459,31 @@
             color: var(--gold-color);
         }
 
+        .news-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,255,162,0.3);
+        }
+
+        .news-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .news-card:hover img {
+            transform: scale(1.05);
+        }
+
         .floating-btn {
             background: var(--gradient-primary);
             color: white;
@@ -716,7 +741,7 @@
                     <div>Status</div>
                 </div>
             </div>
-            <div id="newsContainer" style="display: grid; gap: 1rem; margin-top: 2rem;">
+            <div id="newsContainer" style="margin-top: 2rem;">
                 <div style="text-align: center; padding: 2rem; color: var(--primary-color);">Loading news...</div>
             </div>
         </div>
@@ -1134,56 +1159,64 @@
                 description: "Rockstar Games has officially confirmed that Grand Theft Auto VI will launch in Spring 2026, ending years of speculation.",
                 url: "https://www.rockstargames.com/gta-vi",
                 source: { name: "Rockstar Games" },
-                publishedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()
+                publishedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+                urlToImage: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=800&h=450&fit=crop"
             },
             {
                 title: "Vice City Returns: What We Know About GTA 6's Setting",
                 description: "A return to Vice City has been confirmed, with a massive open world spanning multiple cities and rural areas.",
                 url: "https://www.ign.com/gta6",
                 source: { name: "IGN" },
-                publishedAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString()
+                publishedAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
+                urlToImage: "https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&h=450&fit=crop"
             },
             {
                 title: "GTA 6 Features Two Playable Protagonists",
                 description: "For the first time in GTA history outside of GTA V, players will control two main characters including the series' first female protagonist.",
                 url: "https://www.gamespot.com/gta6",
                 source: { name: "GameSpot" },
-                publishedAt: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString()
+                publishedAt: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
+                urlToImage: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&h=450&fit=crop"
             },
             {
                 title: "Next-Gen Graphics: GTA 6 Pushes Technical Boundaries",
                 description: "Rockstar's RAGE engine has been completely overhauled for GTA 6, promising unprecedented visual fidelity.",
                 url: "https://www.eurogamer.net/gta6",
                 source: { name: "Eurogamer" },
-                publishedAt: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString()
+                publishedAt: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
+                urlToImage: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&h=450&fit=crop"
             },
             {
                 title: "GTA 6 Online Mode Details Emerge",
                 description: "Reports suggest GTA 6's online component will feature seamless single-player to multiplayer transitions.",
                 url: "https://www.polygon.com/gta6",
                 source: { name: "Polygon" },
-                publishedAt: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString()
+                publishedAt: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString(),
+                urlToImage: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&h=450&fit=crop"
             },
             {
                 title: "Pre-Order Information Coming Soon",
                 description: "Rockstar announces that pre-order details for GTA 6 will be revealed in the coming months.",
                 url: "https://www.rockstargames.com/gta-vi",
                 source: { name: "Rockstar Games" },
-                publishedAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+                publishedAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+                urlToImage: "https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=800&h=450&fit=crop"
             },
             {
                 title: "GTA 6 Map Size Reportedly Largest in Series",
                 description: "Leaks suggest the GTA 6 map could be significantly larger than GTA V, with more diverse environments.",
                 url: "https://www.kotaku.com/gta6",
                 source: { name: "Kotaku" },
-                publishedAt: new Date(Date.now() - 30 * 60 * 60 * 1000).toISOString()
+                publishedAt: new Date(Date.now() - 30 * 60 * 60 * 1000).toISOString(),
+                urlToImage: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=800&h=450&fit=crop"
             },
             {
                 title: "Realism Features: Weather and NPC AI Improvements",
                 description: "GTA 6 will feature dynamic weather systems and revolutionary NPC artificial intelligence.",
                 url: "https://www.pcgamer.com/gta6",
                 source: { name: "PC Gamer" },
-                publishedAt: new Date(Date.now() - 36 * 60 * 60 * 1000).toISOString()
+                publishedAt: new Date(Date.now() - 36 * 60 * 60 * 1000).toISOString(),
+                urlToImage: "https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?w=800&h=450&fit=crop"
             }
         ];
 
@@ -1220,18 +1253,38 @@
         function displayNews(articles, container) {
             const valid = articles.filter(a => a.title && a.title !== '[Removed]');
             
+            container.style.display = 'grid';
+            container.style.gridTemplateColumns = 'repeat(auto-fill, minmax(320px, 1fr))';
+            container.style.gap = '1.5rem';
+            
             container.innerHTML = valid.slice(0, 10).map(article => {
                 const timeAgo = getTimeAgo(new Date(article.publishedAt));
                 const source = article.source?.name || 'Source';
+                const imageUrl = article.urlToImage || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&h=450&fit=crop';
                 
                 return `
-                    <article style="background: var(--card-bg); border-radius: 12px; padding: 1.5rem; border-left: 4px solid var(--primary-color); cursor: pointer; border: 1px solid var(--border-color);" 
-                             onclick="window.open('${article.url}', '_blank')">
-                        <h3 style="color: var(--text-color); margin-bottom: 0.5rem;">${article.title}</h3>
-                        <div style="color: var(--primary-color); font-size: 0.8rem; margin-bottom: 1rem;">
-                            <span>${source}</span> • <span style="color: rgba(255,255,255,0.6);">${timeAgo}</span>
+                    <article style="background: var(--card-bg); border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid var(--border-color); transition: all 0.3s ease;" 
+                             onclick="window.open('${article.url}', '_blank')"
+                             onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,255,162,0.3)';"
+                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                        <div style="position: relative; width: 100%; padding-top: 56.25%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); overflow: hidden;">
+                            <img src="${imageUrl}" 
+                                 alt="${article.title}"
+                                 style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"
+                                 onerror="this.src='https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&h=450&fit=crop'">
+                            <div style="position: absolute; bottom: 0.5rem; right: 0.5rem; background: rgba(0,0,0,0.8); color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">
+                                📰 NEWS
+                            </div>
                         </div>
-                        <p style="color: var(--text-color); opacity: 0.8; line-height: 1.5;">${article.description || 'Click to read more.'}</p>
+                        <div style="padding: 1rem;">
+                            <h3 style="color: var(--text-color); margin-bottom: 0.5rem; font-size: 1rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${article.title}</h3>
+                            <div style="color: var(--primary-color); font-size: 0.75rem; margin-bottom: 0.5rem; font-weight: 600;">
+                                ${source}
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: rgba(255,255,255,0.6);">
+                                <span>🕒 ${timeAgo}</span>
+                            </div>
+                        </div>
                     </article>
                 `;
             }).join('');
