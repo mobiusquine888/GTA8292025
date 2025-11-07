@@ -803,3 +803,21 @@
             });
             
             // Auto-refresh every 5 minutes
+            setInterval(() => {
+                fetchNews();
+                fetchYouTube();
+                fetchReddit();
+                
+                const now = new Date();
+                document.getElementById('lastUpdated').textContent = now.toLocaleTimeString('en-US', { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                });
+            }, 300000); // 5 minutes
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
