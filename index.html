@@ -975,7 +975,7 @@
 
     <script>
         const API_CONFIG = {
-            news: '22ae24fcb78544a1977241e1319d4a0b',
+            news: '9ba601680ecc4958a5d11bcda349941b',
             youtube: 'AIzaSyB1Hx3EJD1N_jyJ01E131pUA3RqZvLNOZU'
         };
 
@@ -1154,70 +1154,56 @@
         }
 
         const mockNewsArticles = [
-            {
-                title: "GTA 6 Release Date Confirmed for Spring 2026",
-                description: "Rockstar Games has officially confirmed that Grand Theft Auto VI will launch in Spring 2026, ending years of speculation.",
-                url: "https://www.rockstargames.com/gta-vi",
-                source: { name: "Rockstar Games" },
-                publishedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-                urlToImage: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=800&h=450&fit=crop"
-            },
-            {
-                title: "Vice City Returns: What We Know About GTA 6's Setting",
-                description: "A return to Vice City has been confirmed, with a massive open world spanning multiple cities and rural areas.",
-                url: "https://www.ign.com/gta6",
-                source: { name: "IGN" },
-                publishedAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
-                urlToImage: "https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&h=450&fit=crop"
-            },
-            {
-                title: "GTA 6 Features Two Playable Protagonists",
-                description: "For the first time in GTA history outside of GTA V, players will control two main characters including the series' first female protagonist.",
-                url: "https://www.gamespot.com/gta6",
-                source: { name: "GameSpot" },
-                publishedAt: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
-                urlToImage: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&h=450&fit=crop"
-            },
-            {
-                title: "Next-Gen Graphics: GTA 6 Pushes Technical Boundaries",
-                description: "Rockstar's RAGE engine has been completely overhauled for GTA 6, promising unprecedented visual fidelity.",
-                url: "https://www.eurogamer.net/gta6",
-                source: { name: "Eurogamer" },
-                publishedAt: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
-                urlToImage: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&h=450&fit=crop"
-            },
-            {
-                title: "GTA 6 Online Mode Details Emerge",
-                description: "Reports suggest GTA 6's online component will feature seamless single-player to multiplayer transitions.",
-                url: "https://www.polygon.com/gta6",
-                source: { name: "Polygon" },
-                publishedAt: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString(),
-                urlToImage: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&h=450&fit=crop"
-            },
-            {
-                title: "Pre-Order Information Coming Soon",
-                description: "Rockstar announces that pre-order details for GTA 6 will be revealed in the coming months.",
-                url: "https://www.rockstargames.com/gta-vi",
-                source: { name: "Rockstar Games" },
-                publishedAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-                urlToImage: "https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=800&h=450&fit=crop"
-            },
-            {
-                title: "GTA 6 Map Size Reportedly Largest in Series",
-                description: "Leaks suggest the GTA 6 map could be significantly larger than GTA V, with more diverse environments.",
-                url: "https://www.kotaku.com/gta6",
-                source: { name: "Kotaku" },
-                publishedAt: new Date(Date.now() - 30 * 60 * 60 * 1000).toISOString(),
-                urlToImage: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=800&h=450&fit=crop"
-            },
-            {
-                title: "Realism Features: Weather and NPC AI Improvements",
-                description: "GTA 6 will feature dynamic weather systems and revolutionary NPC artificial intelligence.",
-                url: "https://www.pcgamer.com/gta6",
-                source: { name: "PC Gamer" },
-                publishedAt: new Date(Date.now() - 36 * 60 * 60 * 1000).toISOString(),
-                urlToImage: "https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?w=800&h=450&fit=crop"
-            }
+            { title: "GTA 6 Release Date Confirmed for Spring 2026", description: "Rockstar Games officially confirms Grand Theft Auto VI launches in Spring 2026.", url: "https://www.rockstargames.com/gta-vi", source: { name: "Rockstar Games" }, publishedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=800&h=450&fit=crop" },
+            { title: "Vice City Returns: What We Know About GTA 6's Setting", description: "A return to Vice City confirmed with massive open world spanning multiple cities.", url: "https://www.ign.com/gta6", source: { name: "IGN" }, publishedAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&h=450&fit=crop" },
+            { title: "GTA 6 Features Two Playable Protagonists", description: "Players control two main characters including the series' first female protagonist.", url: "https://www.gamespot.com/gta6", source: { name: "GameSpot" }, publishedAt: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&h=450&fit=crop" },
+            { title: "Next-Gen Graphics: GTA 6 Pushes Technical Boundaries", description: "RAGE engine completely overhauled promising unprecedented visual fidelity.", url: "https://www.eurogamer.net/gta6", source: { name: "Eurogamer" }, publishedAt: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&h=450&fit=crop" },
+            { title: "GTA 6 Online Mode Details Emerge", description: "Online component features seamless single-player to multiplayer transitions.", url: "https://www.polygon.com/gta6", source: { name: "Polygon" }, publishedAt: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&h=450&fit=crop" },
+            { title: "Pre-Order Information Coming Soon", description: "Rockstar announces pre-order details will be revealed in coming months.", url: "https://www.rockstargames.com/gta-vi", source: { name: "Rockstar Games" }, publishedAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=800&h=450&fit=crop" },
+            { title: "GTA 6 Map Size Reportedly Largest in Series", description: "Map could be significantly larger than GTA V with more diverse environments.", url: "https://www.kotaku.com/gta6", source: { name: "Kotaku" }, publishedAt: new Date(Date.now() - 30 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=800&h=450&fit=crop" },
+            { title: "Realism Features: Weather and NPC AI Improvements", description: "Dynamic weather systems and revolutionary NPC artificial intelligence.", url: "https://www.pcgamer.com/gta6", source: { name: "PC Gamer" }, publishedAt: new Date(Date.now() - 36 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?w=800&h=450&fit=crop" },
+            { title: "Soundtrack Revealed: Over 400 Licensed Songs", description: "Largest soundtrack in series history spanning multiple decades and genres.", url: "https://www.billboard.com/gta6", source: { name: "Billboard" }, publishedAt: new Date(Date.now() - 40 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800&h=450&fit=crop" },
+            { title: "Vehicle Customization Reaches New Heights", description: "Unprecedented vehicle customization from classic cars to modern supercars.", url: "https://www.cnet.com/gta6", source: { name: "CNET" }, publishedAt: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&h=450&fit=crop" },
+            { title: "Housing System: Buy, Customize, Own Properties", description: "Purchase and fully customize multiple properties across Vice City.", url: "https://www.gamerant.com/gta6", source: { name: "Game Rant" }, publishedAt: new Date(Date.now() - 55 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=450&fit=crop" },
+            { title: "Swimming and Diving Mechanics Overhauled", description: "Underwater exploration reaches new depths with improved diving mechanics.", url: "https://www.destructoid.com/gta6", source: { name: "Destructoid" }, publishedAt: new Date(Date.now() - 60 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=450&fit=crop" },
+            { title: "Character Creation System Unveiled", description: "Deep customization allows players to create unique protagonists.", url: "https://www.theverge.com/gta6", source: { name: "The Verge" }, publishedAt: new Date(Date.now() - 65 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=800&h=450&fit=crop" },
+            { title: "Economy System: Stock Market and Businesses", description: "Players can invest in stocks and run multiple business ventures.", url: "https://www.forbes.com/gta6", source: { name: "Forbes" }, publishedAt: new Date(Date.now() - 70 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=450&fit=crop" },
+            { title: "Multiplayer Heists Return With More Complexity", description: "Cooperative heists feature more planning and execution options.", url: "https://www.vg247.com/gta6", source: { name: "VG247" }, publishedAt: new Date(Date.now() - 75 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1556742111-a301076d9d18?w=800&h=450&fit=crop" },
+            { title: "Day-Night Cycle Affects Gameplay Significantly", description: "Dynamic time system impacts missions, NPC behavior, and activities.", url: "https://www.gamesradar.com/gta6", source: { name: "GamesRadar" }, publishedAt: new Date(Date.now() - 80 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=450&fit=crop" },
+            { title: "Wildlife System: 100+ Animal Species", description: "From alligators to exotic birds, wildlife enriches the environment.", url: "https://www.kotaku.com/gta6-wildlife", source: { name: "Kotaku" }, publishedAt: new Date(Date.now() - 85 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?w=800&h=450&fit=crop" },
+            { title: "Weapon Customization Goes Beyond Previous Games", description: "Modify every aspect of weapons from attachments to paint jobs.", url: "https://www.pcgamesn.com/gta6", source: { name: "PCGamesN" }, publishedAt: new Date(Date.now() - 90 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=800&h=450&fit=crop" },
+            { title: "Dialogue Choices Affect Story Outcomes", description: "Player decisions shape the narrative in meaningful ways.", url: "https://www.rockpapershotgun.com/gta6", source: { name: "Rock Paper Shotgun" }, publishedAt: new Date(Date.now() - 95 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?w=800&h=450&fit=crop" },
+            { title: "Fitness and Health System Introduced", description: "Character stats affected by diet, exercise, and lifestyle choices.", url: "https://www.ign.com/gta6-health", source: { name: "IGN" }, publishedAt: new Date(Date.now() - 100 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=450&fit=crop" },
+            { title: "Clothing Stores Offer Thousands of Options", description: "Fashion system includes designer brands and street wear.", url: "https://www.fashionista.com/gta6", source: { name: "Fashionista" }, publishedAt: new Date(Date.now() - 105 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=450&fit=crop" },
+            { title: "Radio Stations Feature Live DJ Commentary", description: "Dynamic radio with real-time weather updates and news reports.", url: "https://www.billboard.com/gta6-radio", source: { name: "Billboard" }, publishedAt: new Date(Date.now() - 110 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&h=450&fit=crop" },
+            { title: "Nightclub Management Mini-Game Revealed", description: "Run your own club with DJs, security, and VIP areas.", url: "https://www.dexerto.com/gta6", source: { name: "Dexerto" }, publishedAt: new Date(Date.now() - 115 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?w=800&h=450&fit=crop" },
+            { title: "Fishing Mechanics Include 50+ Fish Species", description: "Catch and sell fish or mount trophies in your properties.", url: "https://www.outdoorlife.com/gta6", source: { name: "Outdoor Life" }, publishedAt: new Date(Date.now() - 120 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1544552866-d3ed42536cfd?w=800&h=450&fit=crop" },
+            { title: "Photography Mode With Advanced Camera Controls", description: "Professional photo mode with filters and social sharing.", url: "https://www.digitaltrends.com/gta6", source: { name: "Digital Trends" }, publishedAt: new Date(Date.now() - 125 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1495107334309-fcf20504a5ab?w=800&h=450&fit=crop" },
+            { title: "Parkour System Adds Vertical Gameplay", description: "Climb buildings and navigate urban environments freely.", url: "https://www.eurogamer.net/gta6-parkour", source: { name: "Eurogamer" }, publishedAt: new Date(Date.now() - 130 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800&h=450&fit=crop" },
+            { title: "Pet System: Dogs, Cats, and Exotic Animals", description: "Adopt and care for pets that accompany you on adventures.", url: "https://www.polygon.com/gta6-pets", source: { name: "Polygon" }, publishedAt: new Date(Date.now() - 135 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=800&h=450&fit=crop" },
+            { title: "Casino Games Expanded With New Options", description: "Poker, blackjack, slots, and new casino mini-games.", url: "https://www.casinopedia.org/gta6", source: { name: "Casino News" }, publishedAt: new Date(Date.now() - 140 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1596838132731-3301c3fd4317?w=800&h=450&fit=crop" },
+            { title: "Flight School Returns With More Aircraft", description: "Learn to fly helicopters, planes, and experimental aircraft.", url: "https://www.flightsimulator.com/gta6", source: { name: "Flight Sim News" }, publishedAt: new Date(Date.now() - 145 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&h=450&fit=crop" },
+            { title: "Restaurant Business: Open Your Own Eatery", description: "Manage menus, hire staff, and expand your food empire.", url: "https://www.eater.com/gta6", source: { name: "Eater" }, publishedAt: new Date(Date.now() - 150 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&h=450&fit=crop" },
+            { title: "Drug Empire Mechanics Detailed", description: "Build a criminal enterprise with production and distribution networks.", url: "https://www.vice.com/gta6", source: { name: "VICE" }, publishedAt: new Date(Date.now() - 155 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=450&fit=crop" },
+            { title: "Music Production Studio Mini-Game", description: "Create and sell your own music tracks in-game.", url: "https://www.musictech.net/gta6", source: { name: "MusicTech" }, publishedAt: new Date(Date.now() - 160 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1598653222000-6b7b7a552625?w=800&h=450&fit=crop" },
+            { title: "Racing Scene: Street and Professional Circuits", description: "Compete in underground races and sanctioned motorsports.", url: "https://www.motortrend.com/gta6", source: { name: "Motor Trend" }, publishedAt: new Date(Date.now() - 165 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&h=450&fit=crop" },
+            { title: "Surfing Mechanics With Competition Events", description: "Ride waves and compete in surfing tournaments.", url: "https://www.surfer.com/gta6", source: { name: "Surfer Magazine" }, publishedAt: new Date(Date.now() - 170 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1502933691298-84fc14542831?w=800&h=450&fit=crop" },
+            { title: "Boxing and MMA Gyms Available", description: "Train in martial arts and compete in fight leagues.", url: "https://www.mmaweekly.com/gta6", source: { name: "MMA Weekly" }, publishedAt: new Date(Date.now() - 175 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=800&h=450&fit=crop" },
+            { title: "Yacht Ownership and Maritime Activities", description: "Buy luxury yachts and host parties on the water.", url: "https://www.yachtingmagazine.com/gta6", source: { name: "Yachting" }, publishedAt: new Date(Date.now() - 180 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?w=800&h=450&fit=crop" },
+            { title: "Tattoo Parlors With Custom Designs", description: "Get inked with thousands of designs or create your own.", url: "https://www.inkedmag.com/gta6", source: { name: "Inked Magazine" }, publishedAt: new Date(Date.now() - 185 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1565058683862-0a0e46b0a65c?w=800&h=450&fit=crop" },
+            { title: "Barber Shops Offer Dynamic Hairstyles", description: "Hair grows over time and can be styled in countless ways.", url: "https://www.menshealth.com/gta6", source: { name: "Men's Health" }, publishedAt: new Date(Date.now() - 190 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800&h=450&fit=crop" },
+            { title: "Smart Home Technology in Properties", description: "Control lights, security, and entertainment in your homes.", url: "https://www.theverge.com/gta6-smarthome", source: { name: "The Verge" }, publishedAt: new Date(Date.now() - 195 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1558089687-4d023c0f7ac0?w=800&h=450&fit=crop" },
+            { title: "Collectibles: 500+ Items to Find", description: "Hunt for hidden packages, street art, and rare treasures.", url: "https://www.gamesradar.com/gta6-collectibles", source: { name: "GamesRadar" }, publishedAt: new Date(Date.now() - 200 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1531299204812-e6d44d9a185c?w=800&h=450&fit=crop" },
+            { title: "Social Media System Integrated Into Gameplay", description: "In-game phone has functioning social media apps.", url: "https://www.techcrunch.com/gta6", source: { name: "TechCrunch" }, publishedAt: new Date(Date.now() - 205 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=450&fit=crop" },
+            { title: "Movie Theater Shows In-Game Films", description: "Watch full-length movies and animated shorts in theaters.", url: "https://www.variety.com/gta6", source: { name: "Variety" }, publishedAt: new Date(Date.now() - 210 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&h=450&fit=crop" },
+            { title: "Golf Courses With 18-Hole Gameplay", description: "Play complete rounds of golf with physics-based mechanics.", url: "https://www.golf.com/gta6", source: { name: "Golf Magazine" }, publishedAt: new Date(Date.now() - 215 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&h=450&fit=crop" },
+            { title: "Tennis Matches Against NPCs and Players", description: "Compete in singles and doubles tennis tournaments.", url: "https://www.tennis.com/gta6", source: { name: "Tennis Magazine" }, publishedAt: new Date(Date.now() - 220 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=800&h=450&fit=crop" },
+            { title: "Art Gallery: Buy and Display Masterpieces", description: "Collect artwork and curate your own gallery spaces.", url: "https://www.artnet.com/gta6", source: { name: "Artnet News" }, publishedAt: new Date(Date.now() - 225 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&h=450&fit=crop" },
+            { title: "Brewery Business: Craft Your Own Beer", description: "Create and distribute craft beers across Vice City.", url: "https://www.craftbeer.com/gta6", source: { name: "Craft Beer" }, publishedAt: new Date(Date.now() - 230 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=800&h=450&fit=crop" },
+            { title: "Security Company: Offer Protection Services", description: "Run bodyguard services and armored transport operations.", url: "https://www.securitymagazine.com/gta6", source: { name: "Security Magazine" }, publishedAt: new Date(Date.now() - 235 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1603484477859-abe6a73f9366?w=800&h=450&fit=crop" },
+            { title: "Construction Company Management", description: "Build and renovate properties across the city.", url: "https://www.constructiondive.com/gta6", source: { name: "Construction Dive" }, publishedAt: new Date(Date.now() - 240 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&h=450&fit=crop" },
+            { title: "Taxi Service: Drive for Money", description: "Pick up fares and build your own cab company.", url: "https://www.taxitoday.com/gta6", source: { name: "Taxi Today" }, publishedAt: new Date(Date.now() - 245 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=800&h=450&fit=crop" },
+            { title: "Ambulance Missions With Medical Gameplay", description: "Save lives and unlock paramedic abilities.", url: "https://www.ems1.com/gta6", source: { name: "EMS1" }, publishedAt: new Date(Date.now() - 250 * 60 * 60 * 1000).toISOString(), urlToImage: "https://images.unsplash.com/photo-1587745416684-47953f16f02f?w=800&h=450&fit=crop" }
         ];
 
         async function fetchGTA6News() {
@@ -1227,7 +1213,7 @@
             container.innerHTML = '<div style="text-align: center; padding: 2rem;"><div style="display: inline-block; width: 20px; height: 20px; border: 2px solid var(--primary-color); border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div></div>';
 
             try {
-                const url = `https://newsapi.org/v2/everything?q=GTA%206&apiKey=${API_CONFIG.news}&sortBy=publishedAt&pageSize=15`;
+                const url = `https://newsapi.org/v2/everything?q=GTA%206&apiKey=${API_CONFIG.news}&sortBy=publishedAt&pageSize=50`;
                 
                 const response = await fetch(url);
                 const data = await response.json();
@@ -1235,10 +1221,10 @@
                 if (data.articles && data.articles.length > 0 && data.status !== 'error') {
                     displayNews(data.articles, container);
                     updateNewsStats(data.articles);
-                    showNotification(`📰 Loaded ${data.articles.length} articles!`);
+                    showNotification(`📰 Loaded ${data.articles.length} real articles!`);
                     awardRewards(15, 4, 'News loaded');
                 } else {
-                    throw new Error('API unavailable, using mock data');
+                    throw new Error(data.message || 'API error, using mock data');
                 }
             } catch (error) {
                 console.log('Using mock news data:', error.message);
@@ -1257,7 +1243,7 @@
             container.style.gridTemplateColumns = 'repeat(auto-fill, minmax(320px, 1fr))';
             container.style.gap = '1.5rem';
             
-            container.innerHTML = valid.slice(0, 10).map(article => {
+            container.innerHTML = valid.slice(0, 50).map(article => {
                 const timeAgo = getTimeAgo(new Date(article.publishedAt));
                 const source = article.source?.name || 'Source';
                 const imageUrl = article.urlToImage || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&h=450&fit=crop';
