@@ -88,8 +88,26 @@
         .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1rem; }
 
         .games-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 1.5rem; margin-top: 2rem;
+        }
+
+        @media (min-width: 1200px) {
+            .games-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            .games-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 767px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .game-card {
@@ -1596,7 +1614,8 @@
         function toggleTheme() {
             document.body.classList.toggle('night-mode');
             const isNightMode = document.body.classList.contains('night-mode');
-            document.getElementById('themeToggle').innerHTML = isNightMode ? '🌞' : '🌙';
+            const toggleBtn = document.getElementById('themeToggle');
+            if (toggleBtn) toggleBtn.innerHTML = isNightMode ? '🌞' : '🌙';
             localStorage.setItem('gtafl-theme', isNightMode ? 'night' : 'day');
             showNotification(isNightMode ? 'Night mode activated!' : 'Day mode activated!');
         }
@@ -1605,7 +1624,8 @@
             const savedTheme = localStorage.getItem('gtafl-theme') || 'day';
             if (savedTheme === 'night') {
                 document.body.classList.add('night-mode');
-                document.getElementById('themeToggle').innerHTML = '🌞';
+                const toggle = document.getElementById('themeToggle');
+                if (toggle) toggle.innerHTML = '🌞';
             }
         }
 
