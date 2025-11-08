@@ -599,7 +599,7 @@
                     <div style="text-align: center; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); z-index: 2;">
                         <div style="font-family: 'Montserrat', sans-serif; font-size: clamp(1.2rem, 3vw, 2.5rem); font-weight: 900; margin-bottom: 0.5rem; letter-spacing: 2px;">GRAND THEFT AUTO</div>
                         <div style="font-size: clamp(2rem, 5vw, 4rem); font-weight: 900; margin-bottom: 0.5rem;">VI</div>
-                        <div style="font-size: clamp(0.8rem, 2vw, 1.2rem); opacity: 0.9; font-weight: 600;">SPRING 2025</div>
+                        <div style="font-size: clamp(0.8rem, 2vw, 1.2rem); opacity: 0.9; font-weight: 600;">NOVEMBER 19, 2026</div>
                     </div>
                     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,0,0,0.9); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; z-index: 10;">▶</div>
                 </div>
@@ -823,43 +823,20 @@
         </div>
 
         <div id="challenges" class="tab-content">
-            <h2 style="color: var(--primary-color);">🎯 Mini-Games</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-number" id="challengesCompleted">0</span>
-                    <div>Completed</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="currentStreak">0</span>
-                    <div>Streak</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="totalScore">0</span>
-                    <div>Score</div>
-                </div>
-                <div class="stat-card premium">
-                    <span class="stat-number">#247</span>
-                    <div>Rank</div>
-                </div>
-            </div>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 2rem;">
-                <div style="background: var(--card-bg); border-radius: 12px; padding: 1rem;">
-                    <h4>Vice City Memory</h4>
-                    <div style="display: flex; justify-content: space-between; margin: 0.5rem 0; font-size: 0.8rem;">
-                        <span>Moves: <strong id="memoryMoves">0</strong></span>
-                        <span>Time: <strong id="memoryTimer">0:00</strong></span>
-                    </div>
-                    <div id="memoryGame" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.25rem; margin: 0.5rem 0;"></div>
-                    <button class="floating-btn" style="position: static; font-size: 0.8rem; padding: 0.5rem 1rem; width: 100%;" onclick="startMemoryGame()">New Game</button>
-                </div>
-
-                <div style="background: var(--card-bg); border-radius: 12px; padding: 1rem;">
-                    <h4>GTA Trivia</h4>
-                    <p id="triviaQuestion" style="font-size: 0.9rem; margin: 0.5rem 0;">Loading...</p>
-                    <div id="triviaOptions" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin: 0.5rem 0;"></div>
-                    <div style="text-align: center; font-size: 0.8rem;">Score: <strong id="triviaScore">0</strong></div>
-                </div>
+            <h2 style="color: var(--primary-color);">🎯 GTAFastLane Games</h2>
+            <div style="background: var(--card-bg); border-radius: 12px; padding: 3rem; margin: 2rem 0; text-align: center; border: 2px solid var(--primary-color);">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">🎮</div>
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">50 Mini-Games Collection!</h3>
+                <p style="opacity: 0.9; margin-bottom: 2rem; line-height: 1.6; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Play 10 fully working games right now! Target Practice, Memory Challenge, Blackjack, Slots, and more!
+                </p>
+                <a href="GTAFastLane-50Games-Ready.html" target="_blank" style="text-decoration: none;">
+                    <button style="background: var(--gradient-primary); border: none; color: white; padding: 1rem 2rem; border-radius: 12px; cursor: pointer; font-size: 1.1rem; font-weight: 700; box-shadow: 0 4px 15px rgba(0,255,162,0.3); transition: all 0.3s ease;" 
+                            onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 25px rgba(0,255,162,0.5)';"
+                            onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 15px rgba(0,255,162,0.3)';">
+                        🎮 Play 50 Games Now →
+                    </button>
+                </a>
             </div>
         </div>
 
@@ -1071,7 +1048,7 @@
             } else if (tabName === 'news') {
                 // CCC tab - ready for YouTube videos to be added
             } else if (tabName === 'challenges') {
-                initializeChallenges();
+                // Games tab - links to external games page
             }
 
             awardRewards(2, 1, `Explored ${tabName}`);
@@ -1383,7 +1360,7 @@
         }
 
         function startCountdown() {
-            const target = new Date('2026-05-26T12:00:00Z');
+            const target = new Date('2026-11-19T12:00:00Z');
             
             setInterval(() => {
                 const now = new Date();
