@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>🎮 Mini-Game Arcade</title>
+<title>🎮 Arcade Framework v3</title>
 <style>
 :root {
   --primary: #ff4757;
@@ -11,28 +11,70 @@
   --card: #fff;
   --gold: #FFD700;
 }
-body { font-family:"Segoe UI",sans-serif; background:var(--bg); margin:0; padding:0; color:#222; }
-header { text-align:center; padding:1.5rem; background:var(--primary); color:white; font-size:1.4rem; font-weight:600; }
-#menu { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; padding:1rem; }
-.game-card { background:var(--card); border-radius:16px; box-shadow:0 4px 10px rgba(0,0,0,0.1); padding:1rem; text-align:center; transition: transform .2s; cursor:pointer; }
-.game-card:hover { transform:translateY(-4px); }
-.game-title { font-weight:bold; margin-bottom:0.3rem; }
-.game-desc { font-size:0.9rem; color:#555; }
-.game-area { display:none; padding:1rem; }
-button.back-btn { background:var(--primary); color:#fff; border:none; border-radius:8px; padding:.6rem 1rem; margin-bottom:1rem; cursor:pointer; font-size:1rem; }
-button.back-btn:hover { background:#e84118; }
-.floating-btn { background:var(--primary); color:white; border:none; padding:.6rem 1.2rem; border-radius:20px; cursor:pointer; font-size:1rem; transition:background .3s; margin-top:.5rem; }
-.floating-btn:hover { background:#e84118; }
-table { width:100%; border-collapse:collapse; margin-top:1rem; }
-th,td { border:1px solid #ddd; padding:.5rem; text-align:center; }
-th { background:#f1f1f1; }
-.reset-btn { margin-top:1rem; background:#e84118; }
-.reset-btn:hover { background:#ff6b81; }
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: var(--bg);
+  margin: 0;
+  padding: 0;
+  color: #222;
+}
+header {
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--primary);
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+#menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+.game-card {
+  background: var(--card);
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+.game-card:hover { transform: translateY(-4px); }
+.game-title { font-weight: bold; margin-bottom: 0.3rem; }
+.game-desc { font-size: 0.9rem; color: #555; }
+.game-area { display: none; padding: 1rem; }
+button.back-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+button.back-btn:hover { background: #e84118; }
+.floating-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s;
+  margin-top: 0.5rem;
+}
+.floating-btn:hover { background: #e84118; }
 </style>
 </head>
 <body>
 <header>🎮 Mini-Game Arcade</header>
+
 <div id="menu"></div>
+
 <div id="gameContainer" class="game-area">
   <button class="back-btn" id="backToMenu">⬅ Back to Menu</button>
   <div id="gameContent"></div>
@@ -48,284 +90,263 @@ const arcade = {
   registerGame(game) {
     this.games.push(game);
     const card = document.createElement("div");
-    card.className="game-card";
-    card.innerHTML=`<div class="game-title">${game.title}</div><div class="game-desc">${game.description}</div>`;
-    card.onclick=()=>this.launch(game.id);
+    card.className = "game-card";
+    card.innerHTML = `
+      <div class="game-title">${game.title}</div>
+      <div class="game-desc">${game.description}</div>
+    `;
+    card.onclick = () => this.launch(game.id);
     this.menu.appendChild(card);
   },
-  launch(id){
-    if(id==="leaderboard"){this.showLeaderboard(); return;}
-    const game=this.games.find(g=>g.id===id);
-    if(!game)return;
-    this.menu.style.display="none";
-    this.container.style.display="block";
-    this.content.innerHTML=game.html;
-    if(typeof game.init==="function") game.init(this.content);
+  launch(id) {
+    const game = this.games.find(g => g.id === id);
+    if (!game) return;
+    this.menu.style.display = "none";
+    this.container.style.display = "block";
+    this.content.innerHTML = game.html;
+    if (typeof game.init === "function") game.init(this.content);
   },
-  back(){
-    this.container.style.display="none";
-    this.menu.style.display="grid";
-    this.content.innerHTML="";
-  },
-  showLeaderboard(){
-    this.menu.style.display="none";
-    this.container.style.display="block";
-    let html=`<h2>📊 Global Leaderboard</h2><table><tr><th>Game</th><th>Top Stats</th></tr>`;
-    this.games.forEach(g=>{
-      let stats="No stats";
-      switch(g.id){
-        case "target":
-          let score=parseInt(localStorage.getItem("targetScore")||"0"); stats=`High Score: ${score}`; break;
-        case "memory":
-          let best=parseInt(localStorage.getItem("memoryBest")||"0"); stats=`Best Score: ${best}`; break;
-        case "casino":
-          let winnings=parseInt(localStorage.getItem("casinoWinnings")||"0");
-          let jackpots=parseInt(localStorage.getItem("casinoJackpots")||"0");
-          let credits=parseInt(localStorage.getItem("casinoCredits")||"100");
-          stats=`Credits: ${credits} | Jackpots: ${jackpots} | Winnings: $${winnings}`; break;
-        case "showdown":
-          let wins=parseInt(localStorage.getItem("showdownWins")||"0");
-          let bestTime=localStorage.getItem("showdownBest")||"--";
-          let streak=parseInt(localStorage.getItem("showdownStreak")||"0");
-          stats=`Wins: ${wins} | Best Draw: ${bestTime}ms | Streak: ${streak}`; break;
-        case "reaction":
-          let rBest=parseInt(localStorage.getItem("reactionBest")||"0");
-          let rTests=parseInt(localStorage.getItem("reactionTests")||"0");
-          let rTotal=parseInt(localStorage.getItem("reactionTotal")||"0");
-          stats=`Best: ${rBest}ms | Tests: ${rTests} | Avg: ${rTests?Math.round(rTotal/rTests):0}ms`; break;
-        case "neural":
-          let nodes=parseInt(localStorage.getItem("neuralNodes")||"0");
-          let conns=parseInt(localStorage.getItem("neuralConnections")||"0");
-          let lvl=parseInt(localStorage.getItem("aiLevel")||"1");
-          stats=`Nodes: ${nodes} | Connections: ${conns} | AI Level: ${lvl}`; break;
-        case "reality":
-          let glitches=parseInt(localStorage.getItem("glitchCount")||"0");
-          let reality=parseInt(localStorage.getItem("realityLevel")||"100");
-          let anomalies=parseInt(localStorage.getItem("anomaliesFound")||"0");
-          stats=`Glitches: ${glitches} | Reality: ${reality}% | Anomalies: ${anomalies}`; break;
-        default: stats="No saved stats"; break;
-      }
-      html+=`<tr><td>${g.title}</td><td>${stats}</td></tr>`;
-    });
-    html+="</table>";
-    html+=`<button class="floating-btn reset-btn" id="resetStatsBtn">Reset All Stats</button>`;
-    this.content.innerHTML=html;
-    document.getElementById("resetStatsBtn").onclick=()=>this.resetAllStats();
-  },
-  resetAllStats(){
-    if(!confirm("⚠️ Are you sure you want to reset all game stats?")) return;
-    localStorage.clear();
-    alert("✅ All stats have been reset!");
-    this.showLeaderboard();
+  back() {
+    this.container.style.display = "none";
+    this.menu.style.display = "grid";
+    this.content.innerHTML = "";
   }
 };
-document.getElementById("backToMenu").onclick=()=>arcade.back();
+document.getElementById("backToMenu").onclick = () => arcade.back();
 
-/* Leaderboard Card */
-const lbCard=document.createElement("div");
-lbCard.className="game-card";
-lbCard.innerHTML=`<div class="game-title">📊 Leaderboard</div><div class="game-desc">View all top scores and stats</div>`;
-lbCard.onclick=()=>arcade.launch("leaderboard");
-document.getElementById("menu").appendChild(lbCard);
-
-/* ==================== GAMES 1–7 ==================== */
-/* Insert previously created games code here: Target Practice, Memory, Casino, Showdown, Reaction, Neural, Reality */
-/* Use the code we wrote previously for each game’s arcade.registerGame() */
-<script>
-/* ============ Game 5: Reaction Test ============ */
+/* ============ Game 1: Target Practice ============ */
 arcade.registerGame({
-  id: "reaction",
-  title: "⚡ Reaction Test",
-  description: "Click as fast as you can when the box turns green!",
+  id: "target",
+  title: "🎯 Target Practice",
+  description: "Hit as many moving targets as you can in 30 seconds!",
   html: `
     <div class="game-card">
-      <div class="game-title">⚡ Reaction Test</div>
+      <div class="game-title">🎯 Target Practice</div>
       <div class="game-stats">
-        <span>Best: <strong id="reactionBest">0</strong>ms</span>
-        <span>Tests: <strong id="reactionTests">0</strong></span>
-        <span>Avg: <strong id="reactionAvg">0</strong>ms</span>
+        <span>Score: <strong id="targetScore">0</strong></span>
+        <span>Hits: <strong id="targetHits">0</strong></span>
+        <span>Time: <strong id="targetTimer">30</strong>s</span>
       </div>
-      <div id="reactionArena" style="height:150px;background:#e74c3c;display:flex;align-items:center;justify-content:center;cursor:pointer;color:white;font-weight:bold;font-size:1.1rem;">Click when GREEN!</div>
-      <button class="floating-btn" id="reactionStartBtn">Test Reaction</button>
+      <div id="targetRange" style="height:150px;background:linear-gradient(180deg,#87CEEB 0%,#90EE90 100%);position:relative;border-radius:10px;overflow:hidden;"></div>
+      <div id="targetGameOver" style="display:none;margin-top:0.5rem;">
+        <strong style="color:var(--primary);">Game Over!</strong>
+        <p id="targetFinalScore"></p>
+      </div>
+      <button class="floating-btn" id="targetStartBtn">Start Shooting</button>
     </div>
   `,
-  init(container){
-    const arena = container.querySelector("#reactionArena");
-    const startBtn = container.querySelector("#reactionStartBtn");
-    const bestEl = container.querySelector("#reactionBest");
-    const testsEl = container.querySelector("#reactionTests");
-    const avgEl = container.querySelector("#reactionAvg");
-    let best = parseInt(localStorage.getItem("reactionBest")||"0");
-    let tests = parseInt(localStorage.getItem("reactionTests")||"0");
-    let total = parseInt(localStorage.getItem("reactionTotal")||"0");
-    bestEl.textContent = best; testsEl.textContent = tests; avgEl.textContent = tests ? Math.round(total/tests) : 0;
-    let waiting = false, startTime;
-
-    function startTest(){
-      startBtn.disabled = true;
-      arena.style.background = "#e74c3c"; arena.textContent = "Wait...";
-      const delay = 1000 + Math.random()*3000;
-      waiting = true;
-      setTimeout(()=>{
-        if(!waiting) return;
-        arena.style.background = "#2ecc71";
-        arena.textContent = "CLICK!";
-        startTime = performance.now();
-        waiting = false;
-      }, delay);
+  init(container) {
+    const startBtn = container.querySelector("#targetStartBtn");
+    const range = container.querySelector("#targetRange");
+    const scoreDisplay = container.querySelector("#targetScore");
+    const hitsDisplay = container.querySelector("#targetHits");
+    const timerDisplay = container.querySelector("#targetTimer");
+    const gameOverScreen = container.querySelector("#targetGameOver");
+    const finalScore = container.querySelector("#targetFinalScore");
+    let score=0,hits=0,timeLeft=30,gameActive=false,timerInterval,targetTimeout;
+    function spawnTarget(){
+      if(!gameActive)return;
+      const t=document.createElement("div");
+      Object.assign(t.style,{
+        position:"absolute",width:"40px",height:"40px",
+        borderRadius:"50%",background:"radial-gradient(circle, red 40%, white 42%, red 55%, white 70%)"
+      });
+      const r=range.getBoundingClientRect();
+      t.style.left=Math.random()*(r.width-40)+"px";
+      t.style.top=Math.random()*(r.height-40)+"px";
+      t.onclick=()=>{
+        if(!gameActive)return;
+        score+=100;hits++;
+        scoreDisplay.textContent=score;
+        hitsDisplay.textContent=hits;
+        t.remove();setTimeout(spawnTarget,400);
+      };
+      range.appendChild(t);
+      targetTimeout=setTimeout(()=>{
+        if(range.contains(t)){t.remove();setTimeout(spawnTarget,400);}
+      },900);
     }
-
-    arena.onclick = ()=>{
-      if(arena.style.background === "rgb(46, 204, 113)"){
-        const reaction = Math.round(performance.now() - startTime);
-        total += reaction; tests++;
-        if(reaction < best || best===0) best = reaction;
-        localStorage.setItem("reactionBest", best);
-        localStorage.setItem("reactionTests", tests);
-        localStorage.setItem("reactionTotal", total);
-        bestEl.textContent = best;
-        testsEl.textContent = tests;
-        avgEl.textContent = Math.round(total/tests);
-        arena.style.background = "#e74c3c";
-        arena.textContent = "Click when GREEN!";
-        startBtn.disabled = false;
-      } else if(!waiting) {
-        arena.textContent = "Too soon! Wait for GREEN."; setTimeout(()=>arena.textContent="Click when GREEN!",1000);
-        startBtn.disabled = false;
-      }
+    function startGame(){
+      score=0;hits=0;timeLeft=30;gameActive=true;
+      scoreDisplay.textContent="0";hitsDisplay.textContent="0";timerDisplay.textContent="30";
+      gameOverScreen.style.display="none";startBtn.disabled=true;
+      spawnTarget();
+      timerInterval=setInterval(()=>{
+        timeLeft--;timerDisplay.textContent=timeLeft;
+        if(timeLeft<=0)endGame();
+      },1000);
     }
-
-    startBtn.onclick = startTest;
+    function endGame(){
+      gameActive=false;clearInterval(timerInterval);clearTimeout(targetTimeout);
+      range.innerHTML="";gameOverScreen.style.display="block";
+      finalScore.textContent=`Your final score: ${score}`;
+      startBtn.disabled=false;
+    }
+    startBtn.onclick=startGame;
   }
 });
 
-/* ============ Game 6: Neural Network Hacking ============ */
+/* ============ Game 2: Memory Challenge ============ */
 arcade.registerGame({
-  id: "neural",
-  title: "🧠 Neural Network Breach",
-  description: "Hack nodes and bypass AI defenses!",
+  id: "memory",
+  title: "🧠 Memory Challenge",
+  description: "Repeat the flashing pattern correctly to advance levels!",
   html: `
     <div class="game-card">
-      <div class="game-title">🧠 Neural Network Breach</div>
+      <div class="game-title">🧠 Memory Challenge</div>
       <div class="game-stats">
-        <span>Nodes: <strong id="neuralNodes">0</strong></span>
-        <span>Connections: <strong id="neuralConnections">0</strong></span>
-        <span>AI Level: <strong id="aiLevel">1</strong></span>
+        <span>Level: <strong id="memoryLevel">1</strong></span>
+        <span>Score: <strong id="memoryScore">0</strong></span>
+        <span>Best: <strong id="memoryBest">0</strong></span>
       </div>
-      <div id="neuralNetwork" style="height:150px;background:linear-gradient(45deg,#0a0a0a 0%,#1a1a2e 100%);position:relative;overflow:hidden;">
-        <canvas id="networkCanvas" width="300" height="150" style="width:100%;height:100%;"></canvas>
+      <div id="memoryGrid" style="height:180px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;background:#2C3E50;border-radius:10px;">
+        ${Array.from({length:9},(_,i)=>`<div class="memory-cell" data-index="${i}" style="background:#34495E;border-radius:6px;cursor:pointer;transition:background .3s,transform .2s;"></div>`).join("")}
       </div>
-      <div style="text-align:center;margin:0.4rem 0;font-size:0.8rem;color:var(--primary);">Pattern: <span id="neuralPattern">Node connections forming...</span></div>
-      <div class="game-controls">
-        <button class="control-btn" id="injectCodeBtn">💉 Inject</button>
-        <button class="control-btn gas" id="bypassBtn">⚡ Bypass</button>
-        <button class="control-btn special" id="overloadBtn">🔥 Overload</button>
-      </div>
-      <button class="floating-btn" id="neuralStartBtn">Access Mainframe</button>
+      <div id="memoryMsg" style="display:none;margin-top:0.5rem;"></div>
+      <button class="floating-btn" id="memoryStartBtn">Start Memory Test</button>
     </div>
   `,
-  init(container){
-    const nodesEl = container.querySelector("#neuralNodes");
-    const connEl = container.querySelector("#neuralConnections");
-    const levelEl = container.querySelector("#aiLevel");
-    const patternEl = container.querySelector("#neuralPattern");
-    const canvas = container.querySelector("#networkCanvas");
-    const ctx = canvas.getContext("2d");
-    let nodes = parseInt(localStorage.getItem("neuralNodes")||"0");
-    let connections = parseInt(localStorage.getItem("neuralConnections")||"0");
-    let level = parseInt(localStorage.getItem("aiLevel")||"1");
-    nodesEl.textContent = nodes; connEl.textContent = connections; levelEl.textContent = level;
-
-    function drawNetwork(){
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      for(let i=0;i<nodes;i++){
-        const x=Math.random()*canvas.width;
-        const y=Math.random()*canvas.height;
-        ctx.fillStyle="#0ff"; ctx.beginPath(); ctx.arc(x,y,5,0,2*Math.PI); ctx.fill();
-      }
-      for(let i=0;i<connections;i++){
-        ctx.strokeStyle="#ff0"; ctx.beginPath();
-        ctx.moveTo(Math.random()*canvas.width, Math.random()*canvas.height);
-        ctx.lineTo(Math.random()*canvas.width, Math.random()*canvas.height);
-        ctx.stroke();
-      }
-    }
-
-    container.querySelector("#neuralStartBtn").onclick = ()=>{
-      nodes += 1; connections += Math.floor(Math.random()*5)+1;
-      if(nodes%5===0) level++;
-      nodesEl.textContent = nodes; connEl.textContent = connections; levelEl.textContent = level;
-      patternEl.textContent = `Nodes: ${nodes}, Connections: ${connections}, AI Lv: ${level}`;
-      drawNetwork();
-      localStorage.setItem("neuralNodes", nodes);
-      localStorage.setItem("neuralConnections", connections);
-      localStorage.setItem("aiLevel", level);
-    }
-
-    container.querySelector("#injectCodeBtn").onclick = ()=>{ connections +=2; connEl.textContent=connections; drawNetwork(); localStorage.setItem("neuralConnections", connections);}
-    container.querySelector("#bypassBtn").onclick = ()=>{ nodes +=1; nodesEl.textContent=nodes; drawNetwork(); localStorage.setItem("neuralNodes", nodes);}
-    container.querySelector("#overloadBtn").onclick = ()=>{ level++; levelEl.textContent=level; patternEl.textContent="⚠ AI Overloaded!"; localStorage.setItem("aiLevel", level);}
+  init(container) {
+    const cells=[...container.querySelectorAll(".memory-cell")];
+    const startBtn=container.querySelector("#memoryStartBtn");
+    const level=container.querySelector("#memoryLevel");
+    const scoreEl=container.querySelector("#memoryScore");
+    const bestEl=container.querySelector("#memoryBest");
+    const msg=container.querySelector("#memoryMsg");
+    let memLevel=1,score=0,seq=[],step=0,playing=false;
+    let best=parseInt(localStorage.getItem("memoryBest")||"0");bestEl.textContent=best;
+    function flash(c){c.style.background="#F1C40F";setTimeout(()=>c.style.background="#34495E",400);}
+    function playSeq(){let i=0;playing=false;const iv=setInterval(()=>{flash(cells[seq[i]]);i++;if(i>=seq.length){clearInterval(iv);playing=true;}},600);}
+    function nextLvl(){seq.push(Math.floor(Math.random()*9));level.textContent=memLevel;playSeq();}
+    function start(){memLevel=1;score=0;seq=[];step=0;scoreEl.textContent="0";msg.style.display="none";nextLvl();}
+    cells.forEach(c=>c.onclick=()=>{if(!playing)return;let i=parseInt(c.dataset.index);if(i===seq[step]){c.style.background="#2ECC71";setTimeout(()=>c.style.background="#34495E",200);step++;if(step===seq.length){score+=memLevel*100;scoreEl.textContent=score;memLevel++;step=0;playing=false;setTimeout(nextLvl,700);}}else{msg.style.display="block";msg.textContent=`❌ Wrong! Final Score: ${score}`;if(score>best){best=score;localStorage.setItem("memoryBest",best);bestEl.textContent=best;}playing=false;seq=[];}}));
+    startBtn.onclick=start;
   }
 });
 
-/* ============ Game 7: Reality Distortion Field ============ */
+/* ============ Game 3: Lucky Wheel Casino ============ */
 arcade.registerGame({
-  id: "reality",
-  title: "🌀 Reality Glitch",
-  description: "Stabilize reality by controlling anomalies!",
+  id: "casino",
+  title: "🎰 Lucky Wheel Casino",
+  description: "Spin the slots, hit jackpots, and manage your credits!",
   html: `
     <div class="game-card">
-      <div class="game-title">🌀 Reality Glitch</div>
+      <div class="game-title">🎰 Lucky Wheel Casino</div>
       <div class="game-stats">
-        <span>Glitches: <strong id="glitchCount">0</strong></span>
-        <span>Reality: <strong id="realityLevel">100</strong>%</span>
-        <span>Anomalies: <strong id="anomaliesFound">0</strong></span>
+        <span>Credits: <strong id="slotCredits">100</strong></span>
+        <span>Jackpots: <strong id="jackpots">0</strong></span>
+        <span>Winnings: <strong id="totalWinnings">$0</strong></span>
       </div>
-      <div id="realityField" style="height:150px;background:linear-gradient(45deg,#ff006e,#8338ec,#3a86ff);position:relative;overflow:hidden;">
-        <div id="anomaly1" style="position:absolute;top:30%;left:20%;width:15px;height:15px;background:#ff006e;border-radius:50%;animation:anomalyPulse 2s infinite;"></div>
-        <div id="anomaly2" style="position:absolute;bottom:40%;right:30%;width:12px;height:12px;background:#8338ec;border-radius:50%;animation:anomalyPulse 2.5s infinite;"></div>
+      <div id="slotMachine" style="height:150px;background:linear-gradient(45deg,#2C3E50 0%,#8B0000 100%);display:flex;justify-content:center;align-items:center;gap:12px;border-radius:10px;">
+        <div class="reel" id="slot1">💎</div>
+        <div class="reel" id="slot2">🍒</div>
+        <div class="reel" id="slot3">💰</div>
       </div>
-      <div class="game-controls">
-        <button class="control-btn" id="scanBtn">🔍 Scan</button>
-        <button class="control-btn gas" id="stabilizeBtn">⚖️ Stabilize</button>
-        <button class="control-btn special" id="amplifyBtn">📡 Amplify</button>
-      </div>
-      <button class="floating-btn" id="realityStartBtn">Enter Matrix</button>
+      <button class="floating-btn" id="slotStartBtn">Pull Lever (10 credits)</button>
     </div>
   `,
   init(container){
-    const glitchEl = container.querySelector("#glitchCount");
-    const realityEl = container.querySelector("#realityLevel");
-    const anomaliesEl = container.querySelector("#anomaliesFound");
-    let glitches = parseInt(localStorage.getItem("glitchCount")||"0");
-    let reality = parseInt(localStorage.getItem("realityLevel")||"100");
-    let anomalies = parseInt(localStorage.getItem("anomaliesFound")||"0");
-    glitchEl.textContent = glitches; realityEl.textContent = reality; anomaliesEl.textContent = anomalies;
-
-    container.querySelector("#realityStartBtn").onclick = ()=>{
-      glitches +=1; anomalies += Math.floor(Math.random()*2); reality -= Math.floor(Math.random()*5);
-      if(reality<0) reality = 0;
-      glitchEl.textContent = glitches; anomaliesEl.textContent = anomalies; realityEl.textContent = reality;
-      localStorage.setItem("glitchCount", glitches);
-      localStorage.setItem("anomaliesFound", anomalies);
-      localStorage.setItem("realityLevel", reality);
+    const creditsEl=container.querySelector("#slotCredits");
+    const jackpotsEl=container.querySelector("#jackpots");
+    const winningsEl=container.querySelector("#totalWinnings");
+    const reels=[...container.querySelectorAll(".reel")];
+    const btn=container.querySelector("#slotStartBtn");
+    const icons=["💎","🍒","🍋","💰","⭐","🔔"];
+    let credits=parseInt(localStorage.getItem("casinoCredits")||"100");
+    let jackpots=parseInt(localStorage.getItem("casinoJackpots")||"0");
+    let winnings=parseInt(localStorage.getItem("casinoWinnings")||"0");
+    function updateUI(){creditsEl.textContent=credits;jackpotsEl.textContent=jackpots;winningsEl.textContent="$"+winnings;}
+    function spin(){
+      if(credits<10){alert("Out of credits! Refresh to reset.");return;}
+      credits-=10;updateUI();btn.disabled=true;
+      let results=[];
+      reels.forEach(r=>{
+        let spins=0;
+        const iv=setInterval(()=>{r.textContent=icons[Math.floor(Math.random()*icons.length)];spins++;if(spins>15){clearInterval(iv);results.push(r.textContent);if(results.length===3)endSpin(results);}},70+Math.random()*50);
+      });
     }
-
-    container.querySelector("#scanBtn").onclick = ()=>{
-      reality += Math.floor(Math.random()*5)+1; if(reality>100) reality=100; realityEl.textContent=reality; localStorage.setItem("realityLevel", reality);
+    function endSpin(res){
+      btn.disabled=false;
+      const [a,b,c]=res;
+      if(a===b&&b===c){jackpots++;let win=500;winnings+=win;credits+=win;alert("💰 JACKPOT! You won $"+win+"!");}
+      else if(a===b||b===c||a===c){let win=100;winnings+=win;credits+=win;alert("⭐ You matched two symbols! +$"+win);}
+      updateUI();
+      localStorage.setItem("casinoCredits",credits);
+      localStorage.setItem("casinoJackpots",jackpots);
+      localStorage.setItem("casinoWinnings",winnings);
     }
-
-    container.querySelector("#stabilizeBtn").onclick = ()=>{
-      reality += Math.floor(Math.random()*10)+5; if(reality>100) reality=100; anomalies +=1; glitchEl.textContent=glitches; anomaliesEl.textContent=anomalies; realityEl.textContent=reality; localStorage.setItem("realityLevel", reality); localStorage.setItem("anomaliesFound", anomalies);
-    }
-
-    container.querySelector("#amplifyBtn").onclick = ()=>{
-      reality -= Math.floor(Math.random()*10)+5; if(reality<0) reality=0; glitches +=1; glitchEl.textContent=glitches; anomaliesEl.textContent=anomalies; realityEl.textContent=reality; localStorage.setItem("glitchCount", glitches); localStorage.setItem("realityLevel", reality);
-    }
+    btn.onclick=spin;
+    updateUI();
   }
 });
-</script>
 
+/* ============ Game 4: Wild West Showdown ============ */
+arcade.registerGame({
+  id: "showdown",
+  title: "🤠 Wild West Showdown",
+  description: "Wait for 'DRAW!' and shoot faster than your opponent!",
+  html: `
+    <div class="game-card">
+      <div class="game-title">🤠 Wild West Showdown</div>
+      <div class="game-stats">
+        <span>Wins: <strong id="showdownWins">0</strong></span>
+        <span>Best: <strong id="fastestDraw">--</strong>ms</span>
+        <span>Streak: <strong id="showdownStreak">0</strong></span>
+      </div>
+      <div id="showdownArena" style="height:150px;background:linear-gradient(180deg,#F4A460 0%,#D2B48C 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#8B4513;cursor:pointer;border-radius:10px;">
+        <div style="font-size:2rem;margin-bottom:0.5rem;">🤠 VS 🤠</div>
+        <div id="showdownCountdown" style="font-size:1.5rem;font-weight:bold;color:var(--primary);">READY</div>
+        <div style="margin-top:0.5rem;font-size:0.8rem;">Wait for DRAW!</div>
+      </div>
+      <button class="floating-btn" id="showdownStartBtn">Start Showdown</button>
+    </div>
+  `,
+  init(container){
+    const arena=container.querySelector("#showdownArena");
+    const startBtn=container.querySelector("#showdownStartBtn");
+    const countdown=container.querySelector("#showdownCountdown");
+    const winsEl=container.querySelector("#showdownWins");
+    const streakEl=container.querySelector("#showdownStreak");
+    const bestEl=container.querySelector("#fastestDraw");
+    let best=parseInt(localStorage.getItem("showdownBest")||"9999");
+    let wins=parseInt(localStorage.getItem("showdownWins")||"0");
+    let streak=0;let timeout;let drawTime;let active=false;
+    bestEl.textContent=best===9999?"--":best;
+    winsEl.textContent=wins;
+    streakEl.textContent=streak;
+    function start(){
+      startBtn.disabled=true;
+      countdown.textContent="READY...";
+      const wait=1000+Math.random()*3000;
+      timeout=setTimeout(()=>{
+        countdown.textContent="DRAW!";
+        drawTime=performance.now();
+        active=true;
+      },wait);
+    }
+    function click(){
+      if(!timeout)return;
+      if(!active){
+        countdown.textContent="TOO EARLY! ❌";
+        clearTimeout(timeout);
+        streak=0;startBtn.disabled=false;
+      } else {
+        const t=performance.now()-drawTime;
+        countdown.textContent=`🔥 ${Math.round(t)}ms!`;
+        wins++;streak++;
+        if(t<best){best=t;localStorage.setItem("showdownBest",Math.round(best));}
+        localStorage.setItem("showdownWins",wins);
+        winsEl.textContent=wins;
+        streakEl.textContent=streak;
+        bestEl.textContent=Math.round(best);
+        startBtn.disabled=false;
+      }
+      active=false;
+    }
+    startBtn.onclick=start;
+    arena.onclick=click;
+  }
+});
 </script>
 </body>
 </html>
