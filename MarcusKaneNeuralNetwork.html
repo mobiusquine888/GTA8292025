@@ -3,125 +3,130 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Marcus Kane: Neural Network Breach</title>
+    <title>Marcus Kane: Neural Breach</title>
     <style>
         :root{
-            --bg-dark:#0a0a0a;--bg-gradient:#1a1a2e;--accent-teal:#00b8a9;--accent-orange:#ff8c42;
-            --accent-purple:#9d4edd;--accent-red:#ff2e63;--text-primary:#f5f5f5;--text-muted:#aaaaaa;
-            --shadow-glow:0 0 30px rgba(0,184,169,.4);--shadow-intense:0 0 50px rgba(255,46,99,.7);
+            --bg:#0a0a0a;--teal:#00b8a9;--orange:#ff8c42;--purple:#9d4edd;--red:#ff2e63;
+            --text:#f5f5f5;--muted:#aaa;--glow:0 0 20px rgba(0,184,169,.5);
         }
-        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;}
-        html,body{height:100%;overflow:hidden;background:#000;font-family:'Courier New',monospace;color:var(--text-primary);touch-action:manipulation;}
-        body{display:flex;flex-direction:column;position:relative;background:radial-gradient(circle at center,#0f1419 0%,#000 100%);}
-        .bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,184,169,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,184,169,.05) 1px,transparent 1px);background-size:50px 50px;animation:gridMove 40s linear infinite;pointer-events:none;z-index:0;}
-        @keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(50px,50px)}}
-        .header{z-index:10;padding:1.5rem 1rem;text-align:center;background:linear-gradient(to bottom,rgba(10,10,10,.9),transparent);border-bottom:1px solid rgba(0,184,169,.3);}
-        .game-title{font-size:2.5rem;font-weight:bold;background:linear-gradient(90deg,var(--accent-teal),var(--accent-purple),var(--accent-red));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 20px rgba(0,184,169,.6);letter-spacing:3px;animation:titleGlow 3s ease-in-out infinite alternate;}
-        @keyframes titleGlow{from{text-shadow:0 0 20px rgba(0,184,169,.6)}to{text-shadow:0 0 40px rgba(255,46,99,.8),0 0 60px rgba(157,78,221,.6)}}
-        .subtitle{font-size:.9rem;color:var(--text-muted);margin-top:.4rem;letter-spacing:2px;}
-        .game-container{flex:1;display:flex;flex-direction:column;padding:1rem;gap:1rem;position:relative;z-index:5;max-height:100vh;overflow-y:auto;scroll-snap-type:y mandatory;}
-        .stats-bar{display:flex;justify-content:space-around;background:rgba(10,10,10,.7);padding:.7rem;border-radius:12px;border:1px solid rgba(0,184,169,.4);backdrop-filter:blur(8px);font-size:.95rem;box-shadow:var(--shadow-glow);}
-        .stat-item{flex:1;text-align:center;}
-        .stat-label{color:var(--text-muted);font-size:.75rem;text-transform:uppercase;letter-spacing:1px;}
-        .stat-value{color:var(--accent-teal);font-weight:bold;font-size:1.2rem;text-shadow:0 0 10px var(--accent-teal);}
-        #neuralNetwork{flex:1;min-height:280px;position:relative;border-radius:16px;overflow:hidden;border:2px solid rgba(0,184,169,.5);box-shadow:0 0 40px rgba(0,184,169,.3),inset 0 0 60px rgba(0,0,0,.5);background:radial-gradient(circle at center,#16213e 0%,#0a0a0a 100%);scroll-snap-align:start;}
-        #networkCanvas{display:block;width:100%;height:100%;}
-        .pattern-display{background:rgba(157,78,221,.15);padding:.9rem;border-radius:12px;text-align:center;font-size:1rem;color:var(--accent-purple);border:1px dashed rgba(157,78,221,.5);backdrop-filter:blur(4px);box-shadow:0 0 20px rgba(157,78,221,.2);scroll-snap-align:start;}
-        .game-controls{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;padding:0 1rem;position:sticky;bottom:0;background:rgba(10,10,10,.9);padding-bottom:1rem;z-index:20;scroll-snap-align:end;}
-        .control-btn{padding:1rem .5rem;font-size:.95rem;font-weight:bold;border:none;border-radius:12px;cursor:pointer;transition:all .25s ease;position:relative;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.4);text-transform:uppercase;letter-spacing:1px;}
-        .control-btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);transition:.6s;}
-        .control-btn:active::before{left:100%;}
-        .control-btn:active{transform:translateY(2px);box-shadow:0 4px 10px rgba(0,0,0,.5);}
-        #injectCodeBtn{background:linear-gradient(135deg,#00b8a9,#00d4c1);color:#000;box-shadow:0 0 25px rgba(0,184,169,.6);}
-        #bypassBtn{background:linear-gradient(135deg,#ff8c42,#ffb07a);color:#000;box-shadow:0 0 25px rgba(255,140,66,.6);}
-        #overloadBtn{background:linear-gradient(135deg,#9d4edd,#c06bff);color:#fff;box-shadow:0 0 25px rgba(157,78,221,.6);}
-        .start-container{text-align:center;padding:1rem 1rem 2rem;scroll-snap-align:end;}
-        #neuralStartBtn{display:inline-block;padding:1rem 2.5rem;font-size:1.2rem;font-weight:bold;background:linear-gradient(45deg,var(--accent-red),#ff5e8a);color:#fff;border:none;border-radius:50px;cursor:pointer;box-shadow:var(--shadow-intense);transition:all .4s ease;position:relative;overflow:hidden;text-transform:uppercase;letter-spacing:2px;animation:pulseBtn 2s infinite;}
-        #neuralStartBtn:disabled{opacity:.7;cursor:not-allowed;animation:none;}
-        @keyframes pulseBtn{0%,100%{box-shadow:0 0 30px rgba(255,46,99,.7)}50%{box-shadow:0 0 50px rgba(255,46,99,1),0 0 70px rgba(255,46,99,.8)}}
-        .notification{position:absolute;top:20%;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.9);color:var(--accent-teal);padding:1rem 2rem;border-radius:12px;font-size:1.2rem;font-weight:bold;pointer-events:none;opacity:0;transition:all .4s ease;z-index:100;border:2px solid var(--accent-teal);box-shadow:0 0 30px rgba(0,184,169,.6);text-align:center;max-width:90%;backdrop-filter:blur(8px);}
-        .notification.show{opacity:1;transform:translateX(-50%) translateY(-10px);}
-        .glitch{animation:glitch .4s;}
-        @keyframes glitch{0%,100%{transform:translate(0)}20%{transform:translate(-4px,4px)}40%{transform:translate(4px,-4px)}60%{transform:translate(-4px,4px)}80%{transform:translate(4px,-4px)}}
-        @media(min-width:768px){.header{padding:2rem}.game-title{font-size:3.2rem}.stats-bar{font-size:1rem}.control-btn{font-size:1rem;padding:1.2rem}#neuralStartBtn{font-size:1.4rem;padding:1.2rem 3.5rem}#neuralNetwork{min-height:400px}}
-        @media(min-width:1200px){.game-container{max-width:1400px;margin:0 auto;padding:2rem}.game-title{font-size:4rem}}
-        @media(max-height:600px){.game-title{font-size:2rem}.stats-bar{font-size:.85rem}.control-btn{font-size:.85rem;padding:.9rem}#neuralStartBtn{font-size:1rem;padding:.9rem 2rem}}
+        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;}
+        html,body{height:100%;overflow:hidden;background:#000;font-family:'Courier New',monospace;color:var(--text);touch-action:manipulation;}
+        body{display:flex;flex-direction:column;background:radial-gradient(circle at 50% 30%,#16213e 0%,#000 100%);}
+        .grid-bg{position:absolute;inset:0;background:linear-gradient(rgba(0,184,169,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,184,169,.03) 1px,transparent 1px);background-size:30px 30px;animation:g 30s linear infinite;pointer-events:none;opacity:.6;}
+        @keyframes g{0%{transform:translate(0,0)}100%{transform:translate(30px,30px)}}
+        .header{padding:0.8rem 1rem;text-align:center;background:rgba(10,10,10,.9);border-bottom:1px solid rgba(0,184,169,.3);}
+        .title{font-size:1.8rem;font-weight:bold;background:linear-gradient(90deg,var(--teal),var(--purple));-webkit-background-clip:text;color:transparent;letter-spacing:2px;}
+        .subtitle{font-size:0.75rem;color:var(--muted);margin-top:0.2rem;}
+        .container{flex:1;display:flex;flex-direction:column;padding:0.6rem;gap:0.6rem;max-width:900px;margin:0 auto;width:100%;max-height:calc(100vh - 160px);}
+        .stats{display:flex;gap:0.5rem;background:rgba(10,10,10,.7);padding:0.5rem;border-radius:8px;border:1px solid rgba(0,184,169,.4);font-size:0.8rem;}
+        .stat{flex:1;text-align:center;}
+        .stat span{color:var(--muted);display:block;font-size:0.65rem;}
+        .stat strong{color:var(--teal);font-size:1rem;}
+        #arena{flex:1;min-height:260px;max-height:400px;position:relative;border-radius:12px;overflow:hidden;border:2px solid rgba(0,184,169,.6);box-shadow:var(--glow),inset 0 0 40px rgba(0,0,0,.6);background:#0a0a0a;}
+        #canvas{display:block;width:100%;height:100%;}
+        .pattern{background:rgba(157,78,221,.15);padding:0.6rem;border-radius:8px;text-align:center;font-size:0.8rem;color:var(--purple);border:1px dashed rgba(157,78,221,.5);box-shadow:0 0 12px rgba(157,78,221,.2);}
+        .controls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;padding:0 0.6rem;}
+        .btn{padding:0.8rem 0.4rem;font-size:0.8rem;font-weight:bold;border:none;border-radius:8px;cursor:pointer;transition:.2s;position:relative;overflow:hidden;text-transform:uppercase;letter-spacing:1px;box-shadow:0 4px 12px rgba(0,0,0,.5);}
+        .btn:active{transform:scale(.95);}
+        #inject{background:linear-gradient(135deg,var(--teal),#00d4c1);color:#000;box-shadow:0 0 16px rgba(0,184,169,.6);}
+        #bypass{background:linear-gradient(135deg,var(--orange),#ffb07a);color:#000;box-shadow:0 0 16px rgba(255,140,66,.6);}
+        #overload{background:linear-gradient(135deg,var(--purple),#c06bff);color:#fff;box-shadow:0 0 16px rgba(157,78,221,.6);}
+        .start{text-align:center;padding:0.6rem;}
+        #startBtn{display:inline-block;padding:0.9rem 2rem;font-size:1rem;font-weight:bold;background:linear-gradient(45deg,var(--red),#ff5e8a);color:#fff;border:none;border-radius:50px;cursor:pointer;box-shadow:0 0 20px rgba(255,46,99,.7);animation:p 2s infinite;}
+        #startBtn:disabled{opacity:.7;animation:none;cursor:not-allowed;}
+        @keyframes p{0%,100%{box-shadow:0 0 20px rgba(255,46,99,.7)}50%{box-shadow:0 0 30px rgba(255,46,99,1)}}
+        .notif{position:absolute;top:25%;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.9);color:var(--teal);padding:0.6rem 1.2rem;border-radius:8px;font-size:0.9rem;font-weight:bold;opacity:0;transition:.3s;z-index:100;border:1px solid var(--teal);box-shadow:0 0 20px rgba(0,184,169,.6);pointer-events:none;}
+        .notif.show{opacity:1;transform:translateX(-50%) translateY(-8px);}
+        @media(max-width:600px){
+            .title{font-size:1.5rem;}
+            .stats{font-size:0.7rem;}
+            .stat strong{font-size:0.9rem;}
+            #arena{min-height:200px;}
+            .btn{font-size:0.7rem;padding:0.7rem 0.3rem;}
+            #startBtn{font-size:0.9rem;padding:0.8rem 1.8rem;}
+        }
+        @media(min-width:1200px){
+            .container{max-width:800px;}
+        }
     </style>
 </head>
 <body>
-<div class="bg-grid"></div>
+    <div class="grid-bg"></div>
+    <header class="header">
+        <h1 class="title">NEURAL BREACH</h1>
+        <p class="subtitle">MARCUS KANE // CYBER OPS</p>
+    </header>
 
-<header class="header">
-    <h1 class="game-title">NEURAL BREACH</h1>
-    <p class="subtitle">MARCUS KANE // CYBER OPS DIVISION</p>
-</header>
+    <div class="container">
+        <div class="stats">
+            <div class="stat"><span>Nodes</span><strong id="nodes">0</strong></div>
+            <div class="stat"><span>Links</span><strong id="links">0</strong></div>
+            <div class="stat"><span>AI</span><strong id="level">1</strong></div>
+        </div>
 
-<div class="game-container">
-    <div class="stats-bar">
-        <div class="stat-item"><div class="stat-label">Nodes</div><div class="stat-value" id="neuralNodes">0</div></div>
-        <div class="stat-item"><div class="stat-label">Connections</div><div class="stat-value" id="neuralConnections">0</div></div>
-        <div class="stat-item"><div class="stat-label">AI Level</div><div class="stat-value" id="aiLevel">1</div></div>
+        <div id="arena">
+            <canvas id="canvas"></canvas>
+            <div id="notif" class="notif"></div>
+        </div>
+
+        <div class="pattern">Pattern: <span id="pat">Awaiting sync...</span></div>
+
+        <div class="controls">
+            <button class="btn" id="inject">Inject</button>
+            <button class="btn" id="bypass">Bypass</button>
+            <button class="btn" id="overload">Overload</button>
+        </div>
+
+        <div class="start">
+            <button id="startBtn">ACCESS MAINFRAME</button>
+        </div>
     </div>
 
-    <div id="neuralNetwork"><canvas id="networkCanvas"></canvas><div id="notification" class="notification"></div></div>
+    <script>
+        const canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d'), container = document.getElementById('arena');
+        function resize(){const r=container.getBoundingClientRect(),dpr=window.devicePixelRatio||1;canvas.width=r.width*dpr;canvas.height=r.height*dpr;canvas.style.width=r.width+'px';canvas.style.height=r.height+'px';ctx.scale(dpr,dpr);}window.addEventListener('resize',resize);resize();
 
-    <div class="pattern-display">Pattern: <span id="neuralPattern">Awaiting neural sync...</span></div>
+        const game={nodes:[],links:[],parts:[],lvl:1,pat:[],seq:[],run:false,glitch:false,over:false,inj:0,byp:0,cam:{s:0}};
+        const nEl=document.getElementById('nodes'),lEl=document.getElementById('links'),lvlEl=document.getElementById('level'),patEl=document.getElementById('pat'),start=document.getElementById('startBtn'),inj=document.getElementById('inject'),byp=document.getElementById('bypass'),ovr=document.getElementById('overload'),not=document.getElementById('notif');
 
-    <div class="game-controls">
-        <button class="control-btn" id="injectCodeBtn">Inject</button>
-        <button class="control-btn" id="bypassBtn">Bypass</button>
-        <button class="control-btn" id="overloadBtn">Overload</button>
-    </div>
+        const audio=new (window.AudioContext||window.webkitAudioContext)();let snd=false;
+        function beep(f,d,t='square',v=.3){if(!snd)return;const o=audio.createOscillator(),g=audio.createGain();o.type=t;o.frequency.setValueAtTime(f,audio.currentTime);g.gain.setValueAtTime(v,audio.currentTime);g.gain.exponentialRampToValueAtTime(.01,audio.currentTime+d/1000);o.connect(g).connect(audio.destination);o.start();o.stop(audio.currentTime+d/1000);}
+        function unlock(){if(audio.state==='suspended')audio.resume();snd=true;document.removeEventListener('touchstart',unlock);document.removeEventListener('click',unlock);}
+        document.addEventListener('touchstart',unlock,{once:true});document.addEventListener('click',unlock,{once:true});
 
-    <div class="start-container"><button id="neuralStartBtn">ACCESS MAINFRAME</button></div>
-</div>
+        class Node{constructor(x,y){this.x=x;this.y=y;this.vx=(Math.random()-.5)*.6;this.vy=(Math.random()-.5)*.6;this.r=4+Math.random()*3;this.p=Math.random()*6;this.a=false;this.t=[];}
+        update(w,h){this.x+=this.vx;this.y+=this.vy;if(this.x<25)this.vx=Math.abs(this.vx);if(this.x>w-25)this.vx=-Math.abs(this.vx);if(this.y<25)this.vy=Math.abs(this.vy);if(this.y>h-25)this.vy=-Math.abs(this.vy);this.p+=this.a?.2:.08;this.t.push({x:this.x,y:this.y});if(this.t.length>6)this.t.shift();}
+        draw(c){c.save();c.translate(this.x,this.y);this.t.forEach((p,i)=>{c.globalAlpha=(i+1)/this.t.length*.3;c.fillStyle=this.a?'#00b8a9':'#777';c.fillRect(-1.5,-1.5,3,3);});c.globalAlpha=1;
+        const g=c.createRadialGradient(0,0,0,0,0,this.r*4);g.addColorStop(0,this.a?'rgba(0,184,169,.8)':'rgba(100,100,150,.4)');g.addColorStop(1,'transparent');c.fillStyle=g;c.fillRect(-40,-40,80,80);
+        c.beginPath();const s=this.a?1+Math.sin(this.p)*.5:1;c.arc(0,0,this.r*s,0,Math.PI*2);c.fillStyle=this.a?'#00fff2':'#ddd';c.shadowBlur=15;c.shadowColor=this.a?'#00b8a9':'#888';c.fill();c.restore();}}
 
-<script>
-/* ---------- SAME GAME LOGIC (unchanged) ---------- */
-const canvas=document.getElementById('networkCanvas'),ctx=canvas.getContext('2d'),container=document.getElementById('neuralNetwork');
-function resizeCanvas(){const r=container.getBoundingClientRect(),dpr=window.devicePixelRatio||1;canvas.width=r.width*dpr;canvas.height=r.height*dpr;canvas.style.width=r.width+'px';canvas.style.height=r.height+'px';ctx.scale(dpr,dpr);}window.addEventListener('resize',resizeCanvas);resizeCanvas();
+        class Part{constructor(x,y,col,v=8){this.x=x;this.y=y;this.vx=(Math.random()-.5)*v;this.vy=(Math.random()-.5)*v;this.l=1;this.d=.02+Math.random()*.02;this.c=col;this.s=1.5+Math.random()*2;}
+        update(){this.x+=this.vx;this.y+=this.vy;this.vx*=.96;this.vy*=.96;this.l-=this.d;}
+        draw(c){c.globalAlpha=this.l;c.fillStyle=this.c;c.fillRect(this.x-this.s/2,this.y-this.s/2,this.s,this.s);}}
 
-const game={nodes:[],connections:[],particles:[],aiLevel:1,targetPattern:[],currentPattern:[],isRunning:false,glitchMode:false,overloadActive:false,injectCooldown:0,bypassCooldown:0,camera:{shake:0}};
-const nodesEl=document.getElementById('neuralNodes'),connectionsEl=document.getElementById('neuralConnections'),aiLevelEl=document.getElementById('aiLevel'),patternEl=document.getElementById('neuralPattern'),startBtn=document.getElementById('neuralStartBtn'),injectBtn=document.getElementById('injectCodeBtn'),bypassBtn=document.getElementById('bypassBtn'),overloadBtn=document.getElementById('overloadBtn'),notification=document.getElementById('notification');
+        function spawn(n){const r=container.getBoundingClientRect();for(let i=0;i<n;i++){const x=40+Math.random()*(r.width-80),y=40+Math.random()*(r.height-80);game.nodes.push(new Node(x,y));}up();}
+        function upLinks(){game.links=[];const d=90+game.lvl*20;for(let i=0;i<game.nodes.length;i++)for(let j=i+1;j<game.nodes.length;j++){const a=game.nodes[i],b=game.nodes[j],dx=a.x-b.x,dy=a.y-b.y,dist=Math.hypot(dx,dy);if(dist<d){const o=.2+(1-dist/d)*.4+(a.a&&b.a?.3:0);game.links.push({a,b,o,g:game.glitch&&Math.random()>.7});}}}
+        function genPat(){const c=Math.min(3+Math.floor(game.lvl/2),7),idx=[];while(idx.length<c){const i=Math.floor(Math.random()*game.nodes.length);if(!idx.includes(i))idx.push(i);}game.pat=idx;patEl.innerHTML=`<strong style="color:#ff8c42">${idx.map(v=>`#${v+1}`).join(' → ')}</strong>`;}
+        function check(){if(game.seq.length!==game.pat.length)return;if(game.seq.every((v,i)=>v===game.pat[i]))levelUp();}
+        function levelUp(){game.lvl++;lvlEl.textContent=game.lvl;notif(`AI LEVEL ${game.lvl} BREACHED!`,2500);beep(1300,250,'square');spawn(2+Math.floor(game.lvl/3));reset();glitch();game.cam.s=15;}
+        function reset(){game.seq=[];game.nodes.forEach(n=>n.a=false);setTimeout(genPat,800);}
+        function glitch(){game.glitch=true;document.body.style.filter='url(#g)';setTimeout(()=>{game.glitch=false;document.body.style.filter='';},1000);}
+        function notif(m,d=2000){not.innerHTML=m;not.classList.add('show');setTimeout(()=>not.classList.remove('show'),d);}
+        function burst(x,y,c,n){for(let i=0;i<n;i++)game.parts.push(new Part(x,y,c));}
+        function up(){nEl.textContent=game.nodes.length;lEl.textContent=game.links.length;}
 
-const audioCtx=new (window.AudioContext||window.webkitAudioContext)();let soundEnabled=false;
-function playSound(f,d,t='square',v=.3){if(!soundEnabled)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=t;o.frequency.setValueAtTime(f,audioCtx.currentTime);g.gain.setValueAtTime(v,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.01,audioCtx.currentTime+d/1000);o.connect(g).connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+d/1000);}
-function unlockAudio(){if(audioCtx.state==='suspended')audioCtx.resume();soundEnabled=true;document.removeEventListener('touchstart',unlockAudio);document.removeEventListener('click',unlockAudio);}
-document.addEventListener('touchstart',unlockAudio,{once:true});document.addEventListener('click',unlockAudio,{once:true});
+        inj.onclick=()=>{if(!game.run||game.inj>Date.now())return;game.inj=Date.now()+500;const off=game.nodes.filter(n=>!n.a);if(!off.length)return notif('NO TARGET');const node=off[Math.floor(Math.random()*off.length)];node.a=true;game.seq.push(game.nodes.indexOf(node));beep(900,120);notif('INJECTED');burst(node.x,node.y,'#00b8a9',10);check();}
+        byp.onclick=()=>{if(!game.run||game.byp>Date.now())return;game.byp=Date.now()+700;const on=game.nodes.filter(n=>n.a);if(!on.length)return notif('NO SIGNAL');const node=on[Math.floor(Math.random()*on.length)];node.a=false;const i=game.seq.indexOf(game.nodes.indexOf(node));if(i>-1)game.seq.splice(i,1);beep(600,100,'sawtooth');notif('BYPASSED');burst(node.x,node.y,'#ff8c42',8);}
+        ovr.onclick=()=>{if(!game.run||game.over)return;game.over=true;ovr.classList.add('glitch');notif('OVERLOAD...',800);beep(180,500,'square',.5);setTimeout(()=>{game.nodes.forEach(n=>{if(Math.random()>.5){n.a=!n.a;burst(n.x,n.y,'#9d4edd',7);}});game.seq=game.nodes.map((n,i)=>n.a?i:-1).filter(x=>x>=0);game.over=false;ovr.classList.remove('glitch');check();},800);};
+        start.onclick=()=>{if(game.run)return;game.run=true;start.textContent='LIVE';start.disabled=true;beep(1100,300);notif('Marcus Kane: "Crack the core."',3000);spawn(6);setTimeout(genPat,1000);};
 
-class Node{constructor(x,y){this.x=x;this.y=y;this.vx=(Math.random()-.5)*.8;this.vy=(Math.random()-.5)*.8;this.radius=5+Math.random()*4;this.pulse=Math.random()*Math.PI*2;this.active=false;this.trail=[];this.maxTrail=8;}
-update(w,h){this.x+=this.vx;this.y+=this.vy;if(this.x<30)this.vx=Math.abs(this.vx);if(this.x>w-30)this.vx=-Math.abs(this.vx);if(this.y<30)this.vy=Math.abs(this.vy);if(this.y>h-30)this.vy=-Math.abs(this.vy);this.pulse+=this.active?.25:.1;this.trail.push({x:this.x,y:this.y});if(this.trail.length>this.maxTrail)this.trail.shift();}
-draw(c){c.save();c.translate(this.x,this.y);this.trail.forEach((p,i)=>{c.globalAlpha=(i+1)/this.trail.length*.4;c.fillStyle=this.active?'#00b8a9':'#666';c.fillRect(-2,-2,4,4);});c.globalAlpha=1;
-const g=c.createRadialGradient(0,0,0,0,0,this.radius*5);g.addColorStop(0,this.active?'rgba(0,184,169,.9)':'rgba(100,100,150,.5)');g.addColorStop(1,'transparent');c.fillStyle=g;c.fillRect(-50,-50,100,100);
-c.beginPath();const ps=this.active?1+Math.sin(this.pulse)*.6:1;c.arc(0,0,this.radius*ps,0,Math.PI*2);c.fillStyle=this.active?'#00fff2':'#ccc';c.shadowBlur=20;c.shadowColor=this.active?'#00b8a9':'#888';c.fill();
-if(this.active){c.strokeStyle='#00b8a9';c.lineWidth=2;c.beginPath();c.arc(0,0,this.radius*ps+8,0,Math.PI*2);c.stroke();}c.restore();}}
-
-class Particle{constructor(x,y,col,v=10){this.x=x;this.y=y;this.vx=(Math.random()-.5)*v;this.vy=(Math.random()-.5)*v;this.life=1;this.decay=.015+Math.random()*.02;this.color=col;this.size=2+Math.random()*4;this.trail=[];}
-update(){this.x+=this.vx;this.y+=this.vy;this.vx*=.97;this.vy*=.97;this.life-=this.decay;this.trail.push({x:this.x,y:this.y});if(this.trail.length>6)this.trail.shift();}
-draw(c){c.globalAlpha=this.life;this.trail.forEach((p,i)=>{c.globalAlpha=(i+1)/this.trail.length*this.life;c.fillStyle=this.color;c.fillRect(p.x-1,p.y-1,2,2);});c.globalAlpha=this.life;c.fillStyle=this.color;c.fillRect(this.x-this.size/2,this.y-this.size/2,this.size,this.size);}}
-
-function spawnNodes(n){const r=container.getBoundingClientRect();for(let i=0;i<n;i++){const x=50+Math.random()*(r.width-100),y=50+Math.random()*(r.height-100);game.nodes.push(new Node(x,y));}updateStats();}
-function updateConnections(){game.connections=[];const maxD=120+game.aiLevel*25;for(let i=0;i<game.nodes.length;i++)for(let j=i+1;j<game.nodes.length;j++){const a=game.nodes[i],b=game.nodes[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);if(d<maxD){const s=1-d/maxD,op=.3+s*.5+(a.active&&b.active?.4:0);game.connections.push({ Connie a,b,opacity:op,glitch:game.glitchMode&&Math.random()>.8});}}}
-function generateTargetPattern(){const cnt=Math.min(3+Math.floor(game.aiLevel/2),8),idx=[];while(idx.length<cnt){const i=Math.floor(Math.random()*game.nodes.length);if(!idx.includes(i))idx.push(i);}game.targetPattern=idx;patternEl.innerHTML=`Activate: <strong style="color:#ff8c42">${idx.map(v=>`#${v+1}`).join(' → ')}</strong>`;}
-function checkPattern(){if(game.currentPattern.length!==game.targetPattern.length)return;if(game.currentPattern.every((v,i)=>v===game.targetPattern[i]))levelUp();}
-function levelUp(){game.aiLevel++;aiLevelEl.textContent=game.aiLevel;showNotification(`AI LEVEL ${game.aiLevel} BREACHED!`,3000);playSound(1400,300,'square');spawnNodes(3+Math.floor(game.aiLevel/3));resetPattern();triggerGlitch();game.camera.shake=20;}
-function resetPattern(){game.currentPattern=[];game.nodes.forEach(n=>n.active=false);setTimeout(generateTargetPattern,1000);}
-function triggerGlitch(){game.glitchMode=true;document.body.style.filter='url(#glitch)';setTimeout(()=>{game.glitchMode=false;document.body.style.filter='';},1200);}
-function showNotification(m,d=2500){notification.innerHTML=m;notification.classList.add('show');setTimeout(()=>notification.classList.remove('show'),d);}
-injectBtn.onclick=()=>{if(!game.isRunning||game.injectCooldown>Date.now())return;game.injectCooldown=Date.now()+600;const inactive=game.nodes.filter(n=>!n.active);if(!inactive.length)return showNotification('NO TARGETS');const node=inactive[Math.floor(Math.random()*inactive.length)];node.active=true;game.currentPattern.push(game.nodes.indexOf(node));playSound(1000,150);showNotification('INJECTED');burst(node.x,node.y,'#00b8a9',12);checkPattern();}
-bypassBtn.onclick=()=>{if(!game.isRunning||game.bypassCooldown>Date.now())return;game.bypassCooldown=Date.now()+800;const active=game.nodes.filter(n=>n.active);if(!active.length)return showNotification('NO SIGNAL');const node=active[Math.floor(Math.random()*active.length)];node.active=false;const idx=game.currentPattern.indexOf(game.nodes.indexOf(node));if(idx>-1)game.currentPattern.splice(idx,1);playSound(700,120,'sawtooth');showNotification('BYPASSED');burst(node.x,node.y,'#ff8c42',10);}
-overloadBtn.onclick=()=>{if(!game.isRunning||game.overloadActive)return;game.overloadActive=true;overloadBtn.classList.add('glitch');showNotification('OVERLOAD...',1000);playSound(200,600,'square',.5);setTimeout(()=>{game.nodes.forEach(n=>{if(Math.random()>.5){n.active=!n.active;burst(n.x,n.y,'#9d4edd',8);}});game.currentPattern=game.nodes.map((n,i)=>n.active?i:-1).filter(x=>x>=0);game.overloadActive=false;overloadBtn.classList.remove('glitch');checkPattern();},900);}
-function burst(x,y,col,c){for(let i=0;i<c;i++)game.particles.push(new Particle(x,y,col,12));}
-startBtn.onclick=()=>{if(game.isRunning)return;game.isRunning=true;startBtn.textContent='MAINFRAME LIVE';startBtn.disabled=true;playSound(1200,300);showNotification('Marcus Kane: "Let\'s burn the grid."',4000);spawnNodes(8);setTimeout(generateTargetPattern,1200);};
-
-function applyCameraShake(){if(game.camera.shake>0){const i=game.camera.shake;ctx.save();ctx.translate((Math.random()-.5)*i,(Math.random()-.5)*i);game.camera.shake*=0.9;if(game.camera.shake<.5)game.camera.shake=0;}}
-function restoreCamera(){if(game.camera.shake>0)ctx.restore();}
-function animate(){const r=container.getBoundingClientRect();ctx.fillStyle='rgba(10,10,10,.12)';ctx.fillRect(0,0,r.width,r.height);applyCameraShake();game.nodes.forEach(n=>n.update(r.width,r.height));updateConnections();
-game.connections.forEach(c=>{ctx.beginPath();ctx.moveTo(c.n1.x,c.n1.y);ctx.lineTo(c.n2.x,c.n2.y);ctx.strokeStyle=c.glitch?`rgba(255,50,50,${c.opacity})`:`rgba(0,184,169,${c.opacity})`;ctx.lineWidth=c.glitch?3:1.5;ctx.stroke();});
-game.nodes.forEach(n=>n.draw(ctx));game.particles=game.particles.filter(p=>{p.update();p.draw(ctx);return p.life>0;});restoreCamera();updateStats();requestAnimationFrame(animate);}
-function updateStats(){nodesEl.textContent=game.nodes.length;connectionsEl.textContent=game.connections.length;}
-document.body.insertAdjacentHTML('afterbegin',`<svg style="position:absolute;width:0;height:0"><filter id="glitch"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="4" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="10"/></filter></svg>`);
-patternEl.textContent='Neural sync in progress...';showNotification('MARCUS KANE AUTHORIZED',3000);animate();
-</script>
+        function shake(){if(game.cam.s>0){const i=game.cam.s;ctx.save();ctx.translate((Math.random()-.5)*i,(Math.random()-.5)*i);game.cam.s*=0.88;if(game.cam.s<0.5)game.cam.s=0;}}
+        function unshake(){if(game.cam.s>0)ctx.restore();}
+        function anim(){const r=container.getBoundingClientRect();ctx.fillStyle='rgba(10,10,10,.1)';ctx.fillRect(0,0,r.width,r.height);shake();game.nodes.forEach(n=>n.update(r.width,r.height));upLinks();
+        game.links.forEach(l=>{ctx.beginPath();ctx.moveTo(l.a.x,l.a.y);ctx.lineTo(l.b.x,l.b.y);ctx.strokeStyle=l.g?`rgba(255,50,50,${l.o})`:`rgba(0,184,169,${l.o})`;ctx.lineWidth=l.g?2.5:1.2;ctx.stroke();});
+        game.nodes.forEach(n=>n.draw(ctx));game.parts=game.parts.filter(p=>{p.update();p.draw(ctx);return p.l>0;});unshake();up();requestAnimationFrame(anim);}
+        document.body.insertAdjacentHTML('afterbegin',`<svg style="position:absolute;width:0;height:0"><filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="8"/></filter></svg>`);
+        patEl.textContent='Syncing...';notif('MARCUS KANE AUTHORIZED',2500);anim();
+    </script>
 </body>
 </html>
