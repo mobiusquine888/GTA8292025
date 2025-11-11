@@ -830,7 +830,7 @@
 
         <div id="challenges" class="tab-content">
             <iframe src="https://gta6fastlane.com/minigames" 
-                    style="width: 100%; height: calc(100vh - 250px); border: none; border-radius: 12px; background: var(--card-bg);"
+                    style="width: 100%; min-height: 2000px; border: none; border-radius: 12px; background: var(--card-bg);"
                     title="GTAFastLane Mini Games">
             </iframe>
         </div>
@@ -927,7 +927,9 @@
     <div class="notification" id="notification"></div>
 
     <div class="floating-actions">
-        <button class="floating-btn" onclick="shareForReward()">🚀 Share</button>
+        <button style="background: #ff0055; color: white; border: 2px solid white; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; box-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; position: relative; animation: neonPulse 1.8s infinite alternate;" onclick="showTab('news'); document.querySelector('[data-tab=news]').scrollIntoView({behavior: 'smooth', block: 'nearest'});" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" title="Chaos City Conspiracies">
+            <span style="font-weight: 900; font-size: 1.1rem; letter-spacing: 0.5px; text-shadow: 0 0 4px rgba(0,0,0,0.7);">CCC</span>
+        </button>
     </div>
 
     <button id="feedbackBtn" style="position: fixed; top: 1rem; left: 1rem; background: #ff9800; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; z-index: 1000;">Feedback</button>
