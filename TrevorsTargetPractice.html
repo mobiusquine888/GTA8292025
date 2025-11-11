@@ -7,15 +7,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #ff1a1a;
-            --secondary: #00ff9d;
-            --accent: #ffea00;
-            --bg: #0a0a0a;
-            --card: #1a1a1a;
+            --primary: #ff0080;      
+            --secondary: #00a0e3;    
+            --accent: #e74c3c;       
+            --bg: #0d0d0d;           
+            --card: #1f1f1f;         
             --text: #ffffff;
-            --shadow: 0 0 30px rgba(255, 26, 26, 0.5);
-            --glow: 0 0 20px rgba(255, 255, 0.8);
-            --gold: #ffd700;
+            --shadow: 0 0 25px rgba(255, 0, 128, 0.5);
+            --glow: 0 0 18px rgba(0, 160, 227, 0.7);
+            --gold: #ff0080;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -47,7 +47,7 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #ff1a1a, #8b0000);
+            background: linear-gradient(135deg, #ff0080, #cc0066);
             padding: 0.6rem 0.8rem;
             text-align: center;
             border-radius: 12px;
@@ -59,14 +59,14 @@
         }
 
         @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 15px rgba(255, 26, 26, 0.6); }
-            50% { box-shadow: 0 0 35px rgba(255, 26, 26, 1); }
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 0, 128, 0.6); }
+            50% { box-shadow: 0 0 35px rgba(255, 0, 128, 1); }
         }
 
         .header h1 {
             font-size: clamp(1.1rem, 3.5vw, 1.5rem);
             font-weight: 900;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
             line-height: 1.2;
             margin: 0;
         }
@@ -77,12 +77,12 @@
         .stats-bar {
             display: flex;
             justify-content: space-between;
-            background: rgba(26, 26, 26, 0.9);
+            background: rgba(31, 31, 31, 0.95);
             padding: 0.4rem 0.8rem;
             border-radius: 10px;
             font-size: clamp(0.7rem, 2.5vw, 0.9rem);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 26, 26, 0.3);
+            border: 1px solid rgba(255, 0, 128, 0.4);
             flex-shrink: 0;
         }
 
@@ -108,10 +108,10 @@
         .game-area {
             position: relative;
             flex: 1 1 auto;
-            background: #0d1b2a;
+            background: #0a141e;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 0 20px rgba(255, 26, 26, 0.3);
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 0 20px rgba(255, 0, 128, 0.3);
             cursor: crosshair;
             min-height: 250px;
             touch-action: none;
@@ -132,7 +132,7 @@
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
-            background: radial-gradient(circle at center, transparent 35%, rgba(0,0,0,0.85) 60%);
+            background: radial-gradient(circle at center, transparent 35%, rgba(10, 20, 30, 0.85) 60%);
             opacity: 0;
             transition: opacity 0.3s ease;
             z-index: 5;
@@ -178,7 +178,7 @@
 
         .target-circle {
             width: 50px; height: 50px;
-            background: conic-gradient(from 0deg, white 0deg, red 90deg, white 180deg, red 270deg, white 360deg);
+            background: conic-gradient(from 0deg, white 0deg, #ff0080 90deg, white 180deg, #ff0080 270deg, white 360deg);
             border-radius: 50%;
             border: 3px solid #fff;
             box-shadow: 0 0 15px rgba(255,255,255,0.8), inset 0 0 10px rgba(0,0,0,0.5);
@@ -228,7 +228,7 @@
         .explosion {
             position: absolute;
             width: 60px; height: 60px;
-            background: radial-gradient(circle, #ff4500, #ff8c00, transparent);
+            background: radial-gradient(circle, #ff0080, #cc0066, transparent);
             border-radius: 50%;
             pointer-events: none;
             animation: explode 0.6s ease-out forwards;
@@ -283,16 +283,17 @@
         }
 
         .btn-start {
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            color: white;
+            background: linear-gradient(45deg, var(--primary), #cc0066);
+            color: #fff;
             flex: 1;
             max-width: 300px;
             box-shadow: var(--shadow);
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
         }
 
         .btn-start:hover, .btn-mode:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(255, 26, 26, 0.4);
+            box-shadow: 0 10px 20px rgba(255, 0, 128, 0.4);
         }
 
         .instructions {
@@ -310,12 +311,12 @@
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.95);
+            background: rgba(13, 13, 13, 0.95);
             padding: 2rem;
             border-radius: 20px;
             text-align: center;
             border: 3px solid var(--primary);
-            box-shadow: 0 0 50px rgba(255, 26, 26, 0.8);
+            box-shadow: 0 0 50px rgba(255, 0, 128, 0.8);
             z-index: 100;
             display: none;
             max-width: 90%;
@@ -358,12 +359,12 @@
 
         .leaderboard {
             margin-top: 1rem;
-            background: rgba(26, 26, 26, 0.9);
+            background: rgba(31, 31, 31, 0.9);
             border-radius: 12px;
             padding: 1rem;
             max-height: 200px;
             overflow-y: auto;
-            border: 1px solid rgba(255, 26, 26, 0.3);
+            border: 1px solid rgba(255, 0, 128, 0.4);
         }
 
         .leaderboard h3 {
@@ -473,14 +474,14 @@
             </div>
 
             <input type="text" id="playerName" placeholder="Enter your name" maxlength="12" 
-                   style="margin: 1rem 0; padding: 0.7rem; border-radius: 8px; border: none; text-align: center; font-weight: 700;">
-            <button class="btn btn-start" onclick="saveScore()" style="margin-top: 0.5rem;">SAVE SCORE</button>
-            <button class="btn btn-start" onclick="location.reload()" style="margin-top: 0.5rem;">PLAY AGAIN</button>
+                   style="margin: 1rem 0; padding: 0.7rem; border-radius: 8px; border: none; text-align: center; font-weight: 700; background: rgba(255,255,255,0.1); color: white;">
+            <button class="btn btn-start" id="saveScoreBtn" style="margin-top: 0.5rem;">SAVE SCORE</button>
+            <button class="btn btn-start" id="playAgainBtn" style="margin-top: 0.5rem;">PLAY AGAIN</button>
         </div>
     </div>
 
     <script>
-        // FINAL WORKING VERSION - ALL STAGES PROGRESS CORRECTLY
+        // FINAL WORKING VERSION - SHOOTING + STAGE 4 100% FIXED
         let state = {
             stage: 1, mode: 'hard', timeLeft: 45, score: 0,
             shots: 0, hits: 0, accuracy: 100,
@@ -510,9 +511,11 @@
 
         function playSound(type) {
             if (!state.soundEnabled || !state.audioCtx) return;
-            const audio = new Audio(sounds[type]);
-            audio.volume = 0.6;
-            audio.play().catch(() => {});
+            try {
+                const audio = new Audio(sounds[type]);
+                audio.volume = 0.6;
+                audio.play().catch(() => {});
+            } catch(e) {}
         }
 
         function toggleSound() {
@@ -521,23 +524,26 @@
         }
 
         function speak(text) {
-            if (!state.soundEnabled) return;
-            const msg = new SpeechSynthesisUtterance(text);
-            msg.rate = 0.9; msg.pitch = 0.7;
-            const voices = speechSynthesis.getVoices();
-            const male = voices.find(v => v.lang.includes('en') && v.name.includes('Daniel'));
-            if (male) msg.voice = male;
-            speechSynthesis.speak(msg);
+            if (!state.soundEnabled || !('speechSynthesis' in window)) return;
+            try {
+                const msg = new SpeechSynthesisUtterance(text);
+                msg.rate = 0.9; msg.pitch = 0.7;
+                speechSynthesis.speak(msg);
+            } catch(e) {}
         }
 
         // Leaderboard
         function loadLeaderboard() {
-            const data = localStorage.getItem('targetPracticeLB');
-            return data ? JSON.parse(data) : [];
+            try {
+                const data = localStorage.getItem('targetPracticeLB');
+                return data ? JSON.parse(data) : [];
+            } catch(e) { return []; }
         }
 
         function saveLeaderboard(entries) {
-            localStorage.setItem('targetPracticeLB', JSON.stringify(entries.slice(0, 10)));
+            try {
+                localStorage.setItem('targetPracticeLB', JSON.stringify(entries.slice(0, 10)));
+            } catch(e) {}
         }
 
         function displayLeaderboard() {
@@ -563,10 +569,11 @@
             entries.sort((a, b) => b.score - a.score);
             saveLeaderboard(entries);
             displayLeaderboard();
-            document.querySelector('button[onclick="saveScore()"]').disabled = true;
+            document.getElementById('saveScoreBtn').disabled = true;
+            document.getElementById('saveScoreBtn').textContent = 'SAVED!';
         }
 
-        // Touch
+        // Touch controls
         let touchStartX = 0, touchStartY = 0;
         function handleTouchStart(e) {
             e.preventDefault();
@@ -589,19 +596,23 @@
             if (deltaX < 20 && deltaY < 20) shoot(touch);
         }
 
+        // Mode buttons
         ['Easy', 'Medium', 'Hard'].forEach(m => {
-            const btn = document.getElementById(`mode${m}`);
-            btn.onclick = () => {
+            document.getElementById(`mode${m}`).onclick = () => {
                 state.mode = m.toLowerCase();
                 document.querySelectorAll('.btn-mode').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
+                document.getElementById(`mode${m}`).classList.add('active');
                 document.getElementById('targetInstructions').textContent = `MODE: ${m.toUpperCase()} | TAP TO SHOOT`;
             };
         });
 
-        document.getElementById('targetStartBtn').onclick = () => {
+        document.getElementById('targetStartBtn').onclick = startGame;
+
+        function startGame() {
             initAudio();
             const cfg = config[state.mode];
+            
+            // FULL RESET
             Object.assign(state, {
                 stage: 1, timeLeft: cfg.time, score: 0, shots: 0, hits: 0, accuracy: 100,
                 circles: 0, satellites: 0, tires: 0, coyotesHit: 0, doubleKills: 0,
@@ -613,28 +624,33 @@
             document.getElementById('targetStartBtn').disabled = true;
             document.getElementById('scopeOverlay').style.opacity = '1';
             document.getElementById('rooftopLine').style.display = 'none';
+            document.getElementById('saveScoreBtn').disabled = false;
+            document.getElementById('saveScoreBtn').textContent = 'SAVE SCORE';
 
             updateStats();
             nextStage();
+
+            // Timer
             state.timer = setInterval(() => {
                 state.timeLeft--;
                 document.getElementById('targetTimer').textContent = state.timeLeft + 's';
                 if (state.timeLeft <= 0) endGame();
             }, 1000);
 
+            // Event listeners
             const area = document.getElementById('gameArea');
-            area.addEventListener('click', shoot);
-            area.addEventListener('mousemove', e => moveCrosshair(e));
-            area.addEventListener('touchstart', handleTouchStart, { passive: false });
-            area.addEventListener('touchmove', handleTouchMove, { passive: false });
-            area.addEventListener('touchend', handleTouchEnd, { passive: false });
-        };
+            area.onclick = shoot;
+            area.onmousemove = moveCrosshair;
+            area.ontouchstart = handleTouchStart;
+            area.ontouchmove = handleTouchMove;
+            area.ontouchend = handleTouchEnd;
+        }
 
         function moveCrosshair(e) {
             const cross = document.getElementById('crosshair');
             const rect = document.getElementById('targetRange').getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+            const x = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+            const y = Math.max(0, Math.min(rect.height, e.clientY - rect.top));
             cross.style.left = x + 'px';
             cross.style.top = y + 'px';
         }
@@ -647,7 +663,8 @@
         }
 
         function nextStage() {
-            clearTargets();
+            clearAllTargets();
+            
             const cfg = config[state.mode];
             const stages = {
                 1: { text: 'Vic: "Hit them bullseyes, boy!"', spawn: () => spawnTargets(cfg.circleReq) },
@@ -655,22 +672,20 @@
                 3: { text: 'Vic: "Pop them tires!"', spawn: () => spawnVehicles(cfg.tireReq) },
                 4: { text: 'Vic: "Line up them coyotes on the roof!"', spawn: () => spawnCoyotesOnRoof(cfg.coyoteReq) }
             };
-            const s = stages[state.stage];
-            document.getElementById('targetInstructions').textContent = s.text;
-            speak(s.text.split(':')[1]?.trim() || s.text);
+            
+            const stageData = stages[state.stage];
+            document.getElementById('targetInstructions').textContent = stageData.text;
+            speak(stageData.text.split(':')[1]?.trim() || stageData.text);
+            document.getElementById('rooftopLine').style.display = state.stage === 4 ? 'block' : 'none';
 
-            if (state.stage === 4) {
-                document.getElementById('rooftopLine').style.display = 'block';
-            } else {
-                document.getElementById('rooftopLine').style.display = 'none';
-            }
-
-            setTimeout(s.spawn, 1800);
+            setTimeout(stageData.spawn, 1500);
         }
 
-        function clearTargets() {
-            [...state.targets, ...state.vehicles, ...state.coyotes].forEach(t => t.el?.remove());
-            state.targets = []; state.vehicles = []; state.coyotes = [];
+        function clearAllTargets() {
+            document.querySelectorAll('.target, .target-car, .target-coyote, .target-tire').forEach(el => el.remove());
+            state.targets = [];
+            state.vehicles = [];
+            state.coyotes = [];
         }
 
         function spawnTargets(count) {
@@ -690,8 +705,8 @@
             for (let i = 0; i < count; i++) {
                 const sat = document.createElement('div');
                 sat.className = 'target target-satellite';
-                sat.style.left = `${10 + i * 20}%`;
-                sat.style.top = `${25 + (i % 2) * 30}%`;
+                sat.style.left = `${10 + i * 18}%`;
+                sat.style.top = `${25 + (i % 2) * 25}%`;
                 range.appendChild(sat);
                 state.targets.push({ el: sat, hit: false });
             }
@@ -704,78 +719,76 @@
                     const car = document.createElement('div');
                     car.className = 'target target-car';
                     car.style.left = '-15%';
-                    car.style.top = `${30 + (i % 3) * 20}%`;
+                    car.style.top = `${25 + (i % 3) * 18}%`;
                     range.appendChild(car);
 
-                    const speed = 3500 / config[state.mode].speed;
+                    const speed = 4000 / config[state.mode].speed;
                     const anim = car.animate([{ left: '-15%' }, { left: '115%' }], { duration: speed, easing: 'linear' });
                     anim.onfinish = () => car.remove();
 
                     const tire1 = createTire(car, '18%', '75%');
                     const tire2 = createTire(car, '72%', '75%');
                     state.vehicles.push({ el: car, tires: [tire1, tire2], popped: 0 });
-                }, i * 2000);
+                }, i * 1800);
             }
         }
 
         function createTire(parent, left, top) {
             const tire = document.createElement('div');
             tire.className = 'target target-tire';
-            tire.style.left = left; tire.style.top = top;
+            tire.style.left = left;
+            tire.style.top = top;
             parent.appendChild(tire);
             return tire;
         }
 
         function spawnCoyotesOnRoof(count) {
             const range = document.getElementById('targetRange');
-            requestAnimationFrame(() => {
-                const rect = range.getBoundingClientRect();
-                const roofBottomPercent = 35;
-                const roofY = (roofBottomPercent / 100) * rect.height;
+            for (let i = 0; i < count; i++) {
+                const coyote = document.createElement('div');
+                coyote.className = 'target target-coyote';
+                coyote.style.left = `${15 + i * 16}%`;
+                coyote.style.bottom = '50px';
+                range.appendChild(coyote);
 
-                for (let i = 0; i < count; i++) {
-                    const coy = document.createElement('div');
-                    coy.className = 'target target-coyote';
-                    coy.style.position = 'absolute';
-                    coy.style.bottom = `${rect.height - roofY + 10}px`;
-                    coy.style.left = `${15 + i * 15}%`;
-                    range.appendChild(coy);
+                const coyoteObj = { el: coyote, hit: false };
+                state.coyotes.push(coyoteObj);
+                setTimeout(() => startCoyoteMovement(coyoteObj), 500 + i * 300);
+            }
+        }
 
-                    const obj = { el: coy, hit: false };
-                    state.coyotes.push(obj);
+        function startCoyoteMovement(coyoteObj) {
+            if (!coyoteObj.el.parentElement || coyoteObj.hit || !state.playing) return;
 
-                    const moveCoyote = () => {
-                        if (!coy.parentElement || obj.hit) return;
-                        const positions = [15, 30, 45, 60, 75];
-                        const current = parseFloat(coy.style.left);
-                        const available = positions.filter(p => Math.abs(p - current) > 5);
-                        if (available.length === 0) return;
-                        const newPos = available[Math.floor(Math.random() * available.length)];
+            const positions = [12, 28, 44, 60, 76];
+            const current = parseFloat(coyoteObj.el.style.left) || positions[0];
+            const available = positions.filter(p => Math.abs(p - current) > 8);
+            if (available.length === 0) return;
 
-                        coy.style.transition = 'left 1.2s ease-in-out, transform 0.3s';
-                        coy.style.left = `${newPos}%`;
-                        coy.style.transform = 'translateY(-12px)';
-
-                        setTimeout(() => {
-                            if (coy.parentElement && !obj.hit) coy.style.transform = 'translateY(0)';
-                        }, 600);
-
-                        setTimeout(moveCoyote, 2200 + Math.random() * 1800);
-                    };
-                    setTimeout(moveCoyote, 1200 + i * 600);
+            const newPos = available[Math.floor(Math.random() * available.length)];
+            coyoteObj.el.style.transition = 'left 1.2s ease-in-out';
+            coyoteObj.el.style.left = `${newPos}%`;
+            coyoteObj.el.style.transform = 'translateY(-20px)';
+            setTimeout(() => {
+                if (coyoteObj.el.parentElement && !coyoteObj.hit) {
+                    coyoteObj.el.style.transform = 'translateY(0)';
                 }
-            });
+            }, 600);
+
+            setTimeout(() => startCoyoteMovement(coyoteObj), 2500);
         }
 
         function shoot(e) {
             if (!state.playing) return;
+            
             playSound('gunshot');
             state.shots++;
+
             const rect = document.getElementById('targetRange').getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
 
-            let hit = false, multi = 0;
+            let hit = false, multi = 1;
             const hitCoyotes = [];
 
             if (state.stage === 1) {
@@ -783,76 +796,89 @@
                     const t = state.targets[i];
                     if (t.hit || !t.el.parentElement) continue;
                     const r = t.el.getBoundingClientRect();
-                    if (x > r.left - rect.left && x < r.right - rect.left && y > r.top - rect.top && y < r.bottom - rect.top) {
-                        t.hit = true; t.el.style.transform = 'scale(0.3)'; hit = true;
+                    if (x > r.left - rect.left && x < r.right - rect.left && 
+                        y > r.top - rect.top && y < r.bottom - rect.top) {
+                        t.hit = true;
+                        t.el.style.transform = 'scale(0.2)';
+                        hit = true;
                         state.circles++;
+                        setTimeout(() => t.el.remove(), 300);
+                        createExplosion(x, y);
+                        playSound('hit');
+                        break;
+                    }
+                }
+            } else if (state.stage === 2) {
+                for (let i = state.targets.length - 1; i >= 0; i--) {
+                    const t = state.targets[i];
+                    if (t.hit || !t.el.parentElement) continue;
+                    const r = t.el.getBoundingClientRect();
+                    if (x > r.left - rect.left && x < r.right - rect.left && 
+                        y > r.top - rect.top && y < r.bottom - rect.top) {
+                        t.hit = true;
+                        t.el.style.transform = 'scale(2) rotate(180deg)';
+                        hit = true;
+                        state.satellites++;
                         setTimeout(() => t.el.remove(), 400);
                         createExplosion(x, y);
                         playSound('hit');
                         break;
                     }
                 }
-            }
-
-            if (state.stage === 2) {
-                for (let i = state.targets.length - 1; i >= 0; i--) {
-                    const t = state.targets[i];
-                    if (t.hit || !t.el.parentElement) continue;
-                    const r = t.el.getBoundingClientRect();
-                    if (x > r.left - rect.left && x < r.right - rect.left && y > r.top - rect.top && y < r.bottom - rect.top) {
-                        t.hit = true; t.el.style.transform = 'scale(1.8)'; hit = true;
-                        state.satellites++;
-                        setTimeout(() => t.el.remove(), 500);
-                        createExplosion(x, y);
-                        playSound('hit');
-                        break;
+            } else if (state.stage === 3) {
+                for (let v of state.vehicles) {
+                    if (!v.el.parentElement) continue;
+                    for (let tire of v.tires) {
+                        if (!tire.parentElement) continue;
+                        const r = tire.getBoundingClientRect();
+                        if (x > r.left - rect.left && x < r.right - rect.left && 
+                            y > r.top - rect.top && y < r.bottom - rect.top) {
+                            tire.style.background = '#f00';
+                            tire.style.transform = 'scale(2)';
+                            hit = true;
+                            v.popped = (v.popped || 0) + 1;
+                            state.tires++;
+                            playSound('hit');
+                            if (v.popped >= 2) v.el.style.transform = 'rotate(30deg)';
+                            setTimeout(() => tire.remove(), 300);
+                            break;
+                        }
+                    }
+                    if (hit) break;
+                }
+            } else if (state.stage === 4) {
+                for (let c of state.coyotes) {
+                    if (c.hit || !c.el.parentElement) continue;
+                    const r = c.el.getBoundingClientRect();
+                    if (x > r.left - rect.left && x < r.right - rect.left && 
+                        y > r.top - rect.top && y < r.bottom - rect.top) {
+                        hitCoyotes.push(c);
                     }
                 }
-            }
-
-            if (state.stage === 3) {
-                state.vehicles.forEach(v => {
-                    if (!v.el.parentElement) return;
-                    v.tires.forEach(tire => {
-                        if (!tire.parentElement) return;
-                        const r = tire.getBoundingClientRect();
-                        if (x > r.left - rect.left && x < r.right - rect.left && y > r.top - rect.top && y < r.bottom - rect.top) {
-                            tire.style.background = '#666'; tire.style.transform = 'scale(1.5)';
-                            hit = true; v.popped = (v.popped || 0) + 1; state.tires++;
-                            playSound('hit');
-                            if (v.popped >= 2) v.el.style.transform = 'rotate(25deg)';
-                            setTimeout(() => tire.remove(), 300);
-                        }
-                    });
-                });
-            }
-
-            if (state.stage === 4) {
-                state.coyotes.forEach(c => {
-                    if (c.hit || !c.el.parentElement) return;
-                    const r = c.el.getBoundingClientRect();
-                    if (x > r.left - rect.left && x < r.right - rect.left && y > r.top - rect.top && y < r.bottom - rect.top) {
-                        c.hit = true; hitCoyotes.push(c);
-                    }
-                });
 
                 if (hitCoyotes.length > 0) {
-                    hit = true; multi = hitCoyotes.length;
+                    hit = true;
+                    multi = hitCoyotes.length;
                     state.coyotesHit += multi;
-                    if (multi > 1) { state.doubleKills++; playSound('double'); }
+                    if (multi > 1) {
+                        state.doubleKills++;
+                        playSound('double');
+                        createExplosion(x, y, '2X KILL!');
+                    } else {
+                        playSound('hit');
+                    }
                     hitCoyotes.forEach(c => {
-                        c.el.style.transform = 'scale(1.6) rotate(20deg)';
-                        c.el.style.transition = 'all 0.4s';
-                        setTimeout(() => c.el.remove(), 600);
+                        c.hit = true;
+                        c.el.style.transform = 'scale(1.5) rotate(90deg)';
+                        setTimeout(() => c.el.remove(), 400);
                     });
-                    createExplosion(x, y, multi > 1 ? '2 FOR 1!' : '');
-                    playSound('hit');
+                    createExplosion(x, y);
                 }
             }
 
             if (hit) {
                 state.hits++;
-                state.score += 100 * (multi || 1);
+                state.score += 100 * multi;
             } else {
                 playSound('miss');
             }
@@ -876,62 +902,73 @@
             const cfg = config[state.mode];
             let complete = false;
 
-            if (state.stage === 1 && state.circles >= cfg.circleReq) complete = true;
-            else if (state.stage === 2 && state.satellites >= cfg.satReq) complete = true;
-            else if (state.stage === 3 && state.tires >= cfg.tireReq) complete = true;
-            else if (state.stage === 4 && state.coyotesHit >= cfg.coyoteReq) complete = true;
+            switch(state.stage) {
+                case 1: complete = state.circles >= cfg.circleReq; break;
+                case 2: complete = state.satellites >= cfg.satReq; break;
+                case 3: complete = state.tires >= cfg.tireReq; break;
+                case 4: complete = state.coyotesHit >= cfg.coyoteReq; break;
+            }
 
             if (complete && state.stage < 4) {
                 state.stage++;
-                setTimeout(() => {
-                    nextStage();
-                    updateStats(); // Force update after stage change
-                }, 1800);
+                setTimeout(nextStage, 2000);
             } else if (complete && state.stage === 4) {
-                endGame();
+                setTimeout(endGame, 1500);
             }
         }
 
         function endGame() {
             if (!state.playing) return;
             state.playing = false;
-            clearInterval(state.timer);
+            if (state.timer) clearInterval(state.timer);
+
             document.getElementById('targetStartBtn').disabled = false;
             document.getElementById('scopeOverlay').style.opacity = '0';
             document.getElementById('rooftopLine').style.display = 'none';
 
             const cfg = config[state.mode];
             const gold = {
-                circles: state.circles >= cfg.circleReq && state.shots === state.hits,
-                satellites: state.satellites >= cfg.satReq && state.shots === state.hits,
+                circles: state.circles >= cfg.circleReq && state.accuracy === 100,
+                satellites: state.satellites >= cfg.satReq && state.accuracy === 100,
                 tires: state.tires >= cfg.tireReq && state.accuracy >= cfg.accReq,
                 coyotes: state.coyotesHit >= cfg.coyoteReq && state.doubleKills >= cfg.doubleReq
             };
-            state.gold = gold;
-            const count = Object.values(gold).filter(v => v).length;
+            const goldCount = Object.values(gold).filter(v => v).length;
 
-            document.getElementById('targetResult').innerHTML = count === 4 ? 
-                '<div class="gold-medal">GOLD MEDAL!</div>' : 
-                count > 0 ? 'MISSION COMPLETE' : 'MISSION FAILED';
+            document.getElementById('targetResult').innerHTML = goldCount === 4 ? 
+                '<div class="gold-medal">PERFECT!</div>' : 
+                goldCount >= 2 ? 'MISSION COMPLETE' : 'MISSION FAILED';
 
             document.getElementById('targetFinalScore').textContent = 
-                `SCORE: ${state.score} | ACC: ${state.accuracy}% | 2x KILLS: ${state.doubleKills}`;
+                `SCORE: ${state.score} | ACC: ${state.accuracy}% | DOUBLES: ${state.doubleKills}`;
 
             document.getElementById('goldMedals').innerHTML = `
-                <div class="medal"><div class="medal-name">Bullseye</div><div class="medal-icon">${gold.circles ? 'Gold' : 'Failed'}</div></div>
-                <div class="medal"><div class="medal-name">Satellite</div><div class="medal-icon">${gold.satellites ? 'Gold' : 'Failed'}</div></div>
-                <div class="medal"><div class="medal-name">Pop! Pop!</div><div class="medal-icon">${gold.tires ? 'Gold' : 'Failed'}</div></div>
-                <div class="medal"><div class="medal-name">2 for 1</div><div class="medal-icon">${gold.coyotes ? 'Gold' : 'Failed'}</div></div>
+                <div class="medal">
+                    <div class="medal-name">Bullseye</div>
+                    <div class="medal-icon">${gold.circles ? 'Gold' : 'Cross'}</div>
+                </div>
+                <div class="medal">
+                    <div class="medal-name">Satellite</div>
+                    <div class="medal-icon">${gold.satellites ? 'Gold' : 'Cross'}</div>
+                </div>
+                <div class="medal">
+                    <div class="medal-name">Pop! Pop!</div>
+                    <div class="medal-icon">${gold.tires ? 'Gold' : 'Cross'}</div>
+                </div>
+                <div class="medal">
+                    <div class="medal-name">2 for 1</div>
+                    <div class="medal-icon">${gold.coyotes ? 'Gold' : 'Cross'}</div>
+                </div>
             `;
 
             displayLeaderboard();
             document.getElementById('targetGameOver').style.display = 'block';
-            if (count === 4) speak("Yee-haw! All gold, partner!");
         }
 
         // Init
         document.getElementById('soundToggle').onclick = toggleSound;
-        window.speechSynthesis?.getVoices();
+        document.getElementById('saveScoreBtn').onclick = saveScore;
+        document.getElementById('playAgainBtn').onclick = () => location.reload();
         displayLeaderboard();
     </script>
 </body>
