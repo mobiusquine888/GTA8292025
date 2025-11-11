@@ -59,10 +59,15 @@
         }
 
         .header h1 {
-            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            font-size: clamp(1.1rem, 3.5vw, 1.5rem);
             font-weight: 900;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            line-height: 1.2;
+            margin: 0;
         }
+
+        .header .line1 { font-size: 1.1em; }
+        .header .line2 { font-size: 1.3em; }
 
         .stats-bar {
             display: flex;
@@ -130,8 +135,6 @@
         #crosshair {
             position: absolute;
             width: 40px; height: 40px;
-            top: 50%; left: 50%;
-            margin: -20px 0 0 -20px;
             pointer-events: none;
             z-index: 10;
             transition: all 0.05s ease;
@@ -406,7 +409,10 @@
         <button class="sound-toggle" id="soundToggle">Sound On</button>
 
         <div class="header">
-            <h1>VIC "THE ANIMAL" RUSSO'S TARGET PRACTICE</h1>
+            <h1>
+                <div class="line1">Vic "The Animal" Russo's</div>
+                <div class="line2">Target Practice</div>
+            </h1>
         </div>
 
         <div class="stats-bar">
@@ -463,7 +469,7 @@
     </div>
 
     <script>
-        // FULLY OPTIMIZED: Mobile Touch + Sound Effects + Leaderboard
+        // FULLY FIXED: Stage 4 Progression + Crosshair Alignment + Header Split
         let state = {
             stage: 1, mode: 'hard', timeLeft: 45, score: 0,
             shots: 0, hits: 0, accuracy: 100,
@@ -867,7 +873,7 @@
             if (state.stage === 1 && state.circles >= cfg.circleReq) complete = true;
             else if (state.stage === 2 && state.satellites >= cfg.satReq) complete = true;
             else if (state.stage === 3 && state.tires >= cfg.tireReq) complete = true;
-            else if (state.stage === 4 && state.coyotes.length === 0) complete = true;
+            else if (state.stage === 4 && state.coyotes.length === 0 && state.coyotes.every(c => c.hit)) complete = true;
 
             if (complete && state.stage < 4) {
                 state.stage++;
