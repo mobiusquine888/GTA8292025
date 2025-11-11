@@ -1,352 +1,548 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>🎮 Arcade Framework v3</title>
-<style>
-:root {
-  --primary: #ff4757;
-  --bg: #f4f6f8;
-  --card: #fff;
-  --gold: #FFD700;
-}
-body {
-  font-family: "Segoe UI", sans-serif;
-  background: var(--bg);
-  margin: 0;
-  padding: 0;
-  color: #222;
-}
-header {
-  text-align: center;
-  padding: 1.5rem;
-  background: var(--primary);
-  color: white;
-  font-size: 1.4rem;
-  font-weight: 600;
-}
-#menu {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-  padding: 1rem;
-}
-.game-card {
-  background: var(--card);
-  border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  padding: 1rem;
-  text-align: center;
-  transition: transform 0.2s;
-  cursor: pointer;
-}
-.game-card:hover { transform: translateY(-4px); }
-.game-title { font-weight: bold; margin-bottom: 0.3rem; }
-.game-desc { font-size: 0.9rem; color: #555; }
-.game-area { display: none; padding: 1rem; }
-button.back-btn {
-  background: var(--primary);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.6rem 1rem;
-  margin-bottom: 1rem;
-  cursor: pointer;
-  font-size: 1rem;
-}
-button.back-btn:hover { background: #e84118; }
-.floating-btn {
-  background: var(--primary);
-  color: white;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.3s;
-  margin-top: 0.5rem;
-}
-.floating-btn:hover { background: #e84118; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTAFastLane Mini-Games - Ultimate Gaming Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00ffa2;
+            --secondary-color: #ff007c;
+            --accent-color: #8a2be2;
+            --text-color: #000000;
+            --bg-color: #ffffff;
+            --card-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --shadow: 0 4px 25px rgba(0,0,0,0.1);
+            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --gold-color: #ffd700;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+
+        .header h1 {
+            font-size: clamp(2rem, 6vw, 3rem);
+            margin-bottom: 0.5rem;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .stat-number { 
+            font-size: 1.8rem; font-weight: 900; color: white; 
+            display: block; margin-bottom: 0.25rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        .stat-label { font-size: 0.9rem; opacity: 0.9; font-weight: 600; }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1rem; }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .games-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 640px) {
+            .games-grid { grid-template-columns: 1fr; }
+        }
+
+        .game-card {
+            background: var(--card-bg); border-radius: 15px; padding: 1.2rem;
+            box-shadow: var(--shadow); border: 1px solid var(--border-color);
+            transition: all 0.3s ease; overflow: hidden;
+            position: relative;
+        }
+
+        .game-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+        }
+
+        .game-title {
+            font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;
+            background: var(--gradient-primary); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; background-clip: text;
+        }
+
+        .game-stats {
+            display: flex; justify-content: space-between; font-size: 0.8rem;
+            margin-bottom: 0.5rem; color: #555;
+        }
+
+        .game-arena {
+            width: 100%; height: 180px; background: #87CEEB; border-radius: 10px;
+            margin-bottom: 0.5rem; position: relative; overflow: hidden;
+            cursor: crosshair;
+        }
+
+        .game-controls {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .control-btn {
+            padding: 0.4rem; font-size: 0.75rem; border: none;
+            border-radius: 8px; cursor: pointer; font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .control-btn.gas { background: var(--success-color); color: white; }
+        .control-btn.special { background: var(--accent-color); color: white; }
+
+        .floating-btn {
+            width: 100%; padding: 0.6rem; background: var(--gradient-primary);
+            color: white; border: none; border-radius: 10px; font-weight: 700;
+            cursor: pointer; font-size: 0.9rem; transition: all 0.2s;
+        }
+
+        .floating-btn:hover { transform: scale(1.02); }
+
+        .game-status {
+            text-align: center; margin-top: 0.5rem; font-size: 0.8rem;
+            display: none;
+        }
+
+        /* Target Practice Specific */
+        #targetRange {
+            background: linear-gradient(180deg, #87CEEB 0%, #DAA520 70%, #8B4513 100%);
+            cursor: crosshair;
+        }
+
+        #scopeOverlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; background: radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.8) 50%);
+            opacity: 0; transition: opacity 0.3s;
+        }
+
+        #crosshair {
+            position: absolute; top: 50%; left: 50%; width: 30px; height: 30px;
+            margin: -15px 0 0 -15px; border: 3px solid rgba(255,0,0,0.8);
+            border-radius: 50%; pointer-events: none; transition: all 0.1s;
+            box-shadow: 0 0 10px red; z-index: 10;
+        }
+
+        .target-dish, .target-tire, .target-coyote {
+            position: absolute; font-size: 1.5rem; user-select: none;
+            transition: transform 0.1s;
+        }
+
+        .particle {
+            position: absolute; width: 6px; height: 6px; background: #ff4500;
+            border-radius: 50%; pointer-events: none; opacity: 0;
+            animation: explode 0.6s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        .gold-star { color: var(--gold-color); font-size: 1.2rem; }
+    </style>
 </head>
 <body>
-<header>🎮 Mini-Game Arcade</header>
-
-<div id="menu"></div>
-
-<div id="gameContainer" class="game-area">
-  <button class="back-btn" id="backToMenu">⬅ Back to Menu</button>
-  <div id="gameContent"></div>
-</div>
-
-<script>
-/* ============ Arcade Framework ============ */
-const arcade = {
-  games: [],
-  menu: document.getElementById("menu"),
-  container: document.getElementById("gameContainer"),
-  content: document.getElementById("gameContent"),
-  registerGame(game) {
-    this.games.push(game);
-    const card = document.createElement("div");
-    card.className = "game-card";
-    card.innerHTML = `
-      <div class="game-title">${game.title}</div>
-      <div class="game-desc">${game.description}</div>
-    `;
-    card.onclick = () => this.launch(game.id);
-    this.menu.appendChild(card);
-  },
-  launch(id) {
-    const game = this.games.find(g => g.id === id);
-    if (!game) return;
-    this.menu.style.display = "none";
-    this.container.style.display = "block";
-    this.content.innerHTML = game.html;
-    if (typeof game.init === "function") game.init(this.content);
-  },
-  back() {
-    this.container.style.display = "none";
-    this.menu.style.display = "grid";
-    this.content.innerHTML = "";
-  }
-};
-document.getElementById("backToMenu").onclick = () => arcade.back();
-
-/* ============ Game 1: Target Practice ============ */
-arcade.registerGame({
-  id: "target",
-  title: "🎯 Target Practice",
-  description: "Hit as many moving targets as you can in 30 seconds!",
-  html: `
-    <div class="game-card">
-      <div class="game-title">🎯 Target Practice</div>
-      <div class="game-stats">
-        <span>Score: <strong id="targetScore">0</strong></span>
-        <span>Hits: <strong id="targetHits">0</strong></span>
-        <span>Time: <strong id="targetTimer">30</strong>s</span>
-      </div>
-      <div id="targetRange" style="height:150px;background:linear-gradient(180deg,#87CEEB 0%,#90EE90 100%);position:relative;border-radius:10px;overflow:hidden;"></div>
-      <div id="targetGameOver" style="display:none;margin-top:0.5rem;">
-        <strong style="color:var(--primary);">Game Over!</strong>
-        <p id="targetFinalScore"></p>
-      </div>
-      <button class="floating-btn" id="targetStartBtn">Start Shooting</button>
+    <div class="header">
+        <h1>GTAFastLane Mini-Games</h1>
+        <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1rem; flex-wrap: wrap;">
+            <div><span class="stat-number" id="totalGames">43</span><span class="stat-label">Games</span></div>
+            <div><span class="stat-number" id="totalPlayers">1,247</span><span class="stat-label">Active</span></div>
+            <div><span class="stat-number" id="totalScore">89.2K</span><span class="stat-label">High Score</span></div>
+        </div>
     </div>
-  `,
-  init(container) {
-    const startBtn = container.querySelector("#targetStartBtn");
-    const range = container.querySelector("#targetRange");
-    const scoreDisplay = container.querySelector("#targetScore");
-    const hitsDisplay = container.querySelector("#targetHits");
-    const timerDisplay = container.querySelector("#targetTimer");
-    const gameOverScreen = container.querySelector("#targetGameOver");
-    const finalScore = container.querySelector("#targetFinalScore");
-    let score=0,hits=0,timeLeft=30,gameActive=false,timerInterval,targetTimeout;
-    function spawnTarget(){
-      if(!gameActive)return;
-      const t=document.createElement("div");
-      Object.assign(t.style,{
-        position:"absolute",width:"40px",height:"40px",
-        borderRadius:"50%",background:"radial-gradient(circle, red 40%, white 42%, red 55%, white 70%)"
-      });
-      const r=range.getBoundingClientRect();
-      t.style.left=Math.random()*(r.width-40)+"px";
-      t.style.top=Math.random()*(r.height-40)+"px";
-      t.onclick=()=>{
-        if(!gameActive)return;
-        score+=100;hits++;
-        scoreDisplay.textContent=score;
-        hitsDisplay.textContent=hits;
-        t.remove();setTimeout(spawnTarget,400);
-      };
-      range.appendChild(t);
-      targetTimeout=setTimeout(()=>{
-        if(range.contains(t)){t.remove();setTimeout(spawnTarget,400);}
-      },900);
-    }
-    function startGame(){
-      score=0;hits=0;timeLeft=30;gameActive=true;
-      scoreDisplay.textContent="0";hitsDisplay.textContent="0";timerDisplay.textContent="30";
-      gameOverScreen.style.display="none";startBtn.disabled=true;
-      spawnTarget();
-      timerInterval=setInterval(()=>{
-        timeLeft--;timerDisplay.textContent=timeLeft;
-        if(timeLeft<=0)endGame();
-      },1000);
-    }
-    function endGame(){
-      gameActive=false;clearInterval(timerInterval);clearTimeout(targetTimeout);
-      range.innerHTML="";gameOverScreen.style.display="block";
-      finalScore.textContent=`Your final score: ${score}`;
-      startBtn.disabled=false;
-    }
-    startBtn.onclick=startGame;
-  }
-});
 
-/* ============ Game 2: Memory Challenge ============ */
-arcade.registerGame({
-  id: "memory",
-  title: "🧠 Memory Challenge",
-  description: "Repeat the flashing pattern correctly to advance levels!",
-  html: `
-    <div class="game-card">
-      <div class="game-title">🧠 Memory Challenge</div>
-      <div class="game-stats">
-        <span>Level: <strong id="memoryLevel">1</strong></span>
-        <span>Score: <strong id="memoryScore">0</strong></span>
-        <span>Best: <strong id="memoryBest">0</strong></span>
-      </div>
-      <div id="memoryGrid" style="height:180px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;background:#2C3E50;border-radius:10px;">
-        ${Array.from({length:9},(_,i)=>`<div class="memory-cell" data-index="${i}" style="background:#34495E;border-radius:6px;cursor:pointer;transition:background .3s,transform .2s;"></div>`).join("")}
-      </div>
-      <div id="memoryMsg" style="display:none;margin-top:0.5rem;"></div>
-      <button class="floating-btn" id="memoryStartBtn">Start Memory Test</button>
-    </div>
-  `,
-  init(container) {
-    const cells=[...container.querySelectorAll(".memory-cell")];
-    const startBtn=container.querySelector("#memoryStartBtn");
-    const level=container.querySelector("#memoryLevel");
-    const scoreEl=container.querySelector("#memoryScore");
-    const bestEl=container.querySelector("#memoryBest");
-    const msg=container.querySelector("#memoryMsg");
-    let memLevel=1,score=0,seq=[],step=0,playing=false;
-    let best=parseInt(localStorage.getItem("memoryBest")||"0");bestEl.textContent=best;
-    function flash(c){c.style.background="#F1C40F";setTimeout(()=>c.style.background="#34495E",400);}
-    function playSeq(){let i=0;playing=false;const iv=setInterval(()=>{flash(cells[seq[i]]);i++;if(i>=seq.length){clearInterval(iv);playing=true;}},600);}
-    function nextLvl(){seq.push(Math.floor(Math.random()*9));level.textContent=memLevel;playSeq();}
-    function start(){memLevel=1;score=0;seq=[];step=0;scoreEl.textContent="0";msg.style.display="none";nextLvl();}
-    cells.forEach(c=>c.onclick=()=>{if(!playing)return;let i=parseInt(c.dataset.index);if(i===seq[step]){c.style.background="#2ECC71";setTimeout(()=>c.style.background="#34495E",200);step++;if(step===seq.length){score+=memLevel*100;scoreEl.textContent=score;memLevel++;step=0;playing=false;setTimeout(nextLvl,700);}}else{msg.style.display="block";msg.textContent=`❌ Wrong! Final Score: ${score}`;if(score>best){best=score;localStorage.setItem("memoryBest",best);bestEl.textContent=best;}playing=false;seq=[];}}));
-    startBtn.onclick=start;
-  }
-});
+    <div class="container">
+        <div class="games-grid">
 
-/* ============ Game 3: Lucky Wheel Casino ============ */
-arcade.registerGame({
-  id: "casino",
-  title: "🎰 Lucky Wheel Casino",
-  description: "Spin the slots, hit jackpots, and manage your credits!",
-  html: `
-    <div class="game-card">
-      <div class="game-title">🎰 Lucky Wheel Casino</div>
-      <div class="game-stats">
-        <span>Credits: <strong id="slotCredits">100</strong></span>
-        <span>Jackpots: <strong id="jackpots">0</strong></span>
-        <span>Winnings: <strong id="totalWinnings">$0</strong></span>
-      </div>
-      <div id="slotMachine" style="height:150px;background:linear-gradient(45deg,#2C3E50 0%,#8B0000 100%);display:flex;justify-content:center;align-items:center;gap:12px;border-radius:10px;">
-        <div class="reel" id="slot1">💎</div>
-        <div class="reel" id="slot2">🍒</div>
-        <div class="reel" id="slot3">💰</div>
-      </div>
-      <button class="floating-btn" id="slotStartBtn">Pull Lever (10 credits)</button>
-    </div>
-  `,
-  init(container){
-    const creditsEl=container.querySelector("#slotCredits");
-    const jackpotsEl=container.querySelector("#jackpots");
-    const winningsEl=container.querySelector("#totalWinnings");
-    const reels=[...container.querySelectorAll(".reel")];
-    const btn=container.querySelector("#slotStartBtn");
-    const icons=["💎","🍒","🍋","💰","⭐","🔔"];
-    let credits=parseInt(localStorage.getItem("casinoCredits")||"100");
-    let jackpots=parseInt(localStorage.getItem("casinoJackpots")||"0");
-    let winnings=parseInt(localStorage.getItem("casinoWinnings")||"0");
-    function updateUI(){creditsEl.textContent=credits;jackpotsEl.textContent=jackpots;winningsEl.textContent="$"+winnings;}
-    function spin(){
-      if(credits<10){alert("Out of credits! Refresh to reset.");return;}
-      credits-=10;updateUI();btn.disabled=true;
-      let results=[];
-      reels.forEach(r=>{
-        let spins=0;
-        const iv=setInterval(()=>{r.textContent=icons[Math.floor(Math.random()*icons.length)];spins++;if(spins>15){clearInterval(iv);results.push(r.textContent);if(results.length===3)endSpin(results);}},70+Math.random()*50);
-      });
-    }
-    function endSpin(res){
-      btn.disabled=false;
-      const [a,b,c]=res;
-      if(a===b&&b===c){jackpots++;let win=500;winnings+=win;credits+=win;alert("💰 JACKPOT! You won $"+win+"!");}
-      else if(a===b||b===c||a===c){let win=100;winnings+=win;credits+=win;alert("⭐ You matched two symbols! +$"+win);}
-      updateUI();
-      localStorage.setItem("casinoCredits",credits);
-      localStorage.setItem("casinoJackpots",jackpots);
-      localStorage.setItem("casinoWinnings",winnings);
-    }
-    btn.onclick=spin;
-    updateUI();
-  }
-});
+            <!-- === GAME 1: TARGET PRACTICE (CLETUS EWING) === -->
+            <div class="game-card">
+                <div class="game-title">Target Practice (Cletus Ewing)</div>
+                <div class="game-stats">
+                    <span>Stage: <strong id="targetStage">1/3</strong></span>
+                    <span>Accuracy: <strong id="targetAccuracy">100</strong>%</span>
+                    <span>Time: <strong id="targetTimer">90</strong>s</span>
+                    <span>Gold: <strong id="targetGold">0/3</strong></span>
+                </div>
+                <div id="targetRange" class="game-arena">
+                    <div id="scopeOverlay"></div>
+                    <div id="crosshair"></div>
+                </div>
+                <div id="targetInstructions" style="text-align: center; font-size: 0.8rem; color: var(--primary-color); margin: 0.5rem 0; font-weight: bold;">
+                    Select mode to begin
+                </div>
+                <div class="game-controls" style="grid-template-columns: repeat(3, 1fr);">
+                    <button class="control-btn" id="modeEasy">Easy</button>
+                    <button class="control-btn gas" id="modeMedium">Medium</button>
+                    <button class="control-btn special" id="modeHard">Hard</button>
+                </div>
+                <button class="floating-btn" id="targetStartBtn">Join Cletus (Nervous Ron Req.)</button>
+                <div id="targetGameOver" class="game-status">
+                    <strong id="targetResult"></strong>
+                    <p id="targetFinalScore"></p>
+                    <div id="goldMedals" style="margin-top: 0.5rem; font-size: 0.7rem;"></div>
+                </div>
+            </div>
 
-/* ============ Game 4: Wild West Showdown ============ */
-arcade.registerGame({
-  id: "showdown",
-  title: "🤠 Wild West Showdown",
-  description: "Wait for 'DRAW!' and shoot faster than your opponent!",
-  html: `
-    <div class="game-card">
-      <div class="game-title">🤠 Wild West Showdown</div>
-      <div class="game-stats">
-        <span>Wins: <strong id="showdownWins">0</strong></span>
-        <span>Best: <strong id="fastestDraw">--</strong>ms</span>
-        <span>Streak: <strong id="showdownStreak">0</strong></span>
-      </div>
-      <div id="showdownArena" style="height:150px;background:linear-gradient(180deg,#F4A460 0%,#D2B48C 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#8B4513;cursor:pointer;border-radius:10px;">
-        <div style="font-size:2rem;margin-bottom:0.5rem;">🤠 VS 🤠</div>
-        <div id="showdownCountdown" style="font-size:1.5rem;font-weight:bold;color:var(--primary);">READY</div>
-        <div style="margin-top:0.5rem;font-size:0.8rem;">Wait for DRAW!</div>
-      </div>
-      <button class="floating-btn" id="showdownStartBtn">Start Showdown</button>
+            <!-- Placeholder for Games 2-43 -->
+            <!-- You can add more game-cards here as needed -->
+
+        </div>
     </div>
-  `,
-  init(container){
-    const arena=container.querySelector("#showdownArena");
-    const startBtn=container.querySelector("#showdownStartBtn");
-    const countdown=container.querySelector("#showdownCountdown");
-    const winsEl=container.querySelector("#showdownWins");
-    const streakEl=container.querySelector("#showdownStreak");
-    const bestEl=container.querySelector("#fastestDraw");
-    let best=parseInt(localStorage.getItem("showdownBest")||"9999");
-    let wins=parseInt(localStorage.getItem("showdownWins")||"0");
-    let streak=0;let timeout;let drawTime;let active=false;
-    bestEl.textContent=best===9999?"--":best;
-    winsEl.textContent=wins;
-    streakEl.textContent=streak;
-    function start(){
-      startBtn.disabled=true;
-      countdown.textContent="READY...";
-      const wait=1000+Math.random()*3000;
-      timeout=setTimeout(()=>{
-        countdown.textContent="DRAW!";
-        drawTime=performance.now();
-        active=true;
-      },wait);
-    }
-    function click(){
-      if(!timeout)return;
-      if(!active){
-        countdown.textContent="TOO EARLY! ❌";
-        clearTimeout(timeout);
-        streak=0;startBtn.disabled=false;
-      } else {
-        const t=performance.now()-drawTime;
-        countdown.textContent=`🔥 ${Math.round(t)}ms!`;
-        wins++;streak++;
-        if(t<best){best=t;localStorage.setItem("showdownBest",Math.round(best));}
-        localStorage.setItem("showdownWins",wins);
-        winsEl.textContent=wins;
-        streakEl.textContent=streak;
-        bestEl.textContent=Math.round(best);
-        startBtn.disabled=false;
-      }
-      active=false;
-    }
-    startBtn.onclick=start;
-    arena.onclick=click;
-  }
-});
-</script>
+
+    <script>
+        // ==================== TARGET PRACTICE: FULL GTA 5 MISSION RECREATION ====================
+        let targetState = {
+            stage: 1,
+            mode: 'easy',
+            timeLeft: 90,
+            score: 0,
+            shots: 0, hits: 0, accuracy: 100,
+            dishes: 0, tires: 0, coyotes: 0,
+            doubleKills: 0,
+            goldReq: { dishes: true, tires: false, coyotes: false },
+            isPlaying: false, timer: null, audioCtx: null,
+            targets: [], vehicles: [], coyotes: [], particles: []
+        };
+
+        const modeConfig = {
+            easy: { time: 90, dishReq: 3, tireReq: 3, coyoteReq: 3, accReq: 60, doubleReq: 0, speed: 1.0 },
+            medium: { time: 60, dishReq: 3, tireReq: 4, coyoteReq: 4, accReq: 75, doubleReq: 1, speed: 1.5 },
+            hard: { time: 45, dishReq: 4, tireReq: 5, coyoteReq: 5, accReq: 85, doubleReq: 2, speed: 2.2 }
+        };
+
+        // Audio Setup
+        function initAudio() {
+            targetState.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        function playSound(type, freq = 800, duration = 0.1) {
+            if (!targetState.audioCtx) return;
+            const osc = targetState.audioCtx.createOscillator();
+            const gain = targetState.audioCtx.createGain();
+            osc.connect(gain); gain.connect(targetState.audioCtx.destination);
+            osc.type = type === 'hit' ? 'sine' : type === 'miss' ? 'square' : 'sawtooth';
+            osc.frequency.setValueAtTime(freq, targetState.audioCtx.currentTime);
+            if (type === 'gunshot') osc.frequency.exponentialRampToValueAtTime(200, targetState.audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.3, targetState.audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, targetState.audioCtx.currentTime + duration);
+            osc.start(); osc.stop(targetState.audioCtx.currentTime + duration);
+        }
+
+        function playCletus(text) {
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.rate = 0.9; msg.pitch = 0.8;
+            const voices = speechSynthesis.getVoices();
+            const gravelly = voices.find(v => v.name.includes('Daniel') || v.name.includes('Fred'));
+            if (gravelly) msg.voice = gravelly;
+            speechSynthesis.speak(msg);
+        }
+
+        // Mode Selection
+        ['Easy', 'Medium', 'Hard'].forEach(m => {
+            document.getElementById(`mode${m}`).onclick = () => {
+                targetState.mode = m.toLowerCase();
+                document.querySelectorAll('[id^="mode"]').forEach(b => b.style.opacity = '0.6');
+                event.target.style.opacity = '1';
+                document.getElementById('targetInstructions').textContent = `Mode: ${m} | Click Start to join Cletus!`;
+            };
+        });
+
+        // Start Game
+        document.getElementById('targetStartBtn').onclick = startTargetPractice;
+
+        function startTargetPractice() {
+            initAudio();
+            const cfg = modeConfig[targetState.mode];
+            Object.assign(targetState, {
+                stage: 1, timeLeft: cfg.time, score: 0, shots: 0, hits: 0, accuracy: 100,
+                dishes: 0, tires: 0, coyotes: 0, doubleKills: 0,
+                goldReq: { dishes: true, tires: false, coyotes: false },
+                isPlaying: true, targets: [], vehicles: [], coyotes: [], particles: []
+            });
+
+            document.getElementById('targetGameOver').style.display = 'none';
+            document.getElementById('targetStartBtn').disabled = true;
+            document.getElementById('scopeOverlay').style.opacity = 1;
+
+            updateTargetDisplay();
+            nextStage();
+            targetState.timer = setInterval(tickTimer, 1000);
+            document.getElementById('targetRange').addEventListener('click', shoot);
+            document.getElementById('targetRange').addEventListener('mousemove', e => {
+                const cross = document.getElementById('crosshair');
+                const rect = e.currentTarget.getBoundingClientRect();
+                cross.style.left = (e.clientX - rect.left) + 'px';
+                cross.style.top = (e.clientY - rect.top) + 'px';
+            });
+        }
+
+        function tickTimer() {
+            targetState.timeLeft--;
+            document.getElementById('targetTimer').textContent = targetState.timeLeft;
+            if (targetState.timeLeft <= 0) endGame();
+        }
+
+        function updateTargetDisplay() {
+            document.getElementById('targetStage').textContent = `${targetState.stage}/3`;
+            document.getElementById('targetAccuracy').textContent = targetState.accuracy;
+            document.getElementById('targetTimer').textContent = targetState.timeLeft;
+            document.getElementById('targetGold').textContent = `${Object.values(targetState.goldReq).filter(v => v).length}/3`;
+        }
+
+        function nextStage() {
+            clearTargets();
+            const cfg = modeConfig[targetState.mode];
+            const stages = {
+                1: { text: 'Cletus: "Shoot them satellite dishes! No misses, boy!"', spawn: () => spawnDishes(cfg.dishReq) },
+                2: { text: 'Driving to motel... Pop them tires!', spawn: () => spawnVehicles(cfg.tireReq) },
+                3: { text: 'On the roof! Kill them coyotes — line up fer 2-fer-1!', spawn: () => spawnCoyotes(cfg.coyoteReq) }
+            };
+            const s = stages[targetState.stage];
+            document.getElementById('targetInstructions').textContent = s.text;
+            playCletus(s.text.split(':')[1]?.trim() || s.text);
+            setTimeout(s.spawn, 1500);
+        }
+
+        function clearTargets() {
+            [...targetState.targets, ...targetState.vehicles, ...targetState.coyotes].forEach(t => t.el.remove());
+            targetState.targets = []; targetState.vehicles = []; targetState.coyotes = [];
+        }
+
+        function spawnDishes(count) {
+            const range = document.getElementById('targetRange');
+            for (let i = 0; i < count; i++) {
+                const dish = document.createElement('div');
+                dish.className = 'target-dish';
+                dish.textContent = '📡';
+                dish.style.left = `${20 + i * 20}%`;
+                dish.style.top = `${30 + (i % 2) * 20}%`;
+                dish.dataset.type = 'dish';
+                range.appendChild(dish);
+                targetState.targets.push({ el: dish, hit: false });
+            }
+        }
+
+        function spawnVehicles(count) {
+            const range = document.getElementById('targetRange');
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const car = document.createElement('div');
+                    car.textContent = '🚗';
+                    car.style.fontSize = '2rem';
+                    car.style.position = 'absolute';
+                    car.style.left = '-10%';
+                    car.style.top = `${40 + (i % 3) * 15}%`;
+                    car.dataset.type = 'vehicle';
+                    car.dataset.tires = 2;
+                    range.appendChild(car);
+
+                    const speed = 3000 / modeConfig[targetState.mode].speed;
+                    car.animate([{ left: '-10%' }, { left: '110%' }], { duration: speed, easing: 'linear' }).onfinish = () => car.remove();
+
+                    const tire1 = document.createElement('div');
+                    tire1.className = 'target-tire';
+                    tire1.textContent = '⚫';
+                    tire1.style.position = 'absolute';
+                    tire1.style.fontSize = '0.6rem';
+                    tire1.style.left = '15%'; tire1.style.top = '70%';
+                    tire1.dataset.type = 'tire';
+                    car.appendChild(tire1);
+
+                    const tire2 = document.createElement('div');
+                    tire2.className = 'target-tire';
+                    tire2.textContent = '⚫';
+                    tire2.style.position = 'absolute';
+                    tire2.style.fontSize = '0.6rem';
+                    tire2.style.left = '75%'; tire2.style.top = '70%';
+                    tire2.dataset.type = 'tire';
+                    car.appendChild(tire2);
+
+                    targetState.vehicles.push({ el: car, tires: [tire1, tire2], popped: 0 });
+                }, i * 2000);
+            }
+        }
+
+        function spawnCoyotes(count) {
+            const range = document.getElementById('targetRange');
+            for (let i = 0; i < count; i++) {
+                const coy = document.createElement('div');
+                coy.className = 'target-coyote';
+                coy.textContent = '🦊';
+                coy.style.left = `${Math.random() * 60 + 20}%`;
+                coy.style.top = `${Math.random() * 40 + 40}%`;
+                coy.dataset.type = 'coyote';
+                range.appendChild(coy);
+                targetState.coyotes.push({ el: coy, hit: false });
+
+                // Random movement
+                setInterval(() => {
+                    if (coy.parentElement) {
+                        coy.style.transition = 'all 1s ease';
+                        coy.style.left = `${Math.random() * 60 + 20}%`;
+                        coy.style.top = `${Math.random() * 40 + 40}%`;
+                    }
+                }, 1500);
+            }
+        }
+
+        function shoot(e) {
+            if (!targetState.isPlaying) return;
+            playSound('gunshot');
+            targetState.shots++;
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            let hit = false;
+            let multi = 0;
+
+            // Check dishes
+            targetState.targets.forEach(t => {
+                if (t.hit) return;
+                const r = t.el.getBoundingClientRect();
+                if (x > r.left - rect.left && x < r.right - rect.left && y > r.top - rect.top && y < r.bottom - rect.top) {
+                    t.hit = true; t.el.textContent = '💥'; t.el.style.transform = 'scale(1.5)'; hit = true;
+                    targetState.dishes++;
+                    setTimeout(() => t.el.remove(), 500);
+                    createParticles(x, y, '💥');
+                    playSound('hit', 600);
+                }
+            });
+
+            // Check tires
+            targetState.vehicles.forEach(v => {
+                v.tires.forEach(tire => {
+                    if (!tire.parentElement) return;
+                    const r = tire.getBoundingClientRect();
+                    if (x > r.left - rect.left && x < r.right - rect.left && y > r.top - rect.top && y < r.bottom - rect.top) {
+                        tire.textContent = '💨'; tire.style.transform = 'scale(1.8)'; hit = true;
+                        v.popped++;
+                        targetState.tires++;
+                        playSound('hit', 400, 0.2);
+                        if (v.popped >= 2) { v.el.style.transform = 'rotate(20deg)'; }
+                        setTimeout(() => tire.remove(), 300);
+                    }
+                });
+            });
+
+            // Check coyotes
+            const hitCoyotes = [];
+            targetState.coyotes.forEach(c => {
+                if (c.hit) return;
+                const r = c.el.getBoundingClientRect();
+                if (x > r.left - rect.left && x < r.right - rect.left && y > r.top - rect.top && y < r.bottom - rect.top) {
+                    c.hit = true; hitCoyotes.push(c);
+                }
+            });
+            if (hitCoyotes.length > 0) {
+                hit = true; multi = hitCoyotes.length;
+                targetState.coyotes += multi;
+                if (multi > 1) targetState.doubleKills++;
+                hitCoyotes.forEach(c => {
+                    c.el.textContent = '💀';
+                    c.el.style.transform = 'scale(1.5)';
+                    setTimeout(() => c.el.remove(), 600);
+                });
+                createParticles(x, y, multi > 1 ? '2 FOR 1!' : '🩸');
+                playSound('hit', 900);
+            }
+
+            if (hit) {
+                targetState.hits++;
+                targetState.score += 100 * multi;
+            } else {
+                playSound('miss', 300, 0.05);
+            }
+
+            targetState.accuracy = targetState.shots > 0 ? Math.round((targetState.hits / targetState.shots) * 100) : 100;
+            updateTargetDisplay();
+            checkStageComplete();
+        }
+
+        function createParticles(x, y, emoji = '✨') {
+            for (let i = 0; i < 8; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.textContent = emoji;
+                p.style.left = x + 'px';
+                p.style.top = y + 'px';
+                document.getElementById('targetRange').appendChild(p);
+                setTimeout(() => p.remove(), 600);
+            }
+        }
+
+        function checkStageComplete() {
+            const cfg = modeConfig[targetState.mode];
+            const complete = (
+                (targetState.stage === 1 && targetState.dishes >= cfg.dishReq) ||
+                (targetState.stage === 2 && targetState.tires >= cfg.tireReq) ||
+                (targetState.stage === 3 && targetState.coyotes >= cfg.coyoteReq)
+            );
+            if (complete && targetState.stage < 3) {
+                targetState.stage++;
+                setTimeout(nextStage, 1500);
+            } else if (complete && targetState.stage === 3) {
+                endGame(true);
+            }
+        }
+
+        function endGame(auto = false) {
+            if (!targetState.isPlaying) return;
+            targetState.isPlaying = false;
+            clearInterval(targetState.timer);
+            document.getElementById('targetStartBtn').disabled = false;
+            document.getElementById('scopeOverlay').style.opacity = 0;
+
+            const cfg = modeConfig[targetState.mode];
+            const gold = {
+                dishes: targetState.dishes >= cfg.dishReq && targetState.shots - targetState.hits <= 0,
+                tires: targetState.tires >= cfg.tireReq && targetState.accuracy >= cfg.accReq,
+                coyotes: targetState.coyotes >= cfg.coyoteReq && targetState.doubleKills >= cfg.doubleReq
+            };
+            const goldCount = Object.values(gold).filter(v => v).length;
+            targetState.goldReq = gold;
+
+            const result = goldCount === 3 ? 'GOLD MEDAL!' : goldCount > 0 ? 'Mission Complete' : 'Mission Failed';
+            document.getElementById('targetResult').textContent = result;
+            document.getElementById('targetFinalScore').textContent = `Score: ${targetState.score} | Accuracy: ${targetState.accuracy}% | Double Kills: ${targetState.doubleKills}`;
+            document.getElementById('goldMedals').innerHTML = `
+                Bad Signal: ${gold.dishes ? '<span class="gold-star">★</span>' : '✗'}<br>
+                Pop! Pop!: ${gold.tires ? '<span class="gold-star">★</span>' : '✗'}<br>
+                2 for 1: ${gold.coyotes ? '<span class="gold-star">★</span>' : '✗'}
+            `;
+            document.getElementById('targetGameOver').style.display = 'block';
+
+            if (goldCount === 3) {
+                playCletus("Yee-haw! You got all gold, partner!");
+            }
+        }
+
+        // Load speech voices
+        speechSynthesis.onvoiceschanged = () => {};
+    </script>
 </body>
 </html>
