@@ -1592,14 +1592,15 @@
             ];
 
             container.innerHTML = videos.map(video => {
-                const thumbnail = `https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`;
+                const thumbnail = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
                 
                 return `
                     <div style="background: var(--card-bg); border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid var(--border-color); transition: transform 0.3s;" 
                          onclick="window.open('https://youtube.com/watch?v=${video.id}', '_blank')"
                          onmouseover="this.style.transform='translateY(-4px)'"
                          onmouseout="this.style.transform='translateY(0)'">
-                        <div style="position: relative; aspect-ratio: 16/9; background: url('${thumbnail}') center/cover;">
+                        <div style="position: relative; aspect-ratio: 16/9; background: #000;">
+                            <img src="${thumbnail}" style="width: 100%; height: 100%; object-fit: cover;" alt="${video.title}">
                             <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,0,0,0.9); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">▶</div>
                         </div>
                         <div style="padding: 1rem;">
