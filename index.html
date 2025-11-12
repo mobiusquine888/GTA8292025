@@ -1043,7 +1043,7 @@
             } else if (tabName === 'rdr2') {
                 fetchYouTubeVideos('Red Dead Redemption 2 gameplay', 'rdr2Grid', 'rdr2');
             } else if (tabName === 'news') {
-                // CCC tab - ready for YouTube videos to be added
+                fetchYouTubeVideos('Chaos City 333', 'cccGrid', 'ccc');
             } else if (tabName === 'challenges') {
                 // Games tab - links to external games page
             }
@@ -1125,6 +1125,10 @@
                 safeUpdateText('rdr2VideoCount', count);
                 safeUpdateText('rdr2Views', formatNumber(views));
                 safeUpdateText('rdr2Channels', channels);
+            } else if (prefix === 'ccc') {
+                safeUpdateText('cccVideoCount', count);
+                safeUpdateText('cccViews', formatNumber(views));
+                safeUpdateText('cccChannels', channels);
             }
         }
 
