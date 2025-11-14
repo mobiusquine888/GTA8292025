@@ -1,187 +1,382 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SurveillanceMap360 Demo</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>SurveillanceMap360 — Kickstarter Demo (Hybrid)</title>
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<!-- Minimal styles + responsive hybrid panel -->
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
-  body { background: #111; color: #eee; overflow-x: hidden; }
-  h1,h2,h3,h4 { font-family: 'Orbitron', sans-serif; }
-  
-  .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-  .header { text-align: center; margin-bottom: 20px; }
-  .header h1 { font-size: 2.5rem; color: #0ff; text-shadow: 0 0 10px #0ff; }
-  .header p { color: #aaa; margin-top: 5px; }
+  :root{
+    --bg:#0b1220; --card:#111827; --muted:#9ca3af; --accent:#06b6d4;
+  }
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);color:#fff;-webkit-font-smoothing:antialiased}
+  header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(90deg,#071226,#0b1220);box-shadow:0 2px 8px rgba(0,0,0,.5)}
+  header h1{font-size:18px;margin:0;color:#60f0ff;letter-spacing:0.6px}
+  header .controls{display:flex;gap:8px;align-items:center}
+  .btn{background:#111827;border:0;padding:8px 10px;border-radius:8px;color:#e6eef6;font-weight:600;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+  .btn.small{padding:6px 8px;font-size:13px}
+  #map{height:calc(100vh - 56px);width:100%;display:block}
+  /* legend & overlays */
+  .legend{position: absolute; left:12px; bottom:14px; background: rgba(255,255,255,.98); color:#0b1220; padding:10px;border-radius:8px;font-size:13px;box-shadow:0 6px 18px rgba(2,6,23,.6);z-index:1400}
+  .top-left-widgets{position:absolute;left:12px;top:66px;display:flex;flex-direction:column;gap:8px;z-index:1400}
+  .chip{background:rgba(17,24,39,.9);color:#fff;padding:8px 10px;border-radius:10px;font-size:13px;box-shadow:0 4px 14px rgba(2,6,23,.6)}
+  /* Slide panel (desktop) */
+  .panel{
+    position:fixed; right:0; top:56px; width:380px; height:calc(100vh - 56px);
+    background:linear-gradient(180deg,#0f1724,#0b1220); box-shadow:-8px 0 30px rgba(0,0,0,.6);
+    transform:translateX(100%); transition:transform .28s cubic-bezier(.2,.9,.2,1); z-index:1500; overflow:auto;
+    padding:18px; border-left:1px solid rgba(255,255,255,.03)
+  }
+  .panel.open{transform:translateX(0)}
+  .panel h2{margin:0 0 8px 0; color:#9be7ff; font-size:18px}
+  .score{font-weight:700;font-size:20px;margin-bottom:8px}
+  .bar-label{font-size:13px;color:var(--muted);margin-top:10px}
+  .bar{height:16px;border-radius:8px;background:rgba(255,255,255,.06);overflow:hidden}
+  .bar > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,#06b6d4,#7c3aed);transition:width .6s ease}
+  .story{background:#0b1220;padding:12px;border-radius:10px;margin-top:12px;color:#dbeafe}
+  .timestamp{font-size:12px;color:var(--muted);margin-top:10px}
 
-  /* Map */
-  .map { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 30px; }
-  .location { background: #222; padding: 15px; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 10px #0ff50; position: relative; }
-  .location:hover { transform: scale(1.05); box-shadow: 0 0 20px #0ff; }
-  .loc-name { font-weight: bold; margin-bottom: 5px; font-size: 1rem; }
-  .loc-score { font-size: 1.5rem; font-weight: bold; margin-bottom: 3px; }
-  .loc-risk { font-size: 0.8rem; text-transform: uppercase; margin-bottom: 5px; }
-  
-  .bar-container { background: #111; border-radius: 12px; overflow: hidden; height: 15px; margin-bottom: 10px; }
-  .bar { height: 100%; width: 0%; transition: width 1s ease; border-radius: 12px; }
+  /* Bottom sheet (mobile) */
+  .bottom-sheet{
+    position:fixed; left:0; right:0; bottom:0; height:50%; max-height:72vh;
+    background:linear-gradient(180deg,#0f1724,#071226); border-top-left-radius:14px;border-top-right-radius:14px;
+    transform:translateY(110%); transition:transform .25s cubic-bezier(.2,.9,.2,1); z-index:1600; padding:12px; overflow:auto;
+    box-shadow:0 -10px 40px rgba(2,6,23,.6);
+  }
+  .bottom-sheet.open{transform:translateY(0)}
+  .sheet-handle{width:42px;height:6px;background:#374151;border-radius:999px;margin:6px auto 12px auto;opacity:.8}
 
-  /* Surveillance Icons */
-  .surveillance { display: flex; justify-content: space-around; margin-bottom: 10px; }
-  .icon { display: flex; flex-direction: column; align-items: center; font-size: 0.8rem; }
-  .icon i { font-size: 1.3rem; margin-bottom: 3px; animation: pulse 1.5s infinite alternate; }
-  @keyframes pulse { 0% { transform: scale(1); opacity:0.7;} 100% { transform: scale(1.2); opacity:1; } }
+  /* heatmap toggle dot */
+  .toggle-row{display:flex;gap:8px;align-items:center}
+  .small-muted{font-size:12px;color:var(--muted)}
 
-  /* Recommendations */
-  .recommendations { background: #222; padding: 15px; border-radius: 12px; margin-bottom: 30px; }
-  .recommendations h3 { margin-bottom: 10px; color: #0ff; }
-  .recommendations ul { list-style: none; }
-  .recommendations li { margin-bottom: 5px; color: #aaa; }
+  /* responsive: use bottom sheet for small widths */
+  @media (max-width:820px){
+    .panel{display:none}
+    header h1{font-size:16px}
+    .legend{left:8px;bottom:88px}
+  }
+  @media (min-width:821px){
+    .bottom-sheet{display:none}
+  }
 
-  /* Dashboard */
-  .dashboard { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 30px; }
-  .dashboard-card { background: #222; padding: 20px; border-radius: 12px; flex: 1; min-width: 200px; text-align: center; box-shadow: 0 0 10px #0ff50; }
-  .dashboard-card h4 { margin-bottom: 10px; color: #0ff; }
-
-  /* Tooltip */
-  .tooltip { position: absolute; background: #111; color: #0ff; padding: 8px; border-radius: 10px; font-size: 0.8rem; top: -10px; left: 105%; white-space: nowrap; display: none; box-shadow: 0 0 10px #0ff; }
-
-  /* Footer */
-  .footer { text-align: center; margin-top: 40px; color: #555; font-size: 0.9rem; }
-
+  /* accessibility: larger touch targets on mobile */
+  @media (max-width:520px){
+    .btn{padding:10px 12px;border-radius:12px}
+    header{padding:12px}
+  }
 </style>
-<!-- FontAwesome for icons -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
-<div class="container">
-  <div class="header">
-    <h1>SurveillanceMap360 Demo</h1>
-    <p>Interactive privacy scores for Colorado locations — Kickstarter Prototype</p>
+<header>
+  <h1>SurveillanceMap360 — Prototype</h1>
+  <div class="controls">
+    <button class="btn small" id="globalBtn">Global Mode</button>
+    <button class="btn small" id="darkToggle">Map: Dark</button>
+    <button class="btn small" id="heatToggle">Heatmap</button>
+    <button class="btn small" id="narrateBtn">Narrator</button>
+    <button class="btn small" id="openPanelBtn">Open Panel</button>
   </div>
+</header>
 
-  <div class="map" id="map"></div>
+<div id="map"></div>
 
-  <div class="recommendations" id="recommendations">
-    <h3>🛡️ Privacy Recommendations</h3>
-    <ul id="recommendation-list"></ul>
-  </div>
-
-  <div class="dashboard" id="dashboard">
-    <div class="dashboard-card">
-      <h4>Total Locations</h4>
-      <div id="total-locations">0</div>
-    </div>
-    <div class="dashboard-card">
-      <h4>Highest Risk</h4>
-      <div id="highest-risk">N/A</div>
-    </div>
-    <div class="dashboard-card">
-      <h4>Lowest Risk</h4>
-      <div id="lowest-risk">N/A</div>
-    </div>
-  </div>
-
-  <div class="footer">Demo Prototype • Not Live Data • Kickstarter Ready</div>
+<div class="top-left-widgets">
+  <div class="chip" id="liveChip">● Live (simulated)</div>
+  <div class="chip small-muted" id="updateRate">Updating every 5s</div>
 </div>
 
+<div class="legend" aria-hidden="false">
+  <strong style="color:#0b1220">Privacy Score</strong><br>
+  <span style="color:#22c55e">80–100</span> Low &nbsp; <span style="color:#84cc16">60–79</span> Moderate<br>
+  <span style="color:#f59e0b">40–59</span> Medium &nbsp; <span style="color:#f97316">20–39</span> High<br>
+  <span style="color:#dc2626">0–19</span> Extreme
+</div>
+
+<!-- Desktop slide panel -->
+<div class="panel" id="panel" role="dialog" aria-hidden="true"></div>
+
+<!-- Mobile bottom sheet -->
+<div class="bottom-sheet" id="bottomSheet" aria-hidden="true">
+  <div class="sheet-handle"></div>
+  <div id="sheetContent"></div>
+</div>
+
+<!-- Leaflet + heat plugin -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+
 <script>
-const locations = [
-  { name: 'Denver International Airport', score: 8, surveillance: { CCTV: 20, Drone: 2, WiFi: 10, Biometric: 5 } },
-  { name: 'Downtown Denver', score: 22, surveillance: { CCTV: 35, Drone: 5, WiFi: 25, Biometric: 12 } },
-  { name: 'Cherry Creek Mall', score: 18, surveillance: { CCTV: 15, Drone: 1, WiFi: 12, Biometric: 3 } },
-  { name: 'CU Boulder', score: 58, surveillance: { CCTV: 40, Drone: 7, WiFi: 30, Biometric: 15 } },
-  { name: 'Pearl Street Mall', score: 65, surveillance: { CCTV: 25, Drone: 3, WiFi: 20, Biometric: 10 } },
-  { name: 'Westminster City Center', score: 52, surveillance: { CCTV: 30, Drone: 4, WiFi: 22, Biometric: 8 } },
-  { name: 'Rocky Mountain National Park', score: 95, surveillance: { CCTV: 2, Drone: 0, WiFi: 1, Biometric: 0 } },
-  { name: 'Golden Historic District', score: 82, surveillance: { CCTV: 10, Drone: 1, WiFi: 5, Biometric: 2 } }
+/* ----------------------------
+   DATA (kept small for demo)
+   ---------------------------- */
+let surveillanceData = [
+  { name:'Denver Intl Airport', lat:39.8561, lng:-104.6737, score:8,
+    story:`Terminal cameras, plate readers, and corporate analytics create a high-fidelity footprint of travelers. Inside the terminal, predictive models highlight 'unusual' behavior.`,
+    timeline:`2018: facial systems\n2020: plate readers\n2023: AI anomaly flags`,
+    surveillance:{physical:85,digital:45,biometric:67,corporate:23,government:156,iot:234,personal:12,emerging:34} },
+
+  { name:'Downtown Denver - 16th St', lat:39.7392, lng:-104.9903, score:22,
+    story:`Retail beacons, public WiFi, and municipal cameras combine to map foot traffic. 3rd-party analytics broker anonymized movement to retailers and advertisers.`,
+    timeline:`2019: mall WiFi\n2021: analytics partnerships\n2024: vehicle tracking mesh`,
+    surveillance:{physical:45,digital:67,biometric:23,corporate:89,government:34,iot:123,personal:15,emerging:28} },
+
+  { name:'Rocky Mountain NP', lat:40.3428, lng:-105.6836, score:95,
+    story:`Sparse infrastructure means you mostly disappear here. Ranger logs exist but large-scale biometric or corporate tracking is absent.`,
+    timeline:`2016–2024: minimal additions`,
+    surveillance:{physical:0,digital:0,biometric:0,corporate:0,government:1,iot:2,personal:0,emerging:0} }
 ];
 
-function getRisk(score) {
-  if(score >= 80) return { level: 'Minimal', color: '#22c55e' };
-  if(score >= 60) return { level: 'Low', color: '#84cc16' };
-  if(score >= 40) return { level: 'Moderate', color: '#f59e0b' };
-  if(score >= 20) return { level: 'High', color: '#f97316' };
-  return { level: 'Extreme', color: '#dc2626' };
+/* ----------------------------
+   UTILITIES
+   ---------------------------- */
+const clamp = (v,m,M)=>Math.max(m,Math.min(M,v));
+const getScoreColor = s => s>=80? '#22c55e': s>=60? '#84cc16': s>=40? '#f59e0b': s>=20? '#f97316':'#dc2626';
+
+/* ----------------------------
+   MAP INIT
+   ---------------------------- */
+const darkTiles = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+const lightTiles = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+let usingDark = true;
+
+const map = L.map('map', { zoomControl:true, minZoom:3 }).setView([39.7392,-104.9903],7);
+let baseLayer = L.tileLayer(darkTiles, { attribution:'&copy; CARTO & OpenStreetMap' }).addTo(map);
+
+/* heat layer */
+let heatLayer = null;
+let heatOn = false;
+
+/* standard markers group */
+const markersGroup = L.layerGroup().addTo(map);
+
+/* create markers */
+function createMarkers(){
+  markersGroup.clearLayers();
+  surveillanceData.forEach(loc=>{
+    // divIcon with colored pulsing circle
+    const html = `<div class="pulsing-marker" style="background:${getScoreColor(loc.score)}"></div>`;
+    const icon = L.divIcon({ html, className:'', iconSize:[20,20] });
+    const m = L.marker([loc.lat, loc.lng], { icon }).addTo(markersGroup);
+    m.bindTooltip(`<strong style="color:${getScoreColor(loc.score)}">${loc.name}</strong><br>Score: ${loc.score}/100`);
+    m.on('click', ()=>openForDevice(loc));
+  });
 }
 
-const mapDiv = document.getElementById('map');
-const recommendationList = document.getElementById('recommendation-list');
+/* initial markers */
+createMarkers();
 
-locations.forEach(loc => {
-  const div = document.createElement('div');
-  div.className = 'location';
-  div.innerHTML = `
-    <div class="loc-name">${loc.name}</div>
-    <div class="loc-score" style="color:${getRisk(loc.score).color}">${loc.score}</div>
-    <div class="loc-risk">${getRisk(loc.score).level}</div>
-    <div class="bar-container"><div class="bar" style="background:${getRisk(loc.score).color}; width:0%"></div></div>
-    <div class="surveillance">
-      <div class="icon" title="CCTV"><i class="fas fa-video"></i>${loc.surveillance.CCTV}</div>
-      <div class="icon" title="Drone"><i class="fas fa-drone"></i>${loc.surveillance.Drone}</div>
-      <div class="icon" title="WiFi"><i class="fas fa-wifi"></i>${loc.surveillance.WiFi}</div>
-      <div class="icon" title="Biometric"><i class="fas fa-fingerprint"></i>${loc.surveillance.Biometric}</div>
-    </div>
-    <div class="tooltip" id="tooltip-${loc.name.replace(/\s/g,'')}"></div>
-  `;
-  
-  const bar = div.querySelector('.bar');
-  function animateBar() { bar.style.width = loc.score + '%'; }
-  div.addEventListener('click', () => { showRecommendations(loc); animateBar(); });
-  
-  // Tooltip on hover
-  const tooltip = div.querySelector('.tooltip');
-  div.addEventListener('mouseenter', () => {
-    tooltip.style.display = 'block';
-    tooltip.innerHTML = `
-      CCTV: ${loc.surveillance.CCTV}<br>
-      Drone: ${loc.surveillance.Drone}<br>
-      WiFi: ${loc.surveillance.WiFi}<br>
-      Biometric: ${loc.surveillance.Biometric}
-    `;
-  });
-  div.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
-  
-  mapDiv.appendChild(div);
-  animateBar();
+/* ----------------------------
+   PANEL / BOTTOM-SHEET UI (HYBRID)
+   ---------------------------- */
+const panel = document.getElementById('panel');
+const bottomSheet = document.getElementById('bottomSheet');
+const sheetContent = document.getElementById('sheetContent');
+const openPanelBtn = document.getElementById('openPanelBtn');
+
+function renderPanelContent(loc){
+  // Build bars with percent widths (clamped)
+  let html = `<h2>${loc.name}</h2>`;
+  html += `<div class="score" style="color:${getScoreColor(loc.score)}">Privacy Score: ${loc.score}/100</div>`;
+  html += `<div class="story">${loc.story}</div>`;
+  html += `<div class="timestamp">Timeline:<br><small style="color:#9ca3af">${loc.timeline.replace(/\n/g,'<br>')}</small></div>`;
+  html += `<h3 style="margin-top:12px;color:#9be7ff">Surveillance Breakdown</h3>`;
+  for(const [k,v] of Object.entries(loc.surveillance)){
+    const pct = clamp(Math.round((v/250)*100), 0, 100); // normalize for demo
+    html += `<div class="bar-label">${k}: ${v}</div>`;
+    html += `<div class="bar"><i style="background:${getScoreColor(loc.score)};width:0%" data-target="${pct}"></i></div>`;
+  }
+  html += `<div style="margin-top:12px"><button class="btn small" onclick="speakStory()">Play Narration</button> <button class="btn small" onclick="shareSnapshot()">Share</button></div>`;
+  return html;
+}
+
+/* open appropriate panel depending on width */
+function openForDevice(loc){
+  const content = renderPanelContent(loc);
+  if(window.innerWidth <= 820){
+    sheetContent.innerHTML = content;
+    bottomSheet.classList.add('open');
+    bottomSheet.setAttribute('aria-hidden','false');
+  } else {
+    panel.innerHTML = content;
+    panel.classList.add('open');
+    panel.setAttribute('aria-hidden','false');
+  }
+  // animate bars after small timeout
+  setTimeout(()=> {
+    document.querySelectorAll('.bar i').forEach(el=>{
+      const t = el.dataset.target; el.style.width = t+'%';
+    });
+  },80);
+}
+
+/* close functions */
+function closePanel(){
+  panel.classList.remove('open'); panel.setAttribute('aria-hidden','true');
+  bottomSheet.classList.remove('open'); bottomSheet.setAttribute('aria-hidden','true');
+}
+openPanelBtn.addEventListener('click', ()=> {
+  // open general panel (first location) depending on device
+  openForDevice(surveillanceData[0]);
 });
 
-// Recommendations
-function showRecommendations(loc) {
-  recommendationList.innerHTML = '';
-  const recs = [];
-  if(loc.score < 30) recs.push('⚠️ Avoid sensitive activities here');
-  if(loc.score >= 70) recs.push('✅ Safe for private conversations');
-  if(loc.score < 50) recs.push('📱 Limit WiFi/Bluetooth usage');
-  if(loc.score < 40) recs.push('💳 Prefer cash payments to avoid tracking');
-  recs.forEach(r => {
-    const li = document.createElement('li');
-    li.textContent = r;
-    recommendationList.appendChild(li);
+/* close sheet on outside tap (mobile) */
+document.addEventListener('click', (e)=>{
+  if(window.innerWidth <= 820){
+    const inside = e.target.closest('.bottom-sheet') || e.target.closest('.pulsing-marker');
+    if(!inside){
+      bottomSheet.classList.remove('open');
+    }
+  }
+});
+
+/* ----------------------------
+   HEATMAP TOGGLE
+   ---------------------------- */
+document.getElementById('heatToggle').addEventListener('click', ()=>{
+  heatOn = !heatOn;
+  if(heatOn){
+    // prepare heat points; normalized by score and counts
+    const points = surveillanceData.map(loc => [loc.lat, loc.lng, clamp((250 - loc.score)/250 + 0.2, 0.2, 1.0)]);
+    heatLayer = L.heatLayer(points, { radius: 40, blur: 30, maxZoom: 12 }).addTo(map);
+    document.getElementById('heatToggle').innerText = 'Heatmap: On';
+  } else {
+    if(heatLayer) map.removeLayer(heatLayer);
+    document.getElementById('heatToggle').innerText = 'Heatmap';
+  }
+});
+
+/* ----------------------------
+   DARK / LIGHT TOGGLE
+   ---------------------------- */
+document.getElementById('darkToggle').addEventListener('click', ()=>{
+  usingDark = !usingDark;
+  map.removeLayer(baseLayer);
+  baseLayer = L.tileLayer(usingDark? darkTiles : lightTiles, { attribution: usingDark? '&copy; CARTO & OSM' : '&copy; OpenStreetMap' }).addTo(map);
+  document.getElementById('darkToggle').innerText = usingDark? 'Map: Dark':'Map: Light';
+});
+
+/* ----------------------------
+   GLOBAL MODE (fake)
+   ---------------------------- */
+document.getElementById('globalBtn').addEventListener('click', ()=>{
+  // Simulate adding three global sample markers (demo)
+  const extras = [
+    {name:'London Center',lat:51.5074,lng:-0.1278,score:28,surveillance:{physical:120,digital:140,biometric:40,corporate:90,government:60,iot:80,personal:20,emerging:35}, story:'Global city demo', timeline:'2020: rollout'},
+    {name:'Tokyo Shibuya',lat:35.6595,lng:139.7004,score:18,surveillance:{physical:200,digital:160,biometric:90,corporate:150,government:120,iot:240,personal:40,emerging:60}, story:'Global city demo', timeline:'2019: rollout'},
+    {name:'Sydney CBD',lat:-33.8688,lng:151.2093,score:45,surveillance:{physical:60,digital:40,biometric:10,corporate:20,government:12,iot:30,personal:6,emerging:8}, story:'Global city demo', timeline:'2022: rollout'}
+  ];
+  // add to dataset (avoid duplicates on repeated clicks)
+  extras.forEach(e=>{
+    if(!surveillanceData.find(d=>d.name===e.name)) surveillanceData.push(e);
   });
+  createMarkers();
+  // zoom out to world
+  map.setView([20,0],2,{animate:true});
+  document.getElementById('globalBtn').innerText = 'Global Mode: On';
+});
+
+/* ----------------------------
+   SIMULATED REAL-TIME UPDATES
+   ---------------------------- */
+function simulateRealtime(){
+  surveillanceData.forEach(loc=>{
+    // small random drift of counts
+    for(const k in loc.surveillance){
+      const delta = Math.floor(Math.random()*5)-2;
+      loc.surveillance[k] = Math.max(0, loc.surveillance[k] + delta);
+    }
+    // recalc score from surveillance totals (simple heuristic for demo)
+    const total = Object.values(loc.surveillance).reduce((a,b)=>a+b,0);
+    // inverse: more devices -> lower score
+    loc.score = clamp(Math.round(100 - (total/10)), 0, 100);
+  });
+
+  // refresh markers' colors
+  createMarkers();
+
+  // if a panel for a shown location is open, refresh it in place
+  const panelOpenLoc = document.querySelector('.panel.open h2');
+  if(panelOpenLoc){
+    const name = panelOpenLoc.innerText;
+    const loc = surveillanceData.find(l=>l.name===name);
+    if(loc) openForDevice(loc);
+  } else {
+    // mobile sheet
+    const sheetOpenLoc = document.querySelector('.bottom-sheet.open h2');
+    if(sheetOpenLoc){
+      const name = sheetOpenLoc.innerText;
+      const loc = surveillanceData.find(l=>l.name===name);
+      if(loc) openForDevice(loc);
+    }
+  }
+
+  // update live chip timestamp
+  updateTimestamp();
+}
+setInterval(simulateRealtime,5000);
+
+/* ----------------------------
+   NARRATOR (Web Speech API)
+   ---------------------------- */
+let narratorOn = false;
+document.getElementById('narrateBtn').addEventListener('click', ()=>{
+  narratorOn = !narratorOn;
+  document.getElementById('narrateBtn').innerText = narratorOn? 'Narrator: On' : 'Narrator';
+  if(narratorOn){
+    // speak current first location's story
+    speakText(surveillanceData[0].story);
+  } else {
+    window.speechSynthesis.cancel();
+  }
+});
+
+function speakText(text){
+  if(!('speechSynthesis' in window)) return alert('Speech not supported in this browser');
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text.replace(/\n/g,' '));
+  utter.rate = 1.0; utter.pitch = 0.9; utter.lang = 'en-US';
+  window.speechSynthesis.speak(utter);
+}
+function speakStory(){ // called by panel button
+  const name = document.querySelector('#panel h2, .bottom-sheet h2');
+  const title = name ? name.innerText : null;
+  if(!title) return alert('Open a location first.');
+  const loc = surveillanceData.find(l=>l.name===title);
+  if(loc) speakText(loc.story);
 }
 
-// Dashboard
-document.getElementById('total-locations').textContent = locations.length;
-document.getElementById('highest-risk').textContent = locations.reduce((a,b)=>b.score<a.score?b:a).name;
-document.getElementById('lowest-risk').textContent = locations.reduce((a,b)=>b.score>a.score?b:a).name;
+/* ----------------------------
+   SHARE SNAPSHOT
+   ---------------------------- */
+function shareSnapshot(){
+  const h = document.querySelector('#panel h2, .bottom-sheet h2');
+  const title = h? h.innerText : surveillanceData[0].name;
+  const loc = surveillanceData.find(l=>l.name===title);
+  if(!loc) return;
+  const payload = `${loc.name}\nPrivacy Score: ${loc.score}/100\n${Object.entries(loc.surveillance).map(([k,v])=>`${k}: ${v}`).join('\n')}`;
+  navigator.clipboard.writeText(payload).then(()=> alert('Snapshot copied to clipboard!'));
+}
+function share(){ shareSnapshot(); }
 
-// Pseudo real-time updates
-setInterval(() => {
-  locations.forEach(loc => {
-    let change = Math.floor(Math.random()*3-1); // -1,0,1
-    loc.score = Math.max(0, Math.min(100, loc.score+change));
-    const el = [...mapDiv.children].find(d => d.querySelector('.loc-name').textContent === loc.name);
-    el.querySelector('.loc-score').textContent = loc.score;
-    const risk = getRisk(loc.score);
-    el.querySelector('.loc-score').style.color = risk.color;
-    el.querySelector('.loc-risk').textContent = risk.level;
-    el.querySelector('.bar').style.background = risk.color;
-    el.querySelector('.bar').style.width = loc.score+'%';
-  });
-}, 5000);
+/* ----------------------------
+   TIMESTAMP
+   ---------------------------- */
+function updateTimestamp(){
+  const el = document.getElementById('timestamp');
+  if(el) el.innerText = 'Last Updated: ' + new Date().toLocaleTimeString();
+}
+updateTimestamp();
 
+/* ----------------------------
+   INITIAL UI
+   ---------------------------- */
+createMarkers();
 </script>
 </body>
 </html>
