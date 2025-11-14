@@ -1,110 +1,187 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>U.S. Cities Privacy Map Demo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SurveillanceMap360 Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
+  body { background: #111; color: #eee; overflow-x: hidden; }
+  h1,h2,h3,h4 { font-family: 'Orbitron', sans-serif; }
   
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <!-- MarkerCluster CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+  .header { text-align: center; margin-bottom: 20px; }
+  .header h1 { font-size: 2.5rem; color: #0ff; text-shadow: 0 0 10px #0ff; }
+  .header p { color: #aaa; margin-top: 5px; }
 
-  <style>
-    body { margin:0; padding:0; }
-    #map { height: 100vh; width: 100%; }
-    .legend {
-      background: white;
-      padding: 10px;
-      line-height: 18px;
-      color: #555;
-    }
-    .legend span {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      margin-right: 5px;
-    }
-  </style>
+  /* Map */
+  .map { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 30px; }
+  .location { background: #222; padding: 15px; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 10px #0ff50; position: relative; }
+  .location:hover { transform: scale(1.05); box-shadow: 0 0 20px #0ff; }
+  .loc-name { font-weight: bold; margin-bottom: 5px; font-size: 1rem; }
+  .loc-score { font-size: 1.5rem; font-weight: bold; margin-bottom: 3px; }
+  .loc-risk { font-size: 0.8rem; text-transform: uppercase; margin-bottom: 5px; }
+  
+  .bar-container { background: #111; border-radius: 12px; overflow: hidden; height: 15px; margin-bottom: 10px; }
+  .bar { height: 100%; width: 0%; transition: width 1s ease; border-radius: 12px; }
+
+  /* Surveillance Icons */
+  .surveillance { display: flex; justify-content: space-around; margin-bottom: 10px; }
+  .icon { display: flex; flex-direction: column; align-items: center; font-size: 0.8rem; }
+  .icon i { font-size: 1.3rem; margin-bottom: 3px; animation: pulse 1.5s infinite alternate; }
+  @keyframes pulse { 0% { transform: scale(1); opacity:0.7;} 100% { transform: scale(1.2); opacity:1; } }
+
+  /* Recommendations */
+  .recommendations { background: #222; padding: 15px; border-radius: 12px; margin-bottom: 30px; }
+  .recommendations h3 { margin-bottom: 10px; color: #0ff; }
+  .recommendations ul { list-style: none; }
+  .recommendations li { margin-bottom: 5px; color: #aaa; }
+
+  /* Dashboard */
+  .dashboard { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 30px; }
+  .dashboard-card { background: #222; padding: 20px; border-radius: 12px; flex: 1; min-width: 200px; text-align: center; box-shadow: 0 0 10px #0ff50; }
+  .dashboard-card h4 { margin-bottom: 10px; color: #0ff; }
+
+  /* Tooltip */
+  .tooltip { position: absolute; background: #111; color: #0ff; padding: 8px; border-radius: 10px; font-size: 0.8rem; top: -10px; left: 105%; white-space: nowrap; display: none; box-shadow: 0 0 10px #0ff; }
+
+  /* Footer */
+  .footer { text-align: center; margin-top: 40px; color: #555; font-size: 0.9rem; }
+
+</style>
+<!-- FontAwesome for icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
-<div id="map"></div>
+<div class="container">
+  <div class="header">
+    <h1>SurveillanceMap360 Demo</h1>
+    <p>Interactive privacy scores for Colorado locations — Kickstarter Prototype</p>
+  </div>
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<!-- MarkerCluster JS -->
-<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+  <div class="map" id="map"></div>
+
+  <div class="recommendations" id="recommendations">
+    <h3>🛡️ Privacy Recommendations</h3>
+    <ul id="recommendation-list"></ul>
+  </div>
+
+  <div class="dashboard" id="dashboard">
+    <div class="dashboard-card">
+      <h4>Total Locations</h4>
+      <div id="total-locations">0</div>
+    </div>
+    <div class="dashboard-card">
+      <h4>Highest Risk</h4>
+      <div id="highest-risk">N/A</div>
+    </div>
+    <div class="dashboard-card">
+      <h4>Lowest Risk</h4>
+      <div id="lowest-risk">N/A</div>
+    </div>
+  </div>
+
+  <div class="footer">Demo Prototype • Not Live Data • Kickstarter Ready</div>
+</div>
 
 <script>
-  // Initialize map
-  var map = L.map('map').setView([39.8, -98.5], 4); // Center of the U.S.
+const locations = [
+  { name: 'Denver International Airport', score: 8, surveillance: { CCTV: 20, Drone: 2, WiFi: 10, Biometric: 5 } },
+  { name: 'Downtown Denver', score: 22, surveillance: { CCTV: 35, Drone: 5, WiFi: 25, Biometric: 12 } },
+  { name: 'Cherry Creek Mall', score: 18, surveillance: { CCTV: 15, Drone: 1, WiFi: 12, Biometric: 3 } },
+  { name: 'CU Boulder', score: 58, surveillance: { CCTV: 40, Drone: 7, WiFi: 30, Biometric: 15 } },
+  { name: 'Pearl Street Mall', score: 65, surveillance: { CCTV: 25, Drone: 3, WiFi: 20, Biometric: 10 } },
+  { name: 'Westminster City Center', score: 52, surveillance: { CCTV: 30, Drone: 4, WiFi: 22, Biometric: 8 } },
+  { name: 'Rocky Mountain National Park', score: 95, surveillance: { CCTV: 2, Drone: 0, WiFi: 1, Biometric: 0 } },
+  { name: 'Golden Historic District', score: 82, surveillance: { CCTV: 10, Drone: 1, WiFi: 5, Biometric: 2 } }
+];
 
-  // Add OpenStreetMap tiles
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '© OpenStreetMap'
-  }).addTo(map);
+function getRisk(score) {
+  if(score >= 80) return { level: 'Minimal', color: '#22c55e' };
+  if(score >= 60) return { level: 'Low', color: '#84cc16' };
+  if(score >= 40) return { level: 'Moderate', color: '#f59e0b' };
+  if(score >= 20) return { level: 'High', color: '#f97316' };
+  return { level: 'Extreme', color: '#dc2626' };
+}
 
-  // Create marker cluster group
-  var markers = L.markerClusterGroup();
+const mapDiv = document.getElementById('map');
+const recommendationList = document.getElementById('recommendation-list');
 
-  // Demo dataset: U.S. cities with lat, lng, population
-  // (In a real version you can replace this array with the full dataset)
-  var cities = [
-    {name: "New York", lat: 40.7128, lng: -74.0060, population: 8419600},
-    {name: "Los Angeles", lat: 34.0522, lng: -118.2437, population: 3980400},
-    {name: "Chicago", lat: 41.8781, lng: -87.6298, population: 2716000},
-    {name: "Denver", lat: 39.7392, lng: -104.9903, population: 715000},
-    {name: "Austin", lat: 30.2672, lng: -97.7431, population: 978000},
-    {name: "Boulder", lat: 40.01499, lng: -105.27055, population: 108000},
-    // ... add all other cities here
-  ];
-
-  // Function to get marker color based on demo privacy score
-  function getColor(score) {
-    return score > 80 ? '#d73027' :
-           score > 60 ? '#fc8d59' :
-           score > 40 ? '#fee08b' :
-           score > 20 ? '#d9ef8b' :
-                        '#1a9850';
-  }
-
-  // Add markers
-  cities.forEach(function(city) {
-    var privacyScore = Math.floor(Math.random() * 100) + 1; // Random demo score
-    var marker = L.circleMarker([city.lat, city.lng], {
-      radius: Math.max(5, Math.log(city.population)/2),
-      fillColor: getColor(privacyScore),
-      color: '#555',
-      weight: 1,
-      opacity: 1,
-      fillOpacity: 0.8
-    }).bindPopup(
-      "<b>" + city.name + "</b><br>" +
-      "Population: " + city.population.toLocaleString() + "<br>" +
-      "Demo Privacy Score: " + privacyScore
-    );
-    markers.addLayer(marker);
+locations.forEach(loc => {
+  const div = document.createElement('div');
+  div.className = 'location';
+  div.innerHTML = `
+    <div class="loc-name">${loc.name}</div>
+    <div class="loc-score" style="color:${getRisk(loc.score).color}">${loc.score}</div>
+    <div class="loc-risk">${getRisk(loc.score).level}</div>
+    <div class="bar-container"><div class="bar" style="background:${getRisk(loc.score).color}; width:0%"></div></div>
+    <div class="surveillance">
+      <div class="icon" title="CCTV"><i class="fas fa-video"></i>${loc.surveillance.CCTV}</div>
+      <div class="icon" title="Drone"><i class="fas fa-drone"></i>${loc.surveillance.Drone}</div>
+      <div class="icon" title="WiFi"><i class="fas fa-wifi"></i>${loc.surveillance.WiFi}</div>
+      <div class="icon" title="Biometric"><i class="fas fa-fingerprint"></i>${loc.surveillance.Biometric}</div>
+    </div>
+    <div class="tooltip" id="tooltip-${loc.name.replace(/\s/g,'')}"></div>
+  `;
+  
+  const bar = div.querySelector('.bar');
+  function animateBar() { bar.style.width = loc.score + '%'; }
+  div.addEventListener('click', () => { showRecommendations(loc); animateBar(); });
+  
+  // Tooltip on hover
+  const tooltip = div.querySelector('.tooltip');
+  div.addEventListener('mouseenter', () => {
+    tooltip.style.display = 'block';
+    tooltip.innerHTML = `
+      CCTV: ${loc.surveillance.CCTV}<br>
+      Drone: ${loc.surveillance.Drone}<br>
+      WiFi: ${loc.surveillance.WiFi}<br>
+      Biometric: ${loc.surveillance.Biometric}
+    `;
   });
+  div.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+  
+  mapDiv.appendChild(div);
+  animateBar();
+});
 
-  map.addLayer(markers);
+// Recommendations
+function showRecommendations(loc) {
+  recommendationList.innerHTML = '';
+  const recs = [];
+  if(loc.score < 30) recs.push('⚠️ Avoid sensitive activities here');
+  if(loc.score >= 70) recs.push('✅ Safe for private conversations');
+  if(loc.score < 50) recs.push('📱 Limit WiFi/Bluetooth usage');
+  if(loc.score < 40) recs.push('💳 Prefer cash payments to avoid tracking');
+  recs.forEach(r => {
+    const li = document.createElement('li');
+    li.textContent = r;
+    recommendationList.appendChild(li);
+  });
+}
 
-  // Add legend
-  var legend = L.control({position: 'bottomright'});
-  legend.onAdd = function (map) {
-    var div = L.DomUtil.create('div', 'legend');
-    div.innerHTML += "<b>Demo Privacy Score</b><br>";
-    div.innerHTML += '<span style="background:#d73027"></span> 81-100<br>';
-    div.innerHTML += '<span style="background:#fc8d59"></span> 61-80<br>';
-    div.innerHTML += '<span style="background:#fee08b"></span> 41-60<br>';
-    div.innerHTML += '<span style="background:#d9ef8b"></span> 21-40<br>';
-    div.innerHTML += '<span style="background:#1a9850"></span> 0-20<br>';
-    return div;
-  };
-  legend.addTo(map);
+// Dashboard
+document.getElementById('total-locations').textContent = locations.length;
+document.getElementById('highest-risk').textContent = locations.reduce((a,b)=>b.score<a.score?b:a).name;
+document.getElementById('lowest-risk').textContent = locations.reduce((a,b)=>b.score>a.score?b:a).name;
+
+// Pseudo real-time updates
+setInterval(() => {
+  locations.forEach(loc => {
+    let change = Math.floor(Math.random()*3-1); // -1,0,1
+    loc.score = Math.max(0, Math.min(100, loc.score+change));
+    const el = [...mapDiv.children].find(d => d.querySelector('.loc-name').textContent === loc.name);
+    el.querySelector('.loc-score').textContent = loc.score;
+    const risk = getRisk(loc.score);
+    el.querySelector('.loc-score').style.color = risk.color;
+    el.querySelector('.loc-risk').textContent = risk.level;
+    el.querySelector('.bar').style.background = risk.color;
+    el.querySelector('.bar').style.width = loc.score+'%';
+  });
+}, 5000);
+
 </script>
-
 </body>
 </html>
